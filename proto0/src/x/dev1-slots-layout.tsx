@@ -10,7 +10,7 @@ import catalog from "../unit-inventories.json";
 
 catalog;
 
-type SightMode = "free" | "scene" | "part" | "cell";
+type SightMode = "free" | "scene";
 
 type StoreState = {
   bpm: number;
@@ -90,16 +90,6 @@ const PageRoot = () => {
               text="scene"
               active={state.sightMode === "scene"}
               onClick={() => actions.setSightMode("scene")}
-            />
-            <Button
-              text="part"
-              active={state.sightMode === "part"}
-              onClick={() => actions.setSightMode("part")}
-            />
-            <Button
-              text="cell"
-              active={state.sightMode === "cell"}
-              onClick={() => actions.setSightMode("cell")}
             />
           </div>
         </div>
