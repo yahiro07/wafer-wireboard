@@ -1,5 +1,4 @@
 import { mergeReactProps } from "@/utils/merge-react-props";
-import { CellFrame } from "./cell-frame";
 import { KnobFrame } from "./knob-frame";
 
 export function NumberSliderBoxView(props: {
@@ -7,7 +6,7 @@ export function NumberSliderBoxView(props: {
   fracDigits?: number;
 }) {
   return (
-    <div className="border border-[#444] w-[48px] h-[28px] flex-c">
+    <div className="border border-[#444] w-[60px] h-[34px] flex-c">
       {props.value.toFixed(props.fracDigits ?? 2)}
     </div>
   );
@@ -27,19 +26,14 @@ export function FeNumberSliderBox(inputProps: {
     inputProps,
   );
   return (
-    <CellFrame label={props.label}>
-      <KnobFrame
-        value={props.value}
-        min={props.min}
-        max={props.max}
-        step={props.step}
-        onChange={props.onChange}
-      >
-        <NumberSliderBoxView
-          value={props.value}
-          fracDigits={props.fracDigits}
-        />
-      </KnobFrame>
-    </CellFrame>
+    <KnobFrame
+      value={props.value}
+      min={props.min}
+      max={props.max}
+      step={props.step}
+      onChange={props.onChange}
+    >
+      <NumberSliderBoxView value={props.value} fracDigits={props.fracDigits} />
+    </KnobFrame>
   );
 }

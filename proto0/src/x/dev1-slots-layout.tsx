@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { createStore } from "snap-store";
 import { Button } from "@/components/button";
+import { Icons } from "@/components/icons";
+import { FeNumberSliderBox } from "@/components/number-slider-box";
 import { Size } from "@/hooks/common-types";
-import { createHostSystem } from "@/host-system/host";
+import { createHostSystem, createSequenceTickDriver } from "@/host-system/host";
 import { UnitFrame } from "@/host-system/react";
 import { normalizeFrameSize } from "@/host-system/react/frame-size";
 import { setupMidiKeyboardInput } from "@/utils/midi-keyboard-input";
@@ -32,6 +34,8 @@ type StoreState = {
 
 const audioContext = new AudioContext();
 const hostSystem = createHostSystem(audioContext);
+const sequenceTickDriver = createSequenceTickDriver(hostSystem);
+
 const store = createStore<StoreState>({
   bpm: 120,
   playing: false,
@@ -56,9 +60,15 @@ const actions = {
   },
   togglePlayState() {
     store.setPlaying((prev) => !prev);
+    if (store.state.playing) {
+      sequenceTickDriver.start();
+    } else {
+      sequenceTickDriver.stop();
+    }
   },
   setBpm(bpm: number) {
     store.setBpm(bpm);
+    sequenceTickDriver.setBpm(bpm);
   },
   setWholeSlotsVisible(wholeSlotsVisible: boolean) {
     store.setWholeSlotsVisible(wholeSlotsVisible);
@@ -72,7 +82,20 @@ const TopBar = () => {
   const state = store.useSnapshot();
   return (
     <div className="flex-h justify-between bg-gray-300 p-2">
-      <div />
+      <div className="flex-ha gap-2">
+        <Button active={state.playing} onClick={actions.togglePlayState}>
+          <Icons.Play />
+        </Button>
+        <FeNumberSliderBox
+          value={state.bpm}
+          min={80}
+          max={150}
+          step={1}
+          fracDigits={0}
+          onChange={actions.setBpm}
+          label="BPM"
+        />
+      </div>
       <div className="flex-h gap-3">
         <div>zoom: {state.sight.zoom.toFixed(2)}</div>
         <Button
@@ -108,6 +131,7 @@ const UnitFrameEx = ({
   catalogKey: CatalogKey;
   containerSize: Size;
 }) => {
+  const state = store.useSnapshot();
   const onIframeMounted = useCallback((iframe: HTMLIFrameElement) => {
     const win = iframe.contentWindow as Window;
     win.addEventListener("wheel", sightHandlers.onWheel);
@@ -133,6 +157,8 @@ const UnitFrameEx = ({
         pageUrl={catalog[catalogKey].loaderPageUrl}
         frameSize={frameSize}
         hostSystem={hostSystem}
+        hostBpm={state.bpm}
+        hostPlaying={state.playing}
         onIframeMounted={onIframeMounted}
       />
     </UnitFrameScaler>
