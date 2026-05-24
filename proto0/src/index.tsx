@@ -1,3 +1,3 @@
-import { mountAppRoot } from "@/utils/mount-app-root";
-
-mountAppRoot(<>Hello world</>);
+import "./styles";
+//
+import "./x/dev0-unit-check";
