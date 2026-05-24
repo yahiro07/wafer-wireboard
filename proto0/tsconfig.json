@@ -9,6 +9,7 @@
       "dom.iterable"
     ],
     "types": [
+      "node",
       "vite/client",
     ],
     "jsx": "react-jsx",

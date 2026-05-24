@@ -1,3 +1,5 @@
+const homeDir = process.env.HOME;
+
 export const unitSourceUrls = [
   "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r3/wavicle/",
   "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r7/additive/",
@@ -12,9 +14,9 @@ export const unitSourceUrls = [
   `/dev-units/mu3-effect/`,
   `/dev-units/mu4-keyboard/`,
   `/dev-units/mu5-visualizer/`,
-  "/my-units/my-drum-machine/",
-  "/my-units/proto-engine/",
-  "/my-units/mini-synth/",
-  "/my-units/mini-synth-ge/",
-  "/my-units/mini-synth-gp/",
+  `file://${homeDir}/wus-my-units/my-drum-machine/`,
+  `file://${homeDir}/wus-my-units/proto-engine/`,
+  `file://${homeDir}/wus-my-units/mini-synth/`,
+  `file://${homeDir}/wus-my-units/mini-synth-ge/`,
+  `file://${homeDir}/wus-my-units/mini-synth-gp/`,
 ];
