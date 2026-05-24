@@ -1,4 +1,8 @@
 import { CSSProperties, useEffect, useMemo, useRef } from "react";
+import {
+  FrameSizeInput,
+  normalizeFrameSize,
+} from "@/host-system/react/frame-size";
 import { createUnitFrameModel } from "@/host-system/react/unit-frame-model";
 import { HostSystem } from "../host";
 
@@ -12,7 +16,7 @@ type Props = {
   hostSystem: HostSystem;
   className?: string;
   style?: CSSProperties;
-  // frameSize?: FrameSizeInput;
+  frameSize?: FrameSizeInput;
   // iframeAttrs?: Omit<JSX.IntrinsicElements["iframe"], "src" | "title" | "ref">;
   // onIframeMounted?(iframe: HTMLIFrameElement): void;
 };
@@ -27,6 +31,7 @@ export const UnitFrame = ({
   hostSystem,
   className,
   style,
+  frameSize,
 }: Props) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   // biome-ignore lint/correctness/useExhaustiveDependencies: for initialization
@@ -37,13 +42,20 @@ export const UnitFrame = ({
     const iframe = iframeRef.current!;
     return model.handleIframeMounted(iframe);
   }, []);
-
   model.feedAttributes({ destUnitId, hostBpm, hostPlaying, inputNotes });
+
+  const mergedStyle = useMemo(() => {
+    const fsz = normalizeFrameSize(frameSize);
+    return {
+      ...style,
+      ...(fsz ? { width: `${fsz.width}px`, height: `${fsz.height}px` } : {}),
+    };
+  }, [style, frameSize]);
 
   return (
     <iframe
       className={className}
-      style={style}
+      style={mergedStyle}
       ref={iframeRef}
       src={pageUrl}
       title="unit"
