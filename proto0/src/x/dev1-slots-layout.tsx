@@ -1,9 +1,9 @@
 import clsx from "clsx";
 import { useEffect } from "react";
 import { createStore } from "snap-store";
+import { Button } from "@/components/button";
 import { useWindowSize } from "@/hooks/use-window-size";
 import { createHostSystem } from "@/host-system/host";
-import { UnitFrame } from "@/host-system/react";
 import { setupMidiKeyboardInput } from "@/utils/midi-keyboard-input";
 import { mountAppRoot } from "@/utils/mount-app-root";
 import catalog from "../unit-inventories.json";
@@ -14,6 +14,7 @@ type StoreState = {
   bpm: number;
   playing: boolean;
   notes: number[];
+  wholeSlotsVisible: boolean;
 };
 
 const audioContext = new AudioContext();
@@ -22,6 +23,7 @@ const store = createStore<StoreState>({
   bpm: 120,
   playing: false,
   notes: [],
+  wholeSlotsVisible: false,
 });
 
 const actions = {
@@ -37,43 +39,15 @@ const actions = {
   setBpm(bpm: number) {
     store.setBpm(bpm);
   },
+  setWholeSlotsVisible(wholeSlotsVisible: boolean) {
+    store.setWholeSlotsVisible(wholeSlotsVisible);
+  },
 };
 
-const UnitsSolid = () => {
-  const state = store.useSnapshot();
+const PartSlot = (props: { visible: boolean }) => {
+  if (!props.visible) return null;
   return (
-    <>
-      <UnitFrame
-        unitId="uf_effect"
-        pageUrl={catalog.mu5_visualizer.loaderPageUrl}
-        destUnitId="$output"
-        hostSystem={hostSystem}
-      />
-      <UnitFrame
-        unitId="uf_instrument"
-        pageUrl={catalog.mini_synth_ge.loaderPageUrl}
-        // pageUrl={catalog.mini_synth_ge.loaderPageUrl}
-        // className="w-[640px] h-[320px]"
-        frameSize={catalog.mini_synth_ge.preferredSize}
-        destUnitId="uf_effect"
-        hostSystem={hostSystem}
-        hostBpm={state.bpm}
-        hostPlaying={state.playing}
-      />
-      <UnitFrame
-        unitId="uf_keyboard"
-        pageUrl={catalog.mu4_keyboard.loaderPageUrl}
-        destUnitId="uf_instrument"
-        hostSystem={hostSystem}
-        inputNotes={state.notes}
-      />
-    </>
-  );
-};
-
-const PartSlot = () => {
-  return (
-    <div className="w-[1800px] h-[400px] flex-h gap-4">
+    <div className="w-[1400px] h-[400px] flex-h gap-4">
       <div className="grow h-full bg-gray-200" />
       <div className="w-[600px] h-full bg-gray-200" />
     </div>
@@ -84,23 +58,35 @@ const PageRoot = () => {
   const windowSize = useWindowSize();
   const isVertical = windowSize.height > windowSize.width;
 
+  const state = store.useSnapshot();
   return (
-    <div className="w-dvw h-dvh flex-vc">
-      <div style={{ zoom: 0.3 }}>
-        <div
-          className={clsx("gap-4 flex-wrap", isVertical ? "flex-v" : "flex-h")}
-        >
-          <div className="flex-v gap-4">
-            <PartSlot />
-            <PartSlot />
-            <PartSlot />
-            <PartSlot />
-          </div>
-          <div className="flex-v gap-4">
-            <PartSlot />
-            <PartSlot />
-            <PartSlot />
-            <PartSlot />
+    <div className="w-dvw h-dvh flex-v">
+      <div className="flex-h justify-between bg-gray-300 p-2">
+        <div />
+        <Button
+          text="full"
+          active={state.wholeSlotsVisible}
+          onClick={() => actions.setWholeSlotsVisible(!state.wholeSlotsVisible)}
+        />
+      </div>
+      <div className="grow flex-c">
+        <div style={{ zoom: 0.4 }}>
+          <div
+            className={clsx(
+              "flex-wrap",
+              isVertical ? "flex-v gap-4 " : "flex-h gap-6",
+            )}
+          >
+            <div className="flex-v gap-4">
+              <PartSlot visible={true} />
+              <PartSlot visible={true} />
+              <PartSlot visible={state.wholeSlotsVisible} />
+            </div>
+            <div className="flex-v gap-4">
+              <PartSlot visible={true} />
+              <PartSlot visible={true} />
+              <PartSlot visible={state.wholeSlotsVisible} />
+            </div>
           </div>
         </div>
       </div>
