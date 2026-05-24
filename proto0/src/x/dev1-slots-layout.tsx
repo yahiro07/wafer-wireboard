@@ -94,20 +94,15 @@ const TopBar = () => {
   );
 };
 
-const PartSlot = ({
-  partSlotId,
-  instrumentUnitKey,
-  sequencerUnitKey,
+const UnitFrameEx = ({
+  unitId,
+  destUnitId,
+  catalogKey,
 }: {
-  partSlotId: string;
-  instrumentUnitKey?: CatalogKey;
-  sequencerUnitKey?: CatalogKey;
+  unitId: string;
+  destUnitId: string;
+  catalogKey: CatalogKey;
 }) => {
-  const effectCatalogKey = "mu5_visualizer";
-
-  const instrumentUnitId = `${partSlotId}_${instrumentUnitKey}`;
-  const sequencerUnitId = `${partSlotId}_${sequencerUnitKey}`;
-  const effectUnitId = `${partSlotId}_${effectCatalogKey}`;
   const onIframeMounted = useCallback((iframe: HTMLIFrameElement) => {
     const win = iframe.contentWindow as Window;
     win.addEventListener("wheel", sightHandlers.onWheel);
@@ -122,40 +117,58 @@ const PartSlot = ({
     };
   }, []);
   return (
+    <UnitFrame
+      unitId={unitId}
+      destUnitId={destUnitId}
+      pageUrl={catalog[catalogKey].loaderPageUrl}
+      frameSize={catalog[catalogKey].preferredSize}
+      hostSystem={hostSystem}
+      onIframeMounted={onIframeMounted}
+    />
+  );
+};
+
+const PartSlot = ({
+  partSlotId,
+  instrumentUnitKey,
+  sequencerUnitKey,
+}: {
+  partSlotId: string;
+  instrumentUnitKey?: CatalogKey;
+  sequencerUnitKey?: CatalogKey;
+}) => {
+  const effectCatalogKey = "mu5_visualizer";
+
+  const instrumentUnitId = `${partSlotId}_${instrumentUnitKey}`;
+  const sequencerUnitId = `${partSlotId}_${sequencerUnitKey}`;
+  const effectUnitId = `${partSlotId}_${effectCatalogKey}`;
+
+  return (
     <div className="w-[700px] h-[800px] flex-v gap-4">
       <div className="bg-gray-200 flex-c h-[100px]">
         {instrumentUnitKey && (
-          <UnitFrame
+          <UnitFrameEx
             unitId={effectUnitId}
             destUnitId="$output"
-            pageUrl={catalog[effectCatalogKey].loaderPageUrl}
-            frameSize={catalog[effectCatalogKey].preferredSize}
-            hostSystem={hostSystem}
-            onIframeMounted={onIframeMounted}
+            catalogKey={effectCatalogKey}
           />
         )}
       </div>
       <div className="bg-gray-200 flex-c h-[400px]">
         {instrumentUnitKey && (
-          <UnitFrame
+          <UnitFrameEx
             unitId={instrumentUnitId}
             destUnitId={effectUnitId}
-            pageUrl={catalog[instrumentUnitKey].loaderPageUrl}
-            frameSize={catalog[instrumentUnitKey].preferredSize}
-            hostSystem={hostSystem}
-            onIframeMounted={onIframeMounted}
+            catalogKey={instrumentUnitKey}
           />
         )}
       </div>
       <div className="bg-gray-200 flex-c h-[400px]">
         {sequencerUnitKey && (
-          <UnitFrame
+          <UnitFrameEx
             unitId={sequencerUnitId}
             destUnitId={instrumentUnitId}
-            pageUrl={catalog[sequencerUnitKey].loaderPageUrl}
-            frameSize={catalog[sequencerUnitKey].preferredSize}
-            hostSystem={hostSystem}
-            onIframeMounted={onIframeMounted}
+            catalogKey={sequencerUnitKey}
           />
         )}
       </div>
