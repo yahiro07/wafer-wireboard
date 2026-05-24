@@ -7,7 +7,7 @@ import { clampValue } from "@/utils/number-utils";
 
 export type FieldSight = {
   zoom: number; //0 for 1x
-  eyePosition: { x: number; y: number };
+  eyeOffset: { x: number; y: number };
 };
 
 export type FieldSightHandlers = {
@@ -33,7 +33,7 @@ export function createFieldSightHandlers(
     },
     onPointerDown(e0: PointerEvent) {
       if (e0.buttons === 4) {
-        const startPos = getSight().eyePosition;
+        const startPos = getSight().eyeOffset;
         startDragSession(
           e0,
           {
@@ -44,7 +44,7 @@ export function createFieldSightHandlers(
                 x: startPos.x + relX,
                 y: startPos.y + relY,
               };
-              setSightAttrs({ eyePosition: newPos });
+              setSightAttrs({ eyeOffset: newPos });
             },
           },
           { coordinate: "screen" },
@@ -81,8 +81,8 @@ export const FieldSightPlane = ({
 
   const transformSpec = useMemo(() => {
     if (!outerAreaSize) return undefined;
-    const tx = outerAreaSize.width / 2 + sight.eyePosition.x;
-    const ty = outerAreaSize.height / 2 + sight.eyePosition.y;
+    const tx = outerAreaSize.width / 2 + sight.eyeOffset.x;
+    const ty = outerAreaSize.height / 2 + sight.eyeOffset.y;
     const sc = Math.pow(2, sight.zoom);
     const tx2 = boardSize.width / 2;
     const ty2 = boardSize.height / 2;

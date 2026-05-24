@@ -32,7 +32,7 @@ const store = createStore<StoreState>({
   playing: false,
   notes: [],
   wholeSlotsVisible: true,
-  sight: { zoom: -2, eyePosition: { x: 0, y: 0 } },
+  sight: { zoom: 0, eyeOffset: { x: 0, y: 0 } },
   sightMode: "free",
 });
 
