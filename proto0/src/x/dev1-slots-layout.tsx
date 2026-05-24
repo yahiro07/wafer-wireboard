@@ -10,11 +10,14 @@ import catalog from "../unit-inventories.json";
 
 catalog;
 
+type SightMode = "free" | "scene" | "part" | "cell";
+
 type StoreState = {
   bpm: number;
   playing: boolean;
   notes: number[];
   wholeSlotsVisible: boolean;
+  sightMode: SightMode;
 };
 
 const audioContext = new AudioContext();
@@ -24,6 +27,7 @@ const store = createStore<StoreState>({
   playing: false,
   notes: [],
   wholeSlotsVisible: false,
+  sightMode: "free",
 });
 
 const actions = {
@@ -42,14 +46,19 @@ const actions = {
   setWholeSlotsVisible(wholeSlotsVisible: boolean) {
     store.setWholeSlotsVisible(wholeSlotsVisible);
   },
+  setSightMode(sightMode: SightMode) {
+    store.setSightMode(sightMode);
+  },
 };
 
-const PartSlot = (props: { visible: boolean }) => {
-  if (!props.visible) return null;
+const PartSlot = ({ id, visible }: { id: string; visible: boolean }) => {
+  if (!visible) return null;
   return (
     <div className="w-[1400px] h-[400px] flex-h gap-4">
-      <div className="grow h-full bg-gray-200" />
-      <div className="w-[600px] h-full bg-gray-200" />
+      <div className="grow h-full bg-gray-200 flex-c text-[40px]">{id}a</div>
+      <div className="w-[600px] h-full bg-gray-200 flex-c text-[40px]">
+        {id}b
+      </div>
     </div>
   );
 };
@@ -63,11 +72,37 @@ const PageRoot = () => {
     <div className="w-dvw h-dvh flex-v">
       <div className="flex-h justify-between bg-gray-300 p-2">
         <div />
-        <Button
-          text="full"
-          active={state.wholeSlotsVisible}
-          onClick={() => actions.setWholeSlotsVisible(!state.wholeSlotsVisible)}
-        />
+        <div className="flex-h gap-3">
+          <Button
+            text="expand"
+            active={state.wholeSlotsVisible}
+            onClick={() =>
+              actions.setWholeSlotsVisible(!state.wholeSlotsVisible)
+            }
+          />
+          <div className="flex-h gap-1">
+            <Button
+              text="free"
+              active={state.sightMode === "free"}
+              onClick={() => actions.setSightMode("free")}
+            />
+            <Button
+              text="scene"
+              active={state.sightMode === "scene"}
+              onClick={() => actions.setSightMode("scene")}
+            />
+            <Button
+              text="part"
+              active={state.sightMode === "part"}
+              onClick={() => actions.setSightMode("part")}
+            />
+            <Button
+              text="cell"
+              active={state.sightMode === "cell"}
+              onClick={() => actions.setSightMode("cell")}
+            />
+          </div>
+        </div>
       </div>
       <div className="grow flex-c">
         <div style={{ zoom: 0.4 }}>
@@ -78,14 +113,14 @@ const PageRoot = () => {
             )}
           >
             <div className="flex-v gap-4">
-              <PartSlot visible={true} />
-              <PartSlot visible={true} />
-              <PartSlot visible={state.wholeSlotsVisible} />
+              <PartSlot id="1" visible={true} />
+              <PartSlot id="2" visible={true} />
+              <PartSlot id="3" visible={state.wholeSlotsVisible} />
             </div>
             <div className="flex-v gap-4">
-              <PartSlot visible={true} />
-              <PartSlot visible={true} />
-              <PartSlot visible={state.wholeSlotsVisible} />
+              <PartSlot id="4" visible={true} />
+              <PartSlot id="5" visible={true} />
+              <PartSlot id="6" visible={state.wholeSlotsVisible} />
             </div>
           </div>
         </div>
