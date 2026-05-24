@@ -39,6 +39,7 @@ const store = createStore<StoreState>({
 const sightHandlers = createFieldSightHandlers(
   () => store.state.sight,
   (attrs) => store.patchSight(attrs),
+  { minZoom: -2, maxZoom: 2 },
 );
 
 const actions = {
@@ -91,6 +92,7 @@ const TopBar = () => {
     <div className="flex-h justify-between bg-gray-300 p-2">
       <div />
       <div className="flex-h gap-3">
+        <div>zoom: {state.sight.zoom.toFixed(2)}</div>
         <Button
           text="expand"
           active={state.wholeSlotsVisible}
@@ -125,7 +127,6 @@ const PageRoot = () => {
           sight={state.sight}
           handlers={sightHandlers}
           boardSize={boardSize}
-          className="bd-red"
         >
           <div className="w-full h-full flex-c">
             <div className={clsx("flex-h gap-6")}>

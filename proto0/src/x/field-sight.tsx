@@ -11,25 +11,39 @@ export type FieldSight = {
 };
 
 export type FieldSightHandlers = {
-  onWheel: (e: WheelEvent) => void;
+  onWheel: (
+    e: WheelEvent,
+    context: { pointer: { x: number; y: number }; areaSize: Size },
+  ) => void;
   onPointerDown: (e: PointerEvent) => void;
 };
-
-const configs = { minZoom: -2, maxZoom: 4 };
 
 export function createFieldSightHandlers(
   getSight: () => FieldSight,
   setSightAttrs: (newSight: Partial<FieldSight>) => void,
+  configs: { minZoom: number; maxZoom: number },
 ): FieldSightHandlers {
   return {
-    onWheel(e: WheelEvent) {
-      const zoom = getSight().zoom;
+    onWheel(e: WheelEvent, context) {
+      const sight = getSight();
+      const zoom = sight.zoom;
       const newZoom = clampValue(
         zoom - e.deltaY * 0.005,
         configs.minZoom,
         configs.maxZoom,
       );
-      setSightAttrs({ zoom: newZoom });
+      const scale = Math.pow(2, zoom);
+      const newScale = Math.pow(2, newZoom);
+      const scaleRatio = newScale / scale;
+      const cx = context.areaSize.width / 2;
+      const cy = context.areaSize.height / 2;
+      const px = context.pointer.x;
+      const py = context.pointer.y;
+      const newEyeOffset = {
+        x: (1 - scaleRatio) * (px - cx) + scaleRatio * sight.eyeOffset.x,
+        y: (1 - scaleRatio) * (py - cy) + scaleRatio * sight.eyeOffset.y,
+      };
+      setSightAttrs({ zoom: newZoom, eyeOffset: newEyeOffset });
     },
     onPointerDown(e0: PointerEvent) {
       if (e0.buttons === 4) {
@@ -71,10 +85,37 @@ export const FieldSightPlane = ({
 }) => {
   const baseDivRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    window.addEventListener("wheel", handlers.onWheel);
     window.addEventListener("pointerdown", handlers.onPointerDown, {
       capture: true,
     });
+    return () => {
+      window.removeEventListener("pointerdown", handlers.onPointerDown, {
+        capture: true,
+      });
+    };
+  }, [handlers]);
+
+  useEffect(() => {
+    const baseDiv = baseDivRef.current;
+    if (!baseDiv) return;
+    const onWheel = (e: WheelEvent) => {
+      handlers.onWheel(e, {
+        pointer: {
+          x: e.clientX - baseDiv.getBoundingClientRect().left,
+          y: e.clientY - baseDiv.getBoundingClientRect().top,
+        },
+        areaSize: {
+          width: baseDiv.clientWidth,
+          height: baseDiv.clientHeight,
+        },
+      });
+      e.preventDefault();
+    };
+
+    baseDiv.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      baseDiv.removeEventListener("wheel", onWheel);
+    };
   }, [handlers]);
 
   const outerAreaSize = useDomElementSize(baseDivRef);
@@ -92,10 +133,7 @@ export const FieldSightPlane = ({
   return (
     <div
       ref={baseDivRef}
-      className={clsx(
-        "w-full h-full bd-red relative overflow-hidden",
-        className,
-      )}
+      className={clsx("w-full h-full relative overflow-hidden", className)}
     >
       <div
         style={{
@@ -104,7 +142,7 @@ export const FieldSightPlane = ({
           left: 0,
           transform: transformSpec,
           transformOrigin: "top left",
-          border: "solid 2px blue",
+          border: "solid 2px #ccc8",
         }}
       >
         <div
