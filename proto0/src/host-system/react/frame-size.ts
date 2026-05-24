@@ -19,3 +19,17 @@ export function normalizeFrameSize(
   }
   return undefined;
 }
+
+export function mergeStyleWithFrameSize(
+  style?: React.CSSProperties,
+  size?: FrameSizeInput,
+): React.CSSProperties | undefined {
+  if (!style && !size) return undefined;
+  const normalizedSize = normalizeFrameSize(size);
+  if (!normalizedSize) return style;
+  return {
+    ...style,
+    width: `${normalizedSize.width}px`,
+    height: `${normalizedSize.height}px`,
+  };
+}

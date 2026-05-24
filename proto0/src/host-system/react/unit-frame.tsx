@@ -1,7 +1,7 @@
-import { CSSProperties, useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import {
   FrameSizeInput,
-  normalizeFrameSize,
+  mergeStyleWithFrameSize,
 } from "@/host-system/react/frame-size";
 import { createUnitFrameModel } from "@/host-system/react/unit-frame-model";
 import { HostSystem } from "../host";
@@ -15,7 +15,7 @@ type Props = {
   inputNotes?: number[];
   hostSystem: HostSystem;
   className?: string;
-  style?: CSSProperties;
+  style?: React.CSSProperties;
   frameSize?: FrameSizeInput;
   // iframeAttrs?: Omit<JSX.IntrinsicElements["iframe"], "src" | "title" | "ref">;
   // onIframeMounted?(iframe: HTMLIFrameElement): void;
@@ -44,13 +44,10 @@ export const UnitFrame = ({
   }, [model]);
   model.feedAttributes({ destUnitId, hostBpm, hostPlaying, inputNotes });
 
-  const mergedStyle = useMemo(() => {
-    const fsz = normalizeFrameSize(frameSize);
-    return {
-      ...style,
-      ...(fsz ? { width: `${fsz.width}px`, height: `${fsz.height}px` } : {}),
-    };
-  }, [style, frameSize]);
+  const mergedStyle = useMemo(
+    () => mergeStyleWithFrameSize(style, frameSize),
+    [style, frameSize],
+  );
 
   return (
     <iframe
