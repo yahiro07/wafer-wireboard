@@ -19,4 +19,5 @@ export const unitSourceUrls = [
   `file://${homeDir}/wus-my-units/mini-synth/`,
   `file://${homeDir}/wus-my-units/mini-synth-ge/`,
   `file://${homeDir}/wus-my-units/mini-synth-gp/`,
+  `file://${homeDir}/wus-my-units/useq/`,
 ];

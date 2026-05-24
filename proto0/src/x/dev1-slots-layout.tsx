@@ -210,12 +210,12 @@ const PageRoot = () => {
               <PartSlot
                 partSlotId="ps2"
                 instrumentUnitKey="mini_synth_ge"
-                sequencerUnitKey="mu4_keyboard"
+                sequencerUnitKey="useq"
               />
               <PartSlot
                 partSlotId="ps3"
-                sequencerUnitKey="mu2_sequencer"
                 instrumentUnitKey="wavicle"
+                sequencerUnitKey="mu4_keyboard"
               />
               <PartSlot partSlotId="ps4" />
             </div>
