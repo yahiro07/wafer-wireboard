@@ -102,7 +102,7 @@ export function createUnitFrameModel(hostSystem: HostSystem, unitId: string) {
       return () => {
         terminated = true;
         // cleanup here
-        core.setDestUnitId(undefined);
+        // core.setDestUnitId(undefined); //breaks hmr, so skip this for now
       };
     },
   };
