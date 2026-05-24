@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { useCallback, useEffect } from "react";
 import { createStore } from "snap-store";
 import { Button } from "@/components/button";
@@ -66,65 +65,6 @@ const actions = {
   },
 };
 
-const PartSlot = ({
-  partSlotId,
-  altSide,
-  instrumentUnitKey,
-  sequencerUnitKey,
-}: {
-  partSlotId: string;
-  altSide?: boolean;
-  instrumentUnitKey?: CatalogKey;
-  sequencerUnitKey?: CatalogKey;
-}) => {
-  const instrumentUnitId = `${partSlotId}_${instrumentUnitKey}`;
-  const sequencerUnitId = `${partSlotId}_${sequencerUnitKey}`;
-  const onIframeMounted = useCallback((iframe: HTMLIFrameElement) => {
-    const win = iframe.contentWindow as Window;
-    win.addEventListener("wheel", sightHandlers.onWheel);
-    win.addEventListener("pointerdown", sightHandlers.onPointerDown, {
-      capture: true,
-    });
-    return () => {
-      win.removeEventListener("wheel", sightHandlers.onWheel);
-      win.removeEventListener("pointerdown", sightHandlers.onPointerDown, {
-        capture: true,
-      });
-    };
-  }, []);
-  return (
-    <div
-      className="w-[1400px] h-[400px] flex-h gap-4"
-      style={{ flexDirection: altSide ? "row-reverse" : undefined }}
-    >
-      <div className="grow h-full bg-gray-200 flex-c text-[40px]">
-        {sequencerUnitKey && (
-          <UnitFrame
-            unitId={sequencerUnitId}
-            destUnitId={instrumentUnitId}
-            pageUrl={catalog[sequencerUnitKey].loaderPageUrl}
-            frameSize={catalog[sequencerUnitKey].preferredSize}
-            hostSystem={hostSystem}
-            onIframeMounted={onIframeMounted}
-          />
-        )}
-      </div>
-      <div className="w-[600px] h-full bg-gray-200 flex-c text-[40px]">
-        {instrumentUnitKey && (
-          <UnitFrame
-            unitId={instrumentUnitId}
-            destUnitId="$output"
-            pageUrl={catalog[instrumentUnitKey].loaderPageUrl}
-            frameSize={catalog[instrumentUnitKey].preferredSize}
-            hostSystem={hostSystem}
-            onIframeMounted={onIframeMounted}
-          />
-        )}
-      </div>
-    </div>
-  );
-};
-
 const TopBar = () => {
   const state = store.useSnapshot();
   return (
@@ -154,6 +94,60 @@ const TopBar = () => {
   );
 };
 
+const PartSlot = ({
+  partSlotId,
+  instrumentUnitKey,
+  sequencerUnitKey,
+}: {
+  partSlotId: string;
+  instrumentUnitKey?: CatalogKey;
+  sequencerUnitKey?: CatalogKey;
+}) => {
+  const instrumentUnitId = `${partSlotId}_${instrumentUnitKey}`;
+  const sequencerUnitId = `${partSlotId}_${sequencerUnitKey}`;
+  const onIframeMounted = useCallback((iframe: HTMLIFrameElement) => {
+    const win = iframe.contentWindow as Window;
+    win.addEventListener("wheel", sightHandlers.onWheel);
+    win.addEventListener("pointerdown", sightHandlers.onPointerDown, {
+      capture: true,
+    });
+    return () => {
+      win.removeEventListener("wheel", sightHandlers.onWheel);
+      win.removeEventListener("pointerdown", sightHandlers.onPointerDown, {
+        capture: true,
+      });
+    };
+  }, []);
+  return (
+    <div className="w-[700px] h-[800px] flex-v gap-4">
+      <div className="bg-gray-200 flex-c h-[400px]">
+        {instrumentUnitKey && (
+          <UnitFrame
+            unitId={instrumentUnitId}
+            destUnitId="$output"
+            pageUrl={catalog[instrumentUnitKey].loaderPageUrl}
+            frameSize={catalog[instrumentUnitKey].preferredSize}
+            hostSystem={hostSystem}
+            onIframeMounted={onIframeMounted}
+          />
+        )}
+      </div>
+      <div className="bg-gray-200 flex-c h-[400px]">
+        {sequencerUnitKey && (
+          <UnitFrame
+            unitId={sequencerUnitId}
+            destUnitId={instrumentUnitId}
+            pageUrl={catalog[sequencerUnitKey].loaderPageUrl}
+            frameSize={catalog[sequencerUnitKey].preferredSize}
+            hostSystem={hostSystem}
+            onIframeMounted={onIframeMounted}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+
 const boardSize = { width: 3000, height: 2000 };
 
 const PageRoot = () => {
@@ -168,30 +162,19 @@ const PageRoot = () => {
           boardSize={boardSize}
         >
           <div className="w-full h-full flex-c">
-            <div className={clsx("flex-h gap-6")}>
-              <div className="flex-v gap-4">
-                <PartSlot
-                  partSlotId="ps1"
-                  instrumentUnitKey="my_drum_machine"
-                />
-                <PartSlot
-                  partSlotId="ps2"
-                  instrumentUnitKey="mini_synth_ge"
-                  sequencerUnitKey="mu4_keyboard"
-                />
-                <PartSlot partSlotId="ps3" instrumentUnitKey="mu4_keyboard" />
-                <PartSlot partSlotId="ps4" />
-              </div>
-              <div className="flex-v gap-4">
-                <PartSlot
-                  partSlotId="ps5"
-                  sequencerUnitKey="mu2_sequencer"
-                  instrumentUnitKey="wavicle"
-                />
-                <PartSlot partSlotId="ps6" />
-                <PartSlot partSlotId="ps7" />
-                <PartSlot partSlotId="ps8" />
-              </div>
+            <div className="flex-h gap-6">
+              <PartSlot partSlotId="ps1" instrumentUnitKey="my_drum_machine" />
+              <PartSlot
+                partSlotId="ps2"
+                instrumentUnitKey="mini_synth_ge"
+                sequencerUnitKey="mu4_keyboard"
+              />
+              <PartSlot partSlotId="ps3" instrumentUnitKey="mu4_keyboard" />
+              <PartSlot
+                partSlotId="ps4"
+                sequencerUnitKey="mu2_sequencer"
+                instrumentUnitKey="wavicle"
+              />
             </div>
           </div>
         </FieldSightPlane>
