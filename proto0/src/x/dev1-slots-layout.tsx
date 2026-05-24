@@ -2,7 +2,6 @@ import clsx from "clsx";
 import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { Button } from "@/components/button";
-import { useWindowSize } from "@/hooks/use-window-size";
 import { createHostSystem } from "@/host-system/host";
 import { setupMidiKeyboardInput } from "@/utils/midi-keyboard-input";
 import { mountAppRoot } from "@/utils/mount-app-root";
@@ -26,7 +25,7 @@ const store = createStore<StoreState>({
   bpm: 120,
   playing: false,
   notes: [],
-  wholeSlotsVisible: false,
+  wholeSlotsVisible: true,
   sightMode: "free",
 });
 
@@ -75,9 +74,6 @@ const PartSlot = ({
 };
 
 const PageRoot = () => {
-  const windowSize = useWindowSize();
-  const isVertical = windowSize.height > windowSize.width;
-
   const state = store.useSnapshot();
   return (
     <div className="w-dvw h-dvh flex-v">
@@ -107,21 +103,18 @@ const PageRoot = () => {
       </div>
       <div className="grow flex-c">
         <div style={{ zoom: 0.4 }}>
-          <div
-            className={clsx(
-              "flex-wrap",
-              isVertical ? "flex-v gap-4 " : "flex-h gap-6",
-            )}
-          >
+          <div className={clsx("flex-h gap-6")}>
             <div className="flex-v gap-4">
               <PartSlot id="1" visible={true} altSide />
               <PartSlot id="2" visible={true} />
+              <PartSlot id="3" visible={state.wholeSlotsVisible} />
               <PartSlot id="3" visible={state.wholeSlotsVisible} />
             </div>
             <div className="flex-v gap-4">
               <PartSlot id="4" visible={true} />
               <PartSlot id="5" visible={true} />
               <PartSlot id="6" visible={state.wholeSlotsVisible} />
+              <PartSlot id="5" visible={true} />
             </div>
           </div>
         </div>
