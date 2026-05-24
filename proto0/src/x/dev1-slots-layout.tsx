@@ -103,8 +103,11 @@ const PartSlot = ({
   instrumentUnitKey?: CatalogKey;
   sequencerUnitKey?: CatalogKey;
 }) => {
+  const effectCatalogKey = "mu5_visualizer";
+
   const instrumentUnitId = `${partSlotId}_${instrumentUnitKey}`;
   const sequencerUnitId = `${partSlotId}_${sequencerUnitKey}`;
+  const effectUnitId = `${partSlotId}_${effectCatalogKey}`;
   const onIframeMounted = useCallback((iframe: HTMLIFrameElement) => {
     const win = iframe.contentWindow as Window;
     win.addEventListener("wheel", sightHandlers.onWheel);
@@ -120,11 +123,23 @@ const PartSlot = ({
   }, []);
   return (
     <div className="w-[700px] h-[800px] flex-v gap-4">
+      <div className="bg-gray-200 flex-c h-[100px]">
+        {instrumentUnitKey && (
+          <UnitFrame
+            unitId={effectUnitId}
+            destUnitId="$output"
+            pageUrl={catalog[effectCatalogKey].loaderPageUrl}
+            frameSize={catalog[effectCatalogKey].preferredSize}
+            hostSystem={hostSystem}
+            onIframeMounted={onIframeMounted}
+          />
+        )}
+      </div>
       <div className="bg-gray-200 flex-c h-[400px]">
         {instrumentUnitKey && (
           <UnitFrame
             unitId={instrumentUnitId}
-            destUnitId="$output"
+            destUnitId={effectUnitId}
             pageUrl={catalog[instrumentUnitKey].loaderPageUrl}
             frameSize={catalog[instrumentUnitKey].preferredSize}
             hostSystem={hostSystem}
@@ -169,12 +184,12 @@ const PageRoot = () => {
                 instrumentUnitKey="mini_synth_ge"
                 sequencerUnitKey="mu4_keyboard"
               />
-              <PartSlot partSlotId="ps3" instrumentUnitKey="mu4_keyboard" />
               <PartSlot
-                partSlotId="ps4"
+                partSlotId="ps3"
                 sequencerUnitKey="mu2_sequencer"
                 instrumentUnitKey="wavicle"
               />
+              <PartSlot partSlotId="ps4" />
             </div>
           </div>
         </FieldSightPlane>
