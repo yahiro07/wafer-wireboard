@@ -18,7 +18,7 @@ type Props = {
   style?: React.CSSProperties;
   frameSize?: FrameSizeInput;
   // iframeAttrs?: Omit<JSX.IntrinsicElements["iframe"], "src" | "title" | "ref">;
-  // onIframeMounted?(iframe: HTMLIFrameElement): void;
+  onIframeMounted?(iframe: HTMLIFrameElement): (() => void) | undefined;
 };
 
 export const UnitFrame = ({
@@ -32,6 +32,7 @@ export const UnitFrame = ({
   className,
   style,
   frameSize,
+  onIframeMounted,
 }: Props) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const model = useMemo(
@@ -40,8 +41,13 @@ export const UnitFrame = ({
   );
   useEffect(() => {
     const iframe = iframeRef.current!;
-    return model.handleIframeMounted(iframe);
-  }, [model]);
+    const cleanup1 = onIframeMounted?.(iframe);
+    const cleanup2 = model.handleIframeMounted(iframe);
+    return () => {
+      cleanup1?.();
+      cleanup2?.();
+    };
+  }, [model, onIframeMounted]);
   model.feedAttributes({ destUnitId, hostBpm, hostPlaying, inputNotes });
 
   const mergedStyle = useMemo(

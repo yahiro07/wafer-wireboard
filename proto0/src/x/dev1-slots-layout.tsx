@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { createStore } from "snap-store";
 import { Button } from "@/components/button";
 import { createHostSystem } from "@/host-system/host";
@@ -79,6 +79,19 @@ const PartSlot = ({
 }) => {
   const instrumentUnitId = `${partSlotId}_${instrumentUnitKey}`;
   const sequencerUnitId = `${partSlotId}_${sequencerUnitKey}`;
+  const onIframeMounted = useCallback((iframe: HTMLIFrameElement) => {
+    const win = iframe.contentWindow as Window;
+    win.addEventListener("wheel", sightHandlers.onWheel);
+    win.addEventListener("pointerdown", sightHandlers.onPointerDown, {
+      capture: true,
+    });
+    return () => {
+      win.removeEventListener("wheel", sightHandlers.onWheel);
+      win.removeEventListener("pointerdown", sightHandlers.onPointerDown, {
+        capture: true,
+      });
+    };
+  }, []);
   return (
     <div
       className="w-[1400px] h-[400px] flex-h gap-4"
@@ -92,6 +105,7 @@ const PartSlot = ({
             pageUrl={catalog[sequencerUnitKey].loaderPageUrl}
             frameSize={catalog[sequencerUnitKey].preferredSize}
             hostSystem={hostSystem}
+            onIframeMounted={onIframeMounted}
           />
         )}
       </div>
@@ -103,6 +117,7 @@ const PartSlot = ({
             pageUrl={catalog[instrumentUnitKey].loaderPageUrl}
             frameSize={catalog[instrumentUnitKey].preferredSize}
             hostSystem={hostSystem}
+            onIframeMounted={onIframeMounted}
           />
         )}
       </div>
