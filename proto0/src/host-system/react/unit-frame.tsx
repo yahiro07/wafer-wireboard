@@ -34,14 +34,14 @@ export const UnitFrame = ({
   frameSize,
 }: Props) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  // biome-ignore lint/correctness/useExhaustiveDependencies: for initialization
-  const model = useMemo(() => createUnitFrameModel(hostSystem, unitId), []);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: for initialization
+  const model = useMemo(
+    () => createUnitFrameModel(hostSystem, unitId),
+    [hostSystem, unitId],
+  );
   useEffect(() => {
     const iframe = iframeRef.current!;
     return model.handleIframeMounted(iframe);
-  }, []);
+  }, [model]);
   model.feedAttributes({ destUnitId, hostBpm, hostPlaying, inputNotes });
 
   const mergedStyle = useMemo(() => {
