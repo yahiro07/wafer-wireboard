@@ -1,14 +1,6 @@
-import { CSSProperties, useEffect, useRef } from "react";
-import { arrayExclude } from "@/utils/array-utils";
-import { usePrevious } from "@/utils/helper-hooks";
-import { HostInterface } from "../contract";
-import {
-  HostSystem,
-  hostSystem_createHostInterfaceForUnit,
-  hostSystem_wrapAddUnitAgent,
-  hostSystem_wrapConnectUnits,
-  UnitAgentInHostSide,
-} from "../host";
+import { CSSProperties, useEffect, useMemo, useRef } from "react";
+import { createUnitFrameModel } from "@/host-system/react/unit-frame-model";
+import { HostSystem } from "../host";
 
 type Props = {
   unitId: string;
@@ -37,58 +29,16 @@ export const UnitFrame = ({
   style,
 }: Props) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const unitAgentRef = useRef<UnitAgentInHostSide | undefined>(undefined);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: for initialization
+  const model = useMemo(() => createUnitFrameModel(hostSystem, unitId), []);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: for initialization
   useEffect(() => {
-    const win = iframeRef.current?.contentWindow as {
-      hostInterface?: HostInterface;
-    };
-    if (win) {
-      win.hostInterface = hostSystem_createHostInterfaceForUnit(
-        hostSystem,
-        unitId,
-        (unitAgent) => {
-          unitAgentRef.current = unitAgent;
-          hostSystem_wrapAddUnitAgent(hostSystem, unitAgent);
-          console.log(`unitAgent loaded for ${unitId}`);
-          if (destUnitId) {
-            hostSystem_wrapConnectUnits(hostSystem, unitId, destUnitId);
-          }
-          if (hostBpm !== undefined) {
-            unitAgent.setBpm?.(hostBpm);
-          }
-          if (hostPlaying !== undefined) {
-            unitAgent.setPlayState?.(hostPlaying);
-          }
-        },
-      );
-    }
+    const iframe = iframeRef.current!;
+    return model.handleIframeMounted(iframe);
   }, []);
-  useEffect(() => {
-    if (hostBpm !== undefined) {
-      unitAgentRef.current?.setBpm?.(hostBpm);
-    }
-  }, [hostBpm]);
-  useEffect(() => {
-    if (hostPlaying !== undefined) {
-      unitAgentRef.current?.setPlayState?.(hostPlaying);
-    }
-  }, [hostPlaying]);
 
-  const currentNotes = usePrevious(inputNotes);
-  useEffect(() => {
-    const agent = unitAgentRef.current;
-    if (!(agent && inputNotes && currentNotes)) return;
-    const notesAdded = arrayExclude(inputNotes, currentNotes);
-    const notesRemoved = arrayExclude(currentNotes, inputNotes);
-    for (const note of notesAdded) {
-      agent.noteInput?.noteOn?.(note, 1.0);
-    }
-    for (const note of notesRemoved) {
-      agent.noteInput?.noteOff?.(note);
-    }
-  }, [inputNotes, currentNotes]);
+  model.feedAttributes({ destUnitId, hostBpm, hostPlaying, inputNotes });
 
   return (
     <iframe

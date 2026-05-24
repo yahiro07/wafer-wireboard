@@ -51,7 +51,8 @@ const UnitsSolid = () => {
       />
       <UnitFrame
         unitId="uf_instrument"
-        pageUrl={catalog.mini_synth_ge.loaderPageUrl}
+        pageUrl={catalog.wavicle.loaderPageUrl}
+        // pageUrl={catalog.mini_synth_ge.loaderPageUrl}
         className="w-[640px] h-[320px]"
         destUnitId="uf_effect"
         hostSystem={hostSystem}

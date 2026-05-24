@@ -184,6 +184,23 @@ export function hostSystem_wrapAddUnitAgent(
   }
 }
 
+export function hostSystem_wrapConnectUnits(
+  hostSystem: HostSystem,
+  unitId: string,
+  destUnitId: string,
+) {
+  const sourceUnit = hostSystem.getUnitAgent(unitId);
+  const destUnit = hostSystem.getUnitAgent(destUnitId);
+  if (sourceUnit && (destUnit || destUnitId === "$output")) {
+    hostSystem_connectUnits(hostSystem, unitId, destUnitId);
+    return;
+  }
+  hostSystem.pendingConnectionRules.push({
+    sourceUnitId: unitId,
+    destUnitId: destUnitId,
+  });
+}
+
 export function hostSystem_setUnitDestination(
   hostSystem: HostSystem,
   unitId: string,
@@ -205,21 +222,4 @@ export function hostSystem_setUnitDestination(
   }
 
   hostSystem_wrapConnectUnits(hostSystem, unitId, destUnitId);
-}
-
-export function hostSystem_wrapConnectUnits(
-  hostSystem: HostSystem,
-  unitId: string,
-  destUnitId: string,
-) {
-  const sourceUnit = hostSystem.getUnitAgent(unitId);
-  const destUnit = hostSystem.getUnitAgent(destUnitId);
-  if (sourceUnit && (destUnit || destUnitId === "$output")) {
-    hostSystem_connectUnits(hostSystem, unitId, destUnitId);
-    return;
-  }
-  hostSystem.pendingConnectionRules.push({
-    sourceUnitId: unitId,
-    destUnitId: destUnitId,
-  });
 }
