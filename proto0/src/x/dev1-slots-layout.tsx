@@ -5,6 +5,11 @@ import { Button } from "@/components/button";
 import { createHostSystem } from "@/host-system/host";
 import { setupMidiKeyboardInput } from "@/utils/midi-keyboard-input";
 import { mountAppRoot } from "@/utils/mount-app-root";
+import {
+  createFieldSightHandlers,
+  FieldSight,
+  FieldSightPlane,
+} from "@/x/field-sight";
 import catalog from "../unit-inventories.json";
 
 catalog;
@@ -16,6 +21,7 @@ type StoreState = {
   playing: boolean;
   notes: number[];
   wholeSlotsVisible: boolean;
+  sight: FieldSight;
   sightMode: SightMode;
 };
 
@@ -26,8 +32,14 @@ const store = createStore<StoreState>({
   playing: false,
   notes: [],
   wholeSlotsVisible: true,
+  sight: { zoom: -2, eyePosition: { x: 0, y: 0 } },
   sightMode: "free",
 });
+
+const sightHandlers = createFieldSightHandlers(
+  () => store.state.sight,
+  (attrs) => store.patchSight(attrs),
+);
 
 const actions = {
   noteOn(noteNumber: number) {
@@ -73,51 +85,65 @@ const PartSlot = ({
   );
 };
 
+const TopBar = () => {
+  const state = store.useSnapshot();
+  return (
+    <div className="flex-h justify-between bg-gray-300 p-2">
+      <div />
+      <div className="flex-h gap-3">
+        <Button
+          text="expand"
+          active={state.wholeSlotsVisible}
+          onClick={() => actions.setWholeSlotsVisible(!state.wholeSlotsVisible)}
+        />
+        <div className="flex-h gap-1">
+          <Button
+            text="free"
+            active={state.sightMode === "free"}
+            onClick={() => actions.setSightMode("free")}
+          />
+          <Button
+            text="scene"
+            active={state.sightMode === "scene"}
+            onClick={() => actions.setSightMode("scene")}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const boardSize = { width: 3000, height: 2000 };
+
 const PageRoot = () => {
   const state = store.useSnapshot();
   return (
     <div className="w-dvw h-dvh flex-v">
-      <div className="flex-h justify-between bg-gray-300 p-2">
-        <div />
-        <div className="flex-h gap-3">
-          <Button
-            text="expand"
-            active={state.wholeSlotsVisible}
-            onClick={() =>
-              actions.setWholeSlotsVisible(!state.wholeSlotsVisible)
-            }
-          />
-          <div className="flex-h gap-1">
-            <Button
-              text="free"
-              active={state.sightMode === "free"}
-              onClick={() => actions.setSightMode("free")}
-            />
-            <Button
-              text="scene"
-              active={state.sightMode === "scene"}
-              onClick={() => actions.setSightMode("scene")}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="grow flex-c">
-        <div style={{ zoom: 0.4 }}>
-          <div className={clsx("flex-h gap-6")}>
-            <div className="flex-v gap-4">
-              <PartSlot id="1" visible={true} altSide />
-              <PartSlot id="2" visible={true} />
-              <PartSlot id="3" visible={state.wholeSlotsVisible} />
-              <PartSlot id="3" visible={state.wholeSlotsVisible} />
-            </div>
-            <div className="flex-v gap-4">
-              <PartSlot id="4" visible={true} />
-              <PartSlot id="5" visible={true} />
-              <PartSlot id="6" visible={state.wholeSlotsVisible} />
-              <PartSlot id="5" visible={true} />
+      <TopBar />
+      <div className="grow">
+        <FieldSightPlane
+          sight={state.sight}
+          handlers={sightHandlers}
+          boardSize={boardSize}
+          className="bd-red"
+        >
+          <div className="w-full h-full flex-c">
+            <div className={clsx("flex-h gap-6")}>
+              <div className="flex-v gap-4">
+                <PartSlot id="1" visible={true} altSide />
+                <PartSlot id="2" visible={true} />
+                <PartSlot id="3" visible={state.wholeSlotsVisible} />
+                <PartSlot id="3" visible={state.wholeSlotsVisible} />
+              </div>
+              <div className="flex-v gap-4">
+                <PartSlot id="4" visible={true} />
+                <PartSlot id="5" visible={true} />
+                <PartSlot id="6" visible={state.wholeSlotsVisible} />
+                <PartSlot id="5" visible={true} />
+              </div>
             </div>
           </div>
-        </div>
+        </FieldSightPlane>
       </div>
     </div>
   );

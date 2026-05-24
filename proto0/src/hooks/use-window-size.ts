@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-
-type Size = { width: number; height: number };
+import { Size } from "@/hooks/common-types";
 
 export function useWindowSize(): Size {
   const [size, setSize] = useState<Size>({
