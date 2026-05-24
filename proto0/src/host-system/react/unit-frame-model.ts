@@ -23,7 +23,7 @@ export function createUnitFrameModel(hostSystem: HostSystem, unitId: string) {
 
   const core = {
     setDestUnitId(destUnitId?: string) {
-      console.log(`setting destUnitId for ${unitId}: ${destUnitId}`);
+      // console.log(`setting destUnitId for ${unitId}: ${destUnitId}`);
       hostSystem_setUnitDestination(hostSystem, unitId, destUnitId);
     },
     setBpm(bpm?: number) {
@@ -57,7 +57,7 @@ export function createUnitFrameModel(hostSystem: HostSystem, unitId: string) {
       hostPlaying?: boolean;
       inputNotes?: number[];
     }) {
-      console.log(`feedAttributes`, { unitId, agentLoaded, terminated, next });
+      // console.log(`feedAttributes`, { unitId, agentLoaded, terminated, next });
       if (!agentLoaded) {
         pendingAttributes = next;
         return;
