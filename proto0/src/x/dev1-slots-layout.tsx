@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { Button } from "@/components/button";
 import { createHostSystem } from "@/host-system/host";
+import { UnitFrame } from "@/host-system/react";
 import { setupMidiKeyboardInput } from "@/utils/midi-keyboard-input";
 import { mountAppRoot } from "@/utils/mount-app-root";
 import {
@@ -13,6 +14,8 @@ import {
 import catalog from "../unit-inventories.json";
 
 catalog;
+
+type CatalogKey = keyof typeof catalog;
 
 type SightMode = "free" | "scene";
 
@@ -32,7 +35,7 @@ const store = createStore<StoreState>({
   playing: false,
   notes: [],
   wholeSlotsVisible: true,
-  sight: { zoom: 0, eyeOffset: { x: 0, y: 0 } },
+  sight: { zoom: -1, eyeOffset: { x: 0, y: 0 } },
   sightMode: "free",
 });
 
@@ -64,23 +67,44 @@ const actions = {
 };
 
 const PartSlot = ({
-  id,
-  visible,
+  partSlotId,
   altSide,
+  instrumentUnitKey,
+  sequencerUnitKey,
 }: {
-  id: string;
-  visible: boolean;
+  partSlotId: string;
   altSide?: boolean;
+  instrumentUnitKey?: CatalogKey;
+  sequencerUnitKey?: CatalogKey;
 }) => {
-  if (!visible) return null;
+  const instrumentUnitId = `${partSlotId}_${instrumentUnitKey}`;
+  const sequencerUnitId = `${partSlotId}_${sequencerUnitKey}`;
   return (
     <div
       className="w-[1400px] h-[400px] flex-h gap-4"
       style={{ flexDirection: altSide ? "row-reverse" : undefined }}
     >
-      <div className="grow h-full bg-gray-200 flex-c text-[40px]">{id}a</div>
+      <div className="grow h-full bg-gray-200 flex-c text-[40px]">
+        {sequencerUnitKey && (
+          <UnitFrame
+            unitId={sequencerUnitId}
+            destUnitId={instrumentUnitId}
+            pageUrl={catalog[sequencerUnitKey].loaderPageUrl}
+            frameSize={catalog[sequencerUnitKey].preferredSize}
+            hostSystem={hostSystem}
+          />
+        )}
+      </div>
       <div className="w-[600px] h-full bg-gray-200 flex-c text-[40px]">
-        {id}b
+        {instrumentUnitKey && (
+          <UnitFrame
+            unitId={instrumentUnitId}
+            destUnitId="$output"
+            pageUrl={catalog[instrumentUnitKey].loaderPageUrl}
+            frameSize={catalog[instrumentUnitKey].preferredSize}
+            hostSystem={hostSystem}
+          />
+        )}
       </div>
     </div>
   );
@@ -131,16 +155,27 @@ const PageRoot = () => {
           <div className="w-full h-full flex-c">
             <div className={clsx("flex-h gap-6")}>
               <div className="flex-v gap-4">
-                <PartSlot id="1" visible={true} altSide />
-                <PartSlot id="2" visible={true} />
-                <PartSlot id="3" visible={state.wholeSlotsVisible} />
-                <PartSlot id="3" visible={state.wholeSlotsVisible} />
+                <PartSlot
+                  partSlotId="ps1"
+                  instrumentUnitKey="my_drum_machine"
+                />
+                <PartSlot
+                  partSlotId="ps2"
+                  instrumentUnitKey="mini_synth_ge"
+                  sequencerUnitKey="mu4_keyboard"
+                />
+                <PartSlot partSlotId="ps3" instrumentUnitKey="mu4_keyboard" />
+                <PartSlot partSlotId="ps4" />
               </div>
               <div className="flex-v gap-4">
-                <PartSlot id="4" visible={true} />
-                <PartSlot id="5" visible={true} />
-                <PartSlot id="6" visible={state.wholeSlotsVisible} />
-                <PartSlot id="5" visible={true} />
+                <PartSlot
+                  partSlotId="ps5"
+                  sequencerUnitKey="mu2_sequencer"
+                  instrumentUnitKey="wavicle"
+                />
+                <PartSlot partSlotId="ps6" />
+                <PartSlot partSlotId="ps7" />
+                <PartSlot partSlotId="ps8" />
               </div>
             </div>
           </div>
