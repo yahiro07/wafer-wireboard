@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap");
 @import "tailwindcss";
 
 @layer base {
@@ -11,15 +11,6 @@
 
 
 body {
-  font-family: "Orbitron", sans-serif;
+  font-family: "Inter", sans-serif;
   user-select: none;
-  min-height: 100vh;
-  background:
-    radial-gradient(circle at 10% 15%, #2c3340 0%, rgba(44, 51, 64, 0) 38%),
-    radial-gradient(circle at 85% 82%, #3a271f 0%, rgba(58, 39, 31, 0) 42%),
-    linear-gradient(180deg, #0b0f14 0%, #121820 100%);
-}
-
-#root {
-  min-height: 100vh;
 }
