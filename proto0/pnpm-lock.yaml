@@ -45,6 +45,9 @@ importers:
       vite:
         specifier: ^8.0.12
         version: 8.0.14(@types/node@25.9.1)(jiti@2.7.0)
+      wus-unit-types:
+        specifier: ^0.1.0
+        version: 0.1.0
       wus-vite-unit-loader-plugin:
         specifier: github:yahiro07/webaudio-unit-system#vite-plugin&path:/framework/packages/wus-vite-unit-loader-plugin
         version: https://codeload.github.com/yahiro07/webaudio-unit-system/tar.gz/68922016d8176cec821a443e493ff28111066c2c#path:/framework/packages/wus-vite-unit-loader-plugin
@@ -528,6 +531,9 @@ packages:
       yaml:
         optional: true
 
+  wus-unit-types@0.1.0:
+    resolution: {integrity: sha512-tQDFSYGQvCpr41wyJo6L2ucUyDXhIbIblu4HBNLV3DRlne1SlpBQ7Te3k2D/EycO9dJyKyv1RCta9m4KjRivUQ==}
+
   wus-vite-unit-loader-plugin@https://codeload.github.com/yahiro07/webaudio-unit-system/tar.gz/68922016d8176cec821a443e493ff28111066c2c#path:/framework/packages/wus-vite-unit-loader-plugin:
     resolution: {path: /framework/packages/wus-vite-unit-loader-plugin, tarball: https://codeload.github.com/yahiro07/webaudio-unit-system/tar.gz/68922016d8176cec821a443e493ff28111066c2c}
     version: 0.0.0
@@ -872,5 +878,7 @@ snapshots:
       '@types/node': 25.9.1
       fsevents: 2.3.3
       jiti: 2.7.0
+
+  wus-unit-types@0.1.0: {}
 
   wus-vite-unit-loader-plugin@https://codeload.github.com/yahiro07/webaudio-unit-system/tar.gz/68922016d8176cec821a443e493ff28111066c2c#path:/framework/packages/wus-vite-unit-loader-plugin: {}
