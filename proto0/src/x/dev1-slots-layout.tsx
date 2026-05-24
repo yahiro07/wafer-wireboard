@@ -1,8 +1,10 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { createStore } from "snap-store";
 import { Button } from "@/components/button";
+import { Size } from "@/hooks/common-types";
 import { createHostSystem } from "@/host-system/host";
 import { UnitFrame } from "@/host-system/react";
+import { normalizeFrameSize } from "@/host-system/react/frame-size";
 import { setupMidiKeyboardInput } from "@/utils/midi-keyboard-input";
 import { mountAppRoot } from "@/utils/mount-app-root";
 import {
@@ -10,6 +12,7 @@ import {
   FieldSight,
   FieldSightPlane,
 } from "@/x/field-sight";
+import { UnitFrameScaler } from "@/x/unit-frame-scaler";
 import catalog from "../unit-inventories.json";
 
 catalog;
@@ -98,10 +101,12 @@ const UnitFrameEx = ({
   unitId,
   destUnitId,
   catalogKey,
+  containerSize,
 }: {
   unitId: string;
   destUnitId: string;
   catalogKey: CatalogKey;
+  containerSize: Size;
 }) => {
   const onIframeMounted = useCallback((iframe: HTMLIFrameElement) => {
     const win = iframe.contentWindow as Window;
@@ -116,15 +121,21 @@ const UnitFrameEx = ({
       });
     };
   }, []);
+  const frameSize = useMemo(
+    () => normalizeFrameSize(catalog[catalogKey].preferredSize)!,
+    [catalogKey],
+  );
   return (
-    <UnitFrame
-      unitId={unitId}
-      destUnitId={destUnitId}
-      pageUrl={catalog[catalogKey].loaderPageUrl}
-      frameSize={catalog[catalogKey].preferredSize}
-      hostSystem={hostSystem}
-      onIframeMounted={onIframeMounted}
-    />
+    <UnitFrameScaler containerSize={containerSize} unitFrameSize={frameSize}>
+      <UnitFrame
+        unitId={unitId}
+        destUnitId={destUnitId}
+        pageUrl={catalog[catalogKey].loaderPageUrl}
+        frameSize={frameSize}
+        hostSystem={hostSystem}
+        onIframeMounted={onIframeMounted}
+      />
+    </UnitFrameScaler>
   );
 };
 
@@ -138,19 +149,21 @@ const PartSlot = ({
   sequencerUnitKey?: CatalogKey;
 }) => {
   const effectCatalogKey = "mu5_visualizer";
-
   const instrumentUnitId = `${partSlotId}_${instrumentUnitKey}`;
   const sequencerUnitId = `${partSlotId}_${sequencerUnitKey}`;
   const effectUnitId = `${partSlotId}_${effectCatalogKey}`;
+  const containerSize = { width: 700, height: 400 };
+  const containerSizeForEffect = { width: 400, height: 100 };
 
   return (
-    <div className="w-[700px] h-[800px] flex-v gap-4">
+    <div className="w-[700px]  flex-v gap-4">
       <div className="bg-gray-200 flex-c h-[100px]">
         {instrumentUnitKey && (
           <UnitFrameEx
             unitId={effectUnitId}
             destUnitId="$output"
             catalogKey={effectCatalogKey}
+            containerSize={containerSizeForEffect}
           />
         )}
       </div>
@@ -160,6 +173,7 @@ const PartSlot = ({
             unitId={instrumentUnitId}
             destUnitId={effectUnitId}
             catalogKey={instrumentUnitKey}
+            containerSize={containerSize}
           />
         )}
       </div>
@@ -169,6 +183,7 @@ const PartSlot = ({
             unitId={sequencerUnitId}
             destUnitId={instrumentUnitId}
             catalogKey={sequencerUnitKey}
+            containerSize={containerSize}
           />
         )}
       </div>
