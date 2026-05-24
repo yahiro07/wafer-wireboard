@@ -11,10 +11,7 @@ export type FieldSight = {
 };
 
 export type FieldSightHandlers = {
-  onWheel: (
-    e: WheelEvent,
-    context: { pointer: { x: number; y: number }; areaSize: Size },
-  ) => void;
+  onWheel: (e: WheelEvent) => void;
   onPointerDown: (e: PointerEvent) => void;
 };
 
@@ -24,7 +21,7 @@ export function createFieldSightHandlers(
   configs: { minZoom: number; maxZoom: number },
 ): FieldSightHandlers {
   return {
-    onWheel(e: WheelEvent, context) {
+    onWheel(e: WheelEvent) {
       const sight = getSight();
       const zoom = sight.zoom;
       const newZoom = clampValue(
@@ -35,15 +32,13 @@ export function createFieldSightHandlers(
       const scale = Math.pow(2, zoom);
       const newScale = Math.pow(2, newZoom);
       const scaleRatio = newScale / scale;
-      const cx = context.areaSize.width / 2;
-      const cy = context.areaSize.height / 2;
-      const px = context.pointer.x;
-      const py = context.pointer.y;
-      const newEyeOffset = {
-        x: (1 - scaleRatio) * (px - cx) + scaleRatio * sight.eyeOffset.x,
-        y: (1 - scaleRatio) * (py - cy) + scaleRatio * sight.eyeOffset.y,
-      };
-      setSightAttrs({ zoom: newZoom, eyeOffset: newEyeOffset });
+      setSightAttrs({
+        zoom: newZoom,
+        eyeOffset: {
+          x: sight.eyeOffset.x * scaleRatio,
+          y: sight.eyeOffset.y * scaleRatio,
+        },
+      });
     },
     onPointerDown(e0: PointerEvent) {
       if (e0.buttons === 4) {
@@ -99,16 +94,7 @@ export const FieldSightPlane = ({
     const baseDiv = baseDivRef.current;
     if (!baseDiv) return;
     const onWheel = (e: WheelEvent) => {
-      handlers.onWheel(e, {
-        pointer: {
-          x: e.clientX - baseDiv.getBoundingClientRect().left,
-          y: e.clientY - baseDiv.getBoundingClientRect().top,
-        },
-        areaSize: {
-          width: baseDiv.clientWidth,
-          height: baseDiv.clientHeight,
-        },
-      });
+      handlers.onWheel(e);
       e.preventDefault();
     };
 
