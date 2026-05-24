@@ -51,10 +51,21 @@ const actions = {
   },
 };
 
-const PartSlot = ({ id, visible }: { id: string; visible: boolean }) => {
+const PartSlot = ({
+  id,
+  visible,
+  altSide,
+}: {
+  id: string;
+  visible: boolean;
+  altSide?: boolean;
+}) => {
   if (!visible) return null;
   return (
-    <div className="w-[1400px] h-[400px] flex-h gap-4">
+    <div
+      className="w-[1400px] h-[400px] flex-h gap-4"
+      style={{ flexDirection: altSide ? "row-reverse" : undefined }}
+    >
       <div className="grow h-full bg-gray-200 flex-c text-[40px]">{id}a</div>
       <div className="w-[600px] h-full bg-gray-200 flex-c text-[40px]">
         {id}b
@@ -103,7 +114,7 @@ const PageRoot = () => {
             )}
           >
             <div className="flex-v gap-4">
-              <PartSlot id="1" visible={true} />
+              <PartSlot id="1" visible={true} altSide />
               <PartSlot id="2" visible={true} />
               <PartSlot id="3" visible={state.wholeSlotsVisible} />
             </div>
