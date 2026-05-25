@@ -241,7 +241,8 @@ const PageRoot = () => {
               <PartSlot
                 partSlotId="ps3"
                 instrumentUnitKey="wavicle"
-                sequencerUnitKey="mu4_keyboard"
+                // sequencerUnitKey="mu4_keyboard"
+                sequencerUnitKey="twsq1"
               />
               <PartSlot partSlotId="ps4" />
             </div>
