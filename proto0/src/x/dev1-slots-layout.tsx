@@ -240,7 +240,9 @@ const PageRoot = () => {
               />
               <PartSlot
                 partSlotId="ps3"
-                instrumentUnitKey="wavicle"
+                // instrumentUnitKey="wavicle"
+                instrumentUnitKey="proto_engine_ptm_osc"
+                // instrumentUnitKey="proto_engine_pd_fm"
                 // sequencerUnitKey="mu4_keyboard"
                 sequencerUnitKey="twsq1"
               />
