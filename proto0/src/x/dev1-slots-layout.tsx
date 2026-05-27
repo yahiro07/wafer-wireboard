@@ -183,7 +183,7 @@ const PartSlot = ({
 
   return (
     <div className="w-[700px]  flex-v gap-4">
-      <div className="bg-gray-200 flex-c h-[100px]">
+      <div className="bg-gray-300 flex-c h-[100px]">
         {instrumentUnitKey && (
           <UnitFrameEx
             unitId={effectUnitId}
@@ -193,7 +193,7 @@ const PartSlot = ({
           />
         )}
       </div>
-      <div className="bg-gray-200 flex-c h-[400px]">
+      <div className="bg-gray-300 flex-c h-[400px]">
         {instrumentUnitKey && (
           <UnitFrameEx
             unitId={instrumentUnitId}
@@ -203,7 +203,7 @@ const PartSlot = ({
           />
         )}
       </div>
-      <div className="bg-gray-200 flex-c h-[400px]">
+      <div className="bg-gray-300 flex-c h-[400px]">
         {sequencerUnitKey && (
           <UnitFrameEx
             unitId={sequencerUnitId}
@@ -241,10 +241,11 @@ const PageRoot = () => {
               <PartSlot
                 partSlotId="ps3"
                 // instrumentUnitKey="wavicle"
-                instrumentUnitKey="proto_engine_ptm_osc"
-                // instrumentUnitKey="proto_engine_pd_fm"
+                // instrumentUnitKey="proto_engine_ptm_osc"
+                instrumentUnitKey="proto_engine_pd_fm"
                 // sequencerUnitKey="mu4_keyboard"
-                sequencerUnitKey="twsq1"
+                // sequencerUnitKey="twsq1"
+                sequencerUnitKey="lseq1"
               />
               <PartSlot partSlotId="ps4" />
             </div>
