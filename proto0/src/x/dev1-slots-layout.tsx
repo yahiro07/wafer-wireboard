@@ -125,11 +125,13 @@ const UnitFrameEx = ({
   destUnitId,
   catalogKey,
   containerSize,
+  frameSizeOverride,
 }: {
   unitId: string;
   destUnitId: string;
   catalogKey: CatalogKey;
   containerSize: Size;
+  frameSizeOverride?: Size;
 }) => {
   const state = store.useSnapshot();
   const onIframeMounted = useCallback((iframe: HTMLIFrameElement) => {
@@ -146,8 +148,10 @@ const UnitFrameEx = ({
     };
   }, []);
   const frameSize = useMemo(
-    () => normalizeFrameSize(catalog[catalogKey].preferredSize)!,
-    [catalogKey],
+    () =>
+      frameSizeOverride ??
+      normalizeFrameSize(catalog[catalogKey].preferredSize)!,
+    [catalogKey, frameSizeOverride],
   );
   return (
     <UnitFrameScaler containerSize={containerSize} unitFrameSize={frameSize}>
@@ -174,22 +178,24 @@ const PartSlot = ({
   instrumentUnitKey?: CatalogKey;
   sequencerUnitKey?: CatalogKey;
 }) => {
-  const effectCatalogKey = "mu5_visualizer";
+  // const effectCatalogKey = "mu5_visualizer";
+  const effectCatalogKey = "specbar";
   const instrumentUnitId = `${partSlotId}_${instrumentUnitKey}`;
   const sequencerUnitId = `${partSlotId}_${sequencerUnitKey}`;
   const effectUnitId = `${partSlotId}_${effectCatalogKey}`;
   const containerSize = { width: 700, height: 400 };
-  const containerSizeForEffect = { width: 400, height: 100 };
+  const containerSizeForEffect = { width: 700, height: 110 };
 
   return (
-    <div className="w-[700px]  flex-v gap-4">
-      <div className="bg-gray-300 flex-c h-[100px]">
+    <div className="w-[700px] flex-v gap-4">
+      <div className="bg-gray-300 flex-c h-[110px]">
         {instrumentUnitKey && (
           <UnitFrameEx
             unitId={effectUnitId}
             destUnitId="$output"
             catalogKey={effectCatalogKey}
             containerSize={containerSizeForEffect}
+            frameSizeOverride={containerSizeForEffect}
           />
         )}
       </div>

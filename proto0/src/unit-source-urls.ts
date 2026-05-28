@@ -1,7 +1,8 @@
 const homeDir = process.env.HOME;
 
 export const unitSourceUrls = [
-  "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r3/wavicle/",
+  "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r4/wavicle/",
+  "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r4/specbar/",
   "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r7/additive/",
   "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r7/drum-machine/",
   "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r7/wasyn-1/",
