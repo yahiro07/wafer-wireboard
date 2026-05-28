@@ -1,8 +1,16 @@
 const homeDir = process.env.HOME;
 
 export const unitSourceUrls = [
-  "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r5/wavicle/",
-  "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r5/specbar/",
+  "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r6/wavicle/",
+  "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r6/specbar/",
+  "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r6/proto-engine-ptm-osc/",
+  "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r6/proto-engine-pd-fm/",
+  "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r6/mini-synth/",
+  "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r6/mini-synth-ge/",
+  "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r6/mini-synth-gp/",
+  "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r6/useq/",
+  "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r6/lseq1/",
+
   "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r8/additive/",
   "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r8/drum-machine/",
   "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r8/wasyn-1/",
@@ -16,12 +24,5 @@ export const unitSourceUrls = [
   `/dev-units/mu4-keyboard/`,
   `/dev-units/mu5-visualizer/`,
   `file://${homeDir}/wus-my-units/my-drum-machine/`,
-  `file://${homeDir}/wus-my-units/proto-engine-ptm-osc/`,
-  `file://${homeDir}/wus-my-units/proto-engine-pd-fm/`,
-  `file://${homeDir}/wus-my-units/mini-synth/`,
-  `file://${homeDir}/wus-my-units/mini-synth-ge/`,
-  `file://${homeDir}/wus-my-units/mini-synth-gp/`,
-  `file://${homeDir}/wus-my-units/useq/`,
   `file://${homeDir}/wus-my-units/twsq1/`,
-  `file://${homeDir}/wus-my-units/lseq1/`,
 ];
