@@ -236,7 +236,7 @@ const PageRoot = () => {
           handlers={sightHandlers}
           boardSize={boardSize}
         >
-          <div className="w-full h-full flex-c">
+          <div className="w-full h-full flex-vc gap-6">
             <div className="flex-h gap-6">
               <PartSlot partSlotId="ps1" instrumentUnitKey="my_drum_machine" />
               <PartSlot
@@ -262,6 +262,60 @@ const PageRoot = () => {
   );
 };
 
+const PageRoot2 = () => {
+  const state = store.useSnapshot();
+  return (
+    <div className="w-dvw h-dvh flex-v">
+      <TopBar />
+      <div className="grow">
+        <FieldSightPlane
+          sight={state.sight}
+          handlers={sightHandlers}
+          boardSize={boardSize}
+        >
+          <div className="w-full h-full flex-vc gap-6">
+            <div className="flex-h gap-6">
+              <PartSlot partSlotId="ps1" instrumentUnitKey="my_drum_machine" />
+              <PartSlot
+                partSlotId="ps2"
+                instrumentUnitKey="mini_synth_ge"
+                sequencerUnitKey="useq"
+              />
+              <PartSlot
+                partSlotId="ps3"
+                instrumentUnitKey="proto_engine_pd_fm"
+                sequencerUnitKey="lseq1"
+              />
+              <PartSlot
+                partSlotId="ps4"
+                instrumentUnitKey="wavicle"
+                sequencerUnitKey="lseq1"
+              />
+            </div>
+            <div className="flex-h gap-6">
+              <PartSlot partSlotId="ps1a" instrumentUnitKey="koodori" />
+              <PartSlot
+                partSlotId="ps2a"
+                instrumentUnitKey="bc_010"
+                sequencerUnitKey="lseq1"
+              />
+              <PartSlot
+                partSlotId="ps3a"
+                instrumentUnitKey="webaudio_synth_v2"
+                sequencerUnitKey="mu4_keyboard"
+              />
+              <PartSlot
+                partSlotId="ps4a"
+                instrumentUnitKey="wasyn_1"
+                sequencerUnitKey="mu4_keyboard"
+              />
+            </div>
+          </div>
+        </FieldSightPlane>
+      </div>
+    </div>
+  );
+};
 const App = () => {
   useEffect(() =>
     setupMidiKeyboardInput({
