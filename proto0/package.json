@@ -22,7 +22,9 @@
     "tailwindcss": "^4.3.0",
     "typescript": "~6.0.3",
     "vite": "^8.0.12",
-    "wus-unit-types": "^0.1.0",
-    "wus-vite-unit-loader-plugin": "github:yahiro07/webaudio-unit-system#vite-plugin&path:/framework/packages/wus-vite-unit-loader-plugin"
+    "wus-unit-types": "file:../../webaudio-unit-system/framework/packages/wus-unit-types",
+    "wus-vite-unit-loader-plugin": "file:../../webaudio-unit-system/framework/packages/wus-vite-unit-loader-plugin",
+    "beams": "file:../../beam",
+    "wus-host": "file:../../webaudio-unit-system/apps/wus-host"
   }
 }

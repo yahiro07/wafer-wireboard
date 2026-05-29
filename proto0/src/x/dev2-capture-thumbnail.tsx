@@ -1,8 +1,8 @@
 import { createStore } from "snap-store";
+import { createHostSystem } from "wus-host/host";
+import { UnitFrame } from "wus-host/react";
+import { normalizeFrameSize } from "wus-host/react/frame-size";
 import { ScalerBox } from "@/components/scaler-box";
-import { createHostSystem } from "@/host-system/host";
-import { UnitFrame } from "@/host-system/react";
-import { normalizeFrameSize } from "@/host-system/react/frame-size";
 import { mountAppRoot } from "@/utils/mount-app-root";
 import catalog from "../unit-inventories.json";
 

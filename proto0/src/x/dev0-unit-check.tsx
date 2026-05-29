@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { createStore } from "snap-store";
+import { createHostSystem } from "wus-host/host";
+import { UnitFrame } from "wus-host/react";
 import { Button } from "@/components/button";
 import { FeNumberSliderBox } from "@/components/number-slider-box";
-import { createHostSystem } from "@/host-system/host";
-import { UnitFrame } from "@/host-system/react";
 import { setupMidiKeyboardInput } from "@/utils/midi-keyboard-input";
 import { mountAppRoot } from "@/utils/mount-app-root";
 import catalog from "../unit-inventories.json";

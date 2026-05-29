@@ -1,7 +1,7 @@
+import { Size } from "beams/mo-react/hooks/common-types";
+import { useDomElementSize } from "beams/mo-react/hooks/use-dom-element-size";
 import clsx from "clsx";
 import { useEffect, useMemo, useRef } from "react";
-import { Size } from "@/hooks/common-types";
-import { useDomElementSize } from "@/hooks/use-dom-element-size";
 import { startDragSession } from "@/utils/drag-session";
 import { clampValue } from "@/utils/number-utils";
 
