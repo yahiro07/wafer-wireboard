@@ -1,8 +1,10 @@
 import { mountAppRoot } from "beams/ax-react/mount-app-root";
 import { npx } from "beams/ax-ui/styling-utils";
+import { ScalerBoxAutoSized } from "beams/mo-react/components/scaler-box-auto-sized";
 import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
+import { UnitFrame } from "wus-host/react";
 import { Icons } from "@/components/icons";
 import catalog from "../unit-inventories.json";
 
@@ -32,11 +34,45 @@ const showcaseEntries: ShowcaseEntry[] = [
     })),
 ];
 
-type StoreState = {};
+type UnitItem = {
+  unitId: string;
+  destUnitId?: string;
+  catalogKey: CatalogKey;
+  position: { x: number; y: number };
+};
+
+type StoreState = {
+  unitItems: UnitItem[];
+};
 
 const audioContext = new AudioContext();
 const hostSystem = createHostSystem(audioContext);
-const store = createStore<StoreState>({});
+const store = createStore<StoreState>({
+  unitItems: [],
+});
+function buildDefaultScene() {
+  const unitItems: UnitItem[] = [
+    {
+      unitId: "unit1",
+      catalogKey: "miniSynth",
+      position: { x: 100, y: 100 },
+    },
+    {
+      unitId: "unit2",
+      destUnitId: "unit1",
+      catalogKey: "lseq1",
+      position: { x: 150, y: 360 },
+    },
+    {
+      unitId: "unit3",
+      destUnitId: "unit2",
+      catalogKey: "mu4Keyboard",
+      position: { x: 180, y: 620 },
+    },
+  ];
+  store.setUnitItems(unitItems);
+}
+buildDefaultScene();
 
 const PickerColumn = () => {
   return (
@@ -66,21 +102,67 @@ const PickerColumn = () => {
   );
 };
 
-const PortCell = () => {
-  return <div className="w-[30px] h-[30px] bg-gray-400"></div>;
+const UnitFrameEx = ({
+  unitId,
+  destUnitId,
+  catalogKey,
+}: {
+  unitId: string;
+  destUnitId: string;
+  catalogKey: CatalogKey;
+}) => {
+  // const state = store.useSnapshot();
+  // const onIframeMounted = useCallback((iframe: HTMLIFrameElement) => {
+  //   const win = iframe.contentWindow as Window;
+  //   win.addEventListener("wheel", sightHandlers.onWheel);
+  //   win.addEventListener("pointerdown", sightHandlers.onPointerDown, {
+  //     capture: true,
+  //   });
+  //   return () => {
+  //     win.removeEventListener("wheel", sightHandlers.onWheel);
+  //     win.removeEventListener("pointerdown", sightHandlers.onPointerDown, {
+  //       capture: true,
+  //     });
+  //   };
+  // }, []);
+  const frameSize = catalog[catalogKey].preferredSize;
+  return (
+    <ScalerBoxAutoSized>
+      <UnitFrame
+        unitId={unitId}
+        destUnitId={destUnitId}
+        pageUrl={catalog[catalogKey].loaderPageUrl}
+        frameSize={frameSize}
+        hostSystem={hostSystem}
+        // hostBpm={state.bpm}
+        // hostPlaying={state.playing}
+        // onIframeMounted={onIframeMounted}
+      />
+    </ScalerBoxAutoSized>
+  );
 };
 
-const SlotCardBox = ({ x, y }: { x: number; y: number }) => {
+const PortCell = () => {
+  return <div className="w-[30px] h-[30px] bg-gray-400 cursor-pointer"></div>;
+};
+
+const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
   return (
     <div
-      className="absolute w-[400px] h-[200px] flex-h"
-      style={{ left: npx(x), top: npx(y) }}
+      className="absolute w-[400px] h-[180px] flex-h"
+      style={{ left: npx(unit.position.x), top: npx(unit.position.y) }}
     >
       <div className="w-[40px] bg-gray-500 flex-v justify-between items-center p-2">
         <PortCell />
         <PortCell />
       </div>
-      <div className="grow bg-gray-600"></div>
+      <div className="grow bg-gray-600">
+        <UnitFrameEx
+          unitId={unit.unitId}
+          destUnitId={unit.unitId}
+          catalogKey={unit.catalogKey}
+        />
+      </div>
       <div className="w-[40px] bg-gray-500 flex-c text-white text-[24px] cursor-pointer">
         <Icons.Grip />
       </div>
@@ -89,10 +171,12 @@ const SlotCardBox = ({ x, y }: { x: number; y: number }) => {
 };
 
 const EditField = () => {
+  const { unitItems } = store.useSnapshot();
   return (
     <div className="relative">
-      <SlotCardBox x={100} y={100} />
-      <SlotCardBox x={100} y={400} />
+      {unitItems.map((item) => (
+        <SlotCardBox key={item.unitId} unit={item} />
+      ))}
     </div>
   );
 };
