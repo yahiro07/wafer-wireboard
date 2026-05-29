@@ -1,19 +1,20 @@
+import { mountAppRoot } from "beams/ax-react/mount-app-root";
+import { Size } from "beams/mo-react/hooks/common-types";
+import { setupMidiKeyboardInput } from "beams/mx-audio/midi-keyboard-input";
 import { useCallback, useEffect, useMemo } from "react";
 import { createStore } from "snap-store";
 import { createHostSystem, createSequenceTickDriver } from "wus-host/host";
 import { UnitFrame } from "wus-host/react";
-import { normalizeFrameSize, Size } from "wus-host/react/frame-size";
+import { normalizeFrameSize } from "wus-host/react/frame-size";
 import { Button } from "@/components/button";
 import { Icons } from "@/components/icons";
-import { FeNumberSliderBox } from "@/components/number-slider-box";
-import { setupMidiKeyboardInput } from "@/utils/midi-keyboard-input";
-import { mountAppRoot } from "@/utils/mount-app-root";
+import { NumberSliderBox } from "@/components/number-slider-box";
 import {
   createFieldSightHandlers,
   FieldSight,
   FieldSightPlane,
-} from "@/x/field-sight";
-import { UnitFrameScaler } from "@/x/unit-frame-scaler";
+} from "@/components-ex/field-sight";
+import { UnitFrameScaler } from "@/components-ex/unit-frame-scaler";
 import catalog from "../unit-inventories.json";
 
 catalog;
@@ -85,7 +86,7 @@ const TopBar = () => {
         <Button active={state.playing} onClick={actions.togglePlayState}>
           <Icons.Play />
         </Button>
-        <FeNumberSliderBox
+        <NumberSliderBox
           value={state.bpm}
           min={80}
           max={150}

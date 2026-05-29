@@ -1,5 +1,5 @@
+import { Size } from "beams/mo-react/hooks/common-types";
 import { ReactNode } from "react";
-import { Size } from "wus-host/react/frame-size";
 
 export const UnitFrameScaler = ({
   containerSize,

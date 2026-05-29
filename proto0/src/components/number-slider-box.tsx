@@ -1,5 +1,4 @@
-import { mergeReactProps } from "@/utils/merge-react-props";
-import { KnobFrame } from "./knob-frame";
+import { KnobFrame } from "beams/mo-react/components/knob-frame";
 
 export function NumberSliderBoxView(props: {
   value: number;
@@ -12,8 +11,16 @@ export function NumberSliderBoxView(props: {
   );
 }
 
-export function FeNumberSliderBox(inputProps: {
-  label: string;
+export function NumberSliderBox({
+  label,
+  value,
+  min = 0,
+  max = 100,
+  step = 1,
+  fracDigits = 0,
+  onChange,
+}: {
+  label?: string;
   value: number;
   min?: number;
   max?: number;
@@ -21,19 +28,18 @@ export function FeNumberSliderBox(inputProps: {
   fracDigits?: number;
   onChange: (value: number) => void;
 }) {
-  const props = mergeReactProps(
-    { min: 0, max: 1, step: 0.01, fracDigits: 2 },
-    inputProps,
-  );
   return (
-    <KnobFrame
-      value={props.value}
-      min={props.min}
-      max={props.max}
-      step={props.step}
-      onChange={props.onChange}
-    >
-      <NumberSliderBoxView value={props.value} fracDigits={props.fracDigits} />
-    </KnobFrame>
+    <div className="flex-ha gap-1">
+      {label && <div>{label}</div>}
+      <KnobFrame
+        value={value}
+        min={min}
+        max={max}
+        step={step}
+        onChange={onChange}
+      >
+        <NumberSliderBoxView value={value} fracDigits={fracDigits} />
+      </KnobFrame>
+    </div>
   );
 }

@@ -1,9 +1,9 @@
+import { mountAppRoot } from "beams/ax-react/mount-app-root";
+import { ScalerBox } from "beams/mo-react/components/scaler-box";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
 import { UnitFrame } from "wus-host/react";
 import { normalizeFrameSize } from "wus-host/react/frame-size";
-import { ScalerBox } from "@/components/scaler-box";
-import { mountAppRoot } from "@/utils/mount-app-root";
 import catalog from "../unit-inventories.json";
 
 type CatalogKey = keyof typeof catalog;

@@ -1,4 +1,4 @@
-import { mountAppRoot } from "@/utils/mount-app-root";
+import { mountAppRoot } from "beams/ax-react/mount-app-root";
 import catalog from "../unit-inventories.json";
 
 const showcaseEntries = Object.values(catalog)

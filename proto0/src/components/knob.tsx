@@ -1,7 +1,5 @@
-import { mergeReactProps } from "@/utils/merge-react-props";
-import { mapUnaryTo } from "@/utils/number-utils";
-import { CellFrame } from "./cell-frame";
-import { KnobFrame } from "./knob-frame";
+import { mapUnaryTo } from "beams/ax/number-utils";
+import { KnobFrame } from "beams/mo-react/components/knob-frame";
 
 export function KnobView(props: { value: number; min: number; max: number }) {
   const vm = {
@@ -14,58 +12,41 @@ export function KnobView(props: { value: number; min: number; max: number }) {
     },
   };
   return (
-    <div className="border border-[#444] w-[36px] h-[36px] rounded-full">
+    <div className="border-[1.5px] border-[#222] w-[36px] h-[36px] rounded-full bg-[#666]">
       <div
         className="w-full h-full flex justify-center"
         style={{
           transform: `rotate(${vm.tickAngel()}deg)`,
         }}
       >
-        <div className="w-[1px] h-[10px] bg-[#444]" />
+        <div className="w-[2px] h-[10px] bg-[#fff]" />
       </div>
     </div>
   );
 }
 
-export function Knob(inputProps: {
+export function Knob({
+  value,
+  min = 0,
+  max = 1,
+  step = 0.01,
+  onChange,
+}: {
   value: number;
   min?: number;
   max?: number;
   step?: number;
   onChange: (value: number) => void;
 }) {
-  const props = mergeReactProps({ min: 0, max: 1, step: 0.01 }, inputProps);
-  console.log(inputProps, props);
   return (
     <KnobFrame
-      value={props.value}
-      min={props.min}
-      max={props.max}
-      step={props.step}
-      onChange={props.onChange}
+      value={value}
+      min={min}
+      max={max}
+      step={step}
+      onChange={onChange}
     >
-      <KnobView value={props.value} min={props.min} max={props.max} />
+      <KnobView value={value} min={min} max={max} />
     </KnobFrame>
-  );
-}
-
-export function FeKnob(props: {
-  label: string;
-  value: number;
-  min?: number;
-  max?: number;
-  step?: number;
-  onChange: (value: number) => void;
-}) {
-  return (
-    <CellFrame label={props.label}>
-      <Knob
-        value={props.value}
-        min={props.min}
-        max={props.max}
-        step={props.step}
-        onChange={props.onChange}
-      />
-    </CellFrame>
   );
 }

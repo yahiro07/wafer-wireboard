@@ -1,4 +1,5 @@
-import "./styles";
+import "./page.css";
+import "beams/ax-ui/utility-classes.css";
 //
 // import "./x/dev0-unit-check";
 // import "./x/dev1-slots-layout";

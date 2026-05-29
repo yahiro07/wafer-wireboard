@@ -1,11 +1,11 @@
+import { mountAppRoot } from "beams/ax-react/mount-app-root";
+import { setupMidiKeyboardInput } from "beams/mx-audio/midi-keyboard-input";
 import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
 import { UnitFrame } from "wus-host/react";
 import { Button } from "@/components/button";
-import { FeNumberSliderBox } from "@/components/number-slider-box";
-import { setupMidiKeyboardInput } from "@/utils/midi-keyboard-input";
-import { mountAppRoot } from "@/utils/mount-app-root";
+import { NumberSliderBox } from "@/components/number-slider-box";
 import catalog from "../unit-inventories.json";
 
 catalog;
@@ -84,7 +84,7 @@ const PageRoot = () => {
           active={state.playing}
           onClick={actions.togglePlayState}
         />
-        <FeNumberSliderBox
+        <NumberSliderBox
           label="bpm"
           value={state.bpm}
           min={60}
