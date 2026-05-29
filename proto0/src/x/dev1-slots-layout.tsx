@@ -238,18 +238,18 @@ const PageRoot = () => {
         >
           <div className="w-full h-full flex-vc gap-6">
             <div className="flex-h gap-6">
-              <PartSlot partSlotId="ps1" instrumentUnitKey="my_drum_machine" />
+              <PartSlot partSlotId="ps1" instrumentUnitKey="myDrumMachine" />
               <PartSlot
                 partSlotId="ps2"
-                instrumentUnitKey="mini_synth_ge"
+                instrumentUnitKey="miniSynthGe"
                 sequencerUnitKey="useq"
               />
               <PartSlot
                 partSlotId="ps3"
                 // instrumentUnitKey="wavicle"
-                // instrumentUnitKey="proto_engine_ptm_osc"
-                instrumentUnitKey="proto_engine_pd_fm"
-                // sequencerUnitKey="mu4_keyboard"
+                // instrumentUnitKey="protoEnginePtmOsc"
+                instrumentUnitKey="protoEnginePdFm"
+                // sequencerUnitKey="mu4Keyboard"
                 // sequencerUnitKey="twsq1"
                 sequencerUnitKey="lseq1"
               />
@@ -275,15 +275,15 @@ const PageRoot2 = () => {
         >
           <div className="w-full h-full flex-vc gap-6">
             <div className="flex-h gap-6">
-              <PartSlot partSlotId="ps1" instrumentUnitKey="my_drum_machine" />
+              <PartSlot partSlotId="ps1" instrumentUnitKey="myDrumMachine" />
               <PartSlot
                 partSlotId="ps2"
-                instrumentUnitKey="mini_synth_ge"
+                instrumentUnitKey="miniSynthGe"
                 sequencerUnitKey="useq"
               />
               <PartSlot
                 partSlotId="ps3"
-                instrumentUnitKey="proto_engine_pd_fm"
+                instrumentUnitKey="protoEnginePdFm"
                 sequencerUnitKey="lseq1"
               />
               <PartSlot
@@ -296,18 +296,18 @@ const PageRoot2 = () => {
               <PartSlot partSlotId="ps1a" instrumentUnitKey="koodori" />
               <PartSlot
                 partSlotId="ps2a"
-                instrumentUnitKey="bc_010"
+                instrumentUnitKey="bc010"
                 sequencerUnitKey="lseq1"
               />
               <PartSlot
                 partSlotId="ps3a"
-                instrumentUnitKey="webaudio_synth_v2"
-                sequencerUnitKey="mu4_keyboard"
+                instrumentUnitKey="webaudioSynthV2"
+                sequencerUnitKey="mu4Keyboard"
               />
               <PartSlot
                 partSlotId="ps4a"
-                instrumentUnitKey="wasyn_1"
-                sequencerUnitKey="mu4_keyboard"
+                instrumentUnitKey="wasyn1"
+                sequencerUnitKey="mu4Keyboard"
               />
             </div>
           </div>
