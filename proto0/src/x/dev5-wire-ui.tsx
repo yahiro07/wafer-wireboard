@@ -1,12 +1,12 @@
 import { mountAppRoot } from "beams/ax-react/mount-app-root";
+import { npx } from "beams/ax-ui/styling-utils";
 import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
+import { Icons } from "@/components/icons";
 import catalog from "../unit-inventories.json";
 
 type CatalogKey = keyof typeof catalog;
-
-const catalogItems = Object.values(catalog);
 
 type ShowcaseEntry = {
   name: string;
@@ -66,10 +66,42 @@ const PickerColumn = () => {
   );
 };
 
+const PortCell = () => {
+  return <div className="w-[30px] h-[30px] bg-gray-400"></div>;
+};
+
+const SlotCardBox = ({ x, y }: { x: number; y: number }) => {
+  return (
+    <div
+      className="absolute w-[400px] h-[200px] flex-h"
+      style={{ left: npx(x), top: npx(y) }}
+    >
+      <div className="w-[40px] bg-gray-500 flex-v justify-between items-center p-2">
+        <PortCell />
+        <PortCell />
+      </div>
+      <div className="grow bg-gray-600"></div>
+      <div className="w-[40px] bg-gray-500 flex-c text-white text-[24px] cursor-pointer">
+        <Icons.Grip />
+      </div>
+    </div>
+  );
+};
+
+const EditField = () => {
+  return (
+    <div className="relative">
+      <SlotCardBox x={100} y={100} />
+      <SlotCardBox x={100} y={400} />
+    </div>
+  );
+};
+
 const PageRoot = () => {
   return (
-    <div className="w-dvw h-dvh bg-gray-600 flex-vl">
+    <div className="w-dvw h-dvh bg-gray-700 flex-h">
       <PickerColumn />
+      <EditField />
     </div>
   );
 };
