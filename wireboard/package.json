@@ -1,6 +1,5 @@
 {
   "name": "mini-groove-proto0",
-  "private": "true",
   "scripts": {
     "dev": "vite dev --force",
     "build": "vite build",
