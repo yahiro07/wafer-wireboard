@@ -1,9 +1,9 @@
 import { clampValue } from "beams/ax/number-utils";
+import { Size } from "beams/ax-ui/common-types";
 import { startDragSession } from "beams/ax-ui/drag-session";
 import { useDomElementSize } from "beams/mo-react/hooks/use-dom-element-size";
 import clsx from "clsx";
 import { useEffect, useMemo, useRef } from "react";
-import { Size } from "beams/ax-ui/common-types";
 
 export type FieldSight = {
   zoom: number; //0 for 1x
