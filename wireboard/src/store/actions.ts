@@ -13,15 +13,24 @@ const actionsInternal = {
   },
 };
 
+function getNextUnitId(existingItems: UnitItem[]) {
+  const maxNumber = Math.max(
+    ...existingItems.map((item) =>
+      parseInt(item.unitId.replace("unit", ""), 10),
+    ),
+  );
+  return `unit${maxNumber + 1}`;
+}
+
 export const actions = {
   setUnitPosition(unitId: string, position: Point) {
     actionsInternal.patchUnitItem(unitId, { position });
   },
   addUnit(catalogKey: CatalogKey, position: Point) {
-    store.setUnitItems([
-      ...store.state.unitItems,
+    store.setUnitItems((prev) => [
+      ...prev,
       {
-        unitId: `unit${store.state.unitItems.length + 1}`,
+        unitId: getNextUnitId(prev),
         catalogKey,
         position,
       },
