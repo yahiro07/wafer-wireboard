@@ -2,7 +2,9 @@ import { startDragSession } from "beams/ax-ui/drag-session";
 import { npx } from "beams/ax-ui/styling-utils";
 import { Icons, IconsEx } from "@/components/icons";
 import { UnitFrameEx } from "@/organisms/unit-frame-ex";
-import { UnitItem } from "@/store/store";
+import { actions } from "@/store/actions";
+import { getZoomScaling } from "@/store/helper";
+import { store, UnitItem } from "@/store/store";
 
 const PortCell = ({ withIcon }: { withIcon?: boolean }) => {
   return (
@@ -42,12 +44,23 @@ const PortRelativePositionDebugOverlay = () => {
   );
 };
 
-const handleGripPointerDown = (e0: React.PointerEvent, unitId: string) => {
+const handleGripPointerDown = (e0: React.PointerEvent, unit: UnitItem) => {
+  const originalPosition = { ...unit.position };
   startDragSession(
     e0.nativeEvent,
     {
-      onDown(e) {},
-      onMove(e) {},
+      onMove(e) {
+        const delta = {
+          x: e.position.x - e.originalPosition.x,
+          y: e.position.y - e.originalPosition.y,
+        };
+        const sc = getZoomScaling(store.state.sight.zoom);
+        const newPosition = {
+          x: originalPosition.x + delta.x / sc,
+          y: originalPosition.y + delta.y / sc,
+        };
+        actions.setUnitPosition(unit.unitId, newPosition);
+      },
     },
     { coordinate: "screen" },
   );
@@ -71,7 +84,10 @@ export const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
             catalogKey={unit.catalogKey}
           />
         </div>
-        <div className="w-[40px] bg-gray-500 flex-c text-white text-[28px] cursor-pointer">
+        <div
+          className="w-[40px] bg-gray-500 flex-c text-white text-[28px] cursor-pointer"
+          onPointerDown={(e) => handleGripPointerDown(e, unit)}
+        >
           <Icons.Grip />
         </div>
         {false && <PortRelativePositionDebugOverlay />}
