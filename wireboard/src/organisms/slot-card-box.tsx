@@ -82,7 +82,13 @@ const handleGripPointerDown = (e0: React.PointerEvent, unit: UnitItem) => {
   );
 };
 
-export const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
+export const SlotCardBox = ({
+  unit,
+  notes,
+}: {
+  unit: UnitItem;
+  notes?: number[];
+}) => {
   const sd = slotCardDimensions;
   return (
     <div
@@ -108,6 +114,7 @@ export const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
             unitId={unit.unitId}
             destUnitId={unit.destUnitId}
             catalogKey={unit.catalogKey}
+            notes={notes}
           />
         </div>
         <div className="w-[40px] bg-gray-500 flex-v text-white py-1">

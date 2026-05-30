@@ -50,7 +50,7 @@ function useDropHandlers() {
 }
 
 export const EditField = () => {
-  const { unitItems, sight } = store.useSnapshot();
+  const { unitItems, sight, notes, keyboardPort } = store.useSnapshot();
   const wires = useWireItems();
   const dropHandlers = useDropHandlers();
   return (
@@ -67,7 +67,13 @@ export const EditField = () => {
         <WiringLayer boardSize={boardSize} wires={wires} />
         <div className="relative">
           {unitItems.map((item) => (
-            <SlotCardBox key={item.unitId} unit={item} />
+            <SlotCardBox
+              key={item.unitId}
+              unit={item}
+              notes={
+                item.unitId === keyboardPort.destUnitId ? notes : undefined
+              }
+            />
           ))}
           <KeyboardSystemPortBox />
           <SpeakerSystemPortBox />

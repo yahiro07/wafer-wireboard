@@ -7,10 +7,12 @@ export const UnitFrameEx = ({
   unitId,
   destUnitId,
   catalogKey,
+  notes,
 }: {
   unitId: string;
   destUnitId?: string;
   catalogKey: CatalogKey;
+  notes?: number[];
 }) => {
   // const state = store.useSnapshot();
   // const onIframeMounted = useCallback((iframe: HTMLIFrameElement) => {
@@ -38,6 +40,7 @@ export const UnitFrameEx = ({
         // hostBpm={state.bpm}
         // hostPlaying={state.playing}
         // onIframeMounted={onIframeMounted}
+        inputNotes={notes}
       />
     </ScalerBoxAutoSized>
   );

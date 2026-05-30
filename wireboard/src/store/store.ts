@@ -25,6 +25,7 @@ export type StoreState = {
   sight: FieldSight;
   keyboardPort: SystemPortUnitItem;
   speakerPort: SystemPortUnitItem;
+  notes: number[];
 };
 
 const audioContext = new AudioContext();
@@ -42,6 +43,7 @@ export const store = createStore<StoreState>({
     position: { x: 0, y: 0 },
     destUnitId: undefined,
   },
+  notes: [],
 });
 
 export const sightHandlers = createFieldSightHandlers(
