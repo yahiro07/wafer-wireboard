@@ -44,18 +44,25 @@ export const actions = {
     ]);
   },
   removeConnection(unitId: string) {
-    actionsInternal.patchUnitItem(unitId, { destUnitId: undefined });
+    if (unitId === "$keyboard") {
+      store.patchKeyboardPort({ destUnitId: undefined });
+    } else {
+      actionsInternal.patchUnitItem(unitId, { destUnitId: undefined });
+    }
   },
-  connectToNearestUnit(uintId: string) {
-    const { unitItems, speakerPort } = store.state;
-    const unit = unitItems.find((item) => item.unitId === uintId);
+  connectToNearestUnit(unitId: string) {
+    const { unitItems, speakerPort, keyboardPort } = store.state;
+    const unit =
+      unitId === "$keyboard"
+        ? keyboardPort
+        : unitItems.find((item) => item.unitId === unitId);
     if (!unit) return;
     const hh = slotCardDimensions.height / 2;
 
     const targetUnits = [
       ...unitItems.filter(
         (item) =>
-          item.unitId !== uintId && item.position.y + hh < unit.position.y - hh,
+          item.unitId !== unitId && item.position.y + hh < unit.position.y - hh,
       ),
       speakerPort,
     ];
@@ -69,7 +76,13 @@ export const actions = {
     const sorted = measured.sort((a, b) => a.distance - b.distance);
     const nearestUnit = sorted[0];
     if (!nearestUnit) return;
-    actionsInternal.patchUnitItem(uintId, { destUnitId: nearestUnit.unitId });
+    const destUnitId = nearestUnit.unitId;
+
+    if (unitId === "$keyboard") {
+      store.patchKeyboardPort({ destUnitId });
+    } else {
+      actionsInternal.patchUnitItem(unitId, { destUnitId });
+    }
   },
   removeUnit(unitId: string) {
     actionsInternal.patchUnitItem(unitId, { destUnitId: undefined });

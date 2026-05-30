@@ -16,6 +16,7 @@ export type UnitItem = {
 
 export type SystemPortUnitItem = {
   unitId: "$output" | "$keyboard";
+  destUnitId?: string;
   position: Point;
 };
 
@@ -39,6 +40,7 @@ export const store = createStore<StoreState>({
   keyboardPort: {
     unitId: "$keyboard",
     position: { x: 0, y: 0 },
+    destUnitId: undefined,
   },
 });
 

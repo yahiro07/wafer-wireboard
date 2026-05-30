@@ -4,19 +4,22 @@ import { WiringLayerWire } from "@/components-ex/wiring-layer";
 import { store } from "@/store/store";
 
 export function useWireItems() {
-  const { unitItems, speakerPort } = store.useSnapshot();
+  const { unitItems, speakerPort, keyboardPort } = store.useSnapshot();
   return useMemo(() => {
     const unitItemMap = new Map(unitItems.map((item) => [item.unitId, item]));
     const wires: WiringLayerWire[] = [];
-    for (const item of unitItems) {
+    for (const item of [...unitItems, keyboardPort]) {
       if (!item.destUnitId) continue;
 
       const id = `${item.unitId}->${item.destUnitId}`;
       const sd = slotCardDimensions;
-      const p1 = {
-        x: item.position.x - sd.width / 2 + sd.outputPort.x,
-        y: item.position.y - sd.height / 2 + sd.outputPort.y,
-      };
+      const p1 =
+        item.unitId === "$keyboard"
+          ? item.position
+          : {
+              x: item.position.x - sd.width / 2 + sd.outputPort.x,
+              y: item.position.y - sd.height / 2 + sd.outputPort.y,
+            };
 
       if (item.destUnitId === "$output") {
         wires.push({ id, p1, p2: speakerPort.position });
@@ -31,5 +34,5 @@ export function useWireItems() {
       wires.push({ id, p1, p2 });
     }
     return wires;
-  }, [unitItems, speakerPort]);
+  }, [unitItems, speakerPort, keyboardPort]);
 }
