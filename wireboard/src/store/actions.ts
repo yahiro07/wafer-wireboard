@@ -25,13 +25,7 @@ function getNextUnitId(existingItems: UnitItem[]) {
 
 export const actions = {
   setUnitPosition(unitId: string, position: Point) {
-    if (unitId === "$output") {
-      store.patchSpeakerPort({ position });
-    } else if (unitId === "$keyboard") {
-      store.patchKeyboardPort({ position });
-    } else {
-      actionsInternal.patchUnitItem(unitId, { position });
-    }
+    actionsInternal.patchUnitItem(unitId, { position });
   },
   addUnit(catalogKey: CatalogKey, position: Point) {
     store.setUnitItems((prev) => [
@@ -44,28 +38,18 @@ export const actions = {
     ]);
   },
   removeConnection(unitId: string) {
-    if (unitId === "$keyboard") {
-      store.patchKeyboardPort({ destUnitId: undefined });
-    } else {
-      actionsInternal.patchUnitItem(unitId, { destUnitId: undefined });
-    }
+    actionsInternal.patchUnitItem(unitId, { destUnitId: undefined });
   },
   connectToNearestUnit(unitId: string) {
-    const { unitItems, speakerPort, keyboardPort } = store.state;
-    const unit =
-      unitId === "$keyboard"
-        ? keyboardPort
-        : unitItems.find((item) => item.unitId === unitId);
+    const { unitItems } = store.state;
+    const unit = unitItems.find((item) => item.unitId === unitId);
     if (!unit) return;
     const hh = slotCardDimensions.height / 2;
 
-    const targetUnits = [
-      ...unitItems.filter(
-        (item) =>
-          item.unitId !== unitId && item.position.y + hh < unit.position.y - hh,
-      ),
-      speakerPort,
-    ];
+    const targetUnits = unitItems.filter(
+      (item) =>
+        item.unitId !== unitId && item.position.y + hh < unit.position.y - hh,
+    );
     const measured = targetUnits.map((item) => ({
       unitId: item.unitId,
       distance: Math.hypot(
@@ -76,13 +60,7 @@ export const actions = {
     const sorted = measured.sort((a, b) => a.distance - b.distance);
     const nearestUnit = sorted[0];
     if (!nearestUnit) return;
-    const destUnitId = nearestUnit.unitId;
-
-    if (unitId === "$keyboard") {
-      store.patchKeyboardPort({ destUnitId });
-    } else {
-      actionsInternal.patchUnitItem(unitId, { destUnitId });
-    }
+    actionsInternal.patchUnitItem(unitId, { destUnitId: nearestUnit.unitId });
   },
   removeUnit(unitId: string) {
     actionsInternal.patchUnitItem(unitId, { destUnitId: undefined });

@@ -2,7 +2,7 @@ import { startDragSession } from "beams/ax-ui/drag-session";
 import { npx } from "beams/ax-ui/styling-utils";
 import clsx from "clsx";
 import { ReactNode } from "react";
-import { Icons, IconsEx } from "@/components/icons";
+import { Icons } from "@/components/icons";
 import { actions } from "@/store/actions";
 import { getZoomScaling } from "@/store/helper";
 import { SystemPortUnitItem, store } from "@/store/store";
@@ -73,44 +73,44 @@ const SystemPortBox = ({
   );
 };
 
-export const SpeakerSystemPortBox = () => {
-  const { speakerPort } = store.useSnapshot();
-  return (
-    <SystemPortBox
-      unit={speakerPort}
-      yOffset={-50}
-      iconContent={<Icons.Speaker size={65} />}
-      sideContent={<div className="h-full bg-black text-white">aaa</div>}
-    />
-  );
-};
+// export const SpeakerSystemPortBox = () => {
+//   const { speakerPort } = store.useSnapshot();
+//   return (
+//     <SystemPortBox
+//       unit={speakerPort}
+//       yOffset={-50}
+//       iconContent={<Icons.Speaker size={65} />}
+//       sideContent={<div className="h-full bg-black text-white">aaa</div>}
+//     />
+//   );
+// };
 
-const handleKeyboardPortClick = () => {
-  const { keyboardPort } = store.state;
-  if (keyboardPort.destUnitId === undefined) {
-    actions.connectToNearestUnit("$keyboard");
-  } else {
-    actions.removeConnection("$keyboard");
-  }
-};
-export const KeyboardSystemPortBox = () => {
-  const { keyboardPort } = store.useSnapshot();
-  return (
-    <SystemPortBox
-      unit={keyboardPort}
-      yOffset={50}
-      iconContent={
-        <div
-          className="relative w-full h-full flex-c cursor-pointer"
-          onClick={handleKeyboardPortClick}
-        >
-          <Icons.Piano size={65} />
-          <div className="absolute-full flex-h justify-center p-1">
-            <IconsEx.ConnectorPortUp size={18} />
-          </div>
-        </div>
-      }
-      sideContent={<div className="h-full bg-white text-black">bbb</div>}
-    />
-  );
-};
+// const handleKeyboardPortClick = () => {
+//   const { keyboardPort } = store.state;
+//   if (keyboardPort.destUnitId === undefined) {
+//     actions.connectToNearestUnit("$keyboard");
+//   } else {
+//     actions.removeConnection("$keyboard");
+//   }
+// };
+// export const KeyboardSystemPortBox = () => {
+//   const { keyboardPort } = store.useSnapshot();
+//   return (
+//     <SystemPortBox
+//       unit={keyboardPort}
+//       yOffset={50}
+//       iconContent={
+//         <div
+//           className="relative w-full h-full flex-c cursor-pointer"
+//           onClick={handleKeyboardPortClick}
+//         >
+//           <Icons.Piano size={65} />
+//           <div className="absolute-full flex-h justify-center p-1">
+//             <IconsEx.ConnectorPortUp size={18} />
+//           </div>
+//         </div>
+//       }
+//       sideContent={<div className="h-full bg-white text-black">bbb</div>}
+//     />
+//   );
+// };

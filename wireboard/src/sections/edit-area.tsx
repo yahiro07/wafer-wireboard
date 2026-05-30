@@ -3,10 +3,6 @@ import { CatalogKey, catalog } from "@/base/showcase-entries";
 import { FieldSightPlane } from "@/components-ex/field-sight-plane";
 import { WiringLayer } from "@/components-ex/wiring-layer";
 import { SlotCardBox } from "@/organisms/slot-card-box";
-import {
-  KeyboardSystemPortBox,
-  SpeakerSystemPortBox,
-} from "@/organisms/system-port-box";
 import { actions } from "@/store/actions";
 import { sightHandlers, store } from "@/store/store";
 import { useWireItems } from "@/store/use-wire-items";
@@ -46,8 +42,8 @@ function useDropHandlers() {
   };
 }
 
-export const EditField = () => {
-  const { unitItems, sight, notes, keyboardPort } = store.useSnapshot();
+export const EditArea = () => {
+  const { unitItems, sight, notes } = store.useSnapshot();
   const wires = useWireItems();
   const dropHandlers = useDropHandlers();
   return (
@@ -67,13 +63,11 @@ export const EditField = () => {
             <SlotCardBox
               key={item.unitId}
               unit={item}
-              notes={
-                item.unitId === keyboardPort.destUnitId ? notes : undefined
-              }
+              notes={item.unitId === "builtInKeyboard" ? notes : undefined}
             />
           ))}
-          <KeyboardSystemPortBox />
-          <SpeakerSystemPortBox />
+          {/* <KeyboardSystemPortBox /> */}
+          {/* <SpeakerSystemPortBox /> */}
         </div>
       </FieldSightPlane>
     </div>

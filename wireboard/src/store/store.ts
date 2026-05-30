@@ -8,7 +8,7 @@ import {
 } from "@/components-ex/field-sight-plane";
 
 export type UnitItem = {
-  unitId: string;
+  unitId: string | "builtInPreOutput" | "builtInKeyboard";
   destUnitId?: string;
   catalogKey: CatalogKey;
   position: Point;
@@ -23,8 +23,8 @@ export type SystemPortUnitItem = {
 export type StoreState = {
   unitItems: UnitItem[];
   sight: FieldSight;
-  keyboardPort: SystemPortUnitItem;
-  speakerPort: SystemPortUnitItem;
+  // keyboardPort: SystemPortUnitItem;
+  // speakerPort: SystemPortUnitItem;
   notes: number[];
 };
 
@@ -34,15 +34,15 @@ export const hostSystem = createHostSystem(audioContext);
 export const store = createStore<StoreState>({
   unitItems: [],
   sight: { zoom: -1, eyeOffset: { x: 0, y: 0 } },
-  speakerPort: {
-    unitId: "$output",
-    position: { x: 0, y: 0 },
-  },
-  keyboardPort: {
-    unitId: "$keyboard",
-    position: { x: 0, y: 0 },
-    destUnitId: undefined,
-  },
+  // speakerPort: {
+  //   unitId: "$output",
+  //   position: { x: 0, y: 0 },
+  // },
+  // keyboardPort: {
+  //   unitId: "$keyboard",
+  //   position: { x: 0, y: 0 },
+  //   destUnitId: undefined,
+  // },
   notes: [],
 });
 
@@ -56,30 +56,36 @@ function buildDefaultScene() {
   const by = 2400;
   const unitItems: UnitItem[] = [
     {
-      unitId: "unit1",
       destUnitId: "$output",
+      unitId: "builtInPreOutput",
       catalogKey: "specbar",
       position: { x: 4300, y: by + 100 },
     },
+    // {
+    //   unitId: "unit1",
+    //   destUnitId: "$output",
+    //   catalogKey: "specbar",
+    //   position: { x: 4300, y: by + 100 },
+    // },
     {
       unitId: "unit2",
-      destUnitId: "unit1",
+      destUnitId: "builtInPreOutput",
       catalogKey: "miniSynth",
       position: { x: 4500, y: by + 360 },
     },
     {
-      unitId: "unit3",
+      unitId: "builtInKeyboard",
       destUnitId: "unit2",
       catalogKey: "mu4Keyboard",
       position: { x: 4600, y: by + 620 },
     },
   ];
   store.setUnitItems(unitItems);
-  store.patchSpeakerPort({
-    position: { x: 4500, y: 2000 },
-  });
-  store.patchKeyboardPort({
-    position: { x: 4500, y: 3500 },
-  });
+  // store.patchSpeakerPort({
+  //   position: { x: 4500, y: 2000 },
+  // });
+  // store.patchKeyboardPort({
+  //   position: { x: 4500, y: 3500 },
+  // });
 }
 buildDefaultScene();

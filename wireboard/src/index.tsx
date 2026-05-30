@@ -7,14 +7,14 @@ import { useEffect } from "react";
 import { CreditsPanel } from "@/sections/credits-panel";
 import { PickerColumn } from "@/sections/picker-column";
 import { hostSystem } from "@/store/store";
-import { EditField } from "./sections/edit-field";
+import { EditArea } from "./sections/edit-area";
 import { actions } from "./store/actions";
 
 const PageRoot = () => {
   return (
     <div className="w-dvw h-dvh bg-gray-700 flex-h">
       <PickerColumn />
-      <EditField />
+      <EditArea />
       {false && <CreditsPanel />}
     </div>
   );

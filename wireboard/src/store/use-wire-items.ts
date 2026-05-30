@@ -4,11 +4,11 @@ import { WiringLayerWire } from "@/components-ex/wiring-layer";
 import { store } from "@/store/store";
 
 export function useWireItems() {
-  const { unitItems, speakerPort, keyboardPort } = store.useSnapshot();
+  const { unitItems } = store.useSnapshot();
   return useMemo(() => {
     const unitItemMap = new Map(unitItems.map((item) => [item.unitId, item]));
     const wires: WiringLayerWire[] = [];
-    for (const item of [...unitItems, keyboardPort]) {
+    for (const item of unitItems) {
       if (!item.destUnitId) continue;
 
       const id = `${item.unitId}->${item.destUnitId}`;
@@ -20,11 +20,6 @@ export function useWireItems() {
               x: item.position.x - sd.width / 2 + sd.outputPort.x,
               y: item.position.y - sd.height / 2 + sd.outputPort.y,
             };
-
-      if (item.destUnitId === "$output") {
-        wires.push({ id, p1, p2: speakerPort.position });
-        continue;
-      }
       const destItem = unitItemMap.get(item.destUnitId);
       if (!destItem) continue;
       const p2 = {
@@ -34,5 +29,5 @@ export function useWireItems() {
       wires.push({ id, p1, p2 });
     }
     return wires;
-  }, [unitItems, speakerPort, keyboardPort]);
+  }, [unitItems]);
 }
