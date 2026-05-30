@@ -1,6 +1,5 @@
 import { unitCatalogKeyDragMime } from "@/base/drag-drop-key";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
-import { slotCardDimensions } from "@/base/slot-card-dimensions";
 import { FieldSightPlane } from "@/components-ex/field-sight-plane";
 import { WiringLayer } from "@/components-ex/wiring-layer";
 import { SlotCardBox } from "@/organisms/slot-card-box";
@@ -37,12 +36,10 @@ function useDropHandlers() {
       const position = {
         x:
           (e.clientX - rect.left - rect.width / 2 - sight.eyeOffset.x) / scale +
-          boardSize.width / 2 -
-          slotCardDimensions.width / 2,
+          boardSize.width / 2,
         y:
           (e.clientY - rect.top - rect.height / 2 - sight.eyeOffset.y) / scale +
-          boardSize.height / 2 -
-          slotCardDimensions.height / 2,
+          boardSize.height / 2,
       };
       actions.addUnit(catalogKey, position);
     },
