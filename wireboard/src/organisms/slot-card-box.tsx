@@ -29,6 +29,7 @@ const OutputPortCell = ({ unit }: { unit: UnitItem }) => {
     if (unit.destUnitId) {
       actions.removeConnection(unit.unitId);
     } else {
+      actions.connectToNearestUnit(unit.unitId);
     }
   };
   return <PortCell withIcon onPointerDown={handlePointerDown} />;
