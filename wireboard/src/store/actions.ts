@@ -25,7 +25,13 @@ function getNextUnitId(existingItems: UnitItem[]) {
 
 export const actions = {
   setUnitPosition(unitId: string, position: Point) {
-    actionsInternal.patchUnitItem(unitId, { position });
+    if (unitId === "$output") {
+      store.patchSpeakerPort({ position });
+    } else if (unitId === "$keyboard") {
+      store.patchKeyboardPort({ position });
+    } else {
+      actionsInternal.patchUnitItem(unitId, { position });
+    }
   },
   addUnit(catalogKey: CatalogKey, position: Point) {
     store.setUnitItems((prev) => [
