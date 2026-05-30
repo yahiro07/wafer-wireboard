@@ -1,6 +1,6 @@
 import { useMemo } from "react";
+import { slotCardDimensions } from "@/base/slot-card-dimensions";
 import { WiringLayerWire } from "@/components-ex/wiring-layer";
-import { portRelativePositions } from "@/organisms/slot-card-box";
 import { store } from "@/store/store";
 
 export function useWireItems() {
@@ -13,14 +13,14 @@ export function useWireItems() {
       const destItem = unitItemMap.get(item.destUnitId);
       if (!destItem) continue;
       const id = `${item.unitId}->${item.destUnitId}`;
-      const rps = portRelativePositions;
+      const dim = slotCardDimensions;
       const p1 = {
-        x: item.position.x + rps.outputPort.x,
-        y: item.position.y + rps.outputPort.y,
+        x: item.position.x + dim.outputPort.x,
+        y: item.position.y + dim.outputPort.y,
       };
       const p2 = {
-        x: destItem.position.x + rps.inputPort.x,
-        y: destItem.position.y + rps.inputPort.y,
+        x: destItem.position.x + dim.inputPort.x,
+        y: destItem.position.y + dim.inputPort.y,
       };
       wires.push({ id, p1, p2 });
     }

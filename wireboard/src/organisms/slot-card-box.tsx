@@ -1,5 +1,6 @@
 import { startDragSession } from "beams/ax-ui/drag-session";
 import { npx } from "beams/ax-ui/styling-utils";
+import { slotCardDimensions } from "@/base/slot-card-dimensions";
 import { Icons, IconsEx } from "@/components/icons";
 import { UnitFrameEx } from "@/organisms/unit-frame-ex";
 import { actions } from "@/store/actions";
@@ -14,14 +15,9 @@ const PortCell = ({ withIcon }: { withIcon?: boolean }) => {
   );
 };
 
-export const portRelativePositions = {
-  outputPort: { x: 20, y: 23 },
-  inputPort: { x: 20, y: 157 },
-};
-
 const PortRelativePositionDebugOverlay = () => {
-  const inputPos = portRelativePositions.inputPort;
-  const outputPos = portRelativePositions.outputPort;
+  const inputPos = slotCardDimensions.inputPort;
+  const outputPos = slotCardDimensions.outputPort;
   return (
     <div className="absolute w-full h-full">
       <div
@@ -72,7 +68,13 @@ export const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
       className="absolute"
       style={{ left: npx(unit.position.x), top: npx(unit.position.y) }}
     >
-      <div className="relative w-[400px] h-[180px] flex-h">
+      <div
+        className="relative flex-h"
+        style={{
+          width: npx(slotCardDimensions.width),
+          height: npx(slotCardDimensions.height),
+        }}
+      >
         <div className="w-[40px] bg-gray-500 flex-v justify-between items-center p-2">
           <PortCell withIcon />
           <PortCell />

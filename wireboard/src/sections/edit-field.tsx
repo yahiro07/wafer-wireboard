@@ -1,5 +1,6 @@
 import { unitCatalogKeyDragMime } from "@/base/drag-drop-key";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
+import { slotCardDimensions } from "@/base/slot-card-dimensions";
 import { FieldSightPlane } from "@/components-ex/field-sight-plane";
 import { WiringLayer } from "@/components-ex/wiring-layer";
 import { SlotCardBox } from "@/organisms/slot-card-box";
@@ -13,37 +14,46 @@ function isCatalogKey(value: string): value is CatalogKey {
   return Object.prototype.hasOwnProperty.call(catalog, value);
 }
 
+function useDropHandlers() {
+  return {
+    onDragOver(e: React.DragEvent<HTMLDivElement>) {
+      if (e.dataTransfer.types.includes(unitCatalogKeyDragMime)) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "copy";
+      }
+    },
+    onDrop(e: React.DragEvent<HTMLDivElement>) {
+      const catalogKey = e.dataTransfer.getData(unitCatalogKeyDragMime);
+      if (!isCatalogKey(catalogKey)) return;
+
+      e.preventDefault();
+      const rect = e.currentTarget.getBoundingClientRect();
+      const sight = store.state.sight;
+      const scale = 2 ** sight.zoom;
+      const position = {
+        x:
+          (e.clientX - rect.left - rect.width / 2 - sight.eyeOffset.x) / scale +
+          boardSize.width / 2 -
+          slotCardDimensions.width / 2,
+        y:
+          (e.clientY - rect.top - rect.height / 2 - sight.eyeOffset.y) / scale +
+          boardSize.height / 2 -
+          slotCardDimensions.height / 2,
+      };
+      actions.addUnit(catalogKey, position);
+    },
+  };
+}
+
 export const EditField = () => {
   const { unitItems, sight } = store.useSnapshot();
   const wires = useWireItems();
+  const dropHandlers = useDropHandlers();
   return (
     <div
       className="grow"
-      onDragOver={(e) => {
-        if (e.dataTransfer.types.includes(unitCatalogKeyDragMime)) {
-          e.preventDefault();
-          e.dataTransfer.dropEffect = "copy";
-        }
-      }}
-      onDrop={(e) => {
-        const catalogKey = e.dataTransfer.getData(unitCatalogKeyDragMime);
-        if (!isCatalogKey(catalogKey)) return;
-
-        e.preventDefault();
-        const rect = e.currentTarget.getBoundingClientRect();
-        const scale = 2 ** sight.zoom;
-        const position = {
-          x:
-            (e.clientX - rect.left - rect.width / 2 - sight.eyeOffset.x) /
-              scale +
-            boardSize.width / 2,
-          y:
-            (e.clientY - rect.top - rect.height / 2 - sight.eyeOffset.y) /
-              scale +
-            boardSize.height / 2,
-        };
-        actions.addUnit(catalogKey, position);
-      }}
+      onDragOver={dropHandlers.onDragOver}
+      onDrop={dropHandlers.onDrop}
     >
       <FieldSightPlane
         sight={sight}
