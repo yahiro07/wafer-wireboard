@@ -65,23 +65,25 @@ const sightHandlers = createFieldSightHandlers(
 );
 
 function buildDefaultScene() {
+  const bx = 1000;
+  const by = 400;
   const unitItems: UnitItem[] = [
     {
       unitId: "unit1",
       catalogKey: "miniSynth",
-      position: { x: 100, y: 100 },
+      position: { x: bx + 100, y: by + 100 },
     },
     {
       unitId: "unit2",
       destUnitId: "unit1",
       catalogKey: "lseq1",
-      position: { x: 150, y: 360 },
+      position: { x: bx + 150, y: by + 360 },
     },
     {
       unitId: "unit3",
       destUnitId: "unit2",
       catalogKey: "mu4Keyboard",
-      position: { x: 180, y: 620 },
+      position: { x: bx + 180, y: by + 620 },
     },
   ];
   store.setUnitItems(unitItems);
