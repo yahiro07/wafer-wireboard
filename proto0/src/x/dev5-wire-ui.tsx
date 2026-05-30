@@ -6,6 +6,11 @@ import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
 import { UnitFrame } from "wus-host/react";
 import { Icons } from "@/components/icons";
+import {
+  createFieldSightHandlers,
+  FieldSight,
+  FieldSightPlane,
+} from "@/components-ex/field-sight";
 import catalog from "../unit-inventories.json";
 
 type CatalogKey = keyof typeof catalog;
@@ -43,13 +48,22 @@ type UnitItem = {
 
 type StoreState = {
   unitItems: UnitItem[];
+  sight: FieldSight;
 };
 
 const audioContext = new AudioContext();
 const hostSystem = createHostSystem(audioContext);
 const store = createStore<StoreState>({
   unitItems: [],
+  sight: { zoom: -1, eyeOffset: { x: 0, y: 0 } },
 });
+
+const sightHandlers = createFieldSightHandlers(
+  () => store.state.sight,
+  (attrs) => store.patchSight(attrs),
+  { minZoom: -3, maxZoom: 2 },
+);
+
 function buildDefaultScene() {
   const unitItems: UnitItem[] = [
     {
@@ -170,13 +184,23 @@ const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
   );
 };
 
+const boardSize = { width: 3000, height: 2000 };
+
 const EditField = () => {
-  const { unitItems } = store.useSnapshot();
+  const { unitItems, sight } = store.useSnapshot();
   return (
-    <div className="relative">
-      {unitItems.map((item) => (
-        <SlotCardBox key={item.unitId} unit={item} />
-      ))}
+    <div className="grow">
+      <FieldSightPlane
+        sight={sight}
+        handlers={sightHandlers}
+        boardSize={boardSize}
+      >
+        <div className="relative">
+          {unitItems.map((item) => (
+            <SlotCardBox key={item.unitId} unit={item} />
+          ))}
+        </div>
+      </FieldSightPlane>
     </div>
   );
 };
