@@ -7,12 +7,31 @@ import { actions } from "@/store/actions";
 import { getZoomScaling } from "@/store/helper";
 import { store, UnitItem } from "@/store/store";
 
-const PortCell = ({ withIcon }: { withIcon?: boolean }) => {
+const PortCell = ({
+  withIcon,
+  onPointerDown,
+}: {
+  withIcon?: boolean;
+  onPointerDown?: (e: React.PointerEvent) => void;
+}) => {
   return (
-    <div className="w-[30px] h-[30px] bg-gray-400 cursor-pointer flex-c text-gray-100">
+    <div
+      className="w-[30px] h-[30px] bg-gray-400 cursor-pointer flex-c text-gray-100"
+      onPointerDown={onPointerDown}
+    >
       {withIcon && <IconsEx.ConnectorPortUp />}
     </div>
   );
+};
+
+const OutputPortCell = ({ unit }: { unit: UnitItem }) => {
+  const handlePointerDown = (_: React.PointerEvent) => {
+    if (unit.destUnitId) {
+      actions.removeConnection(unit.unitId);
+    } else {
+    }
+  };
+  return <PortCell withIcon onPointerDown={handlePointerDown} />;
 };
 
 const PortRelativePositionDebugOverlay = () => {
@@ -76,7 +95,7 @@ export const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
         }}
       >
         <div className="w-[40px] bg-gray-500 flex-v justify-between items-center p-2">
-          <PortCell withIcon />
+          <OutputPortCell unit={unit} />
           <PortCell />
         </div>
         <div className="grow bg-gray-600">
