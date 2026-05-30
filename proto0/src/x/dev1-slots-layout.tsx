@@ -13,7 +13,7 @@ import {
   createFieldSightHandlers,
   FieldSight,
   FieldSightPlane,
-} from "@/components-ex/field-sight";
+} from "@/components-ex/field-sight-plane";
 import { UnitFrameScaler } from "@/components-ex/unit-frame-scaler";
 import catalog from "../unit-inventories.json";
 

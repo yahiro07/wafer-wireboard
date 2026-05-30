@@ -10,7 +10,7 @@ import {
   createFieldSightHandlers,
   FieldSight,
   FieldSightPlane,
-} from "@/components-ex/field-sight";
+} from "@/components-ex/field-sight-plane";
 import catalog from "../unit-inventories.json";
 
 type CatalogKey = keyof typeof catalog;
