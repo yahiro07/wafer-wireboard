@@ -17,6 +17,8 @@ export type UnitItem = {
 export type StoreState = {
   unitItems: UnitItem[];
   sight: FieldSight;
+  keyboardPortPos: Point;
+  speakerPortPos: Point;
 };
 
 const audioContext = new AudioContext();
@@ -25,6 +27,8 @@ export const hostSystem = createHostSystem(audioContext);
 export const store = createStore<StoreState>({
   unitItems: [],
   sight: { zoom: -1, eyeOffset: { x: 0, y: 0 } },
+  speakerPortPos: { x: 4500, y: 2000 },
+  keyboardPortPos: { x: 4500, y: 3500 },
 });
 
 export const sightHandlers = createFieldSightHandlers(
@@ -34,26 +38,25 @@ export const sightHandlers = createFieldSightHandlers(
 );
 
 function buildDefaultScene() {
-  const bx = 4000;
-  const by = 2500;
+  const by = 2400;
   const unitItems: UnitItem[] = [
     {
       unitId: "unit1",
       destUnitId: "$output",
       catalogKey: "specbar",
-      position: { x: bx + 100, y: by + 100 },
+      position: { x: 4300, y: by + 100 },
     },
     {
       unitId: "unit2",
       destUnitId: "unit1",
       catalogKey: "miniSynth",
-      position: { x: bx + 150, y: by + 360 },
+      position: { x: 4500, y: by + 360 },
     },
     {
       unitId: "unit3",
       destUnitId: "unit2",
       catalogKey: "mu4Keyboard",
-      position: { x: bx + 180, y: by + 620 },
+      position: { x: 4600, y: by + 620 },
     },
   ];
   store.setUnitItems(unitItems);

@@ -4,6 +4,10 @@ import { slotCardDimensions } from "@/base/slot-card-dimensions";
 import { FieldSightPlane } from "@/components-ex/field-sight-plane";
 import { WiringLayer } from "@/components-ex/wiring-layer";
 import { SlotCardBox } from "@/organisms/slot-card-box";
+import {
+  KeyboardSystemPortBox,
+  SpeakerSystemPortBox,
+} from "@/organisms/system-port-box";
 import { actions } from "@/store/actions";
 import { sightHandlers, store } from "@/store/store";
 import { useWireItems } from "@/store/use-wire-items";
@@ -65,6 +69,8 @@ export const EditField = () => {
           {unitItems.map((item) => (
             <SlotCardBox key={item.unitId} unit={item} />
           ))}
+          <KeyboardSystemPortBox />
+          <SpeakerSystemPortBox />
         </div>
       </FieldSightPlane>
     </div>
