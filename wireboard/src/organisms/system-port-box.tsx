@@ -36,15 +36,20 @@ const SystemPortBox = ({
   unit,
   iconContent,
   sideContent,
+  yOffset = 0,
 }: {
   unit: SystemPortUnitItem;
   iconContent: ReactNode;
   sideContent?: ReactNode;
+  yOffset?: number;
 }) => {
   return (
     <div
       className={clsx("absolute -translate-x-1/2 -translate-y-1/2")}
-      style={{ left: npx(unit.position.x), top: npx(unit.position.y) }}
+      style={{
+        left: npx(unit.position.x),
+        top: npx(unit.position.y + yOffset),
+      }}
     >
       <div className="relative">
         <div className="flex-c w-[80px] h-[120px] bg-gray-500 text-gray-300">
@@ -73,6 +78,7 @@ export const SpeakerSystemPortBox = () => {
   return (
     <SystemPortBox
       unit={speakerPort}
+      yOffset={-50}
       iconContent={<Icons.Speaker size={65} />}
       sideContent={<div className="h-full bg-black text-white">aaa</div>}
     />
@@ -92,6 +98,7 @@ export const KeyboardSystemPortBox = () => {
   return (
     <SystemPortBox
       unit={keyboardPort}
+      yOffset={50}
       iconContent={
         <div
           className="relative w-full h-full flex-c cursor-pointer"
