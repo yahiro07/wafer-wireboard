@@ -1,16 +1,50 @@
+import { unitCatalogKeyDragMime } from "@/base/drag-drop-key";
+import { CatalogKey, catalog } from "@/base/showcase-entries";
 import { FieldSightPlane } from "@/components-ex/field-sight-plane";
 import { WiringLayer } from "@/components-ex/wiring-layer";
 import { SlotCardBox } from "@/organisms/slot-card-box";
+import { actions } from "@/store/actions";
 import { sightHandlers, store } from "@/store/store";
 import { useWireItems } from "@/store/use-wire-items";
 
 const boardSize = { width: 9000, height: 6000 };
 
+function isCatalogKey(value: string): value is CatalogKey {
+  return Object.prototype.hasOwnProperty.call(catalog, value);
+}
+
 export const EditField = () => {
   const { unitItems, sight } = store.useSnapshot();
   const wires = useWireItems();
   return (
-    <div className="grow">
+    <div
+      className="grow"
+      onDragOver={(e) => {
+        if (e.dataTransfer.types.includes(unitCatalogKeyDragMime)) {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "copy";
+        }
+      }}
+      onDrop={(e) => {
+        const catalogKey = e.dataTransfer.getData(unitCatalogKeyDragMime);
+        if (!isCatalogKey(catalogKey)) return;
+
+        e.preventDefault();
+        const rect = e.currentTarget.getBoundingClientRect();
+        const scale = 2 ** sight.zoom;
+        const position = {
+          x:
+            (e.clientX - rect.left - rect.width / 2 - sight.eyeOffset.x) /
+              scale +
+            boardSize.width / 2,
+          y:
+            (e.clientY - rect.top - rect.height / 2 - sight.eyeOffset.y) /
+              scale +
+            boardSize.height / 2,
+        };
+        actions.addUnit(catalogKey, position);
+      }}
+    >
       <FieldSightPlane
         sight={sight}
         handlers={sightHandlers}
