@@ -1,7 +1,9 @@
 {
   "name": "wireboard",
+  "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "vite dev --force",
+    "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview"
   },
