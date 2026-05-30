@@ -25,7 +25,7 @@ export const WiringLayer = ({ boardSize, wires }: Props) => {
           x2={wire.p2.x}
           y2={wire.p2.y}
           stroke="#888"
-          strokeWidth={8}
+          strokeWidth={10}
         />
       ))}
     </svg>
