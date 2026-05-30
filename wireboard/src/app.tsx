@@ -1,7 +1,7 @@
 import { mountAppRoot } from "beams/ax-react/mount-app-root";
 import { npx } from "beams/ax-ui/styling-utils";
 import { ScalerBoxAutoSized } from "beams/mo-react/components/scaler-box-auto-sized";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
 import { UnitFrame } from "wus-host/react";
@@ -11,6 +11,7 @@ import {
   FieldSight,
   FieldSightPlane,
 } from "@/components-ex/field-sight-plane";
+import { WiringLayer, WiringLayerWire } from "@/components-ex/wiring-layer";
 import catalog from "./unit-inventories.json";
 
 type CatalogKey = keyof typeof catalog;
@@ -224,10 +225,36 @@ const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
   );
 };
 
+function useWireItems() {
+  const { unitItems } = store.useSnapshot();
+  return useMemo(() => {
+    const unitItemMap = new Map(unitItems.map((item) => [item.unitId, item]));
+    const wires: WiringLayerWire[] = [];
+    for (const item of unitItems) {
+      if (!item.destUnitId) continue;
+      const destItem = unitItemMap.get(item.destUnitId);
+      if (!destItem) continue;
+      const id = `${item.unitId}->${item.destUnitId}`;
+      const rps = portRelativePositions;
+      const p1 = {
+        x: item.position.x + rps.outputPort.x,
+        y: item.position.y + rps.outputPort.y,
+      };
+      const p2 = {
+        x: destItem.position.x + rps.inputPort.x,
+        y: destItem.position.y + rps.inputPort.y,
+      };
+      wires.push({ id, p1, p2 });
+    }
+    return wires;
+  }, [unitItems]);
+}
+
 const boardSize = { width: 9000, height: 6000 };
 
 const EditField = () => {
   const { unitItems, sight } = store.useSnapshot();
+  const wires = useWireItems();
   return (
     <div className="grow">
       <FieldSightPlane
@@ -235,6 +262,7 @@ const EditField = () => {
         handlers={sightHandlers}
         boardSize={boardSize}
       >
+        <WiringLayer boardSize={boardSize} wires={wires} />
         <div className="relative">
           {unitItems.map((item) => (
             <SlotCardBox key={item.unitId} unit={item} />
