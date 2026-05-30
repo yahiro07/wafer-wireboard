@@ -1,5 +1,6 @@
 import { Point } from "beams/ax-ui/common-types";
 import { CatalogKey } from "@/base/showcase-entries";
+import { slotCardDimensions } from "@/base/slot-card-dimensions";
 import { store, UnitItem } from "@/store/store";
 
 const actionsInternal = {
@@ -32,8 +33,10 @@ export const actions = {
   connectToNearestUnit(uintId: string) {
     const unit = store.state.unitItems.find((item) => item.unitId === uintId);
     if (!unit) return;
+    const hh = slotCardDimensions.height / 2;
     const targetUnits = store.state.unitItems.filter(
-      (item) => item.unitId !== uintId && item.position.y < unit.position.y,
+      (item) =>
+        item.unitId !== uintId && item.position.y + hh < unit.position.y - hh,
     );
     const measured = targetUnits.map((item) => ({
       unitId: item.unitId,
