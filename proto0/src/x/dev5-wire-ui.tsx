@@ -6,7 +6,6 @@ import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
 import { UnitFrame } from "wus-host/react";
 import { Icons, IconsEx } from "@/components/icons";
-// import { Icons } from "@/components/icons";
 import {
   createFieldSightHandlers,
   FieldSight,
@@ -66,8 +65,8 @@ const sightHandlers = createFieldSightHandlers(
 );
 
 function buildDefaultScene() {
-  const bx = 1000;
-  const by = 400;
+  const bx = 4000;
+  const by = 2500;
   const unitItems: UnitItem[] = [
     {
       unitId: "unit1",
@@ -225,7 +224,7 @@ const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
   );
 };
 
-const boardSize = { width: 3000, height: 2000 };
+const boardSize = { width: 9000, height: 6000 };
 
 const EditField = () => {
   const { unitItems, sight } = store.useSnapshot();
