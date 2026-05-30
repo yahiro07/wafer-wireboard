@@ -106,11 +106,23 @@ export const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
             catalogKey={unit.catalogKey}
           />
         </div>
-        <div
-          className="w-[40px] bg-gray-500 flex-c text-white text-[28px] cursor-pointer"
-          onPointerDown={(e) => handleGripPointerDown(e, unit)}
-        >
-          <Icons.Grip />
+        <div className="w-[40px] bg-gray-500 flex-v text-white py-1">
+          <div
+            className="h-[40px] flex-c text-[22px] cursor-pointer"
+            onClick={() => actions.removeUnit(unit.unitId)}
+          >
+            <Icons.DeleteBin />
+          </div>
+          <div
+            className="grow flex-c text-[28px] cursor-pointer pb-[40px]"
+            onPointerDown={(e) => handleGripPointerDown(e, unit)}
+          >
+            <Icons.Grip />
+          </div>
+          {/* <div
+            className="bd-red h-[40px] flex-c text-[20px] cursor-pointer"
+            onPointerDown={(e) => handleGripPointerDown(e, unit)}
+          /> */}
         </div>
         {false && <PortRelativePositionDebugOverlay />}
       </div>

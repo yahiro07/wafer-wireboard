@@ -5,8 +5,8 @@ import { store, UnitItem } from "@/store/store";
 
 const actionsInternal = {
   patchUnitItem(unitId: string, attrs: Partial<UnitItem>) {
-    store.setUnitItems(
-      store.state.unitItems.map((item) =>
+    store.setUnitItems((prev) =>
+      prev.map((item) =>
         item.unitId === unitId ? { ...item, ...attrs } : item,
       ),
     );
@@ -49,5 +49,17 @@ export const actions = {
     const nearestUnit = sorted[0];
     if (!nearestUnit) return;
     actionsInternal.patchUnitItem(uintId, { destUnitId: nearestUnit.unitId });
+  },
+  removeUnit(unitId: string) {
+    actionsInternal.patchUnitItem(unitId, { destUnitId: undefined });
+    const dependentUnits = store.state.unitItems.filter(
+      (item) => item.destUnitId === unitId,
+    );
+    for (const dependentUnit of dependentUnits) {
+      actionsInternal.patchUnitItem(dependentUnit.unitId, {
+        destUnitId: undefined,
+      });
+    }
+    store.setUnitItems((prev) => prev.filter((item) => item.unitId !== unitId));
   },
 };
