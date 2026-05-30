@@ -124,7 +124,7 @@ const UnitFrameEx = ({
   catalogKey,
 }: {
   unitId: string;
-  destUnitId: string;
+  destUnitId?: string;
   catalogKey: CatalogKey;
 }) => {
   // const state = store.useSnapshot();
@@ -175,7 +175,7 @@ const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
       <div className="grow bg-gray-600">
         <UnitFrameEx
           unitId={unit.unitId}
-          destUnitId={unit.unitId}
+          destUnitId={unit.destUnitId}
           catalogKey={unit.catalogKey}
         />
       </div>
