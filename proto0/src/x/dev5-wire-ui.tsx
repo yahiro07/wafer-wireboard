@@ -71,13 +71,14 @@ function buildDefaultScene() {
   const unitItems: UnitItem[] = [
     {
       unitId: "unit1",
-      catalogKey: "miniSynth",
+      destUnitId: "$output",
+      catalogKey: "specbar",
       position: { x: bx + 100, y: by + 100 },
     },
     {
       unitId: "unit2",
       destUnitId: "unit1",
-      catalogKey: "lseq1",
+      catalogKey: "miniSynth",
       position: { x: bx + 150, y: by + 360 },
     },
     {
