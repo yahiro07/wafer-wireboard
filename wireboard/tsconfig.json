@@ -21,9 +21,13 @@
       "@/*": [
         "./src/*"
       ],
+      "beams/*": [
+        "../../beam/beams/src/*"
+      ]
     }
   },
   "include": [
-    "src"
+    "src",
+    "../../beam/beams/src/*"
   ]
 }
