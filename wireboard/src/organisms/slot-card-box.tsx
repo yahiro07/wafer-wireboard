@@ -83,16 +83,20 @@ const handleGripPointerDown = (e0: React.PointerEvent, unit: UnitItem) => {
 };
 
 export const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
+  const sd = slotCardDimensions;
   return (
     <div
       className="absolute"
-      style={{ left: npx(unit.position.x), top: npx(unit.position.y) }}
+      style={{
+        left: npx(unit.position.x - sd.width / 2),
+        top: npx(unit.position.y - sd.height / 2),
+      }}
     >
       <div
         className="relative flex-h"
         style={{
-          width: npx(slotCardDimensions.width),
-          height: npx(slotCardDimensions.height),
+          width: npx(sd.width),
+          height: npx(sd.height),
         }}
       >
         <div className="w-[40px] bg-gray-500 flex-v justify-between items-center p-2">

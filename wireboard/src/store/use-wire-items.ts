@@ -13,14 +13,14 @@ export function useWireItems() {
       const destItem = unitItemMap.get(item.destUnitId);
       if (!destItem) continue;
       const id = `${item.unitId}->${item.destUnitId}`;
-      const dim = slotCardDimensions;
+      const sd = slotCardDimensions;
       const p1 = {
-        x: item.position.x + dim.outputPort.x,
-        y: item.position.y + dim.outputPort.y,
+        x: item.position.x - sd.width / 2 + sd.outputPort.x,
+        y: item.position.y - sd.height / 2 + sd.outputPort.y,
       };
       const p2 = {
-        x: destItem.position.x + dim.inputPort.x,
-        y: destItem.position.y + dim.inputPort.y,
+        x: destItem.position.x - sd.width / 2 + sd.inputPort.x,
+        y: destItem.position.y - sd.height / 2 + sd.inputPort.y,
       };
       wires.push({ id, p1, p2 });
     }
