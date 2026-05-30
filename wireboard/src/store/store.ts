@@ -14,11 +14,16 @@ export type UnitItem = {
   position: Point;
 };
 
+export type SystemPortUnitItem = {
+  unitId: "$output" | "$keyboard";
+  position: Point;
+};
+
 export type StoreState = {
   unitItems: UnitItem[];
   sight: FieldSight;
-  keyboardPortPos: Point;
-  speakerPortPos: Point;
+  keyboardPort: SystemPortUnitItem;
+  speakerPort: SystemPortUnitItem;
 };
 
 const audioContext = new AudioContext();
@@ -27,8 +32,14 @@ export const hostSystem = createHostSystem(audioContext);
 export const store = createStore<StoreState>({
   unitItems: [],
   sight: { zoom: -1, eyeOffset: { x: 0, y: 0 } },
-  speakerPortPos: { x: 4500, y: 2000 },
-  keyboardPortPos: { x: 4500, y: 3500 },
+  speakerPort: {
+    unitId: "$output",
+    position: { x: 0, y: 0 },
+  },
+  keyboardPort: {
+    unitId: "$keyboard",
+    position: { x: 0, y: 0 },
+  },
 });
 
 export const sightHandlers = createFieldSightHandlers(
@@ -60,5 +71,11 @@ function buildDefaultScene() {
     },
   ];
   store.setUnitItems(unitItems);
+  store.patchSpeakerPort({
+    position: { x: 4500, y: 2000 },
+  });
+  store.patchKeyboardPort({
+    position: { x: 4500, y: 3500 },
+  });
 }
 buildDefaultScene();

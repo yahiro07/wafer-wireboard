@@ -26,18 +26,18 @@ const SystemPortBox = ({
 };
 
 export const KeyboardSystemPortBox = () => {
-  const { keyboardPortPos } = store.useSnapshot();
+  const { keyboardPort } = store.useSnapshot();
   return (
-    <SystemPortBox position={keyboardPortPos}>
+    <SystemPortBox position={keyboardPort.position}>
       <Icons.Piano size={100} />
     </SystemPortBox>
   );
 };
 
 export const SpeakerSystemPortBox = () => {
-  const { speakerPortPos } = store.useSnapshot();
+  const { speakerPort } = store.useSnapshot();
   return (
-    <SystemPortBox position={speakerPortPos}>
+    <SystemPortBox position={speakerPort.position}>
       <Icons.Speaker size={90} />
     </SystemPortBox>
   );

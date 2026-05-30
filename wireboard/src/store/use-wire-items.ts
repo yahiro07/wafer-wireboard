@@ -4,7 +4,7 @@ import { WiringLayerWire } from "@/components-ex/wiring-layer";
 import { store } from "@/store/store";
 
 export function useWireItems() {
-  const { unitItems, speakerPortPos } = store.useSnapshot();
+  const { unitItems, speakerPort } = store.useSnapshot();
   return useMemo(() => {
     const unitItemMap = new Map(unitItems.map((item) => [item.unitId, item]));
     const wires: WiringLayerWire[] = [];
@@ -19,7 +19,7 @@ export function useWireItems() {
       };
 
       if (item.destUnitId === "$output") {
-        wires.push({ id, p1, p2: speakerPortPos });
+        wires.push({ id, p1, p2: speakerPort.position });
         continue;
       }
       const destItem = unitItemMap.get(item.destUnitId);
@@ -31,5 +31,5 @@ export function useWireItems() {
       wires.push({ id, p1, p2 });
     }
     return wires;
-  }, [unitItems, speakerPortPos]);
+  }, [unitItems, speakerPort]);
 }

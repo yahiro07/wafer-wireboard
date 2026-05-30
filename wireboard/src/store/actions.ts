@@ -41,13 +41,18 @@ export const actions = {
     actionsInternal.patchUnitItem(unitId, { destUnitId: undefined });
   },
   connectToNearestUnit(uintId: string) {
-    const unit = store.state.unitItems.find((item) => item.unitId === uintId);
+    const { unitItems, speakerPort } = store.state;
+    const unit = unitItems.find((item) => item.unitId === uintId);
     if (!unit) return;
     const hh = slotCardDimensions.height / 2;
-    const targetUnits = store.state.unitItems.filter(
-      (item) =>
-        item.unitId !== uintId && item.position.y + hh < unit.position.y - hh,
-    );
+
+    const targetUnits = [
+      ...unitItems.filter(
+        (item) =>
+          item.unitId !== uintId && item.position.y + hh < unit.position.y - hh,
+      ),
+      speakerPort,
+    ];
     const measured = targetUnits.map((item) => ({
       unitId: item.unitId,
       distance: Math.hypot(
