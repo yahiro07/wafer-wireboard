@@ -1,5 +1,5 @@
 {
-  "name": "mini-groove-proto0",
+  "name": "wireboard",
   "scripts": {
     "dev": "vite dev --force",
     "build": "vite build",
