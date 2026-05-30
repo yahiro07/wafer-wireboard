@@ -5,7 +5,8 @@ import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
 import { UnitFrame } from "wus-host/react";
-import { Icons } from "@/components/icons";
+import { Icons, IconsEx } from "@/components/icons";
+// import { Icons } from "@/components/icons";
 import {
   createFieldSightHandlers,
   FieldSight,
@@ -158,8 +159,12 @@ const UnitFrameEx = ({
   );
 };
 
-const PortCell = () => {
-  return <div className="w-[30px] h-[30px] bg-gray-400 cursor-pointer"></div>;
+const PortCell = ({ withIcon }: { withIcon?: boolean }) => {
+  return (
+    <div className="w-[30px] h-[30px] bg-gray-400 cursor-pointer flex-c text-gray-100">
+      {withIcon && <IconsEx.ConnectorPortUp />}
+    </div>
+  );
 };
 
 const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
@@ -169,7 +174,7 @@ const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
       style={{ left: npx(unit.position.x), top: npx(unit.position.y) }}
     >
       <div className="w-[40px] bg-gray-500 flex-v justify-between items-center p-2">
-        <PortCell />
+        <PortCell withIcon />
         <PortCell />
       </div>
       <div className="grow bg-gray-600">
