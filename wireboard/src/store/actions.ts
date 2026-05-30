@@ -14,11 +14,12 @@ const actionsInternal = {
 };
 
 function getNextUnitId(existingItems: UnitItem[]) {
-  const maxNumber = Math.max(
+  let maxNumber = Math.max(
     ...existingItems.map((item) =>
       parseInt(item.unitId.replace("unit", ""), 10),
     ),
   );
+  if (!Number.isFinite(maxNumber)) maxNumber = 0;
   return `unit${maxNumber + 1}`;
 }
 
