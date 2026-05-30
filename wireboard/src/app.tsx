@@ -216,7 +216,7 @@ const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
             catalogKey={unit.catalogKey}
           />
         </div>
-        <div className="w-[40px] bg-gray-500 flex-c text-white text-[24px] cursor-pointer">
+        <div className="w-[40px] bg-gray-500 flex-c text-white text-[28px] cursor-pointer">
           <Icons.Grip />
         </div>
         {false && <PortRelativePositionDebugOverlay />}
