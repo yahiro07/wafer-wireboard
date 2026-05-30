@@ -1,3 +1,4 @@
+import { Point } from "beams/ax-ui/common-types";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
 import { CatalogKey } from "@/base/showcase-entries";
@@ -10,7 +11,7 @@ export type UnitItem = {
   unitId: string;
   destUnitId?: string;
   catalogKey: CatalogKey;
-  position: { x: number; y: number };
+  position: Point;
 };
 
 export type StoreState = {

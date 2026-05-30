@@ -1,3 +1,4 @@
+import { startDragSession } from "beams/ax-ui/drag-session";
 import { npx } from "beams/ax-ui/styling-utils";
 import { Icons, IconsEx } from "@/components/icons";
 import { UnitFrameEx } from "@/organisms/unit-frame-ex";
@@ -38,6 +39,17 @@ const PortRelativePositionDebugOverlay = () => {
         }}
       />
     </div>
+  );
+};
+
+const handleGripPointerDown = (e0: React.PointerEvent, unitId: string) => {
+  startDragSession(
+    e0.nativeEvent,
+    {
+      onDown(e) {},
+      onMove(e) {},
+    },
+    { coordinate: "screen" },
   );
 };
 
