@@ -1,6 +1,7 @@
 import { unitCatalogKeyDragMime } from "@/base/drag-drop-key";
 import { catalog } from "@/base/showcase-entries";
 import { InfoButton } from "@/features/foreground-ui/floating-icons";
+import { GithubBadge } from "@/features/foreground-ui/github-badge";
 import { FieldSightPlane } from "@/features/main-edit-area/field-sight-plane";
 import {
   KeyboardSystemPortBox,
@@ -78,6 +79,7 @@ export const MainEditArea = () => {
         </div>
       </FieldSightPlane>
       <InfoButton />
+      <GithubBadge />
     </div>
   );
 };
