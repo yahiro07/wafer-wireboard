@@ -3,7 +3,7 @@ import { Size } from "beams/ax-ui/common-types";
 import { startDragSession } from "beams/ax-ui/drag-session";
 import { useDomElementSize } from "beams/mo-react/hooks/use-dom-element-size";
 import clsx from "clsx";
-import { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 
 export type FieldSight = {
   eyeScaling: number;
@@ -127,7 +127,6 @@ export const FieldSightPlane = ({
           left: 0,
           transform: transformSpec,
           transformOrigin: "top left",
-          border: "solid 2px #ccc8",
         }}
       >
         <div

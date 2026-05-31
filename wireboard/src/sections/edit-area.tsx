@@ -62,7 +62,7 @@ export const EditArea = () => {
         boardSize={boardSize}
       >
         <WiringLayer boardSize={boardSize} wires={wires} />
-        <div className="relative">
+        <div className="relative h-full" style={{ border: "solid 2px #ccc8" }}>
           {unitItems.map((item) => {
             if (item.unitId === "builtInKeyboard") {
               return (
