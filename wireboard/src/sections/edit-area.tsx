@@ -2,6 +2,7 @@ import { unitCatalogKeyDragMime } from "@/base/drag-drop-key";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
 import { FieldSightPlane } from "@/components-ex/field-sight-plane";
 import { WiringLayer } from "@/components-ex/wiring-layer";
+import { InfoButton } from "@/organisms/floating-icons";
 import { SlotCardBox } from "@/organisms/slot-card-box";
 import {
   KeyboardSystemPortBox,
@@ -52,7 +53,7 @@ export const EditArea = () => {
   const dropHandlers = useDropHandlers();
   return (
     <div
-      className="grow"
+      className="grow relative"
       onDragOver={dropHandlers.onDragOver}
       onDrop={dropHandlers.onDrop}
     >
@@ -80,6 +81,7 @@ export const EditArea = () => {
           })}
         </div>
       </FieldSightPlane>
+      <InfoButton />
     </div>
   );
 };

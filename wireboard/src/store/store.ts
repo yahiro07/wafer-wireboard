@@ -21,6 +21,7 @@ export type StoreState = {
   bpm: number;
   playing: boolean;
   masterVolume: number;
+  infoPanelVisible: boolean;
 };
 
 const audioContext = new AudioContext();
@@ -33,6 +34,7 @@ export const store = createStore<StoreState>({
   bpm: 120,
   playing: false,
   masterVolume: 0.5,
+  infoPanelVisible: false,
 });
 export const sightHandlers = createFieldSightHandlers(
   () => store.state.sight,

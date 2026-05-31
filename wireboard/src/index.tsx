@@ -13,11 +13,12 @@ import { EditArea } from "./sections/edit-area";
 import { actions } from "./store/actions";
 
 const PageRoot = () => {
+  const { infoPanelVisible } = store.useSnapshot();
   return (
     <div className="w-dvw h-dvh bg-gray-700 flex-h">
-      <EditArea />
       <PickerColumn />
-      {false && <CreditsPanel />}
+      <EditArea />
+      {infoPanelVisible && <CreditsPanel />}
     </div>
   );
 };

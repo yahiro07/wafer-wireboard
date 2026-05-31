@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { catalog } from "@/base/showcase-entries";
 import { Icons } from "@/components/icons";
+import { store } from "@/store/store";
 
 type CreditInfo = {
   appName: string;
@@ -47,7 +48,7 @@ const CreditEntryCard = ({ info }: { info: CreditInfo }) => {
   const [isOpen, setOpen] = useState(false);
   const toggleOpen = () => setOpen((prev) => !prev);
   return (
-    <div className="bg-gray-700 text-gray-300" style={{}}>
+    <div className="bg-gray-700 text-gray-300">
       <div className="flex-h px-2 gap-1">
         <div className="w-[90px] aspect-[1.5] h-[64px]">
           {info.imageUrl ? (
@@ -119,9 +120,17 @@ const CreditEntryCard = ({ info }: { info: CreditInfo }) => {
 
 export const CreditsPanel = () => {
   return (
-    <div className="absolute-full flex-c bg-black/20">
+    <div className="absolute-full flex-c bg-black/30">
       <div className="w-full max-w-[600px] max-h-[80%] overflow-y-auto bg-gray-800 text-white p-3">
-        <div className="px-2 py-2 font-bold">Credits</div>
+        <div className="flex-h px-2 py-2 font-bold justify-between">
+          <div>Credits</div>
+          <div
+            className="cursor-pointer"
+            onClick={() => store.setInfoPanelVisible(false)}
+          >
+            <Icons.Close />
+          </div>
+        </div>
         <div className="flex-v gap-2 h-full overflow-y-auto bg-gray-800">
           {creditEntryInfos.map((info) => (
             <CreditEntryCard key={info.appName} info={info} />
