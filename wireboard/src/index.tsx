@@ -6,11 +6,13 @@ import { mapKnobGainDb } from "beams/mo-audio/map-knob-gain-db";
 import { setupMidiKeyboardInput } from "beams/mx-audio/midi-keyboard-input";
 import { useEffect, useMemo } from "react";
 import { HostAppProvider } from "wus-host/react";
-import { CreditsPanel } from "@/sections/credits-panel";
 import { PickerColumn } from "@/sections/picker-column";
 import { hostSystem, store } from "@/store/store";
+import { InformationPanel } from "./features/information-panel";
 import { EditArea } from "./sections/edit-area";
 import { actions } from "./store/actions";
+
+store.setInfoPanelVisible(true);
 
 const PageRoot = () => {
   const { infoPanelVisible } = store.useSnapshot();
@@ -18,7 +20,7 @@ const PageRoot = () => {
     <div className="w-dvw h-dvh bg-gray-700 flex-h">
       <PickerColumn />
       <EditArea />
-      {infoPanelVisible && <CreditsPanel />}
+      {infoPanelVisible && <InformationPanel />}
     </div>
   );
 };
