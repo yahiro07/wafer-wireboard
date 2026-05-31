@@ -32,7 +32,7 @@ function useDropHandlers() {
       e.preventDefault();
       const rect = e.currentTarget.getBoundingClientRect();
       const sight = store.state.sight;
-      const scale = 2 ** sight.zoom;
+      const scale = sight.eyeScaling;
       const position = {
         x:
           (e.clientX - rect.left - rect.width / 2 - sight.eyeOffset.x) / scale +

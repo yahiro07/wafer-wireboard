@@ -25,14 +25,14 @@ export const hostSystem = createHostSystem(audioContext);
 
 export const store = createStore<StoreState>({
   unitItems: [],
-  sight: { zoom: -1, eyeOffset: { x: 0, y: 0 } },
+  sight: { eyeScaling: 0.5, eyeOffset: { x: 0, y: 0 } },
   notes: [],
 });
 
 export const sightHandlers = createFieldSightHandlers(
   () => store.state.sight,
   (attrs) => store.patchSight(attrs),
-  { minZoom: -3, maxZoom: 2 },
+  { minScaling: 0.125, maxScaling: 4 },
 );
 
 function buildDefaultScene() {

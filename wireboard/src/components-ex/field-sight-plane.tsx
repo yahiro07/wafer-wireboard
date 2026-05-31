@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { useEffect, useMemo, useRef } from "react";
 
 export type FieldSight = {
-  zoom: number; //0 for 1x
+  eyeScaling: number;
   eyeOffset: { x: number; y: number };
 };
 
@@ -18,25 +18,24 @@ export type FieldSightHandlers = {
 export function createFieldSightHandlers(
   getSight: () => FieldSight,
   setSightAttrs: (newSight: Partial<FieldSight>) => void,
-  configs: { minZoom: number; maxZoom: number },
+  configs: { minScaling: number; maxScaling: number },
 ): FieldSightHandlers {
   return {
     onWheel(e: WheelEvent) {
       const sight = getSight();
-      const zoom = sight.zoom;
-      const newZoom = clampValue(
-        zoom - e.deltaY * 0.005,
-        configs.minZoom,
-        configs.maxZoom,
+      const currScaling = sight.eyeScaling;
+      const scaleRatio = 2 ** (-e.deltaY * 0.005);
+      const nextScaling = clampValue(
+        currScaling * scaleRatio,
+        configs.minScaling,
+        configs.maxScaling,
       );
-      const scale = Math.pow(2, zoom);
-      const newScale = Math.pow(2, newZoom);
-      const scaleRatio = newScale / scale;
+      const scaleDiff = nextScaling / currScaling;
       setSightAttrs({
-        zoom: newZoom,
+        eyeScaling: nextScaling,
         eyeOffset: {
-          x: sight.eyeOffset.x * scaleRatio,
-          y: sight.eyeOffset.y * scaleRatio,
+          x: sight.eyeOffset.x * scaleDiff,
+          y: sight.eyeOffset.y * scaleDiff,
         },
       });
     },
@@ -110,7 +109,7 @@ export const FieldSightPlane = ({
     if (!outerAreaSize) return undefined;
     const tx = outerAreaSize.width / 2 + sight.eyeOffset.x;
     const ty = outerAreaSize.height / 2 + sight.eyeOffset.y;
-    const sc = Math.pow(2, sight.zoom);
+    const sc = sight.eyeScaling;
     const tx2 = boardSize.width / 2;
     const ty2 = boardSize.height / 2;
     return `translate(${tx}px, ${ty}px) scale(${sc}) translate(${-tx2}px, ${-ty2}px)`;
