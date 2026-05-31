@@ -1,7 +1,7 @@
 import { npx } from "beams/ax-ui/styling-utils";
 import { slotCardDimensions } from "@/base/slot-card-dimensions";
 import { Icons, IconsEx } from "@/components/icons";
-import { UnitFrameEx } from "@/organisms/unit-frame-ex";
+import { UnitFrameEx } from "@/features/unit-box/unit-frame-ex";
 import { actions } from "@/store/actions";
 import { UnitItem } from "@/store/store";
 import { handleGripPointerDown } from "./common-card-handlers";

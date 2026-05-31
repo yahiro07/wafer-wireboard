@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { slotCardDimensions } from "@/base/slot-card-dimensions";
-import { WiringLayerWire } from "@/components-ex/wiring-layer";
+import { WiringLayerWire } from "@/features/wiring/wiring-layer";
 import { store, UnitItem } from "@/store/store";
 
 function getUnitPortPosition(

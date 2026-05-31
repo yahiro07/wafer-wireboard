@@ -4,9 +4,9 @@ import { ReactNode } from "react";
 import { Icons, IconsEx } from "@/components/icons";
 import { actions } from "@/store/actions";
 import { UnitItem } from "@/store/store";
-import { handleGripPointerDown } from "./common-card-handlers";
+import { handleGripPointerDown } from "../unit-box/common-card-handlers";
+import { UnitFrameEx } from "../unit-box/unit-frame-ex";
 import { SystemControlUiA, SystemControlUiB } from "./system-control-ui";
-import { UnitFrameEx } from "./unit-frame-ex";
 
 const SystemPortBox = ({
   unit,

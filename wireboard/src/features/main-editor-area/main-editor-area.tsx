@@ -1,13 +1,13 @@
 import { unitCatalogKeyDragMime } from "@/base/drag-drop-key";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
 import { FieldSightPlane } from "@/components-ex/field-sight-plane";
-import { WiringLayer } from "@/components-ex/wiring-layer";
-import { InfoButton } from "@/organisms/floating-icons";
-import { SlotCardBox } from "@/organisms/slot-card-box";
+import { InfoButton } from "@/features/foreground-ui/floating-icons";
 import {
   KeyboardSystemPortBox,
   SpeakerSystemPortBox,
-} from "@/organisms/system-port-box";
+} from "@/features/system-port/system-port-box";
+import { SlotCardBox } from "@/features/unit-box/slot-card-box";
+import { WiringLayer } from "@/features/wiring/wiring-layer";
 import { actions } from "@/store/actions";
 import { sightHandlers, store } from "@/store/store";
 import { useWireItems } from "@/store/use-wire-items";
@@ -47,7 +47,7 @@ function useDropHandlers() {
   };
 }
 
-export const EditArea = () => {
+export const MainEditorArea = () => {
   const { unitItems, sight, notes } = store.useSnapshot();
   const wires = useWireItems();
   const dropHandlers = useDropHandlers();
