@@ -13,8 +13,8 @@ import { actions } from "./store/actions";
 const PageRoot = () => {
   return (
     <div className="w-dvw h-dvh bg-gray-700 flex-h">
-      <PickerColumn />
       <EditArea />
+      <PickerColumn />
       {false && <CreditsPanel />}
     </div>
   );

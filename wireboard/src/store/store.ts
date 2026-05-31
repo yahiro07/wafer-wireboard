@@ -1,4 +1,5 @@
 import { Point } from "beams/ax-ui/common-types";
+import { mapKnobGainDb } from "beams/mo-audio/map-knob-gain-db";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
 import { CatalogKey } from "@/base/showcase-entries";
@@ -32,7 +33,18 @@ export const store = createStore<StoreState>({
   notes: [],
   bpm: 120,
   playing: false,
-  masterVolume: 0.7,
+  masterVolume: 0.5,
+});
+
+function affectMasterGain(volume: number) {
+  const gain = mapKnobGainDb(volume, 0.5);
+  hostSystem.setMasterGain(gain);
+}
+affectMasterGain(store.state.masterVolume);
+store.subscribe((attrs) => {
+  if (attrs.masterVolume !== undefined) {
+    affectMasterGain(attrs.masterVolume);
+  }
 });
 
 export const sightHandlers = createFieldSightHandlers(
