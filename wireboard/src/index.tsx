@@ -6,10 +6,10 @@ import { mapKnobGainDb } from "beams/mo-audio/map-knob-gain-db";
 import { setupMidiKeyboardInput } from "beams/mx-audio/midi-keyboard-input";
 import { useEffect, useMemo } from "react";
 import { HostAppProvider } from "wus-host/react";
-import { PickerColumn } from "@/features/showcase/picker-column";
+import { PickerColumn } from "@/features/picker/picker-column";
 import { hostSystem, store } from "@/store/store";
 import { InformationPanel } from "./features/information-panel";
-import { MainEditorArea } from "./features/main-editor-area/main-editor-area";
+import { MainEditArea } from "./features/main-edit-area/main-edit-area";
 import { actions } from "./store/actions";
 
 const PageRoot = () => {
@@ -17,7 +17,7 @@ const PageRoot = () => {
   return (
     <div className="w-dvw h-dvh bg-[hsl(216,22%,18%)] flex-h">
       <PickerColumn />
-      <MainEditorArea />
+      <MainEditArea />
       {infoPanelVisible && <InformationPanel />}
     </div>
   );

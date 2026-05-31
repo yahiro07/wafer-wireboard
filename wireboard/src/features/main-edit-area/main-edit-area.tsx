@@ -1,16 +1,16 @@
 import { unitCatalogKeyDragMime } from "@/base/drag-drop-key";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
-import { FieldSightPlane } from "@/components-ex/field-sight-plane";
 import { InfoButton } from "@/features/foreground-ui/floating-icons";
+import { FieldSightPlane } from "@/features/main-edit-area/field-sight-plane";
 import {
   KeyboardSystemPortBox,
   SpeakerSystemPortBox,
 } from "@/features/system-port/system-port-box";
 import { SlotCardBox } from "@/features/unit-box/slot-card-box";
+import { useWireItems } from "@/features/wiring/use-wire-items";
 import { WiringLayer } from "@/features/wiring/wiring-layer";
 import { actions } from "@/store/actions";
 import { sightHandlers, store } from "@/store/store";
-import { useWireItems } from "@/store/use-wire-items";
 
 const boardSize = { width: 9000, height: 6000 };
 
@@ -47,7 +47,7 @@ function useDropHandlers() {
   };
 }
 
-export const MainEditorArea = () => {
+export const MainEditArea = () => {
   const { unitItems, sight, notes } = store.useSnapshot();
   const wires = useWireItems();
   const dropHandlers = useDropHandlers();

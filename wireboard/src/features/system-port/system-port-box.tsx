@@ -2,10 +2,10 @@ import { npx } from "beams/ax-ui/styling-utils";
 import clsx from "clsx";
 import { ReactNode } from "react";
 import { Icons, IconsEx } from "@/components/icons";
+import { handleGripPointerDown } from "@/features/unit-box/common-card-handlers";
+import { UnitFrameEx } from "@/features/unit-box/unit-frame-ex";
 import { actions } from "@/store/actions";
 import { UnitItem } from "@/store/store";
-import { handleGripPointerDown } from "../unit-box/common-card-handlers";
-import { UnitFrameEx } from "../unit-box/unit-frame-ex";
 import { SystemControlUiA, SystemControlUiB } from "./system-control-ui";
 
 const SystemPortBox = ({

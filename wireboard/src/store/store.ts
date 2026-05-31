@@ -5,7 +5,7 @@ import { CatalogKey } from "@/base/showcase-entries";
 import {
   createFieldSightHandlers,
   FieldSight,
-} from "@/components-ex/field-sight-plane";
+} from "@/features/main-edit-area/field-sight-plane";
 
 export type UnitItem = {
   unitId: string | "builtInPreOutput" | "builtInKeyboard";
