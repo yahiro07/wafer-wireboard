@@ -41,7 +41,7 @@ function buildDefaultScene() {
     {
       destUnitId: "$output",
       unitId: "builtInPreOutput",
-      catalogKey: "specbar",
+      catalogKey: "mu5Visualizer",
       position: { x: 4500, y: by + 100 },
     },
     {
