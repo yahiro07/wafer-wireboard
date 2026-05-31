@@ -1,4 +1,7 @@
-import catalog from "../unit-inventories.json";
+import { UnitInventorySpec } from "wus-vite-unit-loader-plugin";
+import _catalog from "../unit-inventories.json";
+
+const catalog = _catalog as Record<string, UnitInventorySpec>;
 
 export { catalog };
 
@@ -11,20 +14,9 @@ export type ShowcaseEntry = {
 };
 
 export const showcaseEntries: ShowcaseEntry[] = [
-  ...Object.values(catalog)
-    .filter((item) => item.originalPageUrl.startsWith("https://"))
-    .map((item) => ({
-      name: item.name,
-      catalogKey: item.catalogKey as CatalogKey,
-      thumbnailUrl: item.originalPageUrl.replace(
-        "/index.html",
-        "/unit-thumbnail.png",
-      ),
-    })),
-  ...Object.values(catalog)
-    .filter((item) => item.originalPageUrl.startsWith("file://"))
-    .map((item) => ({
-      name: item.name,
-      catalogKey: item.catalogKey as CatalogKey,
-    })),
+  ...Object.values(catalog).map((item) => ({
+    name: item.name,
+    catalogKey: item.catalogKey as CatalogKey,
+    thumbnailUrl: item.thumbnailUrl,
+  })),
 ];
