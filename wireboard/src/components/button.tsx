@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { ReactNode } from "react";
 
 export const Button = (props: {
@@ -12,9 +13,11 @@ export const Button = (props: {
       type="button"
       onClick={props.onClick}
       disabled={props.disabled}
-      className="min-w-[60px] h-[36px] border border-[#888] flex-c"
+      className={clsx(
+        "min-w-[60px] h-[36px] flex-c bg-gray-400 text-white border border-gray-600",
+        props.active && "bg-sky-600",
+      )}
       style={{
-        backgroundColor: props.active ? "#ccffcc" : "#fff",
         cursor: props.disabled ? "default" : "pointer",
         opacity: props.disabled ? 0.5 : 1,
       }}

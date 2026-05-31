@@ -18,6 +18,8 @@ export type StoreState = {
   unitItems: UnitItem[];
   sight: FieldSight;
   notes: number[];
+  bpm: number;
+  playing: boolean;
 };
 
 const audioContext = new AudioContext();
@@ -27,6 +29,8 @@ export const store = createStore<StoreState>({
   unitItems: [],
   sight: { eyeScaling: 0.5, eyeOffset: { x: 0, y: 0 } },
   notes: [],
+  bpm: 120,
+  playing: false,
 });
 
 export const sightHandlers = createFieldSightHandlers(

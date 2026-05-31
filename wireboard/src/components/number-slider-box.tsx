@@ -5,7 +5,7 @@ export function NumberSliderBoxView(props: {
   fracDigits?: number;
 }) {
   return (
-    <div className="border border-[#444] w-[60px] h-[34px] flex-c">
+    <div className="w-[60px] h-[36px] flex-c bg-gray-400 text-white border border-gray-600">
       {props.value.toFixed(props.fracDigits ?? 2)}
     </div>
   );

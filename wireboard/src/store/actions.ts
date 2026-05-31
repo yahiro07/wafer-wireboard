@@ -85,4 +85,10 @@ export const actions = {
   midiInNoteOff(noteNumber: number) {
     store.setNotes((prev) => prev.filter((item) => item !== noteNumber));
   },
+  togglePlayState() {
+    store.setPlaying((prev) => !prev);
+  },
+  setBpm(bpm: number) {
+    store.setBpm(bpm);
+  },
 };
