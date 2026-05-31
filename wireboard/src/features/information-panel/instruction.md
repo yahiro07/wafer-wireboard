@@ -63,8 +63,8 @@ Place a sequencer or drum machine unit, connect it to the output, then press pla
 
 Wireboard source code:
 
-https://github.com/yahiro07/mini-groove/wireboard
+[https://github.com/yahiro07/mini-groove/wireboard](https://github.com/yahiro07/mini-groove/wireboard)
 
 Web Audio unit system source code:
 
-https://github.com/yahiro07/webaudio-unit-system
+[https://github.com/yahiro07/webaudio-unit-system](https://github.com/yahiro07/webaudio-unit-system)
