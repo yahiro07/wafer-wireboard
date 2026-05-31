@@ -5,19 +5,50 @@ import { Icons } from "@/components/icons";
 type CreditInfo = {
   appName: string;
   imageUrl?: string;
-  authorName: string;
   repositoryUrl: string;
+  authorName: string;
   licenseType: string;
   forkedRepositoryUrl?: string;
   forkedAuthor?: string;
+  licenseTextUrl?: string;
+};
+
+function createCreditEntryInfos(): CreditInfo[] {
+  return Object.values(catalog).map((item) => {
+    return {
+      appName: item.name,
+      imageUrl: item.thumbnailUrl,
+      repositoryUrl: item.originalRepositoryUrl,
+      authorName: item.originalAuthor,
+      licenseType: item.license,
+      forkedRepositoryUrl: item.forkedRepositoryUrl,
+      forkedAuthor: item.forkedAuthor,
+      licenseTextUrl: item.licenseTextUrl,
+    };
+  });
+}
+const creditEntryInfos = createCreditEntryInfos();
+
+const ExternalLink = ({ url, text }: { url: string; text?: string }) => {
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="hover:underline"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {text ?? url}
+    </a>
+  );
 };
 
 const CreditEntryCard = ({ info }: { info: CreditInfo }) => {
   const [isOpen, setOpen] = useState(false);
   const toggleOpen = () => setOpen((prev) => !prev);
   return (
-    <div className="bg-gray-700 text-gray-300">
-      <div className="flex-h px-2 gap-1 cursor-pointer" onClick={toggleOpen}>
+    <div className="bg-gray-700 text-gray-300" style={{}}>
+      <div className="flex-h px-2 gap-1">
         <div className="w-[90px] aspect-[1.5] h-[64px]">
           {info.imageUrl ? (
             <img
@@ -33,16 +64,31 @@ const CreditEntryCard = ({ info }: { info: CreditInfo }) => {
         </div>
         <div className="grow">
           {!isOpen && (
-            <div className="flex-v p-2">
+            <div className="flex-v p-2" style={{ userSelect: "text" }}>
               <div>{info.appName}</div>
               <div>{info.authorName}</div>
             </div>
           )}
           {isOpen && (
-            <div className="flex-v p-2">
-              <div>repository: {info.repositoryUrl}</div>
+            <div
+              className="flex-v p-2"
+              style={{ wordBreak: "break-all", userSelect: "text" }}
+            >
+              <div>
+                repository: <ExternalLink url={info.repositoryUrl} />
+              </div>
               <div>author: {info.authorName}</div>
-              <div>license: {info.licenseType}</div>
+              <div>
+                license: &nbsp;
+                {info.licenseTextUrl ? (
+                  <ExternalLink
+                    url={info.licenseTextUrl}
+                    text={info.licenseType}
+                  />
+                ) : (
+                  info.licenseType
+                )}
+              </div>
               {false && info.forkedRepositoryUrl && (
                 <div className="text-[#888]">
                   forked repository: {info.forkedRepositoryUrl}
@@ -57,11 +103,12 @@ const CreditEntryCard = ({ info }: { info: CreditInfo }) => {
           )}
         </div>
         <div
-          className="w-[30px] flex-c text-[20px] h-[64px]"
+          className="w-[30px] flex-c text-[20px] h-[64px] cursor-pointer"
           style={{
             transform: isOpen ? "rotate(180deg)" : undefined,
             transition: "transform 0.3s",
           }}
+          onClick={toggleOpen}
         >
           <Icons.ChevronDown />
         </div>
@@ -69,23 +116,6 @@ const CreditEntryCard = ({ info }: { info: CreditInfo }) => {
     </div>
   );
 };
-
-function createCreditEntryInfos(): CreditInfo[] {
-  return Object.values(catalog).map((item) => {
-    return {
-      appName: item.name,
-      imageUrl: item.originalPageUrl.startsWith("https://")
-        ? item.originalPageUrl.replace("/index.html", "/unit-thumbnail.png")
-        : undefined,
-      authorName: "yamada",
-      repositoryUrl: item.repositoryUrl,
-      licenseType: "MIT",
-      forkedRepositoryUrl: item.repositoryUrl,
-      forkedAuthor: "tanaka",
-    };
-  });
-}
-const creditEntryInfos = createCreditEntryInfos();
 
 export const CreditsPanel = () => {
   return (
