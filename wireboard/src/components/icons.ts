@@ -1,6 +1,7 @@
 import { BiInfoCircle } from "react-icons/bi";
 import { BsFillSpeakerFill, BsPlayFill } from "react-icons/bs";
-import { CgChevronDown, CgClose } from "react-icons/cg";
+import { CgChevronDown } from "react-icons/cg";
+import { IoCloseSharp } from "react-icons/io5";
 import { PiPianoKeysFill } from "react-icons/pi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { TbNavigationFilled } from "react-icons/tb";
@@ -14,7 +15,7 @@ export const Icons = {
   Speaker: BsFillSpeakerFill,
   Piano: PiPianoKeysFill,
   Info: BiInfoCircle,
-  Close: CgClose,
+  Close: IoCloseSharp,
 };
 
 export const IconsEx = {
