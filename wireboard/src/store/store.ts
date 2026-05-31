@@ -45,14 +45,14 @@ function buildDefaultScene() {
       position: { x: 4500, y: by + 100 },
     },
     {
-      unitId: "unit2",
+      unitId: "unit1",
       destUnitId: "builtInPreOutput",
       catalogKey: "miniSynth",
       position: { x: 4500, y: by + 360 },
     },
     {
       unitId: "builtInKeyboard",
-      destUnitId: "unit2",
+      destUnitId: "unit1",
       catalogKey: "mu4Keyboard",
       position: { x: 4600, y: by + 620 },
     },
