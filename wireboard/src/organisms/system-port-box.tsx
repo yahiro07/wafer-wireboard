@@ -12,10 +12,12 @@ const SystemPortBox = ({
   iconContent,
   sideContent,
   yOffset = 0,
+  additionalUi,
 }: {
   unit: UnitItem;
   iconContent: ReactNode;
   sideContent?: ReactNode;
+  additionalUi?: ReactNode;
   yOffset?: number;
 }) => {
   return (
@@ -43,6 +45,7 @@ const SystemPortBox = ({
             </div>
           </div>
         </div>
+        {additionalUi}
       </div>
     </div>
   );
@@ -62,6 +65,12 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
             catalogKey={unit.catalogKey}
           />
         </div>
+      }
+      additionalUi={
+        <>
+          <div className="absolute top-0 right-[200px] w-[300px] h-[120px] bg-gray-500"></div>
+          <div className="absolute top-0 left-[600px] w-[300px] h-[120px] bg-gray-500"></div>
+        </>
       }
     />
   );
