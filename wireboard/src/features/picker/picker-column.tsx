@@ -18,7 +18,7 @@ export const PickerColumn = () => {
           key={entry.catalogKey}
           draggable
           onDragStart={(e) => handleDragStart(e, entry)}
-          className="flex-vc bg-gray-700 text-gray-300 py-1 cursor-pointer"
+          className="flex-vc bg-gray-700/50 text-gray-300 py-1 cursor-pointer"
         >
           <div className="w-[100px] aspect-[1.5]">
             {entry.thumbnailUrl ? (
