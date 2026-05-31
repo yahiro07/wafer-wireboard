@@ -1,6 +1,7 @@
 import { ScalerBoxAutoSized } from "beams/mo-react/components/scaler-box-auto-sized";
 import { Button } from "@/components/button";
 import { Icons } from "@/components/icons";
+import { Knob } from "@/components/knob";
 import { NumberSliderBox } from "@/components/number-slider-box";
 import { actions } from "@/store/actions";
 import { store } from "@/store/store";
@@ -26,4 +27,13 @@ export const SystemControlUiA = () => {
   );
 };
 
-export const SystemControlUiB = () => {};
+export const SystemControlUiB = () => {
+  const { masterVolume } = store.useSnapshot();
+  return (
+    <ScalerBoxAutoSized>
+      <div className="flex-ha gap-2 p-3">
+        <Knob value={masterVolume} onChange={actions.setMasterVolume} />
+      </div>
+    </ScalerBoxAutoSized>
+  );
+};

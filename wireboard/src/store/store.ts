@@ -20,6 +20,7 @@ export type StoreState = {
   notes: number[];
   bpm: number;
   playing: boolean;
+  masterVolume: number;
 };
 
 const audioContext = new AudioContext();
@@ -31,6 +32,7 @@ export const store = createStore<StoreState>({
   notes: [],
   bpm: 120,
   playing: false,
+  masterVolume: 0.7,
 });
 
 export const sightHandlers = createFieldSightHandlers(

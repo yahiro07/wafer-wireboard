@@ -5,7 +5,7 @@ import { Icons, IconsEx } from "@/components/icons";
 import { actions } from "@/store/actions";
 import { UnitItem } from "@/store/store";
 import { handleGripPointerDown } from "./common-card-handlers";
-import { SystemControlUiA } from "./system-control-ui";
+import { SystemControlUiA, SystemControlUiB } from "./system-control-ui";
 import { UnitFrameEx } from "./unit-frame-ex";
 
 const SystemPortBox = ({
@@ -72,7 +72,9 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
           <div className="absolute top-0 right-[200px] w-[300px] h-[120px] bg-gray-500 flex-c">
             <SystemControlUiA />
           </div>
-          <div className="absolute top-0 left-[600px] w-[300px] h-[120px] bg-gray-500"></div>
+          <div className="absolute top-0 left-[600px] w-[200px] h-[120px] bg-gray-500">
+            <SystemControlUiB />
+          </div>
         </>
       }
     />

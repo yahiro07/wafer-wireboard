@@ -12,7 +12,7 @@ export function KnobView(props: { value: number; min: number; max: number }) {
     },
   };
   return (
-    <div className="border-[1.5px] border-[#222] w-[36px] h-[36px] rounded-full bg-[#666]">
+    <div className="border-[1px] border-gray-700 w-[36px] h-[36px] rounded-full bg-gray-400">
       <div
         className="w-full h-full flex justify-center"
         style={{

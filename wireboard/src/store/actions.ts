@@ -91,4 +91,7 @@ export const actions = {
   setBpm(bpm: number) {
     store.setBpm(bpm);
   },
+  setMasterVolume(volume: number) {
+    store.setMasterVolume(volume);
+  },
 };
