@@ -47,7 +47,7 @@ const CreditEntryCard = ({ info }: { info: CreditInfo }) => {
   const [isOpen, setOpen] = useState(false);
   const toggleOpen = () => setOpen((prev) => !prev);
   return (
-    <div className="bg-gray-700 text-gray-300">
+    <div className="bg-gray-600/30 text-gray-300">
       <div className="flex-h px-2 gap-1">
         <div className="w-[90px] aspect-[1.5] h-[64px]">
           {info.imageUrl ? (

@@ -12,12 +12,10 @@ import { InformationPanel } from "./features/information-panel";
 import { EditArea } from "./sections/edit-area";
 import { actions } from "./store/actions";
 
-store.setInfoPanelVisible(true);
-
 const PageRoot = () => {
   const { infoPanelVisible } = store.useSnapshot();
   return (
-    <div className="w-dvw h-dvh bg-gray-700 flex-h">
+    <div className="w-dvw h-dvh bg-[hsl(216,22%,18%)] flex-h">
       <PickerColumn />
       <EditArea />
       {infoPanelVisible && <InformationPanel />}
