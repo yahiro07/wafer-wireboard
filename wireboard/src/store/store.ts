@@ -14,11 +14,11 @@ export type UnitItem = {
   position: Point;
 };
 
-export type SystemPortUnitItem = {
-  unitId: "$output" | "$keyboard";
-  destUnitId?: string;
-  position: Point;
-};
+// export type SystemPortUnitItem = {
+//   unitId: "$output" | "$keyboard";
+//   destUnitId?: string;
+//   position: Point;
+// };
 
 export type StoreState = {
   unitItems: UnitItem[];
@@ -59,7 +59,7 @@ function buildDefaultScene() {
       destUnitId: "$output",
       unitId: "builtInPreOutput",
       catalogKey: "specbar",
-      position: { x: 4300, y: by + 100 },
+      position: { x: 4500, y: by + 100 },
     },
     // {
     //   unitId: "unit1",

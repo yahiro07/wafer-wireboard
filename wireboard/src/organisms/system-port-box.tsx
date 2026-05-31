@@ -1,36 +1,11 @@
-import { startDragSession } from "beams/ax-ui/drag-session";
 import { npx } from "beams/ax-ui/styling-utils";
 import clsx from "clsx";
 import { ReactNode } from "react";
-import { Icons } from "@/components/icons";
+import { Icons, IconsEx } from "@/components/icons";
 import { actions } from "@/store/actions";
-import { getZoomScaling } from "@/store/helper";
-import { SystemPortUnitItem, store } from "@/store/store";
-
-const handleGripPointerDown = (
-  e0: React.PointerEvent,
-  unit: SystemPortUnitItem,
-) => {
-  const originalPosition = { ...unit.position };
-  startDragSession(
-    e0.nativeEvent,
-    {
-      onMove(e) {
-        const delta = {
-          x: e.position.x - e.originalPosition.x,
-          y: e.position.y - e.originalPosition.y,
-        };
-        const sc = getZoomScaling(store.state.sight.zoom);
-        const newPosition = {
-          x: originalPosition.x + delta.x / sc,
-          y: originalPosition.y + delta.y / sc,
-        };
-        actions.setUnitPosition(unit.unitId, newPosition);
-      },
-    },
-    { coordinate: "screen" },
-  );
-};
+import { UnitItem } from "@/store/store";
+import { handleGripPointerDown } from "./common-card-handlers";
+import { UnitFrameEx } from "./unit-frame-ex";
 
 const SystemPortBox = ({
   unit,
@@ -38,7 +13,7 @@ const SystemPortBox = ({
   sideContent,
   yOffset = 0,
 }: {
-  unit: SystemPortUnitItem;
+  unit: UnitItem;
   iconContent: ReactNode;
   sideContent?: ReactNode;
   yOffset?: number;
@@ -73,44 +48,64 @@ const SystemPortBox = ({
   );
 };
 
-// export const SpeakerSystemPortBox = () => {
-//   const { speakerPort } = store.useSnapshot();
-//   return (
-//     <SystemPortBox
-//       unit={speakerPort}
-//       yOffset={-50}
-//       iconContent={<Icons.Speaker size={65} />}
-//       sideContent={<div className="h-full bg-black text-white">aaa</div>}
-//     />
-//   );
-// };
+export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
+  return (
+    <SystemPortBox
+      unit={unit}
+      yOffset={-50}
+      iconContent={<Icons.Speaker size={65} />}
+      sideContent={
+        <div className="h-full bg-black text-white">
+          <UnitFrameEx
+            unitId={unit.unitId}
+            destUnitId={unit.destUnitId}
+            catalogKey={unit.catalogKey}
+          />
+        </div>
+      }
+    />
+  );
+};
 
-// const handleKeyboardPortClick = () => {
-//   const { keyboardPort } = store.state;
-//   if (keyboardPort.destUnitId === undefined) {
-//     actions.connectToNearestUnit("$keyboard");
-//   } else {
-//     actions.removeConnection("$keyboard");
-//   }
-// };
-// export const KeyboardSystemPortBox = () => {
-//   const { keyboardPort } = store.useSnapshot();
-//   return (
-//     <SystemPortBox
-//       unit={keyboardPort}
-//       yOffset={50}
-//       iconContent={
-//         <div
-//           className="relative w-full h-full flex-c cursor-pointer"
-//           onClick={handleKeyboardPortClick}
-//         >
-//           <Icons.Piano size={65} />
-//           <div className="absolute-full flex-h justify-center p-1">
-//             <IconsEx.ConnectorPortUp size={18} />
-//           </div>
-//         </div>
-//       }
-//       sideContent={<div className="h-full bg-white text-black">bbb</div>}
-//     />
-//   );
-// };
+export const KeyboardSystemPortBox = ({
+  unit,
+  notes,
+}: {
+  unit: UnitItem;
+  notes: number[];
+}) => {
+  const handleKeyboardPortClick = () => {
+    if (unit.destUnitId === undefined) {
+      actions.connectToNearestUnit("builtInKeyboard");
+    } else {
+      actions.removeConnection("builtInKeyboard");
+    }
+  };
+  return (
+    <SystemPortBox
+      unit={unit}
+      yOffset={50}
+      iconContent={
+        <div
+          className="relative w-full h-full flex-c cursor-pointer"
+          onClick={handleKeyboardPortClick}
+        >
+          <Icons.Piano size={65} />
+          <div className="absolute-full flex-h justify-center p-1">
+            <IconsEx.ConnectorPortUp size={18} />
+          </div>
+        </div>
+      }
+      sideContent={
+        <div className="h-full bg-white text-black">
+          <UnitFrameEx
+            unitId={unit.unitId}
+            destUnitId={unit.destUnitId}
+            catalogKey={unit.catalogKey}
+            notes={notes}
+          />
+        </div>
+      }
+    />
+  );
+};

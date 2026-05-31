@@ -3,6 +3,10 @@ import { CatalogKey, catalog } from "@/base/showcase-entries";
 import { FieldSightPlane } from "@/components-ex/field-sight-plane";
 import { WiringLayer } from "@/components-ex/wiring-layer";
 import { SlotCardBox } from "@/organisms/slot-card-box";
+import {
+  KeyboardSystemPortBox,
+  SpeakerSystemPortBox,
+} from "@/organisms/system-port-box";
 import { actions } from "@/store/actions";
 import { sightHandlers, store } from "@/store/store";
 import { useWireItems } from "@/store/use-wire-items";
@@ -59,15 +63,23 @@ export const EditArea = () => {
       >
         <WiringLayer boardSize={boardSize} wires={wires} />
         <div className="relative">
-          {unitItems.map((item) => (
-            <SlotCardBox
-              key={item.unitId}
-              unit={item}
-              notes={item.unitId === "builtInKeyboard" ? notes : undefined}
-            />
-          ))}
-          {/* <KeyboardSystemPortBox /> */}
-          {/* <SpeakerSystemPortBox /> */}
+          {unitItems.map((item) => {
+            if (item.unitId === "builtInKeyboard") {
+              return (
+                <KeyboardSystemPortBox
+                  key={item.unitId}
+                  unit={item}
+                  notes={notes}
+                />
+              );
+            } else if (item.unitId === "builtInPreOutput") {
+              return <SpeakerSystemPortBox key={item.unitId} unit={item} />;
+            } else {
+              return (
+                <SlotCardBox key={item.unitId} unit={item} notes={notes} />
+              );
+            }
+          })}
         </div>
       </FieldSightPlane>
     </div>
