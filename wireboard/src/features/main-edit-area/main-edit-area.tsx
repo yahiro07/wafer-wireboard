@@ -1,3 +1,4 @@
+import { appConfigs } from "@/base/constants";
 import { unitCatalogKeyDragMime } from "@/base/drag-drop-key";
 import { catalog } from "@/base/showcase-entries";
 import { InfoButton } from "@/features/foreground-ui/floating-icons";
@@ -8,6 +9,7 @@ import {
   SpeakerSystemPortBox,
 } from "@/features/system-port/system-port-box";
 import { SlotCardBox } from "@/features/unit-box/slot-card-box";
+import { snapUnitCoordToGrid } from "@/features/unit-box/snapping";
 import { useWireItems } from "@/features/wiring/use-wire-items";
 import { WiringLayer } from "@/features/wiring/wiring-layer";
 import { actions } from "@/store/actions";
@@ -31,7 +33,7 @@ function useDropHandlers() {
       const rect = e.currentTarget.getBoundingClientRect();
       const sight = store.state.sight;
       const scale = sight.eyeScaling;
-      const position = {
+      let position = {
         x:
           (e.clientX - rect.left - rect.width / 2 - sight.eyeOffset.x) / scale +
           boardSize.width / 2,
@@ -39,6 +41,9 @@ function useDropHandlers() {
           (e.clientY - rect.top - rect.height / 2 - sight.eyeOffset.y) / scale +
           boardSize.height / 2,
       };
+      if (appConfigs.snapUnitCoordToGrid) {
+        position = snapUnitCoordToGrid(position);
+      }
       actions.addUnit(catalogKey, position);
     },
   };

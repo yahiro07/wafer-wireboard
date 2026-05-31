@@ -1,4 +1,6 @@
 import { startDragSession } from "beams/ax-ui/drag-session";
+import { appConfigs } from "@/base/constants";
+import { snapUnitCoordToGrid } from "@/features/unit-box/snapping";
 import { actions } from "@/store/actions";
 import { store, UnitItem } from "@/store/store";
 
@@ -16,10 +18,13 @@ export const handleGripPointerDown = (
           y: e.position.y - e.originalPosition.y,
         };
         const sc = store.state.sight.eyeScaling;
-        const newPosition = {
+        let newPosition = {
           x: originalPosition.x + delta.x / sc,
           y: originalPosition.y + delta.y / sc,
         };
+        if (appConfigs.snapUnitCoordToGrid) {
+          newPosition = snapUnitCoordToGrid(newPosition);
+        }
         actions.setUnitPosition(unit.unitId, newPosition);
       },
     },
