@@ -1,5 +1,5 @@
 import { unitCatalogKeyDragMime } from "@/base/drag-drop-key";
-import { CatalogKey, catalog } from "@/base/showcase-entries";
+import { catalog } from "@/base/showcase-entries";
 import { InfoButton } from "@/features/foreground-ui/floating-icons";
 import { FieldSightPlane } from "@/features/main-edit-area/field-sight-plane";
 import {
@@ -14,10 +14,6 @@ import { sightHandlers, store } from "@/store/store";
 
 const boardSize = { width: 9000, height: 6000 };
 
-function isCatalogKey(value: string): value is CatalogKey {
-  return Object.prototype.hasOwnProperty.call(catalog, value);
-}
-
 function useDropHandlers() {
   return {
     onDragOver(e: React.DragEvent<HTMLDivElement>) {
@@ -28,7 +24,7 @@ function useDropHandlers() {
     },
     onDrop(e: React.DragEvent<HTMLDivElement>) {
       const catalogKey = e.dataTransfer.getData(unitCatalogKeyDragMime);
-      if (!isCatalogKey(catalogKey)) return;
+      if (!catalog[catalogKey]) return;
 
       e.preventDefault();
       const rect = e.currentTarget.getBoundingClientRect();
