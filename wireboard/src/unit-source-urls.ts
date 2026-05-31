@@ -29,7 +29,7 @@ export const unitSourceUrls = [
   "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r9/koodori/",
   "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r9/webaudio-synth-v2/",
   `file://${homeDir}/wus-units/my-drum-machine/`,
-  `file://${homeDir}/wus-units/twsq1/`,
+  // `file://${homeDir}/wus-units/twsq1/`,
   `file://${unitsDevDistDir}/mu1-instrument/`,
   `file://${unitsDevDistDir}/mu2-sequencer/`,
   `file://${unitsDevDistDir}/mu3-effect/`,
