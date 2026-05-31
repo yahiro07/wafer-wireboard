@@ -20,14 +20,11 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ],
-      "beams/*": [
-        "../../beam/beams/src/*"
       ]
     }
   },
   "include": [
     "src",
-    "../../beam/beams/src/*"
+    "node_modules/beams/**/*"
   ]
 }
