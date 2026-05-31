@@ -2,11 +2,13 @@ import "./page.css";
 import "beams/ax-ui/utility-classes.css";
 //
 import { mountAppRoot } from "beams/ax-react/mount-app-root";
+import { mapKnobGainDb } from "beams/mo-audio/map-knob-gain-db";
 import { setupMidiKeyboardInput } from "beams/mx-audio/midi-keyboard-input";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { HostAppProvider } from "wus-host/react";
 import { CreditsPanel } from "@/sections/credits-panel";
 import { PickerColumn } from "@/sections/picker-column";
-import { hostSystem } from "@/store/store";
+import { hostSystem, store } from "@/store/store";
 import { EditArea } from "./sections/edit-area";
 import { actions } from "./store/actions";
 
@@ -21,7 +23,11 @@ const PageRoot = () => {
 };
 
 const App = () => {
-  useEffect(hostSystem.setupLifecycle, []);
+  const { playing, bpm, masterVolume } = store.useSnapshot();
+  const masterGain = useMemo(
+    () => mapKnobGainDb(masterVolume, 0.5),
+    [masterVolume],
+  );
   useEffect(
     () =>
       setupMidiKeyboardInput({
@@ -30,7 +36,16 @@ const App = () => {
       }),
     [],
   );
-  return <PageRoot />;
+  return (
+    <HostAppProvider
+      hostSystem={hostSystem}
+      playing={playing}
+      bpm={bpm}
+      masterGain={masterGain}
+    >
+      <PageRoot />
+    </HostAppProvider>
+  );
 };
 
 mountAppRoot(<App />);
