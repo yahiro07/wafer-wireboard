@@ -59,13 +59,7 @@ const PortRelativePositionDebugOverlay = () => {
   );
 };
 
-export const SlotCardBox = ({
-  unit,
-  notes,
-}: {
-  unit: UnitItem;
-  notes?: number[];
-}) => {
+export const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
   const sd = slotCardDimensions;
   return (
     <div
@@ -91,7 +85,6 @@ export const SlotCardBox = ({
             unitId={unit.unitId}
             destUnitId={unit.destUnitId}
             catalogKey={unit.catalogKey}
-            notes={notes}
           />
         </div>
         <div className="w-[40px] bg-gray-500 flex-v text-white py-1">

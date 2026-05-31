@@ -75,9 +75,7 @@ export const EditArea = () => {
             } else if (item.unitId === "builtInPreOutput") {
               return <SpeakerSystemPortBox key={item.unitId} unit={item} />;
             } else {
-              return (
-                <SlotCardBox key={item.unitId} unit={item} notes={notes} />
-              );
+              return <SlotCardBox key={item.unitId} unit={item} />;
             }
           })}
         </div>
