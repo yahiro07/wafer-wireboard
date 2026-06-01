@@ -1,7 +1,7 @@
 import { Point } from "beams/ax-ui/common-types";
 import { CatalogKey } from "@/base/showcase-entries";
-import { slotCardDimensions } from "@/base/slot-card-dimensions";
 import { store, UnitItem } from "@/store/store";
+import { findNearestConnectionTargetUnit } from "@/store/unit-coordinate-helper";
 
 const actionsInternal = {
   patchUnitItem(unitId: string, attrs: Partial<UnitItem>) {
@@ -40,28 +40,14 @@ export const actions = {
       },
     ]);
   },
+  connectUnitTo(unitId: string, destUnitId: string) {
+    actionsInternal.patchUnitItem(unitId, { destUnitId });
+  },
   removeConnection(unitId: string) {
     actionsInternal.patchUnitItem(unitId, { destUnitId: undefined });
   },
   connectToNearestUnit(unitId: string) {
-    const { unitItems } = store.state;
-    const unit = unitItems.find((item) => item.unitId === unitId);
-    if (!unit) return;
-    const hh = slotCardDimensions.height / 2;
-
-    const targetUnits = unitItems.filter(
-      (item) =>
-        item.unitId !== unitId && item.position.y + hh < unit.position.y - hh,
-    );
-    const measured = targetUnits.map((item) => ({
-      unitId: item.unitId,
-      distance: Math.hypot(
-        item.position.x - unit.position.x,
-        item.position.y - unit.position.y,
-      ),
-    }));
-    const sorted = measured.sort((a, b) => a.distance - b.distance);
-    const nearestUnit = sorted[0];
+    const nearestUnit = findNearestConnectionTargetUnit(unitId);
     if (!nearestUnit) return;
     actionsInternal.patchUnitItem(unitId, { destUnitId: nearestUnit.unitId });
   },

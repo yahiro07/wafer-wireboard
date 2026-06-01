@@ -4,6 +4,7 @@ import { catalog } from "@/base/showcase-entries";
 import { InfoButton } from "@/features/foreground-ui/floating-icons";
 import { GithubBadge } from "@/features/foreground-ui/github-badge";
 import { FieldSightPlane } from "@/features/main-edit-area/field-sight-plane";
+import { useKeyboardAutoTarget } from "@/features/system-port/keyboard-auto-target";
 import {
   KeyboardSystemPortBox,
   SpeakerSystemPortBox,
@@ -53,6 +54,7 @@ export const MainEditArea = () => {
   const { unitItems, sight, notes } = store.useSnapshot();
   const wires = useWireItems();
   const dropHandlers = useDropHandlers();
+  useKeyboardAutoTarget();
   return (
     <div
       className="grow relative"
