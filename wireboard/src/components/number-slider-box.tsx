@@ -5,7 +5,10 @@ export function NumberSliderBoxView(props: {
   fracDigits?: number;
 }) {
   return (
-    <div className="w-[60px] h-[36px] flex-c bg-gray-400 text-white border border-gray-600">
+    <div
+      className="w-[60px] h-[36px] flex-c bg-gray-400 text-white border border-gray-600 text-xl"
+      style={{ letterSpacing: "0.03em" }}
+    >
       {props.value.toFixed(props.fracDigits ?? 2)}
     </div>
   );
@@ -37,6 +40,7 @@ export function NumberSliderBox({
         max={max}
         step={step}
         onChange={onChange}
+        dragRange={400}
       >
         <NumberSliderBoxView value={value} fracDigits={fracDigits} />
       </KnobFrame>

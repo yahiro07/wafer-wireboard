@@ -18,8 +18,8 @@ export const SystemControlUiA = () => {
         <UpperLabel label="BPM">
           <NumberSliderBox
             value={bpm}
-            min={60}
-            max={180}
+            min={80}
+            max={160}
             step={1}
             onChange={actions.setBpm}
             fracDigits={0}
