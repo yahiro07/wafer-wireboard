@@ -1,7 +1,6 @@
 import { ScalerBoxAutoSized } from "beams/mo-react/components/scaler-box-auto-sized";
 import { UnitFrame } from "wus-host/react";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
-import { store } from "@/store/store";
 
 export const UnitFrameEx = ({
   unitId,
@@ -14,7 +13,7 @@ export const UnitFrameEx = ({
   catalogKey: CatalogKey;
   notes?: number[];
 }) => {
-  const state = store.useSnapshot();
+  // const state = store.useSnapshot();
   // const onIframeMounted = useCallback((iframe: HTMLIFrameElement) => {
   //   const win = iframe.contentWindow as Window;
   //   win.addEventListener("wheel", sightHandlers.onWheel);
