@@ -12,11 +12,6 @@ const App = () => {
     <div className="flex-vc gap-4">
       <div className="flex-h gap-4">
         <ReactUnitFrame
-          unitId="masterClock1"
-          unitTemplateFn={uf.masterClock}
-          destSpec="clockDivider1"
-        />
-        <ReactUnitFrame
           unitId="mixer1"
           unitTemplateFn={uf.mixer}
           destSpec="$output"
@@ -80,6 +75,11 @@ const App = () => {
       </div>
 
       <div className="flex-ha gap-4">
+        <ReactUnitFrame
+          unitId="masterClock1"
+          unitTemplateFn={uf.masterClock}
+          destSpec="clockDivider1"
+        />
         <ReactUnitFrame
           unitId="keyboard4"
           unitTemplateFn={uf.keyboard}
