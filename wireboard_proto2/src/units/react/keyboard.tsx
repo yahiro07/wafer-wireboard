@@ -1,4 +1,4 @@
-import { ReactUnitTemplateFn } from "@/host-app/unit-frame/react-unit-interface";
+import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
 
 const cvBaseFrequency = 20;
 const cvPerOctave = 0.1;

@@ -1,13 +1,10 @@
-/* <UnitFrame id="osc1" unitClassKey="osc" destUnitId="mixer1.ch0" />  */
-
 import { useEffect, useMemo } from "react";
-import { hostSystem } from "@/host-app/host/host-system";
-import { connectUnitToDestination } from "@/host-app/host/unit-connecter";
+import { hostSystem } from "@/framework/host/host-system";
+import { connectUnitToDestination } from "@/framework/host/unit-connecter";
 import {
   instantiateReactUnit,
   ReactUnitTemplateFn,
-} from "@/host-app/unit-frame/react-unit-interface";
-import { UnitIdsBox } from "@/host-app/unit-frame/unit-ids-box";
+} from "@/framework/unit-frame/react-unit-interface";
 
 export const ReactUnitFrame = ({
   unitId,
@@ -33,9 +30,5 @@ export const ReactUnitFrame = ({
     }
   }, [...(Array.isArray(destSpec) ? destSpec : [destSpec]), unit]);
 
-  return (
-    <UnitIdsBox unitId={unitId} destSpec={destSpec}>
-      {unit.RenderUi && <unit.RenderUi />}
-    </UnitIdsBox>
-  );
+  return <unit.RenderUi />;
 };

@@ -1,6 +1,6 @@
 import { seqNumbers } from "beams/ax/array-utils";
 import { createStore } from "snap-store";
-import { ReactUnitTemplateFn } from "@/host-app/unit-frame/react-unit-interface";
+import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
 import { Knob } from "@/shared/components/knob";
 
 export const createMixerUnit: ReactUnitTemplateFn = (unitInterface) => {

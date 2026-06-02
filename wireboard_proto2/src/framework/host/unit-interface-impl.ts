@@ -3,7 +3,7 @@ import { HostCallbacks, UnitInterface } from "@/contract/unit-interfaces";
 import {
   createHsUnitOutputPort,
   gAudioContext,
-} from "@/host-app/host/host-core";
+} from "@/framework/host/host-core";
 import {
   HsUnitInputPort,
   HsUnitInputPortCallbacks,
@@ -11,7 +11,7 @@ import {
   HsUnitInputPortPreHandlers,
   HsUnitInstance,
   HsUnitOutputPort,
-} from "@/host-app/host/host-types";
+} from "@/framework/host/host-types";
 
 export function createHsUnitInputPortPre(): HsUnitInputPortPre {
   const audioNode = gAudioContext.createGain();

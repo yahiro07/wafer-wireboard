@@ -1,5 +1,5 @@
-import { gAudioContext } from "@/host-app/host/host-core";
-import { HsUnitInputPort, HsUnitInstance } from "@/host-app/host/host-types";
+import { gAudioContext } from "@/framework/host/host-core";
+import { HsUnitInputPort, HsUnitInstance } from "@/framework/host/host-types";
 
 function createHostSystem() {
   const units: Record<string, HsUnitInstance> = {};

@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useRef } from "react";
-import { hostSystem } from "@/host-app/host/host-system";
-import { createUnitAdapter } from "@/host-app/host/unit-adapter";
-import { connectUnitToDestination } from "@/host-app/host/unit-connecter";
-import { createUnitInterface } from "@/host-app/host/unit-interface-impl";
-import { UnitIdsBox } from "@/host-app/unit-frame/unit-ids-box";
+import { hostSystem } from "@/framework/host/host-system";
+import { createUnitAdapter } from "@/framework/host/unit-adapter";
+import { connectUnitToDestination } from "@/framework/host/unit-connecter";
+import { createUnitInterface } from "@/framework/host/unit-interface-impl";
 
 function createUnitFrameModel(unitId: string) {
   const unitAdapter = createUnitAdapter(unitId);
@@ -54,14 +53,12 @@ export const UnitFrame = ({
     return model.onIframeMounted(iframeRef.current!);
   }, [model, pageUrl]);
   return (
-    <UnitIdsBox unitId={unitId} destSpec={destSpec}>
-      <iframe
-        ref={iframeRef}
-        src={pageUrl}
-        width="200"
-        height="100"
-        title={unitId}
-      />
-    </UnitIdsBox>
+    <iframe
+      ref={iframeRef}
+      src={pageUrl}
+      width="200"
+      height="100"
+      title={unitId}
+    />
   );
 };

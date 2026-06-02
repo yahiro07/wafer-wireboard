@@ -1,6 +1,6 @@
 import { createSequencerTickDriver } from "beams/mx-audio/sequencer-tick-driver";
 import { createStore } from "snap-store";
-import { ReactUnitTemplateFn } from "@/host-app/unit-frame/react-unit-interface";
+import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
 import { Button } from "@/shared/components/button";
 import { Icons } from "@/shared/components/icons";
 import { NumberSliderBox } from "@/shared/components/number-slider-box";

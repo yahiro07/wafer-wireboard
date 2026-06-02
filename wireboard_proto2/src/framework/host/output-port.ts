@@ -1,5 +1,5 @@
 import { SubPortType, UnitOutputPort } from "@/contract/unit-interfaces";
-import { HsUnitInputPort, HsUnitOutputPort } from "@/host-app/host/host-types";
+import { HsUnitInputPort, HsUnitOutputPort } from "@/framework/host/host-types";
 
 function getConnectedSubPortTypes(
   port: HsUnitInputPort,

@@ -1,5 +1,5 @@
 import { createStore } from "snap-store";
-import { ReactUnitTemplateFn } from "@/host-app/unit-frame/react-unit-interface";
+import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
 
 type CvGateOscState = {
   cv: number;

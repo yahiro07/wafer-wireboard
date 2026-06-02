@@ -3,12 +3,12 @@ import { HostCallbacks, SubPortType } from "@/contract/unit-interfaces";
 import {
   createHsUnitOutputPort,
   gAudioContext,
-} from "@/host-app/host/host-core";
+} from "@/framework/host/host-core";
 import {
   HsUnitInputPort,
   HsUnitInstance,
   HsUnitOutputPort,
-} from "@/host-app/host/host-types";
+} from "@/framework/host/host-types";
 
 type UnitAdapter = {
   unitId: string;

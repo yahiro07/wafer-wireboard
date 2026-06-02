@@ -1,6 +1,6 @@
 import { createStore } from "snap-store";
 import type { ParameterSpec } from "@/contract/unit-interfaces";
-import type { ReactUnitTemplateFn } from "@/host-app/unit-frame/react-unit-interface";
+import type { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
 import { Knob } from "@/shared/components/knob";
 import { UpperLabel } from "@/shared/components/upper-label";
 

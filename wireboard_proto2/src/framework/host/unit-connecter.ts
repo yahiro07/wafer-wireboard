@@ -1,7 +1,6 @@
 import { iife } from "beams/ax/object-utils";
-import {} from "@/contract/unit-interfaces";
-import { hostSystem } from "@/host-app/host/host-system";
-import { HsUnitInstance } from "@/host-app/host/host-types";
+import { hostSystem } from "@/framework/host/host-system";
+import { HsUnitInstance } from "@/framework/host/host-types";
 
 function connectUnitToDestPort(
   unit: HsUnitInstance,

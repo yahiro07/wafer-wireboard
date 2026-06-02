@@ -1,5 +1,5 @@
-import { HsUnitOutputPort } from "@/host-app/host/host-types";
-import { createHsUnitOutputPortImpl } from "@/host-app/host/output-port";
+import { HsUnitOutputPort } from "@/framework/host/host-types";
+import { createHsUnitOutputPortImpl } from "@/framework/host/output-port";
 
 const audioContext = new AudioContext();
 export const gAudioContext = audioContext;
