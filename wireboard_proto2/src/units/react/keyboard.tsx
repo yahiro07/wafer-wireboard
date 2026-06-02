@@ -18,6 +18,8 @@ function noteToCv(note: number): number {
 }
 
 export const createKeyboardUnit: ReactUnitTemplateFn = (unitInterface) => {
+  unitInterface.setPortSubtypes({ output: ["note", "cvGate"] });
+
   const audioContext = unitInterface.audioContext;
   const outputPort = unitInterface.primaryOutputPort;
   let cvGateMode = false;

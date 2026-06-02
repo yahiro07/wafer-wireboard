@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { HostCallbacks, SubPortType } from "@/contract/unit-interfaces";
+import { HostCallbacks, PortSubtype } from "@/contract/unit-interfaces";
 import {
   createHsUnitOutputPort,
   gAudioContext,
@@ -71,16 +71,16 @@ function createAdapterInputPort(): HsUnitInputPort & {
 } {
   const audioInputNode = gAudioContext.createGain();
   let mountedPort: HsUnitInputPort | undefined;
-  let connectedSubPortTypes: SubPortType[] | undefined;
+  let connectedSubPortTypes: PortSubtype[] | undefined;
   let connectedHasAudioOutput = false;
-  const subPortTypeListeners = new Set<(subPortTypes: SubPortType[]) => void>();
+  const subPortTypeListeners = new Set<(subPortTypes: PortSubtype[]) => void>();
 
   const connectMountedPort = (port: HsUnitInputPort | undefined) => {
     if (port?.audioInput) {
       audioInputNode.connect(port.audioInput.node);
     }
   };
-  const getMountedSubPortTypes = (hasAudioOutput: boolean): SubPortType[] => {
+  const getMountedSubPortTypes = (hasAudioOutput: boolean): PortSubtype[] => {
     connectedHasAudioOutput = hasAudioOutput;
     if (!mountedPort) {
       return [];
@@ -96,7 +96,7 @@ function createAdapterInputPort(): HsUnitInputPort & {
       mountedPort.stateInput ? "state" : undefined,
       mountedPort.automationInput ? "automation" : undefined,
       mountedPort.samplerPadInput ? "samplerPad" : undefined,
-    ].filter((type): type is SubPortType => !!type);
+    ].filter((type): type is PortSubtype => !!type);
   };
 
   return {

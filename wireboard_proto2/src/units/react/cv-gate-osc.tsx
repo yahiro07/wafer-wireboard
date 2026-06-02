@@ -18,6 +18,8 @@ function cvToFrequency(cv: number): number {
 }
 
 export const createCvGateOscUnit: ReactUnitTemplateFn = (unitInterface) => {
+  unitInterface.setPortSubtypes({ output: ["audio"], input: ["cvGate"] });
+
   const audioContext = unitInterface.audioContext;
   const destinationNode = unitInterface.primaryOutputPort.audioOutput.node;
 

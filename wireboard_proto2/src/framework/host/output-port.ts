@@ -1,10 +1,10 @@
-import { SubPortType, UnitOutputPort } from "@/contract/unit-interfaces";
+import { PortSubtype, UnitOutputPort } from "@/contract/unit-interfaces";
 import { HsUnitInputPort, HsUnitOutputPort } from "@/framework/host/host-types";
 
 function getConnectedSubPortTypes(
   port: HsUnitInputPort,
   hasAudioOutput: boolean,
-): SubPortType[] {
+): PortSubtype[] {
   if (port.getSubPortTypes) {
     return port.getSubPortTypes(hasAudioOutput);
   }
@@ -16,7 +16,7 @@ function getConnectedSubPortTypes(
     port.stateInput ? "state" : undefined,
     port.automationInput ? "automation" : undefined,
     port.samplerPadInput ? "samplerPad" : undefined,
-  ].filter((type): type is SubPortType => !!type);
+  ].filter((type): type is PortSubtype => !!type);
 }
 
 export function createHsUnitOutputPortImpl(

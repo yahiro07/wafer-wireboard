@@ -23,6 +23,8 @@ function getKnobStep(spec: ParameterSpec): number {
 export const createParametersControllerUnit: ReactUnitTemplateFn = (
   unitInterface,
 ) => {
+  unitInterface.setPortSubtypes({ output: ["automation"] });
+
   const outputPort = unitInterface.primaryOutputPort;
   const store = createStore<ParametersControllerState>({
     connected: false,

@@ -11,6 +11,11 @@ type ClockDividerState = {
 const clockDivisions: ClockDivision[] = [1, 2, 4];
 
 export const createClockDividerUnit: ReactUnitTemplateFn = (unitInterface) => {
+  unitInterface.setPortSubtypes({
+    output: ["clock"],
+    input: ["clock", "state"],
+  });
+
   const store = createStore<ClockDividerState>({
     division: 1,
   });

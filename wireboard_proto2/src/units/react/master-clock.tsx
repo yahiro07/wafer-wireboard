@@ -6,6 +6,8 @@ import { Icons } from "@/shared/components/icons";
 import { NumberSliderBox } from "@/shared/components/number-slider-box";
 
 export const createMasterClockUnit: ReactUnitTemplateFn = (unitInterface) => {
+  unitInterface.setPortSubtypes({ output: ["clock"] });
+
   const tickDriver = createSequencerTickDriver();
 
   const store = createStore({

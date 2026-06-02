@@ -14,6 +14,11 @@ const cvCenter = 0.4; // C3
 export const createCvGateStepSequencerUnit: ReactUnitTemplateFn = (
   unitInterface,
 ) => {
+  unitInterface.setPortSubtypes({
+    output: ["cvGate"],
+    input: ["clock", "state"],
+  });
+
   const store = createStore<SequencerState>({
     steps: Array(8)
       .fill(0)

@@ -1,4 +1,4 @@
-export type SubPortType =
+export type PortSubtype =
   | "audio"
   | "note"
   | "cvGate"
@@ -54,7 +54,7 @@ export type AudioPort = {
 
 export type UnitOutputPort = {
   setCallbacks(callbacks: {
-    onConnectedTo?(subPortTypes: SubPortType[]): void;
+    onConnectedTo?(subPortTypes: PortSubtype[]): void;
     onDisconnectTo?(): void;
   }): void;
   audioOutput: AudioPort;
@@ -69,7 +69,7 @@ export type UnitOutputPort = {
 export type UnitInputPort = {
   audioInput: AudioPort;
   setCallbacks(callbacks: {
-    onConnectedFrom?(subPortTypes: SubPortType[]): void;
+    onConnectedFrom?(subPortTypes: PortSubtype[]): void;
     onDisconnectFrom?(): void;
   }): void;
   setHandlers(handlers: {
@@ -92,6 +92,11 @@ export type HostCallbacks = {
   setMetaAttributes?(metaAttrs: MetaAttributes): void;
 };
 
+export type UnitPortsSpec = {
+  output?: PortSubtype[];
+  input?: PortSubtype[];
+};
+
 export type UnitInterface = {
   audioContext: AudioContext;
   primaryOutputPort: UnitOutputPort;
@@ -99,5 +104,6 @@ export type UnitInterface = {
   createMultiChannelOutputPorts(numPorts: number): UnitOutputPort[];
   createMultiChannelInputPorts(numPorts: number): UnitInputPort[];
   setHostCallbacks(callbacks: HostCallbacks): void;
+  setPortSubtypes(spec: UnitPortsSpec): void;
   completeSetup(): void;
 };

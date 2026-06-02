@@ -3,6 +3,8 @@ import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface
 export const createTwoPortsKeyboardUnit: ReactUnitTemplateFn = (
   unitInterface,
 ) => {
+  unitInterface.setPortSubtypes({ output: ["note"] });
+
   const audioContext = unitInterface.audioContext;
   const outputPorts = unitInterface.createMultiChannelOutputPorts(2);
 

@@ -10,6 +10,8 @@ type StateSwitcherState = {
 };
 
 export const createStateSwitcherUnit: ReactUnitTemplateFn = (unitInterface) => {
+  unitInterface.setPortSubtypes({ output: ["state"] });
+
   const outputPort = unitInterface.primaryOutputPort;
   const store = createStore<StateSwitcherState>({
     connected: false,
@@ -78,7 +80,6 @@ export const createStateSwitcherUnit: ReactUnitTemplateFn = (unitInterface) => {
       actions.clearState();
     },
   });
-
   return {
     RenderUi() {
       const { connected, activeSlotId } = store.useSnapshot();

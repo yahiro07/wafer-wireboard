@@ -8,6 +8,11 @@ import {
 } from "@/units/common/oscillator-unit-core";
 
 export const createOscUnit: ReactUnitTemplateFn = (unitInterface) => {
+  unitInterface.setPortSubtypes({
+    output: ["audio"],
+    input: ["note", "automation", "state"],
+  });
+
   const oscillatorCore = createOscillatorUnitCore(
     unitInterface.audioContext,
     unitInterface.primaryOutputPort.audioOutput.node,
@@ -31,6 +36,7 @@ export const createOscUnit: ReactUnitTemplateFn = (unitInterface) => {
   oscillatorCore.setParameter("wave", store.state.wave);
   oscillatorCore.setParameter("octave", store.state.octave);
   oscillatorCore.setParameter("volume", store.state.volume);
+
   unitInterface.primaryInputPort.setHandlers({
     noteInput: {
       noteOn: oscillatorCore.noteOn,

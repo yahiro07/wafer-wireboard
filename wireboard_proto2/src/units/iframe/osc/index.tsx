@@ -7,6 +7,9 @@ import { createOscillatorUnitCore } from "@/units/common/oscillator-unit-core";
 const unitInterface = (window as any).unitInterface as
   | UnitInterface
   | undefined;
+
+unitInterface?.setPortSubtypes({ output: ["audio"], input: ["note"] });
+
 const audioContext = unitInterface?.audioContext ?? new AudioContext();
 const destNode =
   unitInterface?.primaryOutputPort.audioOutput.node ?? audioContext.destination;

@@ -1,5 +1,9 @@
 import { seqNumbers } from "beams/ax/array-utils";
-import { HostCallbacks, UnitInterface } from "@/contract/unit-interfaces";
+import {
+  HostCallbacks,
+  UnitInterface,
+  UnitPortsSpec,
+} from "@/contract/unit-interfaces";
 import {
   createHsUnitOutputPort,
   gAudioContext,
@@ -52,6 +56,7 @@ export function createUnitInterface(
   let outputPorts: HsUnitOutputPort[] | undefined;
   let inputPorts: HsUnitInputPortPre[] | undefined;
   let hostCallbacks: HostCallbacks | undefined;
+  let portsSpec: UnitPortsSpec | undefined;
   return {
     audioContext,
     primaryOutputPort,
@@ -67,10 +72,15 @@ export function createUnitInterface(
     setHostCallbacks(callbacks: HostCallbacks) {
       hostCallbacks = callbacks;
     },
+    setPortSubtypes(spec: UnitPortsSpec) {
+      portsSpec = spec;
+    },
     completeSetup() {
       createdCallback({
         unitId,
         portsSpec: {
+          outputPortSubtypes: portsSpec?.output,
+          inputPortSubtypes: portsSpec?.input,
           numMultiOutputs: outputPorts?.length,
           numMultiInputs: inputPorts?.length,
         },

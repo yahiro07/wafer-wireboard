@@ -6,9 +6,9 @@ import {
   CvGatePort,
   HostCallbacks,
   NotePort,
+  PortSubtype,
   SamplerPadPort,
   StatePort,
-  SubPortType,
   UnitInputPort,
   UnitOutputPort,
 } from "@/contract/unit-interfaces";
@@ -39,9 +39,9 @@ export type HsUnitInputPort = {
   automationInput?: AutomationPort;
   samplerPadInput?: SamplerPadPort;
   callbacks?: HsUnitInputPortCallbacks;
-  getSubPortTypes?: (hasAudioOutput: boolean) => SubPortType[];
+  getSubPortTypes?: (hasAudioOutput: boolean) => PortSubtype[];
   subscribeSubPortTypes?: (
-    listener: (subPortTypes: SubPortType[]) => void,
+    listener: (subPortTypes: PortSubtype[]) => void,
   ) => () => void;
 };
 
@@ -51,9 +51,8 @@ export type HsUnitOutputPort = UnitOutputPort & {
 };
 
 export type HsUnitPortsSpec = {
-  // outputSubPortTypes: SubPortType[];
-  // inputSubPortTypes: SubPortType[];
-  // hasInputPort: boolean;
+  outputPortSubtypes?: PortSubtype[];
+  inputPortSubtypes?: PortSubtype[];
   numMultiInputs?: number;
   numMultiOutputs?: number;
 };

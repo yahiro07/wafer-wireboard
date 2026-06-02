@@ -19,11 +19,7 @@ export const UnitBox = ({
   const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
 
   return (
-    <UnitIdsBox
-      unitId={unitId}
-      numMultiOutputs={unitInstance?.portsSpec?.numMultiOutputs}
-      numMultiInputs={unitInstance?.portsSpec?.numMultiInputs}
-    >
+    <UnitIdsBox unitId={unitId} portsSpec={unitInstance?.portsSpec}>
       {pageUrl && (
         <UnitFrame
           unitId={unitId}

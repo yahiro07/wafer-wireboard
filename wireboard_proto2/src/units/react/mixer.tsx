@@ -4,6 +4,8 @@ import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface
 import { Knob } from "@/shared/components/knob";
 
 export const createMixerUnit: ReactUnitTemplateFn = (unitInterface) => {
+  unitInterface.setPortSubtypes({ output: ["audio"], input: ["audio"] });
+
   const audioContext = unitInterface.audioContext;
   const destinationNode = unitInterface.primaryOutputPort.audioOutput.node;
 
