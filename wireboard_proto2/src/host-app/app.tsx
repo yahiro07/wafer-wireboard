@@ -85,7 +85,7 @@ const unitItemsDefault: UnitItem[] = [
   {
     unitId: "keyboard4",
     unitTemplateFn: uf.keyboard,
-    destSpec: ["osc1", "osc2"],
+    destSpec: "osc1&osc2",
     position: { x: 400, y: 800 + d },
   },
   {

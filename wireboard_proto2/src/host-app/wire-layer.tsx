@@ -7,18 +7,52 @@ type WirePath = {
   d: string;
 };
 
+type WireConnection = {
+  key: string;
+  sourcePortId: string;
+  targetPortId: string;
+};
+
 const isPrimaryDestSpec = (destSpec: string) => {
   return !destSpec.startsWith("$") && !destSpec.includes(".");
 };
 
+const splitFanoutDestSpecs = (destSpec: string) => {
+  return destSpec
+    .split("&")
+    .map((spec) => spec.trim())
+    .filter(Boolean);
+};
+
 const getConnectionPairs = (unitItems: UnitItem[]) => {
   const unitIdSet = new Set(unitItems.map(({ unitId }) => unitId));
-  const connections: Array<{ sourceId: string; targetId: string }> = [];
+  const connections: WireConnection[] = [];
 
   for (const { unitId, destSpec } of unitItems) {
-    const destList = Array.isArray(destSpec) ? destSpec : [destSpec];
+    if (!destSpec) {
+      continue;
+    }
 
-    for (const dest of destList) {
+    if (Array.isArray(destSpec)) {
+      destSpec.forEach((dest, outputIndex) => {
+        if (!dest || !isPrimaryDestSpec(dest)) {
+          return;
+        }
+
+        if (!unitIdSet.has(dest)) {
+          return;
+        }
+
+        connections.push({
+          key: `${unitId}_output_${outputIndex}->${dest}`,
+          sourcePortId: `${unitId}_output_${outputIndex}`,
+          targetPortId: `${dest}_input`,
+        });
+      });
+      continue;
+    }
+
+    for (const dest of splitFanoutDestSpecs(destSpec)) {
       if (!dest || !isPrimaryDestSpec(dest)) {
         continue;
       }
@@ -27,7 +61,11 @@ const getConnectionPairs = (unitItems: UnitItem[]) => {
         continue;
       }
 
-      connections.push({ sourceId: unitId, targetId: dest });
+      connections.push({
+        key: `${unitId}_output->${dest}`,
+        sourcePortId: `${unitId}_output`,
+        targetPortId: `${dest}_input`,
+      });
     }
   }
 
@@ -72,16 +110,16 @@ export const WireLayer = ({ unitItems }: { unitItems: UnitItem[] }) => {
       const originRect = svgElement.getBoundingClientRect();
       const nextWirePaths: WirePath[] = [];
 
-      for (const { sourceId, targetId } of connections) {
-        const start = getPortCenter(`${sourceId}_output`, originRect);
-        const end = getPortCenter(`${targetId}_input`, originRect);
+      for (const { sourcePortId, targetPortId, key } of connections) {
+        const start = getPortCenter(sourcePortId, originRect);
+        const end = getPortCenter(targetPortId, originRect);
 
         if (!start || !end) {
           continue;
         }
 
         nextWirePaths.push({
-          key: `${sourceId}->${targetId}`,
+          key,
           d: buildWirePath(start, end),
         });
       }

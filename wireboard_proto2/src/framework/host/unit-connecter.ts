@@ -2,6 +2,13 @@ import { iife } from "beams/ax/object-utils";
 import { hostSystem } from "@/framework/host/host-system";
 import { HsUnitInstance } from "@/framework/host/host-types";
 
+const splitFanoutDestSpecs = (destSpec: string) => {
+  return destSpec
+    .split("&")
+    .map((spec) => spec.trim())
+    .filter(Boolean);
+};
+
 function connectUnitToDestPort(
   unit: HsUnitInstance,
   destSpec: string,
@@ -62,6 +69,15 @@ export function connectUnitToDestination(
   if (Array.isArray(destSpec)) {
     const cleanupFns = destSpec.map((spec, i) =>
       connectUnitToDestPort(unit, spec, i),
+    );
+    return () => {
+      cleanupFns.forEach((fn) => {
+        fn?.();
+      });
+    };
+  } else if (destSpec.includes("&")) {
+    const cleanupFns = splitFanoutDestSpecs(destSpec).map((spec) =>
+      connectUnitToDestPort(unit, spec),
     );
     return () => {
       cleanupFns.forEach((fn) => {
