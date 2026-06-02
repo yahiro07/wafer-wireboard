@@ -14,24 +14,20 @@ const PortCell = ({ id, isOutput }: { id: string; isOutput?: boolean }) => {
 
 export const UnitIdsBox = ({
   unitId,
-  destSpec,
   children,
 }: {
   unitId: string;
-  destSpec?: string | string[];
   children?: ReactNode;
 }) => {
-  const destSpecText = Array.isArray(destSpec) ? destSpec.join(", ") : destSpec;
   return (
     <div className="flex-v bg-gray-400">
-      <div className="flex-ha gap-1 px-1">
+      <div className="flex-ha gap-1 px-1 h-6 justify-between">
         <PortCell id={`${unitId}_output`} isOutput />
-        <div>{destSpecText}</div>
+        <div className="text-[12px] font-bold text-white">{unitId}</div>
       </div>
       {children}
-      <div className="flex-ha gap-1 px-1">
+      <div className="flex-ha gap-1 px-1 h-6">
         <PortCell id={`${unitId}_input`} />
-        <div>{unitId}</div>
       </div>
     </div>
   );

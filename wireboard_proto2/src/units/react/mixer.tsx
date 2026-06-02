@@ -59,7 +59,7 @@ export const createMixerUnit: ReactUnitTemplateFn = (unitInterface) => {
     RenderUi() {
       const { levels } = store.useSnapshot();
       return (
-        <div className="bg-gray-200 w-[200px] h-[100px] flex-c gap-3">
+        <div className="bg-gray-200 w-[400px] h-[100px] flex-c gap-6">
           {seqNumbers(4).map((ch) => (
             <div key={ch} className="flex-vc gap-1">
               <span>{ch + 1}</span>
