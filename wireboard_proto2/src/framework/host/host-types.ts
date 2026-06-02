@@ -50,7 +50,16 @@ export type HsUnitOutputPort = UnitOutputPort & {
   disconnectFrom(port: HsUnitInputPort): void;
 };
 
+export type HsUnitPortsSpec = {
+  // outputSubPortTypes: SubPortType[];
+  // inputSubPortTypes: SubPortType[];
+  // hasInputPort: boolean;
+  numMultiInputs?: number;
+  numMultiOutputs?: number;
+};
+
 export type HsUnitInstance = {
+  portsSpec: HsUnitPortsSpec;
   unitId: string;
   outputPort: HsUnitOutputPort;
   inputPort: HsUnitInputPort;

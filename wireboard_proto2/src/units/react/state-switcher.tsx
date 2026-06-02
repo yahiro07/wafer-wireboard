@@ -83,7 +83,7 @@ export const createStateSwitcherUnit: ReactUnitTemplateFn = (unitInterface) => {
     RenderUi() {
       const { connected, activeSlotId } = store.useSnapshot();
       return (
-        <div className="bg-gray-200 w-[120px] h-[100px] flex-vc gap-3 px-3 py-2">
+        <div className="bg-gray-200 w-[200px] h-[100px] flex-vc gap-3 px-3 py-2">
           <h4>State</h4>
           <div className="flex-h gap-2">
             {([1, 2] as const).map((slotId) => {

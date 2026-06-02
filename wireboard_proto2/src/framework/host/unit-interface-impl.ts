@@ -70,6 +70,10 @@ export function createUnitInterface(
     completeSetup() {
       createdCallback({
         unitId,
+        portsSpec: {
+          numMultiOutputs: outputPorts?.length,
+          numMultiInputs: inputPorts?.length,
+        },
         outputPort: primaryOutputPort,
         inputPort: primaryInputPort.emit(),
         outputPorts,

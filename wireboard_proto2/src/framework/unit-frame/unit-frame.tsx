@@ -1,10 +1,14 @@
 import { useEffect, useMemo, useRef } from "react";
 import { hostSystem } from "@/framework/host/host-system";
+import { HsUnitInstance } from "@/framework/host/host-types";
 import { createUnitAdapter } from "@/framework/host/unit-adapter";
 import { connectUnitToDestination } from "@/framework/host/unit-connecter";
 import { createUnitInterface } from "@/framework/host/unit-interface-impl";
 
-function createUnitFrameModel(unitId: string) {
+function createUnitFrameModel(
+  unitId: string,
+  loadedCallback?: (unitInstance: HsUnitInstance) => void,
+) {
   const unitAdapter = createUnitAdapter(unitId);
 
   return {
@@ -18,6 +22,7 @@ function createUnitFrameModel(unitId: string) {
         unitId,
         (unitInstance) => {
           unmountUnit = unitAdapter.mountUnitInstance(unitInstance);
+          loadedCallback?.(unitInstance);
         },
       );
       return () => {
@@ -38,13 +43,18 @@ export const UnitFrame = ({
   unitId,
   pageUrl,
   destSpec,
+  loadedCallback,
 }: {
   unitId: string;
   pageUrl: string;
   destSpec?: string | string[];
+  loadedCallback?(unitInstance: HsUnitInstance): void;
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const model = useMemo(() => createUnitFrameModel(unitId), [unitId]);
+  const model = useMemo(
+    () => createUnitFrameModel(unitId, loadedCallback),
+    [unitId, loadedCallback],
+  );
   useEffect(() => {
     return model.setDestSpec(destSpec);
   }, [destSpec, model]);

@@ -8,10 +8,12 @@ import {
   HsUnitInputPort,
   HsUnitInstance,
   HsUnitOutputPort,
+  HsUnitPortsSpec,
 } from "@/framework/host/host-types";
 
 type UnitAdapter = {
   unitId: string;
+  portsSpec: HsUnitPortsSpec;
   outputPort: HsUnitOutputPort;
   inputPort: HsUnitInputPort;
   outputPorts?: HsUnitOutputPort[];
@@ -248,6 +250,10 @@ export function createUnitAdapter(unitId: string): UnitAdapter {
   });
   return {
     unitId,
+    portsSpec: {
+      numMultiOutputs: outputPorts.length,
+      numMultiInputs: inputPorts.length,
+    },
     outputPort,
     inputPort,
     outputPorts,
