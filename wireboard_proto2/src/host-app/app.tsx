@@ -36,19 +36,19 @@ const unitItemsDefault: UnitItem[] = [
     unitId: "keyboard1",
     unitTemplateFn: uf.keyboard,
     destSpec: "osc1",
-    position: { x: 100, y: 400 },
+    position: { x: 50, y: 400 },
   },
   {
     unitId: "keyboard2",
     unitTemplateFn: uf.keyboard,
     destSpec: "osc2",
-    position: { x: 400, y: 400 },
+    position: { x: 300, y: 400 },
   },
   {
     unitId: "keyboard3",
     unitTemplateFn: uf.keyboard,
     destSpec: "cvGateOsc1",
-    position: { x: 700, y: 400 },
+    position: { x: 600, y: 400 },
   },
   {
     unitId: "stateSwitcher1",
@@ -66,13 +66,13 @@ const unitItemsDefault: UnitItem[] = [
     unitId: "paramController1",
     unitTemplateFn: uf.parametersController,
     destSpec: "osc2",
-    position: { x: 400, y: 600 },
+    position: { x: 500, y: 600 },
   },
   {
     unitId: "cvGateStepSequencer1",
     unitTemplateFn: uf.cvGateStepSequencer,
     destSpec: "cvGateOsc1",
-    position: { x: 700, y: 600 },
+    position: { x: 800, y: 600 },
   },
   {
     unitId: "masterClock1",

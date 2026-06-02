@@ -48,13 +48,12 @@ const getPortCenter = (portId: string, originRect: DOMRect) => {
 };
 
 const buildWirePath = (start: Point, end: Point) => {
-  const distance = Math.abs(end.x - start.x);
+  const distance = Math.abs(end.y - start.y);
   const bend = Math.max(distance * 0.5, 80);
-  const direction = end.x >= start.x ? 1 : -1;
-  const control1X = start.x + direction * bend;
-  const control2X = end.x - direction * bend;
+  const control1Y = start.y - bend;
+  const control2Y = end.y + bend;
 
-  return `M ${start.x} ${start.y} C ${control1X} ${start.y}, ${control2X} ${end.y}, ${end.x} ${end.y}`;
+  return `M ${start.x} ${start.y} C ${start.x} ${control1Y}, ${end.x} ${control2Y}, ${end.x} ${end.y}`;
 };
 
 export const WireLayer = ({ unitItems }: { unitItems: UnitItem[] }) => {
