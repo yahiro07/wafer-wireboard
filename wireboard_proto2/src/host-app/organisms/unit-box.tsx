@@ -1,9 +1,9 @@
 import { ReactUnitFrame } from "@/framework/unit-frame/react-unit-frame";
 import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
 import { UnitFrame } from "@/framework/unit-frame/unit-frame";
-import { UnitIdsBox } from "@/host-app/unit-frame-ex/unit-ids-box";
+import { UnitIdsBox } from "@/host-app/organisms/unit-ids-box";
 
-export const UnitFrameEx = ({
+export const UnitBox = ({
   unitId,
   pageUrl,
   unitTemplateFn,
