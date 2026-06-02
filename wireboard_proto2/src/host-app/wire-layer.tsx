@@ -13,15 +13,31 @@ type WireConnection = {
   targetPortId: string;
 };
 
-const isPrimaryDestSpec = (destSpec: string) => {
-  return !destSpec.startsWith("$") && !destSpec.includes(".");
-};
-
 const splitFanoutDestSpecs = (destSpec: string) => {
   return destSpec
     .split("&")
     .map((spec) => spec.trim())
     .filter(Boolean);
+};
+
+const parseDestSpec = (destSpec: string) => {
+  if (destSpec === "$output") {
+    return null;
+  }
+
+  const [unitId, portName] = destSpec.split(".");
+  if (!unitId) {
+    return null;
+  }
+
+  if (portName?.startsWith("port")) {
+    const portIndex = Number.parseInt(portName.slice("port".length), 10);
+    if (Number.isFinite(portIndex)) {
+      return { unitId, targetPortId: `${unitId}_input_${portIndex}` };
+    }
+  }
+
+  return { unitId, targetPortId: `${unitId}_input` };
 };
 
 const getConnectionPairs = (unitItems: UnitItem[]) => {
@@ -35,36 +51,38 @@ const getConnectionPairs = (unitItems: UnitItem[]) => {
 
     if (Array.isArray(destSpec)) {
       destSpec.forEach((dest, outputIndex) => {
-        if (!dest || !isPrimaryDestSpec(dest)) {
+        if (!dest) {
           return;
         }
 
-        if (!unitIdSet.has(dest)) {
+        const parsedDest = parseDestSpec(dest);
+        if (!parsedDest || !unitIdSet.has(parsedDest.unitId)) {
           return;
         }
 
         connections.push({
-          key: `${unitId}_output_${outputIndex}->${dest}`,
+          key: `${unitId}_output_${outputIndex}->${parsedDest.targetPortId}`,
           sourcePortId: `${unitId}_output_${outputIndex}`,
-          targetPortId: `${dest}_input`,
+          targetPortId: parsedDest.targetPortId,
         });
       });
       continue;
     }
 
     for (const dest of splitFanoutDestSpecs(destSpec)) {
-      if (!dest || !isPrimaryDestSpec(dest)) {
+      const parsedDest = parseDestSpec(dest);
+      if (!parsedDest) {
         continue;
       }
 
-      if (!unitIdSet.has(dest)) {
+      if (!unitIdSet.has(parsedDest.unitId)) {
         continue;
       }
 
       connections.push({
-        key: `${unitId}_output->${dest}`,
+        key: `${unitId}_output->${parsedDest.targetPortId}`,
         sourcePortId: `${unitId}_output`,
-        targetPortId: `${dest}_input`,
+        targetPortId: parsedDest.targetPortId,
       });
     }
   }
