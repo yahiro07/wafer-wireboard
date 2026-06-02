@@ -1,5 +1,6 @@
 import { seqNumbers } from "beams/ax/array-utils";
 import { ReactNode } from "react";
+import { handleUnitBoxDragging } from "@/host-app/organisms/unit-box-drag-handler";
 import { IconsEx } from "@/shared/components/icons";
 
 const PortCell = ({ id, isOutput }: { id: string; isOutput?: boolean }) => {
@@ -63,7 +64,10 @@ export const UnitIdsBox = ({
   const overlayPos = numMultiOutputs ? "bottom" : "top";
   return (
     <div className="flex-v bg-gray-400">
-      <div className="flex-ha gap-1 px-1 h-6 justify-between relative">
+      <div
+        className="flex-ha gap-1 px-1 h-6 justify-between relative cursor-pointer"
+        onPointerDown={(e) => handleUnitBoxDragging(e, unitId)}
+      >
         <PortCellsRow
           unitId={unitId}
           numMultiPorts={numMultiOutputs}
@@ -72,7 +76,10 @@ export const UnitIdsBox = ({
         {overlayPos === "top" && <UnitIdOverlay unitId={unitId} />}
       </div>
       {children}
-      <div className="flex-ha gap-1 px-1 h-6 relative">
+      <div
+        className="flex-ha gap-1 px-1 h-6 relative cursor-pointer"
+        onPointerDown={(e) => handleUnitBoxDragging(e, unitId)}
+      >
         <PortCellsRow unitId={unitId} numMultiPorts={numMultiInputs} />
         {overlayPos === "bottom" && <UnitIdOverlay unitId={unitId} />}
       </div>
