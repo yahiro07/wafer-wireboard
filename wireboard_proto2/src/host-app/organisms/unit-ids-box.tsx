@@ -9,10 +9,12 @@ const PortCell = ({
   unitId,
   isOutput,
   portIndex,
+  portSubtypes,
 }: {
   unitId: string;
   isOutput?: boolean;
   portIndex?: number;
+  portSubtypes?: string[];
 }) => {
   const id = portIndex
     ? isOutput
@@ -22,12 +24,17 @@ const PortCell = ({
   return (
     <div
       id={`dom_unit_port_${id}`}
-      className="text-white bg-gray-500 w-4 h-4 flex-c text-xs cursor-pointer"
+      className="text-white bg-gray-500 w-4 h-4 flex-c text-xs cursor-pointer relative"
       onPointerDown={(e) =>
         handlePortCellDragging(e, id, isOutput ?? false, portIndex)
       }
     >
       {isOutput && <IconsEx.ConnectorPortUp />}
+      <div className="flex-v absolute left-0 top-4 text-xs text-green-500">
+        {portSubtypes?.map((subtype, i) => (
+          <div key={i}>{subtype}</div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -36,10 +43,12 @@ const PortCellsRow = ({
   unitId,
   numMultiPorts,
   isOutput,
+  portSubtypes,
 }: {
   unitId: string;
   numMultiPorts?: number;
   isOutput?: boolean;
+  portSubtypes?: string[];
 }) => {
   return (
     <div className="w-full flex-ha gap-1 px-1 h-6 justify-between">
@@ -51,11 +60,16 @@ const PortCellsRow = ({
               unitId={unitId}
               isOutput={isOutput}
               portIndex={i}
+              portSubtypes={portSubtypes}
             />
           );
         })
       ) : (
-        <PortCell unitId={unitId} isOutput={isOutput} />
+        <PortCell
+          unitId={unitId}
+          isOutput={isOutput}
+          portSubtypes={portSubtypes}
+        />
       )}
     </div>
   );
@@ -89,6 +103,7 @@ export const UnitIdsBox = ({
           <PortCellsRow
             unitId={unitId}
             numMultiPorts={portsSpec?.numMultiOutputs}
+            portSubtypes={portsSpec?.outputPortSubtypes}
             isOutput
           />
         )}
@@ -103,6 +118,7 @@ export const UnitIdsBox = ({
           <PortCellsRow
             unitId={unitId}
             numMultiPorts={portsSpec?.numMultiInputs}
+            portSubtypes={portsSpec?.inputPortSubtypes}
           />
         )}
         {overlayPos === "bottom" && <UnitIdOverlay unitId={unitId} />}

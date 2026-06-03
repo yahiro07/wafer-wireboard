@@ -10,11 +10,9 @@ import {
   splitFanoutDestSpecs,
 } from "@/framework/host/unit-connecter";
 
-type HostSystemEvent =
-  | { type: "loadStarted" }
-  | { type: "loadCompleted" }
-  | { type: "unitsAdded"; units: HsUnitInstance[] }
-  | { type: "unitsRemoved"; unitIds: string[] };
+type HostSystemEvent = { type: "loadStarted" } | { type: "loadCompleted" };
+// | { type: "unitsAdded"; units: HsUnitInstance[] }
+// | { type: "unitsRemoved"; unitIds: string[] };
 
 type HostSystem = {
   eventPort: EventPort<HostSystemEvent>;
@@ -238,7 +236,7 @@ function createUnitsLoadingManager(
           pendingConnectionCodeMap.clear();
         }
         if (newUnits.length > 0) {
-          bus.eventPort.emit({ type: "unitsAdded", units: newUnits });
+          // bus.eventPort.emit({ type: "unitsAdded", units: newUnits });
         }
         bus.eventPort.emit({ type: "loadCompleted" });
         isProcessing = false;
