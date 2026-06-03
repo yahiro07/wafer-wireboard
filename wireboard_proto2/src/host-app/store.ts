@@ -124,10 +124,10 @@ export const actions = {
       }
     });
   },
-  setPortPosition(portKey: string, position: Point) {
+  patchPortItem(portKey: string, attrs: Partial<PortItem>) {
     store.setPortItems((prev) => ({
       ...prev,
-      [portKey]: { ...prev[portKey], position },
+      [portKey]: { ...prev[portKey], ...attrs },
     }));
   },
   removePortItem(portKey: string) {

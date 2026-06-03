@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useRef } from "react";
-import { domEditAreaId, getDomPortCellId } from "@/host-app/common";
+import {
+  domEditAreaId,
+  getDomPortCellId,
+  getDomUnitBoxId,
+  getUnitIdFromPortKey,
+} from "@/host-app/common";
 import { handlePortCellDragging } from "@/host-app/organisms/port-cell-drag-handler";
 import { actions } from "@/host-app/store";
 import { PortDirection } from "@/host-app/types";
@@ -11,10 +16,24 @@ function createPortCellModel(portKey: string) {
       const editAreaEl = document.getElementById(domEditAreaId);
       const editAreaRect = editAreaEl!.getBoundingClientRect();
 
-      const rect = el.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2 - editAreaRect.left;
-      const centerY = rect.top + rect.height / 2 - editAreaRect.top;
-      actions.setPortPosition(portKey, { x: centerX, y: centerY });
+      const portRect = el.getBoundingClientRect();
+      const centerX = portRect.left + portRect.width / 2;
+      const centerY = portRect.top + portRect.height / 2;
+
+      const positionX = centerX - editAreaRect.left;
+      const positionY = centerY - editAreaRect.top;
+
+      const unitId = getUnitIdFromPortKey(portKey);
+      const domUnitBoxId = getDomUnitBoxId(unitId);
+      const unitBoxEl = document.getElementById(domUnitBoxId);
+      const unitBoxRect = unitBoxEl!.getBoundingClientRect();
+      const relativeX = centerX - unitBoxRect.left;
+      const relativeY = centerY - unitBoxRect.top;
+
+      actions.patchPortItem(portKey, {
+        position: { x: positionX, y: positionY },
+        relativePositionOnUnit: { x: relativeX, y: relativeY },
+      });
 
       return () => {
         actions.removePortItem(portKey);

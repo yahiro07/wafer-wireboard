@@ -1,6 +1,10 @@
 import { Point } from "beams/ax-ui/common-types";
 import { useMemo } from "react";
-import { getPortKey, mapDestSpecToPortKeys } from "@/host-app/common";
+import {
+  getPortKey,
+  getUnitIdFromPortKey,
+  mapDestSpecToPortKeys,
+} from "@/host-app/common";
 import { store } from "@/host-app/store";
 import { PortItem, UnitItem } from "@/host-app/types";
 
@@ -57,6 +61,26 @@ function buildWirePath(start: Point, end: Point): string {
   return `M ${start.x} ${start.y} C ${start.x} ${control1Y}, ${end.x} ${control2Y}, ${end.x} ${end.y}`;
 }
 
+function getPortPosition(
+  unitItems: UnitItem[],
+  portItems: Record<string, PortItem>,
+  portKey: string,
+): Point | null {
+  const portItem = portItems[portKey];
+  if (!portItem) {
+    return null;
+  }
+  const unitId = getUnitIdFromPortKey(portKey);
+  const unitItem = unitItems.find((item) => item.unitId === unitId);
+  if (!unitItem) {
+    return null;
+  }
+  return {
+    x: unitItem.position.x + portItem.relativePositionOnUnit.x,
+    y: unitItem.position.y + portItem.relativePositionOnUnit.y,
+  };
+}
+
 function useWirePaths(
   unitItems: UnitItem[],
   portItems: Record<string, PortItem>,
@@ -65,12 +89,12 @@ function useWirePaths(
   return useMemo(() => {
     return connections
       .map(({ sourcePortKey, targetPortKey, key }) => {
-        const start = portItems[sourcePortKey]?.position;
-        const end = portItems[targetPortKey]?.position;
-        return start && end && { key, d: buildWirePath(start, end) };
+        const start = getPortPosition(unitItems, portItems, sourcePortKey);
+        const end = getPortPosition(unitItems, portItems, targetPortKey);
+        return start && end ? { key, d: buildWirePath(start, end) } : null;
       })
-      .filter(Boolean);
-  }, [connections, portItems]);
+      .filter(Boolean) as WirePath[];
+  }, [connections, unitItems, portItems]);
 }
 
 export const WireLayer = () => {

@@ -26,6 +26,10 @@ export function mapDestSpecToPortKeys(destSpec: string): string[] {
   }
 }
 
+export function getUnitIdFromPortKey(portKey: string) {
+  return portKey.split(".")[0];
+}
+
 export function getDomPortCellId(portKey: string) {
   return `domPortCell__${portKey}`;
 }

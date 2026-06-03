@@ -13,4 +13,5 @@ export type UnitItem = {
 
 export type PortItem = {
   position: Point; //center position of the port
+  relativePositionOnUnit: Point; //relative coord from top-left of the unit box
 };
