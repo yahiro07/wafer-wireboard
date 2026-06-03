@@ -93,6 +93,7 @@ export function handlePortCellDragging(
       },
       onUpOrCancel() {
         actions.setDraggingPortKey(null);
+        actions.setPreviewDestPortKey(null);
       },
     },
     { coordinate: "page" },

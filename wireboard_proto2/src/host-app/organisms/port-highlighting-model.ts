@@ -17,7 +17,11 @@ export function usePortHighlightingModel(portKey: string): HighlightingState {
   const selfPort = portItems[portKey];
   if (!draggingPort || !selfPort) return "normal";
 
-  if (previewDestPortKey === portKey) {
+  if (portKey === draggingPortKey) {
+    return "truthy";
+  }
+
+  if (portKey === previewDestPortKey) {
     return "truthy";
   }
 
@@ -29,5 +33,5 @@ export function usePortHighlightingModel(portKey: string): HighlightingState {
     return "truthyOutlined";
   }
 
-  return portKey === draggingPortKey ? "truthy" : "normal";
+  return "normal";
 }
