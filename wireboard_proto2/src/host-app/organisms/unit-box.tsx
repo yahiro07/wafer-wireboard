@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { HsUnitInstance } from "@/framework/host/host-types";
+import {
+  HsUnitInstance,
+  UnitDestinationSpec,
+} from "@/framework/host/host-types";
 import { ReactUnitFrame } from "@/framework/unit-frame/react-unit-frame";
 import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
 import { UnitFrame } from "@/framework/unit-frame/unit-frame";
@@ -14,12 +17,16 @@ export const UnitBox = ({
   unitId: string;
   pageUrl?: string;
   unitTemplateFn?: ReactUnitTemplateFn;
-  destSpec?: string | string[];
+  destSpec?: UnitDestinationSpec;
 }) => {
   const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
 
   return (
-    <UnitIdsBox unitId={unitId} portsSpec={unitInstance?.portsSpec}>
+    <UnitIdsBox
+      unitId={unitId}
+      portsSpec={unitInstance?.portsSpec}
+      destSpec={destSpec}
+    >
       {pageUrl && (
         <UnitFrame
           unitId={unitId}
