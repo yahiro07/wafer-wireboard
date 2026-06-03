@@ -4,42 +4,6 @@ import { HsUnitInstance } from "@/framework/host/host-types";
 import { createUnitInterface } from "@/framework/host/unit-interface-impl";
 import { extractArray } from "@/framework/unit-frame/helper";
 
-function createUnitFrameModel(
-  unitId: string,
-  loadedCallback?: (unitInstance: HsUnitInstance) => void,
-) {
-  // const unitAdapter = createUnitAdapter(unitId);
-  // let unitInstance: HsUnitInstance | undefined;
-
-  return {
-    onIframeMounted(iframe: HTMLIFrameElement) {
-      // const unregisterUnitAdapter =
-      //   hostSystem.registerUnitInstance(unitAdapter);
-      // let unmountUnit: (() => void) | null = null;
-
-      const win = iframe.contentWindow;
-      (win as any).unitInterface = createUnitInterface(
-        unitId,
-        (unitInstance) => {
-          // unmountUnit = unitAdapter.mountUnitInstance(unitInstance);
-          hostSystem.registerUnitInstance(unitInstance);
-          loadedCallback?.(unitInstance);
-        },
-      );
-      return () => {
-        // unregisterUnitAdapter();
-        // unmountUnit?.();
-      };
-    },
-    // setDestSpec(destSpec?: string | string[]) {
-    //   if (destSpec) {
-    //     return connectUnitToDestination(unitAdapter, destSpec);
-    //   }
-    // },
-    dispose() {},
-  };
-}
-
 export const UnitFrame = ({
   unitId,
   pageUrl,
@@ -66,8 +30,6 @@ export const UnitFrame = ({
       (win as any).unitInterface = createUnitInterface(
         unitId,
         (unitInstance) => {
-          // unmountUnit = unitAdapter.mountUnitInstance(unitInstance);
-          // hostSystem.addUnitInstance(unitInstance);
           loadedCallback?.(unitInstance);
           resolve(unitInstance);
         },
