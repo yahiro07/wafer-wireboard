@@ -35,10 +35,8 @@ export const UnitFrame = ({
         },
       );
     });
-    return hostSystem.registerPendingUnitInstancePromise(
-      unitId,
-      unitInstantiationPromise,
-    );
+    hostSystem.registerPendingUnitInstancePromise(unitInstantiationPromise);
+    return () => hostSystem.unregisterUnitInstance(unitId);
   }, [pageUrl]);
   return (
     <iframe

@@ -136,11 +136,11 @@ function updateUnitConnectionsByDestSpec(
 function updateUnitConnectionsByCodeDiff(
   bus: HostStateBus,
   unit: HsUnitInstance,
-  curr: DestinationsCode,
-  next: DestinationsCode,
+  curr: DestinationsCode | undefined,
+  next: DestinationsCode | undefined,
 ) {
-  const currs = curr.split("|").filter(Boolean);
-  const nexts = next.split("|").filter(Boolean);
+  const currs = curr?.split("|").filter(Boolean) ?? [];
+  const nexts = next?.split("|").filter(Boolean) ?? [];
   const toConnect = nexts.filter((dest) => !currs.includes(dest));
   const toDisconnect = currs.filter((dest) => !nexts.includes(dest));
   for (const destSpec of toDisconnect) {
@@ -158,7 +158,7 @@ function createUnitConnectionsManager(bus: HostStateBus) {
       for (const unit of bus.getAllUnits()) {
         const curr = connectionCodeMap[unit.unitId];
         const next = newConnectionCodeMap[unit.unitId];
-        if (next !== curr) {
+        if (next !== undefined && next !== curr) {
           updateUnitConnectionsByCodeDiff(bus, unit, curr, next);
           connectionCodeMap[unit.unitId] = next;
         }
@@ -202,3 +202,4 @@ function createHostSystem(): HostSystem {
     },
   };
 }
+export const hostSystem = createHostSystem();
