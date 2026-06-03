@@ -1,5 +1,6 @@
 import { Point } from "beams/ax-ui/common-types";
 import { createStore } from "snap-store";
+import { hostSystem } from "@/framework/host/host-system/host-system-2";
 import { UnitItem } from "@/host-app/types";
 import { reactUnitFactories } from "@/units/react";
 
@@ -94,8 +95,19 @@ const unitItemsDefault: UnitItem[] = [
   },
 ];
 
-export const store = createStore<{ unitItems: UnitItem[] }>({
+export const store = createStore<{ loading: boolean; unitItems: UnitItem[] }>({
+  loading: false,
   unitItems: unitItemsDefault,
+});
+
+hostSystem.eventPort.subscribe((ev) => {
+  if (ev.type === "loadStarted") {
+    console.log("Load started");
+    store.setLoading(true);
+  } else if (ev.type === "loadCompleted") {
+    console.log("Load completed");
+    store.setLoading(false);
+  }
 });
 
 export const actions = {

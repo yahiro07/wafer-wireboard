@@ -1,27 +1,26 @@
 import { iife } from "beams/ax/object-utils";
 import { mountAppRoot } from "beams/ax-react/mount-app-root";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { hostSystem } from "@/framework/host/host-system";
 import { UnitBox } from "@/host-app/organisms/unit-box";
 import { store } from "@/host-app/store";
 import { WireLayer } from "@/host-app/wire-layer";
 
 const App = () => {
-  const [loading, setLoading] = useState(true);
+  const { loading } = store.useSnapshot();
   const { unitItems } = store.useSnapshot();
 
   useEffect(() => {
     iife(async () => {
       await hostSystem.waitPendingUnits();
-      setLoading(false);
     });
-  });
+  }, []);
 
   return (
     <div className="w-dvw h-dvh flex-h">
       <div className="w-[200px] bd-red">{loading && "loading..."}</div>
       <div className="grow relative h-dvh bd-red isolate">
-        <WireLayer unitItems={unitItems} />
+        {!loading && <WireLayer unitItems={unitItems} />}
         {unitItems.map((item) => (
           <div
             key={item.unitId}

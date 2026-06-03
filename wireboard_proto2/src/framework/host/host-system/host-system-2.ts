@@ -1,3 +1,4 @@
+import { createEventPort, EventPort } from "beams/mo/event-port";
 import { gAudioContext } from "@/framework/host/host-core";
 import {
   HsUnitInputPort,
@@ -9,11 +10,14 @@ import {
   splitFanoutDestSpecs,
 } from "@/framework/host/unit-connecter";
 
-// type HostSystemEvent =
-//   | { type: "unitsAdded"; units: HsUnitInstance[] }
-//   | { type: "unitsRemoved"; unitIds: string[] };
+type HostSystemEvent =
+  | { type: "loadStarted" }
+  | { type: "loadCompleted" }
+  | { type: "unitsAdded"; units: HsUnitInstance[] }
+  | { type: "unitsRemoved"; unitIds: string[] };
 
 type HostSystem = {
+  eventPort: EventPort<HostSystemEvent>;
   registerUnitInstance(unit: HsUnitInstance): void;
   registerPendingUnitInstancePromise(
     unitInstancePromise: Promise<HsUnitInstance>,
@@ -27,6 +31,7 @@ type HostSystem = {
 };
 
 type HostStateBus = {
+  eventPort: EventPort<HostSystemEvent>;
   audioDestinationUnitInputPort: HsUnitInputPort;
   units: Record<string, HsUnitInstance>;
   addUnits(units: HsUnitInstance[]): void;
@@ -35,12 +40,14 @@ type HostStateBus = {
 };
 
 function createHostStateBus(): HostStateBus {
+  const eventPort = createEventPort<HostSystemEvent>();
   const audioDestinationUnitInputPort: HsUnitInputPort = {
     audioInput: { node: gAudioContext.destination },
   };
   const units: Record<string, HsUnitInstance> = {};
 
   return {
+    eventPort,
     audioDestinationUnitInputPort,
     units,
     addUnits(newUnits: HsUnitInstance[]) {
@@ -182,6 +189,7 @@ function createHostSystem(): HostSystem {
   const pendingConnectionCodeMap: Record<string, DestinationsCode> = {};
 
   return {
+    eventPort: bus.eventPort,
     registerUnitInstance(unit: HsUnitInstance) {
       pendingUnitPromises.push(Promise.resolve(unit));
     },
@@ -196,9 +204,12 @@ function createHostSystem(): HostSystem {
       pendingConnectionCodeMap[srcUnitId] = mapDestSpecToDestCode(destSpec);
     },
     async waitPendingUnits() {
+      bus.eventPort.emit({ type: "loadStarted" });
       const newUnits = await Promise.all(pendingUnitPromises);
       bus.addUnits(newUnits);
       connectionManager.updateConnections(pendingConnectionCodeMap);
+      bus.eventPort.emit({ type: "unitsAdded", units: newUnits });
+      bus.eventPort.emit({ type: "loadCompleted" });
     },
   };
 }
