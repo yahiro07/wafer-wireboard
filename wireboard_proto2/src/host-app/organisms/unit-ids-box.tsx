@@ -1,14 +1,31 @@
 import { seqNumbers } from "beams/ax/array-utils";
 import { ReactNode } from "react";
 import { HsUnitPortsSpec } from "@/framework/host/host-types";
+import { handlePortCellDragging } from "@/host-app/organisms/port-cell-drag-handler";
 import { handleUnitBoxDragging } from "@/host-app/organisms/unit-box-drag-handler";
 import { IconsEx } from "@/shared/components/icons";
 
-const PortCell = ({ id, isOutput }: { id: string; isOutput?: boolean }) => {
+const PortCell = ({
+  unitId,
+  isOutput,
+  portIndex,
+}: {
+  unitId: string;
+  isOutput?: boolean;
+  portIndex?: number;
+}) => {
+  const id = portIndex
+    ? isOutput
+      ? `${unitId}_output_${portIndex}`
+      : `${unitId}_input_${portIndex}`
+    : `${unitId}${isOutput ? "_output" : "_input"}`;
   return (
     <div
       id={`dom_unit_port_${id}`}
-      className="text-white bg-gray-500 w-4 h-4 flex-c text-xs"
+      className="text-white bg-gray-500 w-4 h-4 flex-c text-xs cursor-pointer"
+      onPointerDown={(e) =>
+        handlePortCellDragging(e, id, isOutput ?? false, portIndex)
+      }
     >
       {isOutput && <IconsEx.ConnectorPortUp />}
     </div>
@@ -28,16 +45,17 @@ const PortCellsRow = ({
     <div className="w-full flex-ha gap-1 px-1 h-6 justify-between">
       {numMultiPorts ? (
         seqNumbers(numMultiPorts).map((i) => {
-          const id = isOutput
-            ? `${unitId}_output_${i}`
-            : `${unitId}_input_${i}`;
-          return <PortCell key={id} id={id} isOutput={isOutput} />;
+          return (
+            <PortCell
+              key={i}
+              unitId={unitId}
+              isOutput={isOutput}
+              portIndex={i}
+            />
+          );
         })
       ) : (
-        <PortCell
-          id={`${unitId}${isOutput ? "_output" : "_input"}`}
-          isOutput={isOutput}
-        />
+        <PortCell unitId={unitId} isOutput={isOutput} />
       )}
     </div>
   );
@@ -45,7 +63,7 @@ const PortCellsRow = ({
 
 const UnitIdOverlay = ({ unitId }: { unitId: string }) => {
   return (
-    <div className="absolute-full flex-ha justify-end px-1.5">
+    <div className="absolute-full flex-ha justify-end px-1.5 pointer-events-none">
       <div className="text-[14px] font-bold text-white">{unitId}</div>
     </div>
   );
