@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useRef } from "react";
+import { RefObject, useEffect, useRef } from "react";
 import {
   domEditAreaId,
-  getDomPortCellId,
   getDomUnitBoxId,
   getUnitIdFromPortKey,
 } from "@/host-app/common";
@@ -10,9 +9,13 @@ import { actions } from "@/host-app/store";
 import { PortDirection } from "@/host-app/types";
 import { IconsEx } from "@/shared/components/icons";
 
-function createPortCellModel(portKey: string) {
-  return {
-    bindElement(el: HTMLDivElement) {
+function useAffectPortPositionToStore(
+  portDivRef: RefObject<HTMLDivElement | null>,
+  portKey: string,
+) {
+  useEffect(() => {
+    const el = portDivRef.current;
+    if (el) {
       const editAreaEl = document.getElementById(domEditAreaId);
       const editAreaRect = editAreaEl!.getBoundingClientRect();
 
@@ -38,8 +41,8 @@ function createPortCellModel(portKey: string) {
       return () => {
         actions.removePortItem(portKey);
       };
-    },
-  };
+    }
+  }, [portKey, portDivRef.current]);
 }
 
 export const PortCell = ({
@@ -51,18 +54,11 @@ export const PortCell = ({
   portDirection: PortDirection;
   portSubtypes?: string[];
 }) => {
-  const model = useMemo(() => createPortCellModel(portKey), [portKey]);
   const portDivRef = useRef<HTMLDivElement>(null);
-  const id = getDomPortCellId(portKey);
-
-  useEffect(() => {
-    return model.bindElement(portDivRef.current!);
-  }, [model]);
-
+  useAffectPortPositionToStore(portDivRef, portKey);
   return (
     <div
       ref={portDivRef}
-      id={id}
       className="text-white bg-gray-500 w-4 h-4 flex-c text-xs cursor-pointer relative"
       onPointerDown={(e) => handlePortCellDragging(e, portKey)}
     >
