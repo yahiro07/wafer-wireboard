@@ -43,25 +43,17 @@ function createHostStateBus(): HostStateBus {
   };
 }
 
-function createUnitLoadingHandlers(bus: HostStateBus) {
+type ConnectionManager = {
+  connectUnitToDestination(
+    unit: HsUnitInstance,
+    destSpec: UnitDestinationSpec,
+  ): (() => void) | undefined;
+};
+
+function createConnectionManager(bus: HostStateBus): ConnectionManager {
   const audioDestinationUnitInputPort: HsUnitInputPort = {
     audioInput: { node: gAudioContext.destination },
   };
-  const pendingUnitInstancePromises = new Map<string, PendingUnitRecord>();
-  const reservedConnections = new Map<string, ReservedConnectionRecord>();
-  let connectionsActivated = false;
-
-  function registerUnitInstanceImpl(unit: HsUnitInstance) {
-    bus.units[unit.unitId] = unit;
-    if (connectionsActivated) {
-      reconcileAllReservedConnections();
-    }
-    return () => {
-      if (bus.units[unit.unitId] === unit) {
-        delete bus.units[unit.unitId];
-      }
-    };
-  }
 
   function getConnectionTargetPort(
     destSpec: string,
@@ -79,39 +71,6 @@ function createUnitLoadingHandlers(bus: HostStateBus) {
     } else {
       const unit = bus.units[destSpec];
       return unit?.inputPort;
-    }
-  }
-
-  function cleanupReservedConnection(srcUnitId: string) {
-    const reservedConnection = reservedConnections.get(srcUnitId);
-    reservedConnection?.cleanup?.();
-    if (reservedConnection) {
-      reservedConnection.cleanup = undefined;
-    }
-  }
-
-  function reconcileReservedConnection(srcUnitId: string) {
-    cleanupReservedConnection(srcUnitId);
-
-    const reservedConnection = reservedConnections.get(srcUnitId);
-    if (!reservedConnection?.destSpec) {
-      return;
-    }
-
-    const unit = bus.units[srcUnitId];
-    if (!unit) {
-      return;
-    }
-
-    const cleanup = connectUnitToDestination(unit, reservedConnection.destSpec);
-    if (cleanup) {
-      reservedConnection.cleanup = cleanup;
-    }
-  }
-
-  function reconcileAllReservedConnections() {
-    for (const srcUnitId of reservedConnections.keys()) {
-      reconcileReservedConnection(srcUnitId);
     }
   }
 
@@ -166,6 +125,67 @@ function createUnitLoadingHandlers(bus: HostStateBus) {
     return () => {
       cleanupFns.forEach((cleanup) => cleanup());
     };
+  }
+
+  return {
+    connectUnitToDestination,
+  };
+}
+
+function createUnitLoadingHandlers(
+  bus: HostStateBus,
+  connectionManager: ConnectionManager,
+) {
+  const pendingUnitInstancePromises = new Map<string, PendingUnitRecord>();
+  const reservedConnections = new Map<string, ReservedConnectionRecord>();
+  let connectionsActivated = false;
+
+  function registerUnitInstanceImpl(unit: HsUnitInstance) {
+    bus.units[unit.unitId] = unit;
+    if (connectionsActivated) {
+      reconcileAllReservedConnections();
+    }
+    return () => {
+      if (bus.units[unit.unitId] === unit) {
+        delete bus.units[unit.unitId];
+      }
+    };
+  }
+
+  function cleanupReservedConnection(srcUnitId: string) {
+    const reservedConnection = reservedConnections.get(srcUnitId);
+    reservedConnection?.cleanup?.();
+    if (reservedConnection) {
+      reservedConnection.cleanup = undefined;
+    }
+  }
+
+  function reconcileReservedConnection(srcUnitId: string) {
+    cleanupReservedConnection(srcUnitId);
+
+    const reservedConnection = reservedConnections.get(srcUnitId);
+    if (!reservedConnection?.destSpec) {
+      return;
+    }
+
+    const unit = bus.units[srcUnitId];
+    if (!unit) {
+      return;
+    }
+
+    const cleanup = connectionManager.connectUnitToDestination(
+      unit,
+      reservedConnection.destSpec,
+    );
+    if (cleanup) {
+      reservedConnection.cleanup = cleanup;
+    }
+  }
+
+  function reconcileAllReservedConnections() {
+    for (const srcUnitId of reservedConnections.keys()) {
+      reconcileReservedConnection(srcUnitId);
+    }
   }
 
   return {
@@ -234,7 +254,8 @@ function createUnitLoadingHandlers(bus: HostStateBus) {
 
 function createHostSystem(): HostSystem {
   const bus = createHostStateBus();
-  const loadingHandlers = createUnitLoadingHandlers(bus);
+  const connectionManager = createConnectionManager(bus);
+  const loadingHandlers = createUnitLoadingHandlers(bus, connectionManager);
 
   return {
     getUnitInstance(unitId: string) {
