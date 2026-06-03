@@ -24,9 +24,8 @@ export const ReactUnitFrame = ({
   );
   useEffect(() => {
     loadedCallback?.(unit);
-    hostSystem.registerUnitInstance(unit);
-    return () => hostSystem.unregisterUnitInstance(unitId);
-  }, [unit, loadedCallback, unitId]);
+    return hostSystem.registerUnitInstance(unit);
+  }, [unit, loadedCallback]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: variable length deps
   useEffect(() => {

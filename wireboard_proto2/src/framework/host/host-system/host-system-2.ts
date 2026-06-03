@@ -18,11 +18,11 @@ type HostSystemEvent =
 
 type HostSystem = {
   eventPort: EventPort<HostSystemEvent>;
-  registerUnitInstance(unit: HsUnitInstance): void;
+  registerUnitInstance(unit: HsUnitInstance): () => void;
   registerPendingUnitInstancePromise(
+    unitId: string,
     unitInstancePromise: Promise<HsUnitInstance>,
-  ): void;
-  unregisterUnitInstance(unitId: string): void;
+  ): () => void;
   reserveConnectionChange(
     srcUnitId: string,
     destSpec: UnitDestinationSpec | undefined,
@@ -32,7 +32,7 @@ type HostSystem = {
 type HostStateBus = {
   eventPort: EventPort<HostSystemEvent>;
   audioDestinationUnitInputPort: HsUnitInputPort;
-  units: Record<string, HsUnitInstance>;
+  units: Map<string, HsUnitInstance>;
   addUnits(units: HsUnitInstance[]): void;
   getAllUnits(): HsUnitInstance[];
   removeUnit(unitId: string): void;
@@ -43,7 +43,7 @@ function createHostStateBus(): HostStateBus {
   const audioDestinationUnitInputPort: HsUnitInputPort = {
     audioInput: { node: gAudioContext.destination },
   };
-  const units: Record<string, HsUnitInstance> = {};
+  const units: Map<string, HsUnitInstance> = new Map();
 
   return {
     eventPort,
@@ -51,14 +51,14 @@ function createHostStateBus(): HostStateBus {
     units,
     addUnits(newUnits: HsUnitInstance[]) {
       for (const unit of newUnits) {
-        units[unit.unitId] = unit;
+        units.set(unit.unitId, unit);
       }
     },
     getAllUnits() {
-      return Object.values(units);
+      return Array.from(units.values());
     },
     removeUnit(unitId: string) {
-      delete units[unitId];
+      units.delete(unitId);
     },
   };
 }
@@ -66,7 +66,7 @@ function createHostStateBus(): HostStateBus {
 type DestinationsCode = string;
 
 function mapDestSpecToDestCode(
-  destSpec: UnitDestinationSpec | undefined,
+  destSpec: UnitDestinationSpec | null,
 ): DestinationsCode {
   if (Array.isArray(destSpec)) {
     return destSpec.join("|");
@@ -88,11 +88,11 @@ function getConnectionTargetPort(
     const [unitId, portName] = destSpec.split(".");
     const portIndex = parseInt(portName.replace("port", ""), 10);
     if (unitId && Number.isFinite(portIndex)) {
-      const unit = bus.units[unitId];
+      const unit = bus.units.get(unitId);
       return unit?.inputPorts?.[portIndex];
     }
   } else {
-    const unit = bus.units[destSpec];
+    const unit = bus.units.get(destSpec);
     return unit?.inputPort;
   }
 }
@@ -157,99 +157,147 @@ function updateUnitConnectionsByCodeDiff(
   }
 }
 
+type ConnectionManager = {
+  updateConnections(newConnectionCodeMap: Map<string, DestinationsCode>): void;
+  removeConnectionsForUnit(unitId: string): void;
+};
+
 function createUnitConnectionsManager(bus: HostStateBus) {
-  const connectionCodeMap: Record<string, DestinationsCode> = {};
+  const connectionCodeMap: Map<string, DestinationsCode> = new Map();
   return {
-    updateConnections(newConnectionCodeMap: Record<string, DestinationsCode>) {
-      for (const [unitId, code] of Object.entries(newConnectionCodeMap)) {
-        const unit = bus.units[unitId];
+    updateConnections(newConnectionCodeMap: Map<string, DestinationsCode>) {
+      for (const [unitId, code] of newConnectionCodeMap.entries()) {
+        const unit = bus.units.get(unitId);
         if (unit) {
-          const curr = connectionCodeMap[unit.unitId];
+          const curr = connectionCodeMap.get(unit.unitId);
           const next = code;
           if (next !== undefined && next !== curr) {
             updateUnitConnectionsByCodeDiff(bus, unit, curr, next);
-            connectionCodeMap[unit.unitId] = next;
+            connectionCodeMap.set(unit.unitId, next);
           }
         }
       }
     },
     removeConnectionsForUnit(unitId: string) {
-      const unit = bus.units[unitId];
-      const curr = connectionCodeMap[unitId];
+      const unit = bus.units.get(unitId);
+      const curr = connectionCodeMap.get(unitId);
       if (unit && curr) {
         updateUnitConnectionsByCodeDiff(bus, unit, curr, "");
-        delete connectionCodeMap[unitId];
+        connectionCodeMap.delete(unitId);
       }
     },
   };
 }
 
-type PendingConnectionOrder = {
-  srcUnitId: string;
-  destSpec: UnitDestinationSpec | undefined;
+type UnitLoadingJob = {
+  promise: Promise<HsUnitInstance>;
+  cancelled?: boolean;
+  resolvedUnitInstance?: HsUnitInstance;
 };
 
-function mapPendingConnectionOrdersToConnectionCodeMap(
-  orders: PendingConnectionOrder[],
-): Record<string, DestinationsCode> {
-  const map: Record<string, DestinationsCode> = {};
-  for (const { srcUnitId, destSpec } of orders) {
-    map[srcUnitId] = mapDestSpecToDestCode(destSpec);
-  }
-  return map;
+function createUnitsLoadingManager(
+  bus: HostStateBus,
+  connectionManager: ConnectionManager,
+) {
+  const unitLoadingJobs: UnitLoadingJob[] = [];
+  const pendingConnectionCodeMap: Map<string, DestinationsCode> = new Map();
+
+  let isProcessing = false;
+
+  const internal = {
+    async waitPendingUnits() {
+      let i = 0;
+      while (i < unitLoadingJobs.length) {
+        const job = unitLoadingJobs[i];
+        try {
+          job.resolvedUnitInstance = await job.promise;
+        } catch (e) {
+          console.error("Failed to load unit instance", e);
+        }
+        i++;
+      }
+      const newUnits = unitLoadingJobs
+        .filter((job) => !job.cancelled && job.resolvedUnitInstance)
+        .map((job) => job.resolvedUnitInstance!);
+
+      unitLoadingJobs.length = 0;
+
+      return newUnits;
+    },
+    async reserveLoading() {
+      if (!isProcessing) {
+        isProcessing = true;
+        bus.eventPort.emit({ type: "loadStarted" });
+        const newUnits = await internal.waitPendingUnits();
+
+        if (newUnits.length > 0) {
+          bus.addUnits(newUnits);
+        }
+        if (pendingConnectionCodeMap.size > 0) {
+          connectionManager.updateConnections(pendingConnectionCodeMap);
+          pendingConnectionCodeMap.clear();
+        }
+        if (newUnits.length > 0) {
+          bus.eventPort.emit({ type: "unitsAdded", units: newUnits });
+        }
+        bus.eventPort.emit({ type: "loadCompleted" });
+        isProcessing = false;
+        if (unitLoadingJobs.length > 0 || pendingConnectionCodeMap.size > 0) {
+          internal.reserveLoading();
+        }
+      }
+    },
+  };
+
+  return {
+    reserveLoadUnit(promise: Promise<HsUnitInstance>) {
+      unitLoadingJobs.push({ promise });
+      internal.reserveLoading();
+    },
+    cancelLoadUnit(promise: Promise<HsUnitInstance>) {
+      const job = unitLoadingJobs.find((job) => job.promise === promise);
+      if (job) {
+        job.cancelled = true;
+      }
+    },
+    reserveConnectUnit(
+      srcUnitId: string,
+      destSpec: UnitDestinationSpec | null,
+    ) {
+      const code = mapDestSpecToDestCode(destSpec);
+      pendingConnectionCodeMap.set(srcUnitId, code);
+      internal.reserveLoading();
+    },
+  };
 }
 
 function createHostSystem(): HostSystem {
   const bus = createHostStateBus();
   const connectionManager = createUnitConnectionsManager(bus);
-  const pendingUnitPromises: Promise<HsUnitInstance>[] = [];
-  const pendingConnectionOrders: PendingConnectionOrder[] = [];
-
-  let timerId: NodeJS.Timeout | null = null;
+  const loadingManager = createUnitsLoadingManager(bus, connectionManager);
 
   const internal = {
-    async waitPendingUnits() {
-      bus.eventPort.emit({ type: "loadStarted" });
-      if (pendingUnitPromises.length > 0) {
-        const newUnits = await Promise.all(pendingUnitPromises);
-        bus.addUnits(newUnits);
-        bus.eventPort.emit({ type: "unitsAdded", units: newUnits });
-        pendingUnitPromises.length = 0;
-      }
-      if (pendingConnectionOrders.length > 0) {
-        const connectionCodeMap = mapPendingConnectionOrdersToConnectionCodeMap(
-          pendingConnectionOrders,
-        );
-        connectionManager.updateConnections(connectionCodeMap);
-        pendingConnectionOrders.length = 0;
-      }
-      bus.eventPort.emit({ type: "loadCompleted" });
-      timerId = null;
-    },
-    reserveLoading() {
-      if (!timerId) {
-        timerId = setTimeout(internal.waitPendingUnits, 1);
-      }
+    addUnitInstancePromise(unitId: string, promise: Promise<HsUnitInstance>) {
+      loadingManager.reserveLoadUnit(promise);
+      return () => {
+        loadingManager.cancelLoadUnit(promise);
+        connectionManager.removeConnectionsForUnit(unitId);
+        bus.removeUnit(unitId);
+      };
     },
   };
 
   return {
     eventPort: bus.eventPort,
     registerUnitInstance(unit: HsUnitInstance) {
-      pendingUnitPromises.push(Promise.resolve(unit));
-      internal.reserveLoading();
+      const promise = Promise.resolve(unit);
+      return internal.addUnitInstancePromise(unit.unitId, promise);
     },
-    registerPendingUnitInstancePromise(unitInstancePromise) {
-      pendingUnitPromises.push(unitInstancePromise);
-      internal.reserveLoading();
-    },
-    unregisterUnitInstance(unitId) {
-      connectionManager.removeConnectionsForUnit(unitId);
-      bus.removeUnit(unitId);
+    registerPendingUnitInstancePromise(unitId, unitInstancePromise) {
+      return internal.addUnitInstancePromise(unitId, unitInstancePromise);
     },
     reserveConnectionChange(srcUnitId, destSpec) {
-      pendingConnectionOrders.push({ srcUnitId, destSpec });
-      internal.reserveLoading();
+      loadingManager.reserveConnectUnit(srcUnitId, destSpec ?? null);
     },
   };
 }
