@@ -1,5 +1,10 @@
 import { Point } from "beams/ax-ui/common-types";
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  getDomPortCellId,
+  getPortKey,
+  mapDestSpecToPortKeys,
+} from "@/host-app/common";
 import { UnitItem } from "@/host-app/types";
 
 type WirePath = {
@@ -9,89 +14,47 @@ type WirePath = {
 
 type WireConnection = {
   key: string;
-  sourcePortId: string;
-  targetPortId: string;
-};
-
-const splitFanoutDestSpecs = (destSpec: string) => {
-  return destSpec
-    .split("&")
-    .map((spec) => spec.trim())
-    .filter(Boolean);
-};
-
-const parseDestSpec = (destSpec: string) => {
-  if (destSpec === "$output") {
-    return null;
-  }
-
-  const [unitId, portName] = destSpec.split(".");
-  if (!unitId) {
-    return null;
-  }
-
-  if (portName?.startsWith("port")) {
-    const portIndex = Number.parseInt(portName.slice("port".length), 10);
-    if (Number.isFinite(portIndex)) {
-      return { unitId, targetPortId: `${unitId}_input_${portIndex}` };
-    }
-  }
-
-  return { unitId, targetPortId: `${unitId}_input` };
+  sourcePortKey: string;
+  targetPortKey: string;
 };
 
 const getConnectionPairs = (unitItems: UnitItem[]) => {
-  const unitIdSet = new Set(unitItems.map(({ unitId }) => unitId));
   const connections: WireConnection[] = [];
 
   for (const { unitId, destSpec } of unitItems) {
     if (!destSpec) {
       continue;
     }
-
     if (Array.isArray(destSpec)) {
-      destSpec.forEach((dest, outputIndex) => {
-        if (!dest) {
-          return;
-        }
-
-        const parsedDest = parseDestSpec(dest);
-        if (!parsedDest || !unitIdSet.has(parsedDest.unitId)) {
-          return;
-        }
-
-        connections.push({
-          key: `${unitId}_output_${outputIndex}->${parsedDest.targetPortId}`,
-          sourcePortId: `${unitId}_output_${outputIndex}`,
-          targetPortId: parsedDest.targetPortId,
+      destSpec.forEach((spec, outputIndex) => {
+        const sourcePortKey = getPortKey(unitId, "output", outputIndex);
+        const targetPortKeys = mapDestSpecToPortKeys(spec);
+        targetPortKeys.forEach((targetPortKey) => {
+          connections.push({
+            key: `${sourcePortKey}->${targetPortKey}`,
+            sourcePortKey: sourcePortKey,
+            targetPortKey,
+          });
         });
       });
-      continue;
-    }
-
-    for (const dest of splitFanoutDestSpecs(destSpec)) {
-      const parsedDest = parseDestSpec(dest);
-      if (!parsedDest) {
-        continue;
-      }
-
-      if (!unitIdSet.has(parsedDest.unitId)) {
-        continue;
-      }
-
-      connections.push({
-        key: `${unitId}_output->${parsedDest.targetPortId}`,
-        sourcePortId: `${unitId}_output`,
-        targetPortId: parsedDest.targetPortId,
+    } else {
+      const sourcePortKey = getPortKey(unitId, "output");
+      const targetPortKeys = mapDestSpecToPortKeys(destSpec);
+      targetPortKeys.forEach((targetPortKey) => {
+        connections.push({
+          key: `${sourcePortKey}->${targetPortKey}`,
+          sourcePortKey: sourcePortKey,
+          targetPortKey,
+        });
       });
     }
   }
-
   return connections;
 };
 
-const getPortCenter = (portId: string, originRect: DOMRect) => {
-  const element = document.getElementById(`dom_unit_port_${portId}`);
+const getPortCenter = (portKey: string, originRect: DOMRect) => {
+  const id = getDomPortCellId(portKey);
+  const element = document.getElementById(id);
   if (!element) {
     return null;
   }
@@ -128,9 +91,9 @@ export const WireLayer = ({ unitItems }: { unitItems: UnitItem[] }) => {
       const originRect = svgElement.getBoundingClientRect();
       const nextWirePaths: WirePath[] = [];
 
-      for (const { sourcePortId, targetPortId, key } of connections) {
-        const start = getPortCenter(sourcePortId, originRect);
-        const end = getPortCenter(targetPortId, originRect);
+      for (const { sourcePortKey, targetPortKey, key } of connections) {
+        const start = getPortCenter(sourcePortKey, originRect);
+        const end = getPortCenter(targetPortKey, originRect);
 
         if (!start || !end) {
           continue;
@@ -154,9 +117,9 @@ export const WireLayer = ({ unitItems }: { unitItems: UnitItem[] }) => {
     const observedBoxElements = new Set<Element>();
 
     for (const { unitId } of unitItems) {
-      const portElement = document.getElementById(
-        `dom_unit_port_${unitId}_output`,
-      );
+      const portKey = getPortKey(unitId, "output");
+      const domPortCellId = getDomPortCellId(portKey);
+      const portElement = document.getElementById(domPortCellId);
       const boxElement = portElement?.parentElement?.parentElement;
 
       if (!boxElement || observedBoxElements.has(boxElement)) {

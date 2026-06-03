@@ -8,3 +8,5 @@ export type UnitItem = {
   destSpec?: string | string[];
   position: Point;
 };
+
+export type PortDirection = "input" | "output";

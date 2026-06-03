@@ -1,3 +1,4 @@
+import { getDomPortCellId, getPortKey } from "@/host-app/common";
 import { handlePortCellDragging } from "@/host-app/organisms/port-cell-drag-handler";
 import { IconsEx } from "@/shared/components/icons";
 
@@ -12,17 +13,14 @@ export const PortCell = ({
   portIndex?: number;
   portSubtypes?: string[];
 }) => {
-  const id = portIndex
-    ? isOutput
-      ? `${unitId}_output_${portIndex}`
-      : `${unitId}_input_${portIndex}`
-    : `${unitId}${isOutput ? "_output" : "_input"}`;
+  const portKey = getPortKey(unitId, isOutput ? "output" : "input", portIndex);
+  const id = getDomPortCellId(portKey);
   return (
     <div
-      id={`dom_unit_port_${id}`}
+      id={id}
       className="text-white bg-gray-500 w-4 h-4 flex-c text-xs cursor-pointer relative"
       onPointerDown={(e) =>
-        handlePortCellDragging(e, id, isOutput ?? false, portIndex)
+        handlePortCellDragging(e, portKey, isOutput ?? false, portIndex)
       }
     >
       {isOutput && <IconsEx.ConnectorPortUp />}
