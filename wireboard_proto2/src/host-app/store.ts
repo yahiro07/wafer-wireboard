@@ -99,10 +99,12 @@ export const store = createStore<{
   loading: boolean;
   unitItems: UnitItem[];
   portItems: Record<string, PortItem>;
+  draggingPortKey: string | null;
 }>({
   loading: false,
   unitItems: unitItemsDefault,
   portItems: {},
+  draggingPortKey: null,
 });
 
 hostSystem.eventPort.subscribe((ev) => {
@@ -124,10 +126,16 @@ export const actions = {
       }
     });
   },
-  patchPortItem(portKey: string, attrs: Partial<PortItem>) {
+  // patchPortItem(portKey: string, attrs: Partial<PortItem>) {
+  //   store.setPortItems((prev) => ({
+  //     ...prev,
+  //     [portKey]: { ...prev[portKey], ...attrs },
+  //   }));
+  // },
+  addPortItem(portKey: string, portItem: PortItem) {
     store.setPortItems((prev) => ({
       ...prev,
-      [portKey]: { ...prev[portKey], ...attrs },
+      [portKey]: portItem,
     }));
   },
   removePortItem(portKey: string) {
@@ -136,5 +144,8 @@ export const actions = {
       delete newPortItems[portKey];
       return newPortItems;
     });
+  },
+  setDraggingPortKey(portKey: string | null) {
+    store.setDraggingPortKey(portKey);
   },
 };

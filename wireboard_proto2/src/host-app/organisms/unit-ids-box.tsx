@@ -1,5 +1,6 @@
 import { seqNumbers } from "beams/ax/array-utils";
 import { ReactNode } from "react";
+import { PortSubtype } from "@/contract/unit-interfaces";
 import {
   HsUnitPortsSpec,
   UnitDestinationSpec,
@@ -18,7 +19,7 @@ const PortCellsRow = ({
   unitId: string;
   numMultiPorts?: number;
   portDirection: PortDirection;
-  portSubtypes?: string[];
+  portSubtypes: PortSubtype[];
 }) => {
   return (
     <div className="w-full flex-ha gap-1 px-1 h-6 justify-between">
@@ -74,8 +75,8 @@ export const UnitIdsBox = ({
         {portsSpec?.outputPortSubtypes && (
           <PortCellsRow
             unitId={unitId}
-            numMultiPorts={portsSpec?.numMultiOutputs}
-            portSubtypes={portsSpec?.outputPortSubtypes}
+            numMultiPorts={portsSpec.numMultiOutputs}
+            portSubtypes={portsSpec.outputPortSubtypes}
             portDirection="output"
           />
         )}
@@ -94,8 +95,8 @@ export const UnitIdsBox = ({
         {portsSpec?.inputPortSubtypes && (
           <PortCellsRow
             unitId={unitId}
-            numMultiPorts={portsSpec?.numMultiInputs}
-            portSubtypes={portsSpec?.inputPortSubtypes}
+            numMultiPorts={portsSpec.numMultiInputs}
+            portSubtypes={portsSpec.inputPortSubtypes}
             portDirection="input"
           />
         )}

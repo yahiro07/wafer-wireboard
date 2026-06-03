@@ -1,4 +1,5 @@
 import { Point } from "beams/ax-ui/common-types";
+import { PortSubtype } from "@/contract/unit-interfaces";
 import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
 
 export type PortDirection = "input" | "output";
@@ -14,4 +15,7 @@ export type UnitItem = {
 export type PortItem = {
   position: Point; //center position of the port
   relativePositionInUnit: Point; //relative coord from top-left of the unit box
+  unitId: string;
+  direction: PortDirection;
+  portSubtypes: PortSubtype[];
 };

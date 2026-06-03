@@ -1,13 +1,31 @@
+import { PortDirection } from "@/host-app/types";
+
 export function getPortKey(
   unitId: string,
-  kind: "output" | "input",
+  direction: PortDirection,
   portIndex?: number,
 ) {
   if (portIndex !== undefined) {
-    return `${unitId}.${kind === "output" ? "outputs" : "inputs"}.${portIndex}`;
+    return `${unitId}.${direction === "output" ? "outputs" : "inputs"}.${portIndex}`;
   } else {
-    return `${unitId}.${kind === "output" ? "output" : "input"}`;
+    return `${unitId}.${direction === "output" ? "output" : "input"}`;
   }
+}
+
+type DecodedPort = {
+  unitId: string;
+  direction: PortDirection;
+  portIndex?: number;
+};
+
+export function decodePortKey(portKey: string): DecodedPort {
+  const [unitId, portType, portIndexStr] = portKey.split(".");
+  const portIndex = portIndexStr
+    ? Number.parseInt(portIndexStr, 10)
+    : undefined;
+  const direction =
+    portType === "outputs" || portType === "output" ? "output" : "input";
+  return { unitId, direction, portIndex };
 }
 
 export function mapDestSpecToPortKeys(destSpec: string): string[] {
