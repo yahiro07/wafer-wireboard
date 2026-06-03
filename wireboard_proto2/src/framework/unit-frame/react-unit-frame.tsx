@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { hostSystem } from "@/framework/host/host-system";
 import { HsUnitInstance } from "@/framework/host/host-types";
-import { connectUnitToDestination } from "@/framework/host/unit-connecter";
+import { extractArray } from "@/framework/unit-frame/helper";
 import {
   instantiateReactUnit,
   ReactUnitTemplateFn,
@@ -24,15 +24,13 @@ export const ReactUnitFrame = ({
   );
   useEffect(() => {
     loadedCallback?.(unit);
-    return hostSystem.registerUnitInstance(unit);
+    return hostSystem.addUnitInstance(unit);
   }, [unit, loadedCallback]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: variable length deps
   useEffect(() => {
-    if (destSpec) {
-      return connectUnitToDestination(unit, destSpec);
-    }
-  }, [...(Array.isArray(destSpec) ? destSpec : [destSpec]), unit]);
+    hostSystem.reserveConnectionChange(unitId, destSpec);
+  }, [...extractArray(destSpec), unit]);
 
   return <unit.RenderUi />;
 };

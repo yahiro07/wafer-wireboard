@@ -1,40 +1,41 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { hostSystem } from "@/framework/host/host-system";
 import { HsUnitInstance } from "@/framework/host/host-types";
-import { createUnitAdapter } from "@/framework/host/unit-adapter";
-import { connectUnitToDestination } from "@/framework/host/unit-connecter";
 import { createUnitInterface } from "@/framework/host/unit-interface-impl";
+import { extractArray } from "@/framework/unit-frame/helper";
 
 function createUnitFrameModel(
   unitId: string,
   loadedCallback?: (unitInstance: HsUnitInstance) => void,
 ) {
-  const unitAdapter = createUnitAdapter(unitId);
+  // const unitAdapter = createUnitAdapter(unitId);
+  // let unitInstance: HsUnitInstance | undefined;
 
   return {
     onIframeMounted(iframe: HTMLIFrameElement) {
-      const unregisterUnitAdapter =
-        hostSystem.registerUnitInstance(unitAdapter);
-      let unmountUnit: (() => void) | null = null;
+      // const unregisterUnitAdapter =
+      //   hostSystem.registerUnitInstance(unitAdapter);
+      // let unmountUnit: (() => void) | null = null;
 
       const win = iframe.contentWindow;
       (win as any).unitInterface = createUnitInterface(
         unitId,
         (unitInstance) => {
-          unmountUnit = unitAdapter.mountUnitInstance(unitInstance);
+          // unmountUnit = unitAdapter.mountUnitInstance(unitInstance);
+          hostSystem.addUnitInstance(unitInstance);
           loadedCallback?.(unitInstance);
         },
       );
       return () => {
-        unregisterUnitAdapter();
-        unmountUnit?.();
+        // unregisterUnitAdapter();
+        // unmountUnit?.();
       };
     },
-    setDestSpec(destSpec?: string | string[]) {
-      if (destSpec) {
-        return connectUnitToDestination(unitAdapter, destSpec);
-      }
-    },
+    // setDestSpec(destSpec?: string | string[]) {
+    //   if (destSpec) {
+    //     return connectUnitToDestination(unitAdapter, destSpec);
+    //   }
+    // },
     dispose() {},
   };
 }
@@ -51,17 +52,29 @@ export const UnitFrame = ({
   loadedCallback?(unitInstance: HsUnitInstance): void;
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const model = useMemo(
-    () => createUnitFrameModel(unitId, loadedCallback),
-    [unitId, loadedCallback],
-  );
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: variable length deps
   useEffect(() => {
-    return model.setDestSpec(destSpec);
-  }, [destSpec, model]);
+    hostSystem.reserveConnectionChange(unitId, destSpec);
+  }, [unitId, ...extractArray(destSpec)]);
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: add pageUrl to deps
   useEffect(() => {
-    return model.onIframeMounted(iframeRef.current!);
-  }, [model, pageUrl]);
+    const iframe = iframeRef.current!;
+    const win = iframe.contentWindow;
+    const unitInstantiationPromise = new Promise<HsUnitInstance>((resolve) => {
+      (win as any).unitInterface = createUnitInterface(
+        unitId,
+        (unitInstance) => {
+          // unmountUnit = unitAdapter.mountUnitInstance(unitInstance);
+          // hostSystem.addUnitInstance(unitInstance);
+          loadedCallback?.(unitInstance);
+          resolve(unitInstance);
+        },
+      );
+    });
+    hostSystem.addPendingUnitInstancePromise(unitId, unitInstantiationPromise);
+  }, [pageUrl]);
   return (
     <iframe
       ref={iframeRef}

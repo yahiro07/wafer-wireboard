@@ -67,3 +67,5 @@ export type HsUnitInstance = {
   hostCallbacks?: HostCallbacks;
   RenderUi?: () => ReactNode;
 };
+
+export type UnitDestinationSpec = string | string[];
