@@ -1,8 +1,3 @@
-export function handlePortCellDragging(
-  e: React.PointerEvent,
-  unitId: string,
-  isOutput: boolean,
-  portIndex?: number,
-) {
+export function handlePortCellDragging(e: React.PointerEvent, portKey: string) {
   e.stopPropagation();
 }

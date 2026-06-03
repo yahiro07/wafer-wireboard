@@ -29,3 +29,9 @@ export function mapDestSpecToPortKeys(destSpec: string): string[] {
 export function getDomPortCellId(portKey: string) {
   return `domPortCell__${portKey}`;
 }
+
+export function getDomUnitBoxId(unitId: string) {
+  return `domUnitBox__${unitId}`;
+}
+
+export const domEditAreaId = "domEditArea";

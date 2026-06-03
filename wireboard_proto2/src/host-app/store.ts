@@ -1,7 +1,7 @@
 import { Point } from "beams/ax-ui/common-types";
 import { createStore } from "snap-store";
 import { hostSystem } from "@/framework/host/host-system/host-system-2";
-import { UnitItem } from "@/host-app/types";
+import { PortItem, UnitItem } from "@/host-app/types";
 import { reactUnitFactories } from "@/units/react";
 
 const uf = reactUnitFactories;
@@ -95,9 +95,14 @@ const unitItemsDefault: UnitItem[] = [
   },
 ];
 
-export const store = createStore<{ loading: boolean; unitItems: UnitItem[] }>({
+export const store = createStore<{
+  loading: boolean;
+  unitItems: UnitItem[];
+  portItems: Record<string, PortItem>;
+}>({
   loading: false,
   unitItems: unitItemsDefault,
+  portItems: {},
 });
 
 hostSystem.eventPort.subscribe((ev) => {
@@ -118,5 +123,11 @@ export const actions = {
         item.position = position;
       }
     });
+  },
+  setPortPosition: (portKey: string, position: Point) => {
+    store.setPortItems((prev) => ({
+      ...prev,
+      [portKey]: { ...prev[portKey], position },
+    }));
   },
 };

@@ -1,11 +1,8 @@
 import { Point } from "beams/ax-ui/common-types";
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
-import {
-  getDomPortCellId,
-  getPortKey,
-  mapDestSpecToPortKeys,
-} from "@/host-app/common";
-import { UnitItem } from "@/host-app/types";
+import { useMemo } from "react";
+import { getPortKey, mapDestSpecToPortKeys } from "@/host-app/common";
+import { store } from "@/host-app/store";
+import { PortItem, UnitItem } from "@/host-app/types";
 
 type WirePath = {
   key: string;
@@ -18,7 +15,7 @@ type WireConnection = {
   targetPortKey: string;
 };
 
-const getConnectionPairs = (unitItems: UnitItem[]) => {
+function getConnectionPairs(unitItems: UnitItem[]): WireConnection[] {
   const connections: WireConnection[] = [];
 
   for (const { unitId, destSpec } of unitItems) {
@@ -50,100 +47,37 @@ const getConnectionPairs = (unitItems: UnitItem[]) => {
     }
   }
   return connections;
-};
+}
 
-const getPortCenter = (portKey: string, originRect: DOMRect) => {
-  const id = getDomPortCellId(portKey);
-  const element = document.getElementById(id);
-  if (!element) {
-    return null;
-  }
-
-  const rect = element.getBoundingClientRect();
-  return {
-    x: rect.left + rect.width / 2 - originRect.left,
-    y: rect.top + rect.height / 2 - originRect.top,
-  };
-};
-
-const buildWirePath = (start: Point, end: Point) => {
+function buildWirePath(start: Point, end: Point): string {
   const distance = Math.abs(end.y - start.y);
   const bend = Math.max(distance * 0.5, 80);
   const control1Y = start.y - bend;
   const control2Y = end.y + bend;
-
   return `M ${start.x} ${start.y} C ${start.x} ${control1Y}, ${end.x} ${control2Y}, ${end.x} ${end.y}`;
-};
+}
 
-export const WireLayer = ({ unitItems }: { unitItems: UnitItem[] }) => {
-  const svgRef = useRef<SVGSVGElement | null>(null);
-  const [wirePaths, setWirePaths] = useState<WirePath[]>([]);
-
+function useWirePaths(
+  unitItems: UnitItem[],
+  portItems: Record<string, PortItem>,
+): WirePath[] {
   const connections = useMemo(() => getConnectionPairs(unitItems), [unitItems]);
+  return useMemo(() => {
+    return connections
+      .map(({ sourcePortKey, targetPortKey, key }) => {
+        const start = portItems[sourcePortKey]?.position;
+        const end = portItems[targetPortKey]?.position;
+        return start && end && { key, d: buildWirePath(start, end) };
+      })
+      .filter(Boolean);
+  }, [connections, portItems]);
+}
 
-  useLayoutEffect(() => {
-    const svgElement = svgRef.current;
-    if (!svgElement) {
-      return;
-    }
-
-    const updateWirePaths = () => {
-      const originRect = svgElement.getBoundingClientRect();
-      const nextWirePaths: WirePath[] = [];
-
-      for (const { sourcePortKey, targetPortKey, key } of connections) {
-        const start = getPortCenter(sourcePortKey, originRect);
-        const end = getPortCenter(targetPortKey, originRect);
-
-        if (!start || !end) {
-          continue;
-        }
-
-        nextWirePaths.push({
-          key,
-          d: buildWirePath(start, end),
-        });
-      }
-
-      setWirePaths(nextWirePaths);
-    };
-
-    updateWirePaths();
-
-    const resizeObserver = new ResizeObserver(() => {
-      updateWirePaths();
-    });
-
-    const observedBoxElements = new Set<Element>();
-
-    for (const { unitId } of unitItems) {
-      const portKey = getPortKey(unitId, "output");
-      const domPortCellId = getDomPortCellId(portKey);
-      const portElement = document.getElementById(domPortCellId);
-      const boxElement = portElement?.parentElement?.parentElement;
-
-      if (!boxElement || observedBoxElements.has(boxElement)) {
-        continue;
-      }
-
-      observedBoxElements.add(boxElement);
-      resizeObserver.observe(boxElement);
-    }
-
-    resizeObserver.observe(svgElement);
-    window.addEventListener("resize", updateWirePaths);
-
-    return () => {
-      resizeObserver.disconnect();
-      window.removeEventListener("resize", updateWirePaths);
-    };
-  }, [connections, unitItems]);
-
+export const WireLayer = () => {
+  const { unitItems, portItems } = store.useSnapshot();
+  const wirePaths = useWirePaths(unitItems, portItems);
   return (
-    <svg
-      ref={svgRef}
-      className="absolute inset-0 z-0 block w-full h-full pointer-events-none overflow-visible"
-    >
+    <svg className="absolute inset-0 z-0 block w-full h-full pointer-events-none overflow-visible">
       {wirePaths.map((wirePath) => (
         <path
           key={wirePath.key}

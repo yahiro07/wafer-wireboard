@@ -4,38 +4,40 @@ import {
   HsUnitPortsSpec,
   UnitDestinationSpec,
 } from "@/framework/host/host-types";
+import { getPortKey } from "@/host-app/common";
 import { PortCell } from "@/host-app/organisms/port-cell";
 import { handleUnitBoxDragging } from "@/host-app/organisms/unit-box-drag-handler";
+import { PortDirection } from "@/host-app/types";
 
 const PortCellsRow = ({
   unitId,
   numMultiPorts,
-  isOutput,
+  portDirection,
   portSubtypes,
 }: {
   unitId: string;
   numMultiPorts?: number;
-  isOutput?: boolean;
+  portDirection: PortDirection;
   portSubtypes?: string[];
 }) => {
   return (
     <div className="w-full flex-ha gap-1 px-1 h-6 justify-between">
       {numMultiPorts ? (
         seqNumbers(numMultiPorts).map((i) => {
+          const portKey = getPortKey(unitId, portDirection, i);
           return (
             <PortCell
-              key={i}
-              unitId={unitId}
-              isOutput={isOutput}
-              portIndex={i}
+              key={portKey}
+              portKey={portKey}
+              portDirection={portDirection}
               portSubtypes={portSubtypes}
             />
           );
         })
       ) : (
         <PortCell
-          unitId={unitId}
-          isOutput={isOutput}
+          portKey={getPortKey(unitId, portDirection)}
+          portDirection={portDirection}
           portSubtypes={portSubtypes}
         />
       )}
@@ -74,7 +76,7 @@ export const UnitIdsBox = ({
             unitId={unitId}
             numMultiPorts={portsSpec?.numMultiOutputs}
             portSubtypes={portsSpec?.outputPortSubtypes}
-            isOutput
+            portDirection="output"
           />
         )}
         {overlayPos === "top" && <UnitIdOverlay unitId={unitId} />}
@@ -94,6 +96,7 @@ export const UnitIdsBox = ({
             unitId={unitId}
             numMultiPorts={portsSpec?.numMultiInputs}
             portSubtypes={portsSpec?.inputPortSubtypes}
+            portDirection="input"
           />
         )}
         {overlayPos === "bottom" && <UnitIdOverlay unitId={unitId} />}
