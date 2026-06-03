@@ -7,7 +7,7 @@ import { IconsEx } from "@/shared/components/icons";
 
 function createPortCellModel(portKey: string) {
   return {
-    setupElement(el: HTMLDivElement) {
+    bindElement(el: HTMLDivElement) {
       const editAreaEl = document.getElementById(domEditAreaId);
       const editAreaRect = editAreaEl!.getBoundingClientRect();
 
@@ -16,7 +16,9 @@ function createPortCellModel(portKey: string) {
       const centerY = rect.top + rect.height / 2 - editAreaRect.top;
       actions.setPortPosition(portKey, { x: centerX, y: centerY });
 
-      return () => {};
+      return () => {
+        actions.removePortItem(portKey);
+      };
     },
   };
 }
@@ -35,8 +37,7 @@ export const PortCell = ({
   const id = getDomPortCellId(portKey);
 
   useEffect(() => {
-    const portDiv = portDivRef.current!;
-    return model.setupElement(portDiv);
+    return model.bindElement(portDivRef.current!);
   }, [model]);
 
   return (

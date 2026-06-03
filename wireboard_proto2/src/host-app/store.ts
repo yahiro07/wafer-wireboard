@@ -116,7 +116,7 @@ hostSystem.eventPort.subscribe((ev) => {
 });
 
 export const actions = {
-  setUnitPosition: (unitId: string, position: Point) => {
+  setUnitPosition(unitId: string, position: Point) {
     store.produceUnitItems((draft) => {
       const item = draft.find((item) => item.unitId === unitId);
       if (item) {
@@ -124,10 +124,17 @@ export const actions = {
       }
     });
   },
-  setPortPosition: (portKey: string, position: Point) => {
+  setPortPosition(portKey: string, position: Point) {
     store.setPortItems((prev) => ({
       ...prev,
       [portKey]: { ...prev[portKey], position },
     }));
+  },
+  removePortItem(portKey: string) {
+    store.setPortItems((prev) => {
+      const newPortItems = { ...prev };
+      delete newPortItems[portKey];
+      return newPortItems;
+    });
   },
 };
