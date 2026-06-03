@@ -100,11 +100,13 @@ export const store = createStore<{
   unitItems: UnitItem[];
   portItems: Record<string, PortItem>;
   draggingPortKey: string | null;
+  previewDestPortKey: string | null;
 }>({
   loading: false,
   unitItems: unitItemsDefault,
   portItems: {},
   draggingPortKey: null,
+  previewDestPortKey: null,
 });
 
 hostSystem.eventPort.subscribe((ev) => {
@@ -147,5 +149,8 @@ export const actions = {
   },
   setDraggingPortKey(portKey: string | null) {
     store.setDraggingPortKey(portKey);
+  },
+  setPreviewDestPortKey(portKey: string | null) {
+    store.setPreviewDestPortKey(portKey);
   },
 };

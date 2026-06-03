@@ -1,3 +1,4 @@
+import { PortSubtype } from "@/contract/unit-interfaces";
 import { PortDirection } from "@/host-app/types";
 
 export function getPortKey(
@@ -42,6 +43,13 @@ export function mapDestSpecToPortKeys(destSpec: string): string[] {
       : undefined;
     return [getPortKey(unitId, "input", portIndex)];
   }
+}
+
+export function checkSubtypeOverlap(
+  subtypes1: PortSubtype[],
+  subtypes2: PortSubtype[],
+): boolean {
+  return subtypes1.some((st) => subtypes2.includes(st));
 }
 
 export function getUnitIdFromPortKey(portKey: string) {

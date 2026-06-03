@@ -1,4 +1,4 @@
-import { PortSubtype } from "@/contract/unit-interfaces";
+import { checkSubtypeOverlap } from "@/host-app/common";
 import { store } from "@/host-app/store";
 
 type HighlightingState =
@@ -8,20 +8,18 @@ type HighlightingState =
   | "falsy"
   | "falsyOutlined";
 
-function checkSubtypeOverlap(
-  subtypes1: PortSubtype[],
-  subtypes2: PortSubtype[],
-): boolean {
-  return subtypes1.some((st) => subtypes2.includes(st));
-}
-
 export function usePortHighlightingModel(portKey: string): HighlightingState {
-  const { draggingPortKey, portItems } = store.useSnapshot();
+  const { portItems, draggingPortKey, previewDestPortKey } =
+    store.useSnapshot();
   if (!draggingPortKey) return "normal";
 
   const draggingPort = portItems[draggingPortKey];
   const selfPort = portItems[portKey];
   if (!draggingPort || !selfPort) return "normal";
+
+  if (previewDestPortKey === portKey) {
+    return "truthy";
+  }
 
   if (
     draggingPort.direction !== selfPort.direction &&
