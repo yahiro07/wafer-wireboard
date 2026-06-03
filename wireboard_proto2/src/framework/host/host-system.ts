@@ -25,8 +25,8 @@ type ReservedConnectionRecord = {
 
 type HostSystem = {
   getUnitInstance(unitId: string): HsUnitInstance | undefined;
-  addUnitInstance(unit: HsUnitInstance): () => void;
-  addPendingUnitInstancePromise(
+  registerUnitInstance(unit: HsUnitInstance): () => void;
+  registerPendingUnitInstancePromise(
     unitId: string,
     unitInstancePromise: Promise<HsUnitInstance>,
   ): () => void;
@@ -51,7 +51,7 @@ function createUnitLoadingHandlers(bus: HostStateBus) {
   const reservedConnections = new Map<string, ReservedConnectionRecord>();
   let connectionsActivated = false;
 
-  function registerUnitInstance(unit: HsUnitInstance) {
+  function registerUnitInstanceImpl(unit: HsUnitInstance) {
     bus.units[unit.unitId] = unit;
     if (connectionsActivated) {
       reconcileAllReservedConnections();
@@ -169,8 +169,8 @@ function createUnitLoadingHandlers(bus: HostStateBus) {
   }
 
   return {
-    addUnitInstance(unit: HsUnitInstance): () => void {
-      registerUnitInstance(unit);
+    registerUnitInstance(unit: HsUnitInstance): () => void {
+      registerUnitInstanceImpl(unit);
       return () => {
         cleanupReservedConnection(unit.unitId);
         if (bus.units[unit.unitId] === unit) {
@@ -178,7 +178,7 @@ function createUnitLoadingHandlers(bus: HostStateBus) {
         }
       };
     },
-    addPendingUnitInstancePromise(
+    registerPendingUnitInstancePromise(
       unitId: string,
       unitInstancePromise: Promise<HsUnitInstance>,
     ): () => void {

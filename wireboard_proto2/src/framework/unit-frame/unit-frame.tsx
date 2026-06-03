@@ -22,7 +22,7 @@ function createUnitFrameModel(
         unitId,
         (unitInstance) => {
           // unmountUnit = unitAdapter.mountUnitInstance(unitInstance);
-          hostSystem.addUnitInstance(unitInstance);
+          hostSystem.registerUnitInstance(unitInstance);
           loadedCallback?.(unitInstance);
         },
       );
@@ -73,7 +73,10 @@ export const UnitFrame = ({
         },
       );
     });
-    hostSystem.addPendingUnitInstancePromise(unitId, unitInstantiationPromise);
+    return hostSystem.registerPendingUnitInstancePromise(
+      unitId,
+      unitInstantiationPromise,
+    );
   }, [pageUrl]);
   return (
     <iframe
