@@ -76,8 +76,8 @@ function getPortPosition(
     return null;
   }
   return {
-    x: unitItem.position.x + portItem.relativePositionOnUnit.x,
-    y: unitItem.position.y + portItem.relativePositionOnUnit.y,
+    x: unitItem.position.x + portItem.relativePositionInUnit.x,
+    y: unitItem.position.y + portItem.relativePositionInUnit.y,
   };
 }
 

@@ -35,7 +35,7 @@ function useAffectPortPositionToStore(
 
       actions.patchPortItem(portKey, {
         position: { x: positionX, y: positionY },
-        relativePositionOnUnit: { x: relativeX, y: relativeY },
+        relativePositionInUnit: { x: relativeX, y: relativeY },
       });
 
       return () => {
