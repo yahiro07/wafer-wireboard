@@ -92,6 +92,14 @@ export function handlePortCellDragging(
         }
       },
       onUpOrCancel() {
+        const { draggingPortKey, previewDestPortKey } = store.state;
+        if (
+          draggingPortKey &&
+          previewDestPortKey &&
+          previewDestPortKey !== draggingPortKey
+        ) {
+          actions.updateConnection(draggingPortKey, previewDestPortKey);
+        }
         actions.setDraggingPortKey(null);
         actions.setPreviewDestPortKey(null);
       },

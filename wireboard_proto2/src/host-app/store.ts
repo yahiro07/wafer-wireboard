@@ -1,6 +1,8 @@
 import { Point } from "beams/ax-ui/common-types";
 import { createStore } from "snap-store";
 import { hostSystem } from "@/framework/host/host-system/host-system-2";
+import { UnitDestinationSpec } from "@/framework/host/host-types";
+import { decodePortKey, mapPortKeyToDestSpec } from "@/host-app/common";
 import { PortItem, UnitItem } from "@/host-app/types";
 import { reactUnitFactories } from "@/units/react";
 
@@ -152,5 +154,54 @@ export const actions = {
   },
   setPreviewDestPortKey(portKey: string | null) {
     store.setPreviewDestPortKey(portKey);
+  },
+  updateConnection(sourcePortKey: string, targetPortKey: string) {
+    const { unitId: sourceUnitId } = decodePortKey(sourcePortKey);
+    const sourceUnit = store.state.unitItems.find(
+      (u) => u.unitId === sourceUnitId,
+    );
+    if (!sourceUnit) return;
+
+    const destSpec = mapPortKeyToDestSpec(targetPortKey);
+    if (!destSpec) return;
+
+    const currentDestSpec = sourceUnit.destSpec;
+    let shouldUpdate = false;
+    let nextDestSpec: UnitDestinationSpec | undefined;
+    if (currentDestSpec === undefined) {
+      //new connection
+      nextDestSpec = destSpec;
+      shouldUpdate = true;
+    } else if (currentDestSpec === destSpec) {
+      //disconnect
+      nextDestSpec = undefined;
+      shouldUpdate = true;
+    } else if (Array.isArray(currentDestSpec)) {
+      if (!currentDestSpec.includes(destSpec)) {
+        nextDestSpec = [...currentDestSpec, destSpec];
+      } else {
+        nextDestSpec = currentDestSpec.filter((spec) => spec !== destSpec);
+      }
+      shouldUpdate = true;
+    } else if (currentDestSpec.includes("&")) {
+      const parts = currentDestSpec.split("&").map((s) => s.trim());
+      if (!parts.includes(destSpec)) {
+        nextDestSpec = [...parts, destSpec].join("&");
+      } else {
+        nextDestSpec = parts.filter((spec) => spec !== destSpec).join("&");
+      }
+      shouldUpdate = true;
+    } else if (typeof currentDestSpec === "string") {
+      nextDestSpec = [currentDestSpec, destSpec].join("&");
+      shouldUpdate = true;
+    }
+    if (shouldUpdate) {
+      store.produceUnitItems((draft) => {
+        const item = draft.find((item) => item.unitId === sourceUnitId);
+        if (item) {
+          item.destSpec = nextDestSpec;
+        }
+      });
+    }
   },
 };

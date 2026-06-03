@@ -45,6 +45,17 @@ export function mapDestSpecToPortKeys(destSpec: string): string[] {
   }
 }
 
+export function mapPortKeyToDestSpec(portKey: string): string | undefined {
+  const { unitId, direction, portIndex } = decodePortKey(portKey);
+  if (direction === "input") {
+    if (portIndex !== undefined) {
+      return `${unitId}.port${portIndex}`;
+    } else {
+      return `${unitId}`;
+    }
+  }
+}
+
 export function checkSubtypeOverlap(
   subtypes1: PortSubtype[],
   subtypes2: PortSubtype[],
