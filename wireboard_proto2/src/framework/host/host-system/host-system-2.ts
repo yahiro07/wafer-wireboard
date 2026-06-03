@@ -27,7 +27,6 @@ type HostSystem = {
     srcUnitId: string,
     destSpec: UnitDestinationSpec | undefined,
   ): void;
-  waitPendingUnits(): Promise<void>;
 };
 
 type HostStateBus = {
@@ -162,12 +161,15 @@ function createUnitConnectionsManager(bus: HostStateBus) {
   const connectionCodeMap: Record<string, DestinationsCode> = {};
   return {
     updateConnections(newConnectionCodeMap: Record<string, DestinationsCode>) {
-      for (const unit of bus.getAllUnits()) {
-        const curr = connectionCodeMap[unit.unitId];
-        const next = newConnectionCodeMap[unit.unitId];
-        if (next !== undefined && next !== curr) {
-          updateUnitConnectionsByCodeDiff(bus, unit, curr, next);
-          connectionCodeMap[unit.unitId] = next;
+      for (const [unitId, code] of Object.entries(newConnectionCodeMap)) {
+        const unit = bus.units[unitId];
+        if (unit) {
+          const curr = connectionCodeMap[unit.unitId];
+          const next = code;
+          if (next !== undefined && next !== curr) {
+            updateUnitConnectionsByCodeDiff(bus, unit, curr, next);
+            connectionCodeMap[unit.unitId] = next;
+          }
         }
       }
     },
@@ -182,34 +184,72 @@ function createUnitConnectionsManager(bus: HostStateBus) {
   };
 }
 
+type PendingConnectionOrder = {
+  srcUnitId: string;
+  destSpec: UnitDestinationSpec | undefined;
+};
+
+function mapPendingConnectionOrdersToConnectionCodeMap(
+  orders: PendingConnectionOrder[],
+): Record<string, DestinationsCode> {
+  const map: Record<string, DestinationsCode> = {};
+  for (const { srcUnitId, destSpec } of orders) {
+    map[srcUnitId] = mapDestSpecToDestCode(destSpec);
+  }
+  return map;
+}
+
 function createHostSystem(): HostSystem {
   const bus = createHostStateBus();
   const connectionManager = createUnitConnectionsManager(bus);
   const pendingUnitPromises: Promise<HsUnitInstance>[] = [];
-  const pendingConnectionCodeMap: Record<string, DestinationsCode> = {};
+  const pendingConnectionOrders: PendingConnectionOrder[] = [];
+
+  let timerId: NodeJS.Timeout | null = null;
+
+  const internal = {
+    async waitPendingUnits() {
+      bus.eventPort.emit({ type: "loadStarted" });
+      if (pendingUnitPromises.length > 0) {
+        const newUnits = await Promise.all(pendingUnitPromises);
+        bus.addUnits(newUnits);
+        bus.eventPort.emit({ type: "unitsAdded", units: newUnits });
+        pendingUnitPromises.length = 0;
+      }
+      if (pendingConnectionOrders.length > 0) {
+        const connectionCodeMap = mapPendingConnectionOrdersToConnectionCodeMap(
+          pendingConnectionOrders,
+        );
+        connectionManager.updateConnections(connectionCodeMap);
+        pendingConnectionOrders.length = 0;
+      }
+      bus.eventPort.emit({ type: "loadCompleted" });
+      timerId = null;
+    },
+    reserveLoading() {
+      if (!timerId) {
+        timerId = setTimeout(internal.waitPendingUnits, 1);
+      }
+    },
+  };
 
   return {
     eventPort: bus.eventPort,
     registerUnitInstance(unit: HsUnitInstance) {
       pendingUnitPromises.push(Promise.resolve(unit));
+      internal.reserveLoading();
     },
     registerPendingUnitInstancePromise(unitInstancePromise) {
       pendingUnitPromises.push(unitInstancePromise);
+      internal.reserveLoading();
     },
     unregisterUnitInstance(unitId) {
       connectionManager.removeConnectionsForUnit(unitId);
       bus.removeUnit(unitId);
     },
     reserveConnectionChange(srcUnitId, destSpec) {
-      pendingConnectionCodeMap[srcUnitId] = mapDestSpecToDestCode(destSpec);
-    },
-    async waitPendingUnits() {
-      bus.eventPort.emit({ type: "loadStarted" });
-      const newUnits = await Promise.all(pendingUnitPromises);
-      bus.addUnits(newUnits);
-      connectionManager.updateConnections(pendingConnectionCodeMap);
-      bus.eventPort.emit({ type: "unitsAdded", units: newUnits });
-      bus.eventPort.emit({ type: "loadCompleted" });
+      pendingConnectionOrders.push({ srcUnitId, destSpec });
+      internal.reserveLoading();
     },
   };
 }

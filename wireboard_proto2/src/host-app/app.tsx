@@ -1,7 +1,4 @@
-import { iife } from "beams/ax/object-utils";
 import { mountAppRoot } from "beams/ax-react/mount-app-root";
-import { useEffect } from "react";
-import { hostSystem } from "@/framework/host/host-system";
 import { UnitBox } from "@/host-app/organisms/unit-box";
 import { store } from "@/host-app/store";
 import { WireLayer } from "@/host-app/wire-layer";
@@ -9,12 +6,6 @@ import { WireLayer } from "@/host-app/wire-layer";
 const App = () => {
   const { loading } = store.useSnapshot();
   const { unitItems } = store.useSnapshot();
-
-  useEffect(() => {
-    iife(async () => {
-      await hostSystem.waitPendingUnits();
-    });
-  }, []);
 
   return (
     <div className="w-dvw h-dvh flex-h">
