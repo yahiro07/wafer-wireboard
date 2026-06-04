@@ -36,6 +36,10 @@ it("destinationCodeOp.isIncluded", () => {
     const result = destinationCodeOp.isIncluded("unit1&unit2|unit3", "unit2");
     expect(result).toBe(true);
   }
+  {
+    const result = destinationCodeOp.isIncludedAt("unit1|unit2", "unit1", 1);
+    expect(result).toBe(false);
+  }
 });
 
 it("destinationCodeOp.add", () => {
@@ -64,6 +68,12 @@ it("destinationCodeOp.add", () => {
       sourcePortIndex: 1,
     });
     expect(result).toBe("unit1|unit2&unit3");
+  }
+  {
+    const result = destinationCodeOp.add("unit1|unit2", "unit2", {
+      sourcePortIndex: 0,
+    });
+    expect(result).toBe("unit1&unit2|unit2");
   }
 });
 

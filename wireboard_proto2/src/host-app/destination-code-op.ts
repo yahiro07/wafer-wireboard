@@ -32,6 +32,20 @@ export const destinationCodeOp = {
     if (portsCode === undefined) return false;
     return portsCode.split(/[|&]/).includes(portCode);
   },
+  isIncludedAt(
+    portsCode: string | undefined,
+    portCode: string,
+    sourcePortIndex?: number,
+  ): boolean {
+    if (portsCode === undefined) return false;
+    if (sourcePortIndex === undefined) {
+      return destinationCodeOp.isIncluded(portsCode, portCode);
+    }
+    const parts = portsCode?.split("|");
+    const part = parts?.[sourcePortIndex];
+    if (!part) return false;
+    return destinationCodeOp.isIncluded(part, portCode);
+  },
   add(
     currentPortsCode: string | undefined,
     portCode: string,

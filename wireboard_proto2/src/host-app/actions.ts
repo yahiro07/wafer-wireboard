@@ -81,18 +81,22 @@ export const actions = {
     const currentPortsCode = sourceUnit.destSpec;
     const portCode = destSpec;
 
-    const isIncluded = destinationCodeOp.isIncluded(currentPortsCode, destSpec);
+    const isIncluded = destinationCodeOp.isIncludedAt(
+      currentPortsCode,
+      destSpec,
+      sourcePortIndex,
+    );
 
     const nextPortsCode = !isIncluded
       ? destinationCodeOp.add(
           currentPortsCode,
           portCode,
-          sourcePortIndex ? { sourcePortIndex } : undefined,
+          sourcePortIndex !== undefined ? { sourcePortIndex } : undefined,
         )
       : destinationCodeOp.remove(
           currentPortsCode,
           portCode,
-          sourcePortIndex ? { sourcePortIndex } : undefined,
+          sourcePortIndex !== undefined ? { sourcePortIndex } : undefined,
         );
     actionsInternal.patchUnitItem(sourceUnitId, { destSpec: nextPortsCode });
   },
