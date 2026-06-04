@@ -183,43 +183,5 @@ export const actions = {
         item.destSpec = nextPortsCode;
       }
     });
-
-    // let shouldUpdate = false;
-    // let nextDestSpec: DestinationCode | undefined;
-    // if (currentDestSpec === undefined) {
-    //   //new connection
-    //   nextDestSpec = destSpec;
-    //   shouldUpdate = true;
-    // } else if (currentDestSpec === destSpec) {
-    //   //disconnect
-    //   nextDestSpec = undefined;
-    //   shouldUpdate = true;
-    // } else if (Array.isArray(currentDestSpec)) {
-    //   if (!currentDestSpec.includes(destSpec)) {
-    //     nextDestSpec = [...currentDestSpec, destSpec];
-    //   } else {
-    //     nextDestSpec = currentDestSpec.filter((spec) => spec !== destSpec);
-    //   }
-    //   shouldUpdate = true;
-    // } else if (currentDestSpec.includes("&")) {
-    //   const parts = currentDestSpec.split("&").map((s) => s.trim());
-    //   if (!parts.includes(destSpec)) {
-    //     nextDestSpec = [...parts, destSpec].join("&");
-    //   } else {
-    //     nextDestSpec = parts.filter((spec) => spec !== destSpec).join("&");
-    //   }
-    //   shouldUpdate = true;
-    // } else if (typeof currentDestSpec === "string") {
-    //   nextDestSpec = [currentDestSpec, destSpec].join("&");
-    //   shouldUpdate = true;
-    // }
-    // if (shouldUpdate) {
-    //   store.produceUnitItems((draft) => {
-    //     const item = draft.find((item) => item.unitId === sourceUnitId);
-    //     if (item) {
-    //       item.destSpec = nextDestSpec;
-    //     }
-    //   });
-    // }
   },
 };
