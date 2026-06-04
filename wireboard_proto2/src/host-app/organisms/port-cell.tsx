@@ -1,5 +1,5 @@
 import { RefObject, useEffect, useRef } from "react";
-import { PortSubtype } from "@/contract/unit-interfaces";
+import { PortSubtype } from "wus-unit-types";
 import { actions } from "@/host-app/actions";
 import { decodePortKey, getDomUnitBoxId } from "@/host-app/common";
 import { handlePortCellDragging } from "@/host-app/organisms/port-cell-drag-handler";

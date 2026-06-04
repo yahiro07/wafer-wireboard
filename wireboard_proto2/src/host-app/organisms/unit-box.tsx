@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { HsUnitInstance } from "@/framework/host/host-types";
-import { ReactUnitFrame } from "@/framework/unit-frame/react-unit-frame";
-import { UnitFrame } from "@/framework/unit-frame/unit-frame";
+import { HsUnitInstance } from "wus-host-react/host";
+import { ReactUnitFrame, UnitFrame } from "wus-host-react/react";
 import { getDomUnitBoxId } from "@/host-app/common";
 import { UnitIdsBox } from "@/host-app/organisms/unit-ids-box";
+import { hostSystem } from "@/host-app/store";
 import { UnitItem } from "@/host-app/types";
 
 export const UnitBox = ({
@@ -31,6 +31,7 @@ export const UnitBox = ({
             pageUrl={pageUrl}
             destSpec={destSpec}
             loadedCallback={setUnitInstance}
+            hostSystem={hostSystem}
           />
         )}
         {unitTemplateFn && (
@@ -39,6 +40,7 @@ export const UnitBox = ({
             unitTemplateFn={unitTemplateFn}
             destSpec={destSpec}
             loadedCallback={setUnitInstance}
+            hostSystem={hostSystem}
           />
         )}
       </UnitIdsBox>

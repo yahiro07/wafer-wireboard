@@ -1,7 +1,10 @@
 import { createStore } from "snap-store";
-import { hostSystem } from "@/framework/host/host-system/host-system-2";
+import { createHostSystem } from "wus-host-react/host";
 import { PortItem, UnitItem } from "@/host-app/types";
 import { reactUnitFactories } from "@/units/react";
+
+const audioContext = new AudioContext();
+export const hostSystem = createHostSystem(audioContext);
 
 const uf = reactUnitFactories;
 

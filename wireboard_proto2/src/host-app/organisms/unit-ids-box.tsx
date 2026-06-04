@@ -1,7 +1,7 @@
 import { seqNumbers } from "beams/ax/array-utils";
 import { ReactNode } from "react";
-import { PortSubtype } from "@/contract/unit-interfaces";
-import { DestinationCode, HsUnitPortsSpec } from "@/framework/host/host-types";
+import { DestinationCode, HsUnitPortsSpec } from "wus-host-react/host";
+import { PortSubtype } from "wus-unit-types";
 import { getPortKey } from "@/host-app/common";
 import { PortCell } from "@/host-app/organisms/port-cell";
 import { handleUnitBoxDragging } from "@/host-app/organisms/unit-box-drag-handler";

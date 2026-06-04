@@ -1,7 +1,7 @@
 import { Point } from "beams/ax-ui/common-types";
-import { PortSubtype } from "@/contract/unit-interfaces";
-import { DestinationCode } from "@/framework/host/host-types";
-import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
+import { DestinationCode } from "wus-host-react/host";
+import { ReactUnitTemplateFn } from "wus-host-react/react";
+import { PortSubtype } from "wus-unit-types";
 
 export type PortDirection = "input" | "output";
 

@@ -1,4 +1,4 @@
-import { PortSubtype } from "@/contract/unit-interfaces";
+import { PortSubtype } from "wus-unit-types";
 import { PortDirection } from "@/host-app/types";
 
 export function getPortKey(

@@ -1,6 +1,6 @@
 import { Point } from "beams/ax-ui/common-types";
 import { DragHandlerEvent, startDragSession } from "beams/ax-ui/drag-session";
-import { PortSubtype } from "@/contract/unit-interfaces";
+import { PortSubtype } from "wus-unit-types";
 import { actions } from "@/host-app/actions";
 import { checkSubtypeOverlap, domEditAreaId } from "@/host-app/common";
 import { store } from "@/host-app/store";
