@@ -8,18 +8,23 @@ export type PortSubtype =
   | "samplerPad";
 
 export type NotePort = {
-  noteOn(note: number, velocity?: number): void; //midi note number, velocity 0~1
-  noteOff(note: number): void;
+  noteOn(note: number, timeAt?: number, velocity?: number): void; //midi note number, velocity 0~1
+  noteOff(note: number, timeAt?: number): void;
 };
 
 export type CvGatePort = {
-  setCv(cv: number): void; //0~1, 0.1cv/octave
-  setGate(gate: boolean): void;
+  setCv(cv: number, timeAt?: number): void; //0~1, 0.1cv/octave
+  setGate(gate: boolean, timeAt?: number): void;
 };
 
 export type ClockPort = {
   start?(): void;
-  processTickRange?(tickFrom: number, tickTo: number): void; //480ppq based tick from song start
+  processScheduling?(
+    startTime: number,
+    ppqFrom: number,
+    ppqTo: number,
+    bpm: number,
+  ): void; //480ppq based tick from song start
   step?(stepIndex: number): void; //4ppq step from song start
   stop?(): void;
 };
@@ -40,12 +45,12 @@ export type ParameterSpec = {
 export type AutomationPort = {
   getParameterSpecs(): ParameterSpec[];
   getParameter(id: string): number;
-  setParameter(id: string, value: number): void;
+  setParameter(id: string, value: number, timeAt?: number): void;
 };
 
 export type SamplerPadPort = {
   getToneIds(): string[];
-  playTone(toneId: string): void;
+  playTone(toneId: string, timeAt?: number): void;
 };
 
 export type AudioPort = {
