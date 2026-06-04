@@ -9,8 +9,13 @@ type HighlightingState =
   | "falsyOutlined";
 
 export function usePortHighlightingModel(portKey: string): HighlightingState {
-  const { portItems, draggingPortKey, previewDestPortKey } =
+  const { portItems, draggingPortKey, previewDestPortKey, tappingPortKey } =
     store.useSnapshot();
+
+  if (portKey === tappingPortKey) {
+    return "truthy";
+  }
+
   if (!draggingPortKey) return "normal";
 
   const draggingPort = portItems[draggingPortKey];

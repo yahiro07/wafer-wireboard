@@ -52,11 +52,34 @@ function findNearestPort(
   return nearestPort;
 }
 
+function filterCandidatePorts(
+  portItems: SeekerPortItem[],
+  sourcePortKey: string,
+  portSubtypes: PortSubtype[],
+  includeSourcePort = false,
+) {
+  const ports = portItems.filter(
+    (it) =>
+      it.direction === "input" &&
+      checkSubtypeOverlap(it.portSubtypes, portSubtypes),
+  );
+  if (includeSourcePort) {
+    const sourcePort = portItems.find((it) => it.portKey === sourcePortKey);
+    if (sourcePort) {
+      ports.push(sourcePort);
+    }
+  }
+  return ports;
+}
+
 export function handlePortCellDragging(
   e0: React.PointerEvent,
   portKey: string,
 ) {
   const portItems = getSeekerPortItems();
+  const sourcePort = portItems.find((it) => it.portKey === portKey);
+  if (!sourcePort) return;
+
   const baseDiv = document.getElementById(domEditAreaId)!;
   const baseRect = baseDiv.getBoundingClientRect();
 
@@ -66,42 +89,79 @@ export function handlePortCellDragging(
       y: e.position.y - baseRect.top,
     };
   };
-  const sourcePort = portItems.find((it) => it.portKey === portKey);
-  if (!sourcePort) return;
+
+  const internal = {
+    draggingStart() {
+      actions.setDraggingPortKey(portKey);
+    },
+    draggingMove(pos: Point) {
+      const candidatePorts = filterCandidatePorts(
+        portItems,
+        portKey,
+        sourcePort.portSubtypes,
+        true,
+      );
+      const targetPort = findNearestPort(candidatePorts, pos);
+      if (targetPort && store.state.previewDestPortKey !== targetPort.portKey) {
+        actions.setPreviewDestPortKey(targetPort.portKey);
+      }
+    },
+    draggingEnd() {
+      const { draggingPortKey, previewDestPortKey } = store.state;
+      if (
+        draggingPortKey &&
+        previewDestPortKey &&
+        previewDestPortKey !== draggingPortKey
+      ) {
+        actions.updateConnection(draggingPortKey, previewDestPortKey);
+      }
+      actions.setDraggingPortKey(null);
+      actions.setPreviewDestPortKey(null);
+    },
+    toggleConnectionForNearestPort(pos: Point) {
+      const candidatePorts = filterCandidatePorts(
+        portItems,
+        portKey,
+        sourcePort.portSubtypes,
+      );
+      const targetPort = findNearestPort(candidatePorts, pos);
+      if (targetPort) {
+        actions.updateConnection(portKey, targetPort.portKey);
+      }
+    },
+  };
+
+  let timerId: NodeJS.Timeout | null = null;
+  let inDragging = false;
 
   startDragSession(
     e0.nativeEvent,
     {
       onDown() {
-        actions.setDraggingPortKey(portKey);
+        timerId = setTimeout(() => {
+          internal.draggingStart();
+          inDragging = true;
+        }, 300);
+        actions.setTappingPortKey(portKey);
       },
       onMove(e) {
-        const pos = getPositionOnEditArea(e);
-        const candidatePorts = portItems.filter(
-          (it) =>
-            it.portKey === portKey ||
-            (it.direction !== sourcePort.direction &&
-              checkSubtypeOverlap(it.portSubtypes, sourcePort.portSubtypes)),
-        );
-        const targetPort = findNearestPort(candidatePorts, pos);
-        if (
-          targetPort &&
-          store.state.previewDestPortKey !== targetPort.portKey
-        ) {
-          actions.setPreviewDestPortKey(targetPort.portKey);
+        if (inDragging) {
+          const pos = getPositionOnEditArea(e);
+          internal.draggingMove(pos);
         }
       },
-      onUpOrCancel() {
-        const { draggingPortKey, previewDestPortKey } = store.state;
-        if (
-          draggingPortKey &&
-          previewDestPortKey &&
-          previewDestPortKey !== draggingPortKey
-        ) {
-          actions.updateConnection(draggingPortKey, previewDestPortKey);
+      onUpOrCancel(e) {
+        if (inDragging) {
+          internal.draggingEnd();
+        } else {
+          const pos = getPositionOnEditArea(e);
+          internal.toggleConnectionForNearestPort(pos);
         }
-        actions.setDraggingPortKey(null);
-        actions.setPreviewDestPortKey(null);
+        if (timerId) {
+          clearTimeout(timerId);
+          timerId = null;
+        }
+        actions.setTappingPortKey(null);
       },
     },
     { coordinate: "page" },

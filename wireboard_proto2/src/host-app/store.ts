@@ -1,7 +1,11 @@
 import { Point } from "beams/ax-ui/common-types";
 import { createStore } from "snap-store";
 import { hostSystem } from "@/framework/host/host-system/host-system-2";
-import { decodePortKey, mapPortKeyToDestSpec } from "@/host-app/common";
+import {
+  decodePortKey,
+  mapDestSpecToPortKeys,
+  mapPortKeyToDestSpec,
+} from "@/host-app/common";
 import { destinationCodeOp } from "@/host-app/destination-code-op";
 import { PortItem, UnitItem } from "@/host-app/types";
 import { reactUnitFactories } from "@/units/react";
@@ -103,12 +107,14 @@ export const store = createStore<{
   portItems: Record<string, PortItem>;
   draggingPortKey: string | null;
   previewDestPortKey: string | null;
+  tappingPortKey: string | null;
 }>({
   loading: false,
   unitItems: unitItemsDefault,
   portItems: {},
   draggingPortKey: null,
   previewDestPortKey: null,
+  tappingPortKey: null,
 });
 
 hostSystem.eventPort.subscribe((ev) => {
@@ -121,14 +127,44 @@ hostSystem.eventPort.subscribe((ev) => {
   }
 });
 
-export const actions = {
-  setUnitPosition(unitId: string, position: Point) {
+export const readers = {
+  findUnit(unitId: string): UnitItem | undefined {
+    return store.state.unitItems.find((u) => u.unitId === unitId);
+  },
+  checkUnitHasDestination(unitId: string): boolean {
+    const unit = store.state.unitItems.find((u) => u.unitId === unitId);
+    return !!unit?.destSpec;
+  },
+  getUnitDestinationPortKeys(sourcePortKey: string): string[] | undefined {
+    const { unitId, portIndex } = decodePortKey(sourcePortKey);
+    const unit = store.state.unitItems.find((u) => u.unitId === unitId);
+    if (unit?.destSpec) {
+      if (portIndex !== undefined) {
+        const portCode = unit.destSpec.split("|")[portIndex];
+        if (!portCode) {
+          return undefined;
+        }
+        return mapDestSpecToPortKeys(portCode);
+      }
+      return mapDestSpecToPortKeys(unit.destSpec);
+    }
+  },
+};
+
+const actionsInternal = {
+  patchUnitItem(unitId: string, attrs: Partial<UnitItem>) {
     store.produceUnitItems((draft) => {
       const item = draft.find((item) => item.unitId === unitId);
       if (item) {
-        item.position = position;
+        Object.assign(item, attrs);
       }
     });
+  },
+};
+
+export const actions = {
+  setUnitPosition(unitId: string, position: Point) {
+    actionsInternal.patchUnitItem(unitId, { position });
   },
   addPortItem(portKey: string, portItem: PortItem) {
     store.setPortItems((prev) => ({
@@ -149,12 +185,13 @@ export const actions = {
   setPreviewDestPortKey(portKey: string | null) {
     store.setPreviewDestPortKey(portKey);
   },
+  setTappingPortKey(portKey: string | null) {
+    store.setState({ tappingPortKey: portKey });
+  },
   updateConnection(sourcePortKey: string, targetPortKey: string) {
     const { unitId: sourceUnitId, portIndex: sourcePortIndex } =
       decodePortKey(sourcePortKey);
-    const sourceUnit = store.state.unitItems.find(
-      (u) => u.unitId === sourceUnitId,
-    );
+    const sourceUnit = readers.findUnit(sourceUnitId);
     if (!sourceUnit) return;
 
     const destSpec = mapPortKeyToDestSpec(targetPortKey);
@@ -176,12 +213,22 @@ export const actions = {
           portCode,
           sourcePortIndex ? { sourcePortIndex } : undefined,
         );
-
-    store.produceUnitItems((draft) => {
-      const item = draft.find((item) => item.unitId === sourceUnitId);
-      if (item) {
-        item.destSpec = nextPortsCode;
-      }
-    });
+    actionsInternal.patchUnitItem(sourceUnitId, { destSpec: nextPortsCode });
+  },
+  clearConnection(sourcePortKey: string) {
+    const { unitId: sourceUnitId } = decodePortKey(sourcePortKey);
+    const sourceUnit = readers.findUnit(sourceUnitId);
+    if (!sourceUnit) return;
+    if (sourceUnit.destSpec) {
+      actionsInternal.patchUnitItem(sourceUnitId, { destSpec: undefined });
+    }
+  },
+  replaceToSingleConnection(sourcePortKey: string, targetPortKey: string) {
+    const { unitId } = decodePortKey(sourcePortKey);
+    const unitItem = readers.findUnit(unitId);
+    const destSpec = mapPortKeyToDestSpec(targetPortKey);
+    if (unitItem && destSpec) {
+      actionsInternal.patchUnitItem(unitId, { destSpec });
+    }
   },
 };
