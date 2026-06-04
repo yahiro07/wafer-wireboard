@@ -11,6 +11,7 @@
     "types": [
       "node",
       "vite/client",
+      "vitest"
     ],
     "jsx": "react-jsx",
     "strict": true,
