@@ -1,5 +1,6 @@
 import { Point } from "beams/ax-ui/common-types";
 import { PortSubtype } from "@/contract/unit-interfaces";
+import { DestinationCode } from "@/framework/host/host-types";
 import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
 
 export type PortDirection = "input" | "output";
@@ -8,7 +9,7 @@ export type UnitItem = {
   unitId: string;
   pageUrl?: string;
   unitTemplateFn?: ReactUnitTemplateFn;
-  destSpec?: string | string[];
+  destSpec?: DestinationCode;
   position: Point; //top-left corner of the unit box
 };
 

@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { hostSystem } from "@/framework/host/host-system";
 import { HsUnitInstance } from "@/framework/host/host-types";
-import { extractArray } from "@/framework/unit-frame/helper";
 import {
   instantiateReactUnit,
   ReactUnitTemplateFn,
@@ -15,7 +14,7 @@ export const ReactUnitFrame = ({
 }: {
   unitId: string;
   unitTemplateFn: ReactUnitTemplateFn;
-  destSpec?: string | string[];
+  destSpec?: string;
   loadedCallback?(unitInstance: HsUnitInstance): void;
 }) => {
   const unit = useMemo(
@@ -27,10 +26,9 @@ export const ReactUnitFrame = ({
     return hostSystem.registerUnitInstance(unit);
   }, [unit, loadedCallback]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: variable length deps
   useEffect(() => {
     hostSystem.reserveConnectionChange(unitId, destSpec);
-  }, [...extractArray(destSpec), unit]);
+  }, [unitId, destSpec]);
 
   return <unit.RenderUi />;
 };

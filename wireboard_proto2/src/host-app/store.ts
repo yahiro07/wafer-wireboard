@@ -1,8 +1,8 @@
 import { Point } from "beams/ax-ui/common-types";
 import { createStore } from "snap-store";
 import { hostSystem } from "@/framework/host/host-system/host-system-2";
-import { UnitDestinationSpec } from "@/framework/host/host-types";
 import { decodePortKey, mapPortKeyToDestSpec } from "@/host-app/common";
+import { destinationCodeOp } from "@/host-app/destination-code-op";
 import { PortItem, UnitItem } from "@/host-app/types";
 import { reactUnitFactories } from "@/units/react";
 
@@ -62,7 +62,7 @@ const unitItemsDefault: UnitItem[] = [
   {
     unitId: "twoPortsKeyboard1",
     unitTemplateFn: uf.twoPortsKeyboard,
-    destSpec: ["osc1", "osc2"],
+    destSpec: "osc1|osc2",
     position: { x: 100, y: 600 + d },
   },
   {
@@ -150,7 +150,8 @@ export const actions = {
     store.setPreviewDestPortKey(portKey);
   },
   updateConnection(sourcePortKey: string, targetPortKey: string) {
-    const { unitId: sourceUnitId } = decodePortKey(sourcePortKey);
+    const { unitId: sourceUnitId, portIndex: sourcePortIndex } =
+      decodePortKey(sourcePortKey);
     const sourceUnit = store.state.unitItems.find(
       (u) => u.unitId === sourceUnitId,
     );
@@ -159,43 +160,66 @@ export const actions = {
     const destSpec = mapPortKeyToDestSpec(targetPortKey);
     if (!destSpec) return;
 
-    const currentDestSpec = sourceUnit.destSpec;
-    let shouldUpdate = false;
-    let nextDestSpec: UnitDestinationSpec | undefined;
-    if (currentDestSpec === undefined) {
-      //new connection
-      nextDestSpec = destSpec;
-      shouldUpdate = true;
-    } else if (currentDestSpec === destSpec) {
-      //disconnect
-      nextDestSpec = undefined;
-      shouldUpdate = true;
-    } else if (Array.isArray(currentDestSpec)) {
-      if (!currentDestSpec.includes(destSpec)) {
-        nextDestSpec = [...currentDestSpec, destSpec];
-      } else {
-        nextDestSpec = currentDestSpec.filter((spec) => spec !== destSpec);
+    const currentPortsCode = sourceUnit.destSpec;
+    const portCode = destSpec;
+
+    const isIncluded = destinationCodeOp.isIncluded(currentPortsCode, destSpec);
+
+    const nextPortsCode = !isIncluded
+      ? destinationCodeOp.add(
+          currentPortsCode,
+          portCode,
+          sourcePortIndex ? { sourcePortIndex } : undefined,
+        )
+      : destinationCodeOp.remove(
+          currentPortsCode,
+          portCode,
+          sourcePortIndex ? { sourcePortIndex } : undefined,
+        );
+
+    store.produceUnitItems((draft) => {
+      const item = draft.find((item) => item.unitId === sourceUnitId);
+      if (item) {
+        item.destSpec = nextPortsCode;
       }
-      shouldUpdate = true;
-    } else if (currentDestSpec.includes("&")) {
-      const parts = currentDestSpec.split("&").map((s) => s.trim());
-      if (!parts.includes(destSpec)) {
-        nextDestSpec = [...parts, destSpec].join("&");
-      } else {
-        nextDestSpec = parts.filter((spec) => spec !== destSpec).join("&");
-      }
-      shouldUpdate = true;
-    } else if (typeof currentDestSpec === "string") {
-      nextDestSpec = [currentDestSpec, destSpec].join("&");
-      shouldUpdate = true;
-    }
-    if (shouldUpdate) {
-      store.produceUnitItems((draft) => {
-        const item = draft.find((item) => item.unitId === sourceUnitId);
-        if (item) {
-          item.destSpec = nextDestSpec;
-        }
-      });
-    }
+    });
+
+    // let shouldUpdate = false;
+    // let nextDestSpec: DestinationCode | undefined;
+    // if (currentDestSpec === undefined) {
+    //   //new connection
+    //   nextDestSpec = destSpec;
+    //   shouldUpdate = true;
+    // } else if (currentDestSpec === destSpec) {
+    //   //disconnect
+    //   nextDestSpec = undefined;
+    //   shouldUpdate = true;
+    // } else if (Array.isArray(currentDestSpec)) {
+    //   if (!currentDestSpec.includes(destSpec)) {
+    //     nextDestSpec = [...currentDestSpec, destSpec];
+    //   } else {
+    //     nextDestSpec = currentDestSpec.filter((spec) => spec !== destSpec);
+    //   }
+    //   shouldUpdate = true;
+    // } else if (currentDestSpec.includes("&")) {
+    //   const parts = currentDestSpec.split("&").map((s) => s.trim());
+    //   if (!parts.includes(destSpec)) {
+    //     nextDestSpec = [...parts, destSpec].join("&");
+    //   } else {
+    //     nextDestSpec = parts.filter((spec) => spec !== destSpec).join("&");
+    //   }
+    //   shouldUpdate = true;
+    // } else if (typeof currentDestSpec === "string") {
+    //   nextDestSpec = [currentDestSpec, destSpec].join("&");
+    //   shouldUpdate = true;
+    // }
+    // if (shouldUpdate) {
+    //   store.produceUnitItems((draft) => {
+    //     const item = draft.find((item) => item.unitId === sourceUnitId);
+    //     if (item) {
+    //       item.destSpec = nextDestSpec;
+    //     }
+    //   });
+    // }
   },
 };

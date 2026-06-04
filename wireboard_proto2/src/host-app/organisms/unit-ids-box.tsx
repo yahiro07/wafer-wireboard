@@ -1,10 +1,7 @@
 import { seqNumbers } from "beams/ax/array-utils";
 import { ReactNode } from "react";
 import { PortSubtype } from "@/contract/unit-interfaces";
-import {
-  HsUnitPortsSpec,
-  UnitDestinationSpec,
-} from "@/framework/host/host-types";
+import { DestinationCode, HsUnitPortsSpec } from "@/framework/host/host-types";
 import { getPortKey } from "@/host-app/common";
 import { PortCell } from "@/host-app/organisms/port-cell";
 import { handleUnitBoxDragging } from "@/host-app/organisms/unit-box-drag-handler";
@@ -63,7 +60,7 @@ export const UnitIdsBox = ({
   unitId: string;
   children?: ReactNode;
   portsSpec?: HsUnitPortsSpec;
-  destSpec?: UnitDestinationSpec;
+  destSpec?: DestinationCode;
 }) => {
   const overlayPos = portsSpec?.numMultiOutputs ? "bottom" : "top";
   return (

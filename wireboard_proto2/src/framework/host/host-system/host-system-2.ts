@@ -1,9 +1,9 @@
 import { createEventPort, EventPort } from "beams/mo/event-port";
 import { gAudioContext } from "@/framework/host/host-core";
 import {
+  DestinationCode,
   HsUnitInputPort,
   HsUnitInstance,
-  UnitDestinationSpec,
 } from "@/framework/host/host-types";
 import {
   getUnitSourcePort,
@@ -23,7 +23,7 @@ type HostSystem = {
   ): () => void;
   reserveConnectionChange(
     srcUnitId: string,
-    destSpec: UnitDestinationSpec | undefined,
+    destSpec: DestinationCode | undefined,
   ): void;
 };
 
@@ -59,20 +59,6 @@ function createHostStateBus(): HostStateBus {
       units.delete(unitId);
     },
   };
-}
-
-type DestinationsCode = string;
-
-function mapDestSpecToDestCode(
-  destSpec: UnitDestinationSpec | null,
-): DestinationsCode {
-  if (Array.isArray(destSpec)) {
-    return destSpec.join("|");
-  } else if (destSpec) {
-    return destSpec;
-  } else {
-    return "";
-  }
 }
 
 function getConnectionTargetPort(
@@ -120,28 +106,29 @@ function updateUnitConnectionToPort(
 function updateUnitConnectionsByDestSpec(
   bus: HostStateBus,
   unit: HsUnitInstance,
-  destSpec: UnitDestinationSpec,
+  destSpec: DestinationCode,
   operation: ConnectingOperation,
+  outputPortIndex?: number,
 ) {
-  if (Array.isArray(destSpec)) {
-    destSpec.forEach((spec, i) => {
-      updateUnitConnectionToPort(bus, unit, spec, operation, i);
+  if (destSpec?.includes("|")) {
+    destSpec.split("|").forEach((spec, i) => {
+      updateUnitConnectionsByDestSpec(bus, unit, spec, operation, i);
     });
-  } else if (destSpec.includes("&")) {
+  } else if (destSpec?.includes("&")) {
     const foundDestSpecs = splitFanoutDestSpecs(destSpec);
     foundDestSpecs.forEach((spec) => {
-      updateUnitConnectionToPort(bus, unit, spec, operation);
+      updateUnitConnectionToPort(bus, unit, spec, operation, outputPortIndex);
     });
   } else {
-    updateUnitConnectionToPort(bus, unit, destSpec, operation);
+    updateUnitConnectionToPort(bus, unit, destSpec, operation, outputPortIndex);
   }
 }
 
 function updateUnitConnectionsByCodeDiff(
   bus: HostStateBus,
   unit: HsUnitInstance,
-  curr: DestinationsCode | undefined,
-  next: DestinationsCode | undefined,
+  curr: DestinationCode,
+  next: DestinationCode,
 ) {
   const currs = curr?.split("|").filter(Boolean) ?? [];
   const nexts = next?.split("|").filter(Boolean) ?? [];
@@ -156,21 +143,21 @@ function updateUnitConnectionsByCodeDiff(
 }
 
 type ConnectionManager = {
-  updateConnections(newConnectionCodeMap: Map<string, DestinationsCode>): void;
+  updateConnections(newConnectionCodeMap: Map<string, DestinationCode>): void;
   removeConnectionsForUnit(unitId: string): void;
 };
 
 function createUnitConnectionsManager(bus: HostStateBus) {
-  const connectionCodeMap: Map<string, DestinationsCode> = new Map();
+  const connectionCodeMap: Map<string, DestinationCode> = new Map();
   return {
-    updateConnections(newConnectionCodeMap: Map<string, DestinationsCode>) {
+    updateConnections(newConnectionCodeMap: Map<string, DestinationCode>) {
       for (const [unitId, code] of newConnectionCodeMap.entries()) {
         const unit = bus.units.get(unitId);
         if (unit) {
           const curr = connectionCodeMap.get(unit.unitId);
           const next = code;
           if (next !== undefined && next !== curr) {
-            updateUnitConnectionsByCodeDiff(bus, unit, curr, next);
+            updateUnitConnectionsByCodeDiff(bus, unit, curr ?? "", next);
             connectionCodeMap.set(unit.unitId, next);
           }
         }
@@ -198,7 +185,7 @@ function createUnitsLoadingManager(
   connectionManager: ConnectionManager,
 ) {
   const unitLoadingJobs: UnitLoadingJob[] = [];
-  const pendingConnectionCodeMap: Map<string, DestinationsCode> = new Map();
+  const pendingConnectionCodeMap: Map<string, DestinationCode> = new Map();
 
   let isProcessing = false;
 
@@ -258,12 +245,8 @@ function createUnitsLoadingManager(
         job.cancelled = true;
       }
     },
-    reserveConnectUnit(
-      srcUnitId: string,
-      destSpec: UnitDestinationSpec | null,
-    ) {
-      const code = mapDestSpecToDestCode(destSpec);
-      pendingConnectionCodeMap.set(srcUnitId, code);
+    reserveConnectUnit(srcUnitId: string, destSpec: DestinationCode) {
+      pendingConnectionCodeMap.set(srcUnitId, destSpec);
       internal.reserveLoading();
     },
   };
@@ -295,7 +278,7 @@ function createHostSystem(): HostSystem {
       return internal.addUnitInstancePromise(unitId, unitInstancePromise);
     },
     reserveConnectionChange(srcUnitId, destSpec) {
-      loadingManager.reserveConnectUnit(srcUnitId, destSpec ?? null);
+      loadingManager.reserveConnectUnit(srcUnitId, destSpec ?? "");
     },
   };
 }

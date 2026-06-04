@@ -30,8 +30,8 @@ function getConnectionPairs(unitItems: UnitItem[]): WireConnection[] {
     if (!destSpec) {
       continue;
     }
-    if (Array.isArray(destSpec)) {
-      destSpec.forEach((spec, outputIndex) => {
+    if (destSpec.includes("|")) {
+      destSpec.split("|").forEach((spec, outputIndex) => {
         const sourcePortKey = getPortKey(unitId, "output", outputIndex);
         const targetPortKeys = mapDestSpecToPortKeys(spec);
         targetPortKeys.forEach((targetPortKey) => {

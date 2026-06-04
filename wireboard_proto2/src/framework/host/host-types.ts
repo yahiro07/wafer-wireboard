@@ -68,4 +68,4 @@ export type HsUnitInstance = {
   RenderUi?: () => ReactNode;
 };
 
-export type UnitDestinationSpec = string | string[];
+export type DestinationCode = string;

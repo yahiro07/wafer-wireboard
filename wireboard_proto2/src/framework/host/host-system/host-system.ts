@@ -1,13 +1,11 @@
 import { gAudioContext } from "@/framework/host/host-core";
-import {
-  HsUnitInputPort,
-  HsUnitInstance,
-  UnitDestinationSpec,
-} from "@/framework/host/host-types";
+import { HsUnitInputPort, HsUnitInstance } from "@/framework/host/host-types";
 import {
   getUnitSourcePort,
   splitFanoutDestSpecs,
 } from "@/framework/host/unit-connecter";
+
+type UnitDestinationSpec = string | string[];
 
 type HostStateBus = {
   units: Record<string, HsUnitInstance>;

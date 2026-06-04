@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import { hostSystem } from "@/framework/host/host-system";
 import { HsUnitInstance } from "@/framework/host/host-types";
 import { createUnitInterface } from "@/framework/host/unit-interface-impl";
-import { extractArray } from "@/framework/unit-frame/helper";
 
 export const UnitFrame = ({
   unitId,
@@ -12,15 +11,14 @@ export const UnitFrame = ({
 }: {
   unitId: string;
   pageUrl: string;
-  destSpec?: string | string[];
+  destSpec?: string;
   loadedCallback?(unitInstance: HsUnitInstance): void;
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: variable length deps
   useEffect(() => {
     hostSystem.reserveConnectionChange(unitId, destSpec);
-  }, [unitId, ...extractArray(destSpec)]);
+  }, [unitId, destSpec]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: add pageUrl to deps
   useEffect(() => {
