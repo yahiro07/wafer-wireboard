@@ -1,6 +1,7 @@
 import { ScalerBoxAutoSized } from "beams/mo-react/components/scaler-box-auto-sized";
-import { UnitFrame } from "wus-host/react";
+import { UnitFrame } from "wus-host-react/react";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
+import { hostSystem } from "@/store/store";
 
 export const UnitFrameEx = ({
   unitId,
@@ -32,11 +33,12 @@ export const UnitFrameEx = ({
     <ScalerBoxAutoSized>
       <UnitFrame
         unitId={unitId}
-        destUnitId={destUnitId}
+        destSpec={destUnitId}
         pageUrl={catalog[catalogKey].loaderPageUrl}
         frameSize={frameSize}
         // onIframeMounted={onIframeMounted}
-        inputNotes={notes}
+        // inputNotes={notes}
+        hostSystem={hostSystem}
       />
     </ScalerBoxAutoSized>
   );
