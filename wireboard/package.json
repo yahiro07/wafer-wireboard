@@ -25,7 +25,7 @@
     "tailwindcss": "^4.3.0",
     "typescript": "~6.0.3",
     "vite": "^8.0.12",
-    "wus-host": "file:../../webaudio-unit-system/apps/wus-host",
+    "wus-host": "file:../../webaudio-unit-system/lib/wus-host",
     "wus-unit-types": "file:../../webaudio-unit-system/framework/packages/wus-unit-types",
     "wus-vite-unit-loader-plugin": "file:../../webaudio-unit-system/framework/packages/wus-vite-unit-loader-plugin"
   }
