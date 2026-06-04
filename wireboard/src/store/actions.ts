@@ -22,7 +22,6 @@ function getNextUnitId(existingItems: UnitItem[]) {
     })
     .filter(Number.isFinite);
   const maxNumber = Math.max(...existingUnitNumbers);
-  console.log(existingUnitNumbers, maxNumber);
   return `unit${maxNumber + 1}`;
 }
 
