@@ -130,12 +130,6 @@ export const actions = {
       }
     });
   },
-  // patchPortItem(portKey: string, attrs: Partial<PortItem>) {
-  //   store.setPortItems((prev) => ({
-  //     ...prev,
-  //     [portKey]: { ...prev[portKey], ...attrs },
-  //   }));
-  // },
   addPortItem(portKey: string, portItem: PortItem) {
     store.setPortItems((prev) => ({
       ...prev,
