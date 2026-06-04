@@ -1,6 +1,6 @@
 import { Point } from "beams/ax-ui/common-types";
 import { createStore } from "snap-store";
-import { createHostSystem } from "wus-host/host";
+import { createHostSystem } from "wus-host-react/host";
 import { CatalogKey } from "@/base/showcase-entries";
 import {
   createFieldSightHandlers,
@@ -54,7 +54,7 @@ function buildDefaultScene() {
     {
       unitId: "unit1",
       destUnitId: "builtInPreOutput",
-      catalogKey: "miniSynth",
+      catalogKey: "protoEnginePtmOsc",
       position: { x: 4500, y: by + 360 },
     },
     {
