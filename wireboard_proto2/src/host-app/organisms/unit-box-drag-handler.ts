@@ -1,5 +1,6 @@
 import { startDragSession } from "beams/ax-ui/drag-session";
-import { actions, store } from "@/host-app/store";
+import { actions } from "@/host-app/actions";
+import { store } from "@/host-app/store";
 
 export function handleUnitBoxDragging(e0: React.PointerEvent, unitId: string) {
   const unit = store.state.unitItems.find((u) => u.unitId === unitId);

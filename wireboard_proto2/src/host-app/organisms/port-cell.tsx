@@ -1,9 +1,9 @@
 import { RefObject, useEffect, useRef } from "react";
 import { PortSubtype } from "@/contract/unit-interfaces";
+import { actions } from "@/host-app/actions";
 import { decodePortKey, getDomUnitBoxId } from "@/host-app/common";
 import { handlePortCellDragging } from "@/host-app/organisms/port-cell-drag-handler";
 import { usePortHighlightingModel } from "@/host-app/organisms/port-highlighting-model";
-import { actions } from "@/host-app/store";
 import { PortDirection } from "@/host-app/types";
 import { IconsEx } from "@/shared/components/icons";
 

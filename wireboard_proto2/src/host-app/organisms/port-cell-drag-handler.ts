@@ -1,8 +1,9 @@
 import { Point } from "beams/ax-ui/common-types";
 import { DragHandlerEvent, startDragSession } from "beams/ax-ui/drag-session";
 import { PortSubtype } from "@/contract/unit-interfaces";
+import { actions } from "@/host-app/actions";
 import { checkSubtypeOverlap, domEditAreaId } from "@/host-app/common";
-import { actions, store } from "@/host-app/store";
+import { store } from "@/host-app/store";
 import { PortDirection } from "@/host-app/types";
 
 type SeekerPortItem = {
