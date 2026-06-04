@@ -5,10 +5,7 @@ import {
   HsUnitInputPort,
   HsUnitInstance,
 } from "@/framework/host/host-types";
-import {
-  getUnitSourcePort,
-  splitFanoutDestSpecs,
-} from "@/framework/host/unit-connecter";
+import { getUnitSourcePort } from "@/framework/host/unit-connecter";
 
 type HostSystemEvent = { type: "loadStarted" } | { type: "loadCompleted" };
 // | { type: "unitsAdded"; units: HsUnitInstance[] }
@@ -103,42 +100,57 @@ function updateUnitConnectionToPort(
   }
 }
 
-function updateUnitConnectionsByDestSpec(
+function updateUnitConnectionForSingleOutputPortWithFanOut(
   bus: HostStateBus,
   unit: HsUnitInstance,
-  destSpec: DestinationCode,
-  operation: ConnectingOperation,
+  curr: DestinationCode,
+  next: DestinationCode,
   outputPortIndex?: number,
 ) {
-  if (destSpec?.includes("|")) {
-    destSpec.split("|").forEach((spec, i) => {
-      updateUnitConnectionsByDestSpec(bus, unit, spec, operation, i);
-    });
-  } else if (destSpec?.includes("&")) {
-    const foundDestSpecs = splitFanoutDestSpecs(destSpec);
-    foundDestSpecs.forEach((spec) => {
-      updateUnitConnectionToPort(bus, unit, spec, operation, outputPortIndex);
-    });
-  } else {
-    updateUnitConnectionToPort(bus, unit, destSpec, operation, outputPortIndex);
+  const currs = curr?.split("&").filter(Boolean) ?? [];
+  const nexts = next?.split("&").filter(Boolean) ?? [];
+  const toConnect = nexts.filter((dest) => !currs.includes(dest));
+  const toDisconnect = currs.filter((dest) => !nexts.includes(dest));
+  for (const destSpec of toDisconnect) {
+    updateUnitConnectionToPort(
+      bus,
+      unit,
+      destSpec,
+      "disconnect",
+      outputPortIndex,
+    );
+  }
+  for (const destSpec of toConnect) {
+    updateUnitConnectionToPort(bus, unit, destSpec, "connect", outputPortIndex);
   }
 }
 
-function updateUnitConnectionsByCodeDiff(
+function updateUnitConnectionForMultiOutputPorts(
   bus: HostStateBus,
   unit: HsUnitInstance,
   curr: DestinationCode,
   next: DestinationCode,
 ) {
-  const currs = curr?.split("|").filter(Boolean) ?? [];
-  const nexts = next?.split("|").filter(Boolean) ?? [];
-  const toConnect = nexts.filter((dest) => !currs.includes(dest));
-  const toDisconnect = currs.filter((dest) => !nexts.includes(dest));
-  for (const destSpec of toDisconnect) {
-    updateUnitConnectionsByDestSpec(bus, unit, destSpec, "disconnect");
-  }
-  for (const destSpec of toConnect) {
-    updateUnitConnectionsByDestSpec(bus, unit, destSpec, "connect");
+  const currChannelPorts = curr?.split("|");
+  const nextChannelPorts = next?.split("|");
+  if (currChannelPorts.length >= 2 || nextChannelPorts.length >= 2) {
+    const maxLength = Math.max(
+      currChannelPorts.length,
+      nextChannelPorts.length,
+    );
+    for (let i = 0; i < maxLength; i++) {
+      const currDestSpec = currChannelPorts[i] ?? "";
+      const nextDestSpec = nextChannelPorts[i] ?? "";
+      updateUnitConnectionForSingleOutputPortWithFanOut(
+        bus,
+        unit,
+        currDestSpec,
+        nextDestSpec,
+        i,
+      );
+    }
+  } else {
+    updateUnitConnectionForSingleOutputPortWithFanOut(bus, unit, curr, next);
   }
 }
 
@@ -157,7 +169,12 @@ function createUnitConnectionsManager(bus: HostStateBus) {
           const curr = connectionCodeMap.get(unit.unitId);
           const next = code;
           if (next !== undefined && next !== curr) {
-            updateUnitConnectionsByCodeDiff(bus, unit, curr ?? "", next);
+            updateUnitConnectionForMultiOutputPorts(
+              bus,
+              unit,
+              curr ?? "",
+              next,
+            );
             connectionCodeMap.set(unit.unitId, next);
           }
         }
@@ -167,7 +184,7 @@ function createUnitConnectionsManager(bus: HostStateBus) {
       const unit = bus.units.get(unitId);
       const curr = connectionCodeMap.get(unitId);
       if (unit && curr) {
-        updateUnitConnectionsByCodeDiff(bus, unit, curr, "");
+        updateUnitConnectionForMultiOutputPorts(bus, unit, curr, "");
         connectionCodeMap.delete(unitId);
       }
     },
