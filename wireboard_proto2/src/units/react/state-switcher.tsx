@@ -1,5 +1,5 @@
 import { createStore } from "snap-store";
-import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
+import { ReactUnitTemplateFn } from "wus-host-react/react";
 
 type StateSlotId = 1 | 2;
 
@@ -10,8 +10,6 @@ type StateSwitcherState = {
 };
 
 export const createStateSwitcherUnit: ReactUnitTemplateFn = (unitInterface) => {
-  unitInterface.setPortSubtypes({ output: ["state"] });
-
   const outputPort = unitInterface.primaryOutputPort;
   const store = createStore<StateSwitcherState>({
     connected: false,
@@ -80,6 +78,14 @@ export const createStateSwitcherUnit: ReactUnitTemplateFn = (unitInterface) => {
       actions.clearState();
     },
   });
+
+  unitInterface.completeSetupWithAttributes({
+    unitFeatures: {
+      unitType: "sequencer",
+      outputs: ["state"],
+    },
+  });
+
   return {
     RenderUi() {
       const { connected, activeSlotId } = store.useSnapshot();

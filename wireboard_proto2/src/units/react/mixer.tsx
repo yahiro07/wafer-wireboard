@@ -1,11 +1,9 @@
 import { seqNumbers } from "beams/ax/array-utils";
 import { createStore } from "snap-store";
-import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
+import { ReactUnitTemplateFn } from "wus-host-react/react";
 import { Knob } from "@/shared/components/knob";
 
 export const createMixerUnit: ReactUnitTemplateFn = (unitInterface) => {
-  unitInterface.setPortSubtypes({ output: ["audio"], input: ["audio"] });
-
   const audioContext = unitInterface.audioContext;
   const destinationNode = unitInterface.primaryOutputPort.audioOutput.node;
 
@@ -56,6 +54,14 @@ export const createMixerUnit: ReactUnitTemplateFn = (unitInterface) => {
       actionsInternal.affectLevelToGain(ch, level);
     },
   };
+
+  unitInterface.completeSetupWithAttributes({
+    unitFeatures: {
+      unitType: "effect",
+      outputs: ["audio"],
+      inputs: ["audio"],
+    },
+  });
 
   return {
     RenderUi() {

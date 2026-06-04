@@ -1,5 +1,5 @@
 import { createStore } from "snap-store";
-import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
+import { ReactUnitTemplateFn } from "wus-host-react/react";
 import { Knob } from "@/shared/components/knob";
 import { UpperLabel } from "@/shared/components/upper-label";
 import {
@@ -8,11 +8,6 @@ import {
 } from "@/units/common/oscillator-unit-core";
 
 export const createOscUnit: ReactUnitTemplateFn = (unitInterface) => {
-  unitInterface.setPortSubtypes({
-    output: ["audio"],
-    input: ["note", "automation", "state"],
-  });
-
   const oscillatorCore = createOscillatorUnitCore(
     unitInterface.audioContext,
     unitInterface.primaryOutputPort.audioOutput.node,
@@ -37,40 +32,48 @@ export const createOscUnit: ReactUnitTemplateFn = (unitInterface) => {
   oscillatorCore.setParameter("octave", store.state.octave);
   oscillatorCore.setParameter("volume", store.state.volume);
 
-  unitInterface.primaryInputPort.setHandlers({
-    noteInput: {
-      noteOn: oscillatorCore.noteOn,
-      noteOff: oscillatorCore.noteOff,
+  unitInterface.completeSetupWithAttributes({
+    unitFeatures: {
+      unitType: "instrument",
+      outputs: ["audio"],
+      inputs: ["note", "automation", "state"],
     },
-    automationInput: {
-      getParameterSpecs() {
-        return [
-          { id: "wave", steps: 4 },
-          { id: "octave", steps: 0.25 },
-          { id: "volume" },
-        ];
+    primaryInputPortHandlers: {
+      noteInput: {
+        noteOn: oscillatorCore.noteOn,
+        noteOff: oscillatorCore.noteOff,
       },
-      getParameter(id: string) {
-        return store.state[id as keyof OscParameters];
+      automationInput: {
+        getParameterSpecs() {
+          return [
+            { id: "wave", steps: 4 },
+            { id: "octave", steps: 0.25 },
+            { id: "volume" },
+          ];
+        },
+        getParameter(id: string) {
+          return store.state[id as keyof OscParameters];
+        },
+        setParameter(id: string, value: number) {
+          store.setState({ [id]: value });
+        },
       },
-      setParameter(id: string, value: number) {
-        store.setState({ [id]: value });
-      },
-    },
-    stateInput: {
-      emitState() {
-        return { ...store.state };
-      },
-      applyState(state) {
-        const { wave, octave, volume } = state;
-        store.setState({
-          wave,
-          octave,
-          volume,
-        });
+      stateInput: {
+        emitState() {
+          return { ...store.state };
+        },
+        applyState(state) {
+          const { wave, octave, volume } = state;
+          store.setState({
+            wave,
+            octave,
+            volume,
+          });
+        },
       },
     },
   });
+
   return {
     RenderUi() {
       const state = store.useSnapshot();

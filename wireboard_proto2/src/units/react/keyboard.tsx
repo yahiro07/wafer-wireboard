@@ -1,4 +1,4 @@
-import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
+import { ReactUnitTemplateFn } from "wus-host-react/react";
 
 const cvBaseFrequency = 20;
 const cvPerOctave = 0.1;
@@ -18,8 +18,6 @@ function noteToCv(note: number): number {
 }
 
 export const createKeyboardUnit: ReactUnitTemplateFn = (unitInterface) => {
-  unitInterface.setPortSubtypes({ output: ["note", "cvGate"] });
-
   const audioContext = unitInterface.audioContext;
   const outputPort = unitInterface.primaryOutputPort;
   let cvGateMode = false;
@@ -62,6 +60,14 @@ export const createKeyboardUnit: ReactUnitTemplateFn = (unitInterface) => {
       }
     },
   };
+
+  unitInterface.completeSetupWithAttributes({
+    unitFeatures: {
+      unitType: "sequencer",
+      outputs: ["note", "cvGate"],
+    },
+  });
+
   return {
     RenderUi() {
       return (

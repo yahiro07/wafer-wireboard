@@ -1,5 +1,5 @@
 import { createStore } from "snap-store";
-import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
+import { ReactUnitTemplateFn } from "wus-host-react/react";
 import { Button } from "@/shared/components/button";
 
 type ClockDivision = 1 | 2 | 4;
@@ -11,11 +11,6 @@ type ClockDividerState = {
 const clockDivisions: ClockDivision[] = [1, 2, 4];
 
 export const createClockDividerUnit: ReactUnitTemplateFn = (unitInterface) => {
-  unitInterface.setPortSubtypes({
-    output: ["clock"],
-    input: ["clock", "state"],
-  });
-
   const store = createStore<ClockDividerState>({
     division: 1,
   });
@@ -28,31 +23,38 @@ export const createClockDividerUnit: ReactUnitTemplateFn = (unitInterface) => {
     },
   };
 
-  unitInterface.primaryInputPort.setHandlers({
-    clockInput: {
-      start() {
-        clockOutput.start?.();
-      },
-      step(stepIndex) {
-        const division = store.state.division;
-        if (stepIndex % division !== 0) {
-          return;
-        }
-        clockOutput.step?.(stepIndex / division);
-      },
-      stop() {
-        clockOutput.stop?.();
-      },
+  unitInterface.completeSetupWithAttributes({
+    unitFeatures: {
+      unitType: "sequencer",
+      outputs: ["clock"],
+      inputs: ["clock", "state"],
     },
-    stateInput: {
-      emitState() {
-        return { division: store.state.division };
+    primaryInputPortHandlers: {
+      clockInput: {
+        start() {
+          clockOutput.start?.();
+        },
+        processStep(stepIndex) {
+          const division = store.state.division;
+          if (stepIndex % division !== 0) {
+            return;
+          }
+          clockOutput.processStep?.(stepIndex / division);
+        },
+        stop() {
+          clockOutput.stop?.();
+        },
       },
-      applyState(state) {
-        const division = state?.division;
-        if (division === 1 || division === 2 || division === 4) {
-          store.setDivision(division);
-        }
+      stateInput: {
+        emitState() {
+          return { division: store.state.division };
+        },
+        applyState(state) {
+          const division = state?.division;
+          if (division === 1 || division === 2 || division === 4) {
+            store.setDivision(division);
+          }
+        },
       },
     },
   });

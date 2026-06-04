@@ -1,5 +1,5 @@
 import { createStore } from "snap-store";
-import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
+import { ReactUnitTemplateFn } from "wus-host-react/react";
 
 type CvGateOscState = {
   cv: number;
@@ -18,8 +18,6 @@ function cvToFrequency(cv: number): number {
 }
 
 export const createCvGateOscUnit: ReactUnitTemplateFn = (unitInterface) => {
-  unitInterface.setPortSubtypes({ output: ["audio"], input: ["cvGate"] });
-
   const audioContext = unitInterface.audioContext;
   const destinationNode = unitInterface.primaryOutputPort.audioOutput.node;
 
@@ -61,10 +59,17 @@ export const createCvGateOscUnit: ReactUnitTemplateFn = (unitInterface) => {
     },
   };
 
-  unitInterface.primaryInputPort.setHandlers({
-    cvGateInput: {
-      setCv: actions.setCv,
-      setGate: actions.setGate,
+  unitInterface.completeSetupWithAttributes({
+    unitFeatures: {
+      unitType: "instrument",
+      outputs: ["audio"],
+      inputs: ["cvGate"],
+    },
+    primaryInputPortHandlers: {
+      cvGateInput: {
+        setCv: actions.setCv,
+        setGate: actions.setGate,
+      },
     },
   });
 

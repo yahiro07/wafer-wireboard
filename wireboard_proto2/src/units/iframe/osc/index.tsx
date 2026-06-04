@@ -1,14 +1,12 @@
 import "../../../page.css";
 import "beams/ax-ui/utility-classes.css";
 import { mountAppRoot } from "beams/ax-react/mount-app-root";
-import { UnitInterface } from "@/contract/unit-interfaces";
+import { UnitInterface } from "wus-unit-types";
 import { createOscillatorUnitCore } from "@/units/common/oscillator-unit-core";
 
 const unitInterface = (window as any).unitInterface as
   | UnitInterface
   | undefined;
-
-unitInterface?.setPortSubtypes({ output: ["audio"], input: ["note"] });
 
 const audioContext = unitInterface?.audioContext ?? new AudioContext();
 const destNode =
@@ -16,13 +14,19 @@ const destNode =
 
 const oscillatorCore = createOscillatorUnitCore(audioContext, destNode);
 
-unitInterface?.primaryInputPort.setHandlers({
-  noteInput: {
-    noteOn: oscillatorCore.noteOn,
-    noteOff: oscillatorCore.noteOff,
+unitInterface?.completeSetupWithAttributes({
+  unitFeatures: {
+    unitType: "instrument",
+    outputs: ["audio"],
+    inputs: ["note"],
+  },
+  primaryInputPortHandlers: {
+    noteInput: {
+      noteOn: oscillatorCore.noteOn,
+      noteOff: oscillatorCore.noteOff,
+    },
   },
 });
-unitInterface?.completeSetup();
 
 const App = () => {
   return (

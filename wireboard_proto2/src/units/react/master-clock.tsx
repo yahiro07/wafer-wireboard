@@ -1,13 +1,11 @@
 import { createSequencerTickDriver } from "beams/mx-audio/sequencer-tick-driver";
 import { createStore } from "snap-store";
-import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
+import { ReactUnitTemplateFn } from "wus-host-react/react";
 import { Button } from "@/shared/components/button";
 import { Icons } from "@/shared/components/icons";
 import { NumberSliderBox } from "@/shared/components/number-slider-box";
 
 export const createMasterClockUnit: ReactUnitTemplateFn = (unitInterface) => {
-  unitInterface.setPortSubtypes({ output: ["clock"] });
-
   const tickDriver = createSequencerTickDriver();
 
   const store = createStore({
@@ -24,7 +22,7 @@ export const createMasterClockUnit: ReactUnitTemplateFn = (unitInterface) => {
         clockOutput.start?.();
         tickDriver.start({
           processStep() {
-            clockOutput.step?.(stepIndex++);
+            clockOutput.processStep?.(stepIndex++);
           },
         });
         store.setPlaying(true);
@@ -39,6 +37,13 @@ export const createMasterClockUnit: ReactUnitTemplateFn = (unitInterface) => {
       store.setBpm(bpm);
     },
   };
+
+  unitInterface.completeSetupWithAttributes({
+    unitFeatures: {
+      unitType: "sequencer",
+      outputs: ["clock"],
+    },
+  });
 
   return {
     RenderUi() {

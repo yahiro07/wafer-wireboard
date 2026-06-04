@@ -1,10 +1,8 @@
-import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
+import { ReactUnitTemplateFn } from "wus-host-react/react";
 
 export const createTwoPortsKeyboardUnit: ReactUnitTemplateFn = (
   unitInterface,
 ) => {
-  unitInterface.setPortSubtypes({ output: ["note"] });
-
   const audioContext = unitInterface.audioContext;
   const outputPorts = unitInterface.createMultiChannelOutputPorts(2);
 
@@ -31,6 +29,14 @@ export const createTwoPortsKeyboardUnit: ReactUnitTemplateFn = (
       outputPorts[ch].noteOutput.noteOff(note);
     },
   };
+
+  unitInterface.completeSetupWithAttributes({
+    unitFeatures: {
+      unitType: "sequencer",
+      outputs: ["note"],
+    },
+  });
+
   return {
     RenderUi() {
       return (

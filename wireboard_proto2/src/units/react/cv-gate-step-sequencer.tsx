@@ -1,5 +1,5 @@
 import { createStore } from "snap-store";
-import { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
+import { ReactUnitTemplateFn } from "wus-host-react/react";
 import { Knob } from "@/shared/components/knob";
 import { UpperLabel } from "@/shared/components/upper-label";
 
@@ -14,11 +14,6 @@ const cvCenter = 0.4; // C3
 export const createCvGateStepSequencerUnit: ReactUnitTemplateFn = (
   unitInterface,
 ) => {
-  unitInterface.setPortSubtypes({
-    output: ["cvGate"],
-    input: ["clock", "state"],
-  });
-
   const store = createStore<SequencerState>({
     steps: Array(8)
       .fill(0)
@@ -28,34 +23,41 @@ export const createCvGateStepSequencerUnit: ReactUnitTemplateFn = (
 
   const output = unitInterface.primaryOutputPort.cvGateOutput;
 
-  unitInterface.primaryInputPort.setHandlers({
-    clockInput: {
-      step(stepIndex) {
-        if (stepIndex % 2 === 1) return;
-        const localStep = (stepIndex >>> 1) % 8;
-        store.setCurrentStep(localStep);
-
-        const knobValue = store.state.steps[localStep];
-        // 0~1 -> -12~12 semitones
-        const semitones = knobValue * 24 - 12;
-        const cv = cvCenter + (semitones / 12) * cvPerOctave;
-
-        output.setCv(cv);
-        output.setGate(true);
-      },
-      stop() {
-        store.setCurrentStep(-1);
-        output.setGate(false);
-      },
+  unitInterface.completeSetupWithAttributes({
+    unitFeatures: {
+      unitType: "sequencer",
+      outputs: ["cvGate"],
+      inputs: ["clock", "state"],
     },
-    stateInput: {
-      emitState() {
-        return { steps: store.state.steps };
+    primaryInputPortHandlers: {
+      clockInput: {
+        processStep(stepIndex) {
+          if (stepIndex % 2 === 1) return;
+          const localStep = (stepIndex >>> 1) % 8;
+          store.setCurrentStep(localStep);
+
+          const knobValue = store.state.steps[localStep];
+          // 0~1 -> -12~12 semitones
+          const semitones = knobValue * 24 - 12;
+          const cv = cvCenter + (semitones / 12) * cvPerOctave;
+
+          output.setCv(cv);
+          output.setGate(true);
+        },
+        stop() {
+          store.setCurrentStep(-1);
+          output.setGate(false);
+        },
       },
-      applyState(state) {
-        if (state?.steps) {
-          store.setSteps(state.steps);
-        }
+      stateInput: {
+        emitState() {
+          return { steps: store.state.steps };
+        },
+        applyState(state) {
+          if (state?.steps) {
+            store.setSteps(state.steps);
+          }
+        },
       },
     },
   });

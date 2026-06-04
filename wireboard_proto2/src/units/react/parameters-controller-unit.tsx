@@ -1,6 +1,6 @@
 import { createStore } from "snap-store";
-import type { ParameterSpec } from "@/contract/unit-interfaces";
-import type { ReactUnitTemplateFn } from "@/framework/unit-frame/react-unit-interface";
+import { ReactUnitTemplateFn } from "wus-host-react/react";
+import { ParameterSpec } from "wus-unit-types";
 import { Knob } from "@/shared/components/knob";
 import { UpperLabel } from "@/shared/components/upper-label";
 
@@ -23,8 +23,6 @@ function getKnobStep(spec: ParameterSpec): number {
 export const createParametersControllerUnit: ReactUnitTemplateFn = (
   unitInterface,
 ) => {
-  unitInterface.setPortSubtypes({ output: ["automation"] });
-
   const outputPort = unitInterface.primaryOutputPort;
   const store = createStore<ParametersControllerState>({
     connected: false,
@@ -75,6 +73,13 @@ export const createParametersControllerUnit: ReactUnitTemplateFn = (
     },
     onDisconnectTo() {
       actions.clearParameters();
+    },
+  });
+
+  unitInterface.completeSetupWithAttributes({
+    unitFeatures: {
+      unitType: "sequencer",
+      outputs: ["automation"],
     },
   });
 
