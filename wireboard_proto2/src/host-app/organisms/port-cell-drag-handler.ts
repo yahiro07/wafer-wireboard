@@ -146,7 +146,20 @@ export function handlePortCellDragging(
         actions.setTappingPortKey(portKey);
       },
       onMove(e) {
-        if (inDragging) {
+        if (!inDragging) {
+          const delta = {
+            x: e.position.x - e.originalPosition.x,
+            y: e.position.y - e.originalPosition.y,
+          };
+          if (Math.hypot(delta.x, delta.y) > 5) {
+            if (timerId) {
+              clearTimeout(timerId);
+              timerId = null;
+            }
+            internal.draggingStart();
+            inDragging = true;
+          }
+        } else {
           const pos = getPositionOnEditArea(e);
           internal.draggingMove(pos);
         }
