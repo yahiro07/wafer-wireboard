@@ -1,10 +1,6 @@
 import { RefObject, useEffect, useRef } from "react";
 import { PortSubtype } from "@/contract/unit-interfaces";
-import {
-  decodePortKey,
-  domEditAreaId,
-  getDomUnitBoxId,
-} from "@/host-app/common";
+import { decodePortKey, getDomUnitBoxId } from "@/host-app/common";
 import { handlePortCellDragging } from "@/host-app/organisms/port-cell-drag-handler";
 import { usePortHighlightingModel } from "@/host-app/organisms/port-highlighting-model";
 import { actions } from "@/host-app/store";
@@ -19,15 +15,14 @@ function useAffectPortAttributesToStore(
   useEffect(() => {
     const el = portDivRef.current;
     if (el) {
-      const editAreaEl = document.getElementById(domEditAreaId);
-      const editAreaRect = editAreaEl!.getBoundingClientRect();
-
       const portRect = el.getBoundingClientRect();
       const centerX = portRect.left + portRect.width / 2;
       const centerY = portRect.top + portRect.height / 2;
 
-      const positionX = centerX - editAreaRect.left;
-      const positionY = centerY - editAreaRect.top;
+      // const editAreaEl = document.getElementById(domEditAreaId);
+      // const editAreaRect = editAreaEl!.getBoundingClientRect();
+      // const positionX = centerX - editAreaRect.left;
+      // const positionY = centerY - editAreaRect.top;
 
       const { unitId, direction } = decodePortKey(portKey);
 
@@ -38,7 +33,7 @@ function useAffectPortAttributesToStore(
       const relativeY = centerY - unitBoxRect.top;
 
       actions.addPortItem(portKey, {
-        position: { x: positionX, y: positionY },
+        // position: { x: positionX, y: positionY },
         relativePositionInUnit: { x: relativeX, y: relativeY },
         unitId,
         direction,
