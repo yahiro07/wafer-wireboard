@@ -1,9 +1,6 @@
 import { ScalerBoxAutoSized } from "mofur/mo-react";
-import { Button } from "@/components/button";
-import { Icons } from "@/components/icons";
-import { Knob } from "@/components/knob";
-import { NumberSliderBox } from "@/components/number-slider-box";
-import { UpperLabel } from "@/components/upper-label";
+import { Icons } from "@/base/icons";
+import { Button, Knob, NumberSliderBox, UpperLabel } from "@/components";
 import { actions } from "@/store/actions";
 import { store } from "@/store/store";
 

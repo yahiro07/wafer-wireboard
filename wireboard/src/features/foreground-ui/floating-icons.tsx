@@ -1,4 +1,4 @@
-import { Icons } from "@/components/icons";
+import { Icons } from "@/base/icons";
 import { store } from "@/store/store";
 
 export const InfoButton = () => {

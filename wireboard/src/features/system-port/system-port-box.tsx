@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { npx } from "mofur/ax-ui";
 import { ReactNode } from "react";
-import { Icons, IconsEx } from "@/components/icons";
+import { Icons, IconsEx } from "@/base/icons";
 import { handleGripPointerDown } from "@/features/unit-box/common-card-handlers";
 import { UnitFrameEx } from "@/features/unit-box/unit-frame-ex";
 import { actions } from "@/store/actions";

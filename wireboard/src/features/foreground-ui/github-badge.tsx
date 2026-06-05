@@ -1,4 +1,4 @@
-import { Icons } from "@/components/icons";
+import { Icons } from "@/base/icons";
 
 export const GithubBadge = () => {
   return (

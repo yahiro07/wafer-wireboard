@@ -1,6 +1,6 @@
 import { npx } from "mofur/ax-ui";
+import { Icons } from "@/base/icons";
 import { slotCardDimensions } from "@/base/slot-card-dimensions";
-import { Icons } from "@/components/icons";
 import { OutputPortCell, PortCell } from "@/features/unit-box/port-cell";
 import { UnitFrameEx } from "@/features/unit-box/unit-frame-ex";
 import { actions } from "@/store/actions";

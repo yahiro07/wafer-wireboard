@@ -1,4 +1,4 @@
-import { IconsEx } from "@/components/icons";
+import { IconsEx } from "@/base/icons";
 import { actions } from "@/store/actions";
 import { UnitItem } from "@/store/store";
 
