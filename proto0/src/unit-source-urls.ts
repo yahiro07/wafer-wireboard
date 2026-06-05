@@ -5,7 +5,7 @@ function toAbsolutePath(path: string): string {
 }
 
 const unitsDevDistDir = toAbsolutePath(
-  "../../../webaudio-unit-system/framework/packages/units-dev/dist",
+  "../../../webaudio-unit-system/unit-examples/dist",
 );
 
 // const wusUnitsLocalDistDir = toAbsolutePath("../../../wus-units/dist");
