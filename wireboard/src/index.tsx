@@ -1,8 +1,8 @@
 import "./page.css";
-import "beams/ax-ui/utility-classes.css";
+import "mofur/ax-ui/utility-classes.css";
 //
-import { mountAppRoot } from "beams/ax-react/mount-app-root";
-import { setupMidiKeyboardInput } from "beams/mx-audio/midi-keyboard-input";
+import { mountAppRoot } from "mofur/ax-react";
+import { setupMidiKeyboardInput } from "mofur/mx-audio";
 import { useEffect } from "react";
 // import { HostAppProvider } from "wus-host-react/react";
 import { PickerColumn } from "@/features/picker/picker-column";

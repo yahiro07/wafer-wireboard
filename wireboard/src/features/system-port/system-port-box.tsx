@@ -1,5 +1,5 @@
-import { npx } from "beams/ax-ui/styling-utils";
 import clsx from "clsx";
+import { npx } from "mofur/ax-ui";
 import { ReactNode } from "react";
 import { Icons, IconsEx } from "@/components/icons";
 import { handleGripPointerDown } from "@/features/unit-box/common-card-handlers";

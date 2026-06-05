@@ -24,7 +24,6 @@
     }
   },
   "include": [
-    "src",
-    "node_modules/beams/**/*"
+    "src"
   ]
 }

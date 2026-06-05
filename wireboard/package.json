@@ -21,12 +21,12 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
-    "beams": "file:../../beam/beams",
+    "mofur": "file:../../beam/mofur",
     "tailwindcss": "^4.3.0",
     "typescript": "~6.0.3",
     "vite": "^8.0.12",
-    "wus-host-react": "file:../../webaudio-unit-system/lib/wus-host-react",
-    "wus-unit-types": "file:../../webaudio-unit-system/framework/packages/wus-unit-types",
-    "wus-vite-unit-loader-plugin": "file:../../webaudio-unit-system/framework/packages/wus-vite-unit-loader-plugin"
+    "wus-host-react": "file:../../webaudio-unit-system/framework/wus-host-react",
+    "wus-unit-types": "file:../../webaudio-unit-system/contract/wus-unit-types",
+    "wus-vite-unit-loader-plugin": "file:../../webaudio-unit-system/framework/wus-vite-unit-loader-plugin"
   }
 }

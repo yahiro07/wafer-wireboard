@@ -1,4 +1,4 @@
-import { npx } from "beams/ax-ui/styling-utils";
+import { npx } from "mofur/ax-ui";
 import { ReactNode } from "react";
 
 export const UpperLabel = ({

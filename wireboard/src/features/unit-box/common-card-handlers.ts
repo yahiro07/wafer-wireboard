@@ -1,4 +1,4 @@
-import { startDragSession } from "beams/ax-ui/drag-session";
+import { startDragSession } from "mofur/ax-ui";
 import { appConfigs } from "@/base/constants";
 import { snapUnitCoordToGrid } from "@/features/unit-box/snapping";
 import { actions } from "@/store/actions";

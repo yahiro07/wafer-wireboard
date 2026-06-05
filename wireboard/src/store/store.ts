@@ -1,4 +1,4 @@
-import { Point } from "beams/ax-ui/common-types";
+import { Point } from "mofur/ax-ui";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host-react/host";
 import { CatalogKey } from "@/base/showcase-entries";

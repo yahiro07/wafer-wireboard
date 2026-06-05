@@ -1,4 +1,4 @@
-import { Point } from "beams/ax-ui/common-types";
+import { Point } from "mofur/ax-ui";
 import { CatalogKey } from "@/base/showcase-entries";
 import { store, UnitItem } from "@/store/store";
 import { findNearestConnectionTargetUnit } from "@/store/unit-coordinate-helper";

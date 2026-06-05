@@ -1,4 +1,4 @@
-import { Point } from "beams/ax-ui/common-types";
+import { Point } from "mofur/ax-ui";
 
 export function snapUnitCoordToGrid(pos: Point): Point {
   const gridSize = 20;

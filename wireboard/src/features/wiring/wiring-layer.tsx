@@ -1,4 +1,4 @@
-import { Point, Size } from "beams/ax-ui/common-types";
+import { Point, Size } from "mofur/ax-ui";
 
 export type WiringLayerWire = {
   id: string;

@@ -1,4 +1,4 @@
-import { ScalerBoxAutoSized } from "beams/mo-react/components/scaler-box-auto-sized";
+import { ScalerBoxAutoSized } from "mofur/mo-react";
 import { Button } from "@/components/button";
 import { Icons } from "@/components/icons";
 import { Knob } from "@/components/knob";

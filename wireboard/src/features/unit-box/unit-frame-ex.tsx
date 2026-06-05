@@ -1,4 +1,4 @@
-import { ScalerBoxAutoSized } from "beams/mo-react/components/scaler-box-auto-sized";
+import { ScalerBoxAutoSized } from "mofur/mo-react";
 import { UnitFrame } from "wus-host-react/react";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
 import { hostSystem } from "@/store/store";
