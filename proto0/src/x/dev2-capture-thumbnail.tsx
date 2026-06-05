@@ -1,8 +1,8 @@
-import { mountAppRoot } from "beams/ax-react/mount-app-root";
-import { ScalerBox } from "beams/mo-react/components/scaler-box";
+import { mountAppRoot } from "mofur/ax-react";
+import { ScalerBox } from "mofur/mo-react";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
-import { UnitFrame } from "wus-host/react";
+import { HostAppProvider, UnitFrame } from "wus-host/react";
 import { normalizeFrameSize } from "wus-host/react/frame-size";
 import catalog from "../unit-inventories.json";
 
@@ -54,7 +54,6 @@ const PageRoot = () => {
                 unitId="uf_instrument"
                 pageUrl={catalog[catalogKey].loaderPageUrl}
                 frameSize={frameSize}
-                hostSystem={hostSystem}
               />
             </ScalerBox>
           </div>
@@ -70,7 +69,11 @@ const PageRoot = () => {
 };
 
 const App = () => {
-  return <PageRoot />;
+  return (
+    <HostAppProvider hostSystem={hostSystem}>
+      <PageRoot />
+    </HostAppProvider>
+  );
 };
 
 mountAppRoot(<App />);

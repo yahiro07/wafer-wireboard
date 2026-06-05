@@ -1,10 +1,10 @@
-import { mountAppRoot } from "beams/ax-react/mount-app-root";
-import { Size } from "beams/mo-react/hooks/common-types";
-import { setupMidiKeyboardInput } from "beams/mx-audio/midi-keyboard-input";
+import { mountAppRoot } from "mofur/ax-react";
+import { Size } from "mofur/ax-ui";
+import { setupMidiKeyboardInput } from "mofur/mx-audio";
 import { useCallback, useEffect, useMemo } from "react";
 import { createStore } from "snap-store";
 import { createHostSystem, createSequenceTickDriver } from "wus-host/host";
-import { UnitFrame } from "wus-host/react";
+import { HostAppProvider, UnitFrame } from "wus-host/react";
 import { normalizeFrameSize } from "wus-host/react/frame-size";
 import { Button } from "@/components/button";
 import { Icons } from "@/components/icons";
@@ -160,9 +160,6 @@ const UnitFrameEx = ({
         destUnitId={destUnitId}
         pageUrl={catalog[catalogKey].loaderPageUrl}
         frameSize={frameSize}
-        hostSystem={hostSystem}
-        hostBpm={state.bpm}
-        hostPlaying={state.playing}
         onIframeMounted={onIframeMounted}
       />
     </UnitFrameScaler>
@@ -317,13 +314,22 @@ const PageRoot2 = () => {
   );
 };
 const App = () => {
+  const state = store.useSnapshot();
   useEffect(() =>
     setupMidiKeyboardInput({
       noteOn: actions.noteOn,
       noteOff: actions.noteOff,
     }),
   );
-  return <PageRoot />;
+  return (
+    <HostAppProvider
+      hostSystem={hostSystem}
+      bpm={state.bpm}
+      playing={state.playing}
+    >
+      <PageRoot />
+    </HostAppProvider>
+  );
 };
 
 mountAppRoot(<App />);

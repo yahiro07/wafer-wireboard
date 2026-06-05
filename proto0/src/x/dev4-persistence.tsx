@@ -1,8 +1,8 @@
-import { mountAppRoot } from "beams/ax-react/mount-app-root";
+import { mountAppRoot } from "mofur/ax-react";
 import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { createHostSystem, UnitStateData } from "wus-host/host";
-import { UnitFrame } from "wus-host/react";
+import { HostAppProvider, UnitFrame } from "wus-host/react";
 import { Button } from "@/components/button";
 import catalog from "../unit-inventories.json";
 
@@ -123,7 +123,6 @@ const PageRoot = () => {
             destUnitId="$output"
             pageUrl={catalog.specbar.loaderPageUrl}
             frameSize={catalog.specbar.preferredSize}
-            hostSystem={hostSystem}
           />
           <UnitFrame
             key={instrumentUnitId}
@@ -131,7 +130,6 @@ const PageRoot = () => {
             destUnitId={visualizerUnitId}
             pageUrl={catalog[catalogKey].loaderPageUrl}
             frameSize={catalog[catalogKey].preferredSize}
-            hostSystem={hostSystem}
           />
           <UnitFrame
             key={keyboardUnitId}
@@ -139,7 +137,6 @@ const PageRoot = () => {
             destUnitId={instrumentUnitId}
             pageUrl={catalog.mu4Keyboard.loaderPageUrl}
             frameSize={catalog.mu4Keyboard.preferredSize}
-            hostSystem={hostSystem}
           />
         </div>
       </div>
@@ -149,7 +146,11 @@ const PageRoot = () => {
 
 const App = () => {
   useEffect(hostSystem.setupLifecycle, []);
-  return <PageRoot />;
+  return (
+    <HostAppProvider hostSystem={hostSystem}>
+      <PageRoot />
+    </HostAppProvider>
+  );
 };
 
 mountAppRoot(<App />);

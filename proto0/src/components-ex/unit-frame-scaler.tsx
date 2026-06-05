@@ -1,4 +1,4 @@
-import { Size } from "beams/mo-react/hooks/common-types";
+import { Size } from "mofur/ax-ui";
 import { ReactNode } from "react";
 
 export const UnitFrameScaler = ({

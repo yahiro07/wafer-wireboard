@@ -1,9 +1,9 @@
-import { mountAppRoot } from "beams/ax-react/mount-app-root";
-import { setupMidiKeyboardInput } from "beams/mx-audio/midi-keyboard-input";
+import { mountAppRoot } from "mofur/ax-react";
+import { setupMidiKeyboardInput } from "mofur/mx-audio";
 import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
-import { UnitFrame } from "wus-host/react";
+import { HostAppProvider, UnitFrame } from "wus-host/react";
 import { Button } from "@/components/button";
 import { NumberSliderBox } from "@/components/number-slider-box";
 import catalog from "../unit-inventories.json";
@@ -42,12 +42,15 @@ const actions = {
 const UnitsSolid = () => {
   const state = store.useSnapshot();
   return (
-    <>
+    <HostAppProvider
+      hostSystem={hostSystem}
+      bpm={state.bpm}
+      playing={state.playing}
+    >
       <UnitFrame
         unitId="uf_effect"
         pageUrl={catalog.mu5Visualizer.loaderPageUrl}
         destUnitId="$output"
-        hostSystem={hostSystem}
       />
       <UnitFrame
         unitId="uf_instrument"
@@ -56,18 +59,14 @@ const UnitsSolid = () => {
         // className="w-[640px] h-[320px]"
         frameSize={catalog.miniSynthGe.preferredSize}
         destUnitId="uf_effect"
-        hostSystem={hostSystem}
-        hostBpm={state.bpm}
-        hostPlaying={state.playing}
       />
       <UnitFrame
         unitId="uf_keyboard"
         pageUrl={catalog.mu4Keyboard.loaderPageUrl}
         destUnitId="uf_instrument"
-        hostSystem={hostSystem}
         inputNotes={state.notes}
       />
-    </>
+    </HostAppProvider>
   );
 };
 
