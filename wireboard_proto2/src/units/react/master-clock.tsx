@@ -1,4 +1,4 @@
-import { createSequencerTickDriver } from "beams/mx-audio/sequencer-tick-driver";
+import { createSequencerTickDriver } from "mofur/mx-audio";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wus-host-react/react";
 import { Button } from "@/shared/components/button";

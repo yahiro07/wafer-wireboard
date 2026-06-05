@@ -1,4 +1,4 @@
-import { Point } from "beams/ax-ui/common-types";
+import { Point } from "mofur/ax-ui";
 import { DestinationCode } from "wus-host-react/host";
 import { ReactUnitTemplateFn } from "wus-host-react/react";
 import { PortSubtype } from "wus-unit-types";

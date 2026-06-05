@@ -1,6 +1,6 @@
 import "../../../page.css";
-import "beams/ax-ui/utility-classes.css";
-import { mountAppRoot } from "beams/ax-react/mount-app-root";
+import "mofur/ax-ui/utility-classes.css";
+import { mountAppRoot } from "mofur/ax-react";
 import { UnitInterface } from "wus-unit-types";
 import { createOscillatorUnitCore } from "@/units/common/oscillator-unit-core";
 

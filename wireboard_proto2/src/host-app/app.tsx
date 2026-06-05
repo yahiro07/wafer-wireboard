@@ -1,4 +1,4 @@
-import { mountAppRoot } from "beams/ax-react/mount-app-root";
+import { mountAppRoot } from "mofur/ax-react";
 import { domEditAreaId } from "@/host-app/common";
 import { UnitBox } from "@/host-app/organisms/unit-box";
 import { store } from "@/host-app/store";

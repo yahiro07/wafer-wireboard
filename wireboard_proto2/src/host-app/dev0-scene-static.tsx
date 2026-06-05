@@ -1,4 +1,4 @@
-import { mountAppRoot } from "beams/ax-react/mount-app-root";
+import { mountAppRoot } from "mofur/ax-react";
 import { UnitBox } from "@/host-app/organisms/unit-box";
 import { reactUnitFactories } from "@/units/react";
 

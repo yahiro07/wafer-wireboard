@@ -1,4 +1,4 @@
-import { mapUnaryTo } from "beams/ax/number-utils";
+import { mapUnaryTo } from "mofur/ax";
 
 export type OscParameters = {
   wave: number;

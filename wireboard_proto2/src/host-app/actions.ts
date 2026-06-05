@@ -1,4 +1,4 @@
-import { Point } from "beams/ax-ui/common-types";
+import { Point } from "mofur/ax-ui";
 import {
   decodePortKey,
   mapDestSpecToPortKeys,

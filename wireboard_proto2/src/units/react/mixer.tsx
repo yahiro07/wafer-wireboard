@@ -1,4 +1,4 @@
-import { seqNumbers } from "beams/ax/array-utils";
+import { seqNumbers } from "mofur/ax";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wus-host-react/react";
 import { Knob } from "@/shared/components/knob";

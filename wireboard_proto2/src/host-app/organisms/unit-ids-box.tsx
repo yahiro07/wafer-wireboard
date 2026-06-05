@@ -1,4 +1,4 @@
-import { seqNumbers } from "beams/ax/array-utils";
+import { seqNumbers } from "mofur/ax";
 import { ReactNode } from "react";
 import { DestinationCode, HsUnitPortsSpec } from "wus-host-react/host";
 import { PortSubtype } from "wus-unit-types";

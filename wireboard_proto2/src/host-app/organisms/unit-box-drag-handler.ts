@@ -1,4 +1,4 @@
-import { startDragSession } from "beams/ax-ui/drag-session";
+import { startDragSession } from "mofur/ax-ui";
 import { actions } from "@/host-app/actions";
 import { store } from "@/host-app/store";
 
