@@ -81,7 +81,7 @@ export const createStateSwitcherUnit: ReactUnitTemplateFn = (unitInterface) => {
 
   unitInterface.completeSetupWithAttributes({
     unitFeatures: {
-      unitType: "sequencer",
+      type: "sequencer",
       outputs: ["state"],
     },
   });

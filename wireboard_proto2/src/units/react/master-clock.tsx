@@ -40,7 +40,7 @@ export const createMasterClockUnit: ReactUnitTemplateFn = (unitInterface) => {
 
   unitInterface.completeSetupWithAttributes({
     unitFeatures: {
-      unitType: "sequencer",
+      type: "sequencer",
       outputs: ["clock"],
     },
   });

@@ -16,7 +16,7 @@ const oscillatorCore = createOscillatorUnitCore(audioContext, destNode);
 
 unitInterface?.completeSetupWithAttributes({
   unitFeatures: {
-    unitType: "instrument",
+    type: "instrument",
     outputs: ["audio"],
     inputs: ["note"],
   },

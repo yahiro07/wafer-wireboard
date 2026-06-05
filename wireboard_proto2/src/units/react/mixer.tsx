@@ -57,7 +57,7 @@ export const createMixerUnit: ReactUnitTemplateFn = (unitInterface) => {
 
   unitInterface.completeSetupWithAttributes({
     unitFeatures: {
-      unitType: "effect",
+      type: "effect",
       outputs: ["audio"],
       inputs: ["audio"],
     },

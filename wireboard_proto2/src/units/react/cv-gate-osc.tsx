@@ -61,7 +61,7 @@ export const createCvGateOscUnit: ReactUnitTemplateFn = (unitInterface) => {
 
   unitInterface.completeSetupWithAttributes({
     unitFeatures: {
-      unitType: "instrument",
+      type: "instrument",
       outputs: ["audio"],
       inputs: ["cvGate"],
     },
