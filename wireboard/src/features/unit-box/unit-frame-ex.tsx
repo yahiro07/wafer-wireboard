@@ -35,8 +35,13 @@ export const UnitFrameEx = ({
         destSpec={destUnitId}
         pageUrl={catalog[catalogKey].loaderPageUrl}
         frameSize={frameSize}
-        // onIframeMounted={onIframeMounted}
         inputNotes={notes}
+        // onIframeMounted={() => {
+        //   console.log(`iframe mounted ${unitId}`);
+        // }}
+        // onUnitInstanceLoaded={() => {
+        //   console.log(`unit instance loaded ${unitId}`);
+        // }}
       />
     </ScalerBoxAutoSized>
   );
