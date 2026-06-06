@@ -1,7 +1,8 @@
 import { mountAppRoot } from "mofur/ax-react";
+import { HostAppProvider } from "wus-host/react";
 import { domEditAreaId } from "@/host-app/common";
 import { UnitBox } from "@/host-app/organisms/unit-box";
-import { store } from "@/host-app/store";
+import { hostSystem, store } from "@/host-app/store";
 import { WireLayer } from "@/host-app/wire-layer";
 
 const App = () => {
@@ -21,4 +22,8 @@ const App = () => {
   );
 };
 
-mountAppRoot(<App />);
+mountAppRoot(
+  <HostAppProvider hostSystem={hostSystem}>
+    <App />
+  </HostAppProvider>,
+);
