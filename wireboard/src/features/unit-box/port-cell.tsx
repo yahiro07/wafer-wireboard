@@ -20,12 +20,20 @@ export const PortCell = ({
 };
 
 export const OutputPortCell = ({ unit }: { unit: UnitItem }) => {
-  const handlePointerDown = (_: React.PointerEvent) => {
+  const handlePointerDown = (e: React.PointerEvent) => {
     if (unit.destUnitId) {
       actions.removeConnection(unit.unitId);
     } else {
       actions.connectToNearestUnit(unit.unitId);
     }
+    e.stopPropagation();
   };
   return <PortCell withIcon onPointerDown={handlePointerDown} />;
+};
+
+export const InputPortCell = () => {
+  const handlePointerDown = (e: React.PointerEvent) => {
+    e.stopPropagation();
+  };
+  return <PortCell onPointerDown={handlePointerDown} />;
 };

@@ -1,7 +1,7 @@
 import { npx } from "mofur/ax-ui";
 import { Icons } from "@/base/icons";
 import { slotCardDimensions } from "@/base/slot-card-dimensions";
-import { OutputPortCell, PortCell } from "@/features/unit-box/port-cell";
+import { InputPortCell, OutputPortCell } from "@/features/unit-box/port-cell";
 import { UnitFrameEx } from "@/features/unit-box/unit-frame-ex";
 import { actions } from "@/store/actions";
 import { UnitItem } from "@/store/store";
@@ -49,9 +49,12 @@ export const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
           height: npx(sd.height),
         }}
       >
-        <div className="w-[40px] bg-gray-500 flex-v justify-between items-center p-2">
+        <div
+          className="w-[40px] bg-gray-500 flex-v justify-between items-center p-2 cursor-pointer"
+          onPointerDown={(e) => handleGripPointerDown(e, unit)}
+        >
           <OutputPortCell unit={unit} />
-          <PortCell />
+          <InputPortCell />
         </div>
         <div className="grow bg-gray-600">
           <UnitFrameEx
