@@ -1,4 +1,4 @@
-import { clampValue } from "mofur/ax";
+import { useMemo } from "react";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wus-host/react";
 import {
@@ -13,6 +13,8 @@ export const createBuiltinKeyboardUnit: ReactUnitTemplateFn = (
   const { primaryOutputPort } = unitInterface;
   const { noteOutput } = primaryOutputPort;
 
+  const notesMap = new Map<number, number>(); // key: noteKey, value: noteNumber
+
   const store = createStore({
     notes: [] as number[],
     octave: 0, //-2~+2
@@ -25,17 +27,22 @@ export const createBuiltinKeyboardUnit: ReactUnitTemplateFn = (
   });
 
   const actions = {
-    async noteOn(noteNumber: number) {
+    async noteOn(noteKey: number) {
+      const noteNumber = noteKey + store.state.octave * 12;
       store.setNotes((prev) => [...prev, noteNumber]);
       noteOutput.noteOn(noteNumber);
+      notesMap.set(noteKey, noteNumber);
     },
-    noteOff(noteNumber: number) {
-      store.setNotes((prev) => prev.filter((n) => n !== noteNumber));
-      noteOutput.noteOff(noteNumber);
+    noteOff(noteKey: number) {
+      const noteNumber = notesMap.get(noteKey);
+      if (noteNumber) {
+        store.setNotes((prev) => prev.filter((n) => n !== noteNumber));
+        noteOutput.noteOff(noteNumber);
+        notesMap.delete(noteKey);
+      }
     },
-    shiftOctave(dir: number) {
-      const newOctave = clampValue(store.state.octave + dir, -2, 2);
-      store.setOctave(newOctave);
+    setOctave(octave: number) {
+      store.setOctave(octave);
     },
   };
 
@@ -57,26 +64,29 @@ export const createBuiltinKeyboardUnit: ReactUnitTemplateFn = (
   return {
     RenderUi() {
       const { notes, octave } = store.useSnapshot();
+      const activeNotes = useMemo(() => {
+        return notes.map((noteNumber) => noteNumber - octave * 12);
+      }, [notes, octave]);
       return (
         <div className="w-full h-full flex-c px-1">
           <div className="flex-v gap-1">
-            <OctaveShifter octave={octave} shiftOctave={actions.shiftOctave} />
+            <OctaveShifter octave={octave} setOctave={actions.setOctave} />
             <div className="flex-h">
               <KeyboardOctaveBlock
                 baseNoteNumber={48}
-                activeNotes={notes}
+                activeNotes={activeNotes}
                 noteOn={actions.noteOn}
                 noteOff={actions.noteOff}
               />
               <KeyboardOctaveBlock
                 baseNoteNumber={60}
-                activeNotes={notes}
+                activeNotes={activeNotes}
                 noteOn={actions.noteOn}
                 noteOff={actions.noteOff}
               />
               <KeyboardTopKey
                 noteNumber={72}
-                activeNotes={notes}
+                activeNotes={activeNotes}
                 noteOn={actions.noteOn}
                 noteOff={actions.noteOff}
               />

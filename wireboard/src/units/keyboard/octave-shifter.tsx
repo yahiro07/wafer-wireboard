@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { seqNumbers } from "mofur/ax";
+import { clampValue, seqNumbers } from "mofur/ax";
 import { IconsEx } from "@/base/icons";
 
 const ShiftButton = ({
@@ -12,7 +12,7 @@ const ShiftButton = ({
   disabled: boolean;
 }) => {
   return (
-    <div
+    <button
       className={clsx(
         "w-5 h-4 bg-gray-300 text-white text-[11px] flex-c cursor-pointer",
         disabled && "opacity-50 cursor-default",
@@ -21,30 +21,43 @@ const ShiftButton = ({
     >
       {side === "left" && <IconsEx.KeyboardOctaveShiftL />}
       {side === "right" && <IconsEx.KeyboardOctaveShiftR />}
-    </div>
+    </button>
   );
 };
 
-const IndicatorLed = ({ active }: { active: boolean }) => {
+const IndicatorLed = ({
+  active,
+  onClick,
+}: {
+  active: boolean;
+  onClick: () => void;
+}) => {
   return (
-    <div
+    <button
       className={clsx(
-        "w-3 h-3 bg-gray-300 rounded-full",
+        "w-3 h-3 bg-gray-300 rounded-full cursor-pointer",
         active && "bg-cyan-500!",
       )}
+      onClick={onClick}
     />
   );
 };
 
 export const OctaveShifter = ({
   octave,
-  shiftOctave,
+  setOctave,
 }: {
   octave: number;
-  shiftOctave: (dir: number) => void;
+  setOctave: (octave: number) => void;
 }) => {
   const canShiftDown = octave > -2;
   const canShiftUp = octave < 2;
+
+  const shiftOctave = (dir: number) => {
+    const newOctave = clampValue(octave + dir, -2, 2);
+    setOctave(newOctave);
+  };
+
   return (
     <div className="flex-ha gap-1.5">
       <ShiftButton
@@ -53,9 +66,16 @@ export const OctaveShifter = ({
         disabled={!canShiftDown}
       />
       <div className="flex-ha gap-[4px]">
-        {seqNumbers(5).map((k) => (
-          <IndicatorLed key={k} active={octave === k - 2} />
-        ))}
+        {seqNumbers(5).map((k) => {
+          const octaveValue = k - 2;
+          return (
+            <IndicatorLed
+              key={k}
+              active={octave === octaveValue}
+              onClick={() => setOctave(octaveValue)}
+            />
+          );
+        })}
       </div>
       <ShiftButton
         side="right"
