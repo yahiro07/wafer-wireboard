@@ -3,7 +3,6 @@ import { HsUnitInstance } from "wus-host/host";
 import { ReactUnitFrame, UnitFrame } from "wus-host/react";
 import { getDomUnitBoxId } from "@/host-app/common";
 import { UnitIdsBox } from "@/host-app/organisms/unit-ids-box";
-import { hostSystem } from "@/host-app/store";
 import { UnitItem } from "@/host-app/types";
 
 export const UnitBox = ({
@@ -30,8 +29,7 @@ export const UnitBox = ({
             unitId={unitId}
             pageUrl={pageUrl}
             destSpec={destSpec}
-            loadedCallback={setUnitInstance}
-            hostSystem={hostSystem}
+            onUnitInstanceLoaded={setUnitInstance}
           />
         )}
         {unitTemplateFn && (
@@ -39,8 +37,7 @@ export const UnitBox = ({
             unitId={unitId}
             unitTemplateFn={unitTemplateFn}
             destSpec={destSpec}
-            loadedCallback={setUnitInstance}
-            hostSystem={hostSystem}
+            onUnitInstanceLoaded={setUnitInstance}
           />
         )}
       </UnitIdsBox>
