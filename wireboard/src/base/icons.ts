@@ -1,4 +1,8 @@
-import { BiInfoCircle } from "react-icons/bi";
+import {
+  BiInfoCircle,
+  BiSolidLeftArrow,
+  BiSolidRightArrow,
+} from "react-icons/bi";
 import { BsFillSpeakerFill, BsPlayFill } from "react-icons/bs";
 import { CgChevronDown } from "react-icons/cg";
 import { FaGithub } from "react-icons/fa";
@@ -25,4 +29,6 @@ export const IconsEx = {
   // ConnectorPortUp: BiSolidUpArrow,
   // ConnectorPortUp: FaAnglesUp,
   ConnectorPortUp: TbNavigationFilled,
+  KeyboardOctaveShiftL: BiSolidLeftArrow,
+  KeyboardOctaveShiftR: BiSolidRightArrow,
 };

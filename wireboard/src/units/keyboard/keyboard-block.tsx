@@ -3,7 +3,7 @@ import { npx } from "mofur/ax-ui";
 
 const configs = {
   defaultKeyWidth: 17,
-  defaultKeyHeight: 70,
+  defaultKeyHeight: 64,
   blackKeyWidthRatio: 0.8,
   blackKeyHeightRatio: 0.55,
 };
