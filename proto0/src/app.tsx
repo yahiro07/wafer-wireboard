@@ -162,7 +162,7 @@ const PartSlot = ({
   instrumentUnitKey?: CatalogKey;
   sequencerUnitKey?: CatalogKey;
 }) => {
-  // const effectCatalogKey = "mu5_visualizer";
+  // const effectCatalogKey = "mu5Visualizer";
   const effectCatalogKey = "specbar";
   const instrumentUnitId = `${partSlotId}_${instrumentUnitKey}`;
   const sequencerUnitId = `${partSlotId}_${sequencerUnitKey}`;
@@ -222,7 +222,11 @@ const PageRoot = () => {
         >
           <div className="w-full h-full flex-vc gap-6">
             <div className="flex-h gap-6">
-              <PartSlot partSlotId="ps1" instrumentUnitKey="myDrumMachine" />
+              <PartSlot
+                partSlotId="ps1"
+                instrumentUnitKey="myDrumMachine"
+                // instrumentUnitKey="koodori"
+              />
               <PartSlot
                 partSlotId="ps2"
                 instrumentUnitKey="miniSynthGe"
