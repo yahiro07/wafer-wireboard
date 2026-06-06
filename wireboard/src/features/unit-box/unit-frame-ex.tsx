@@ -1,7 +1,6 @@
 import { ScalerBoxAutoSized } from "mofur/mo-react";
 import { UnitFrame } from "wus-host-react/react";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
-import { hostSystem } from "@/store/store";
 
 export const UnitFrameEx = ({
   unitId,
@@ -37,8 +36,7 @@ export const UnitFrameEx = ({
         pageUrl={catalog[catalogKey].loaderPageUrl}
         frameSize={frameSize}
         // onIframeMounted={onIframeMounted}
-        // inputNotes={notes}
-        hostSystem={hostSystem}
+        inputNotes={notes}
       />
     </ScalerBoxAutoSized>
   );

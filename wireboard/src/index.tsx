@@ -2,11 +2,12 @@ import "./page.css";
 import "mofur/ax-ui/utility-classes.css";
 //
 import { mountAppRoot } from "mofur/ax-react";
+import { mapKnobGainDb } from "mofur/mo-audio";
 import { setupMidiKeyboardInput } from "mofur/mx-audio";
-import { useEffect } from "react";
-// import { HostAppProvider } from "wus-host-react/react";
+import { useEffect, useMemo } from "react";
+import { HostAppProvider } from "wus-host-react/react";
 import { PickerColumn } from "@/features/picker/picker-column";
-import { store } from "@/store/store";
+import { hostSystem, store } from "@/store/store";
 import { InformationPanel } from "./features/information-panel";
 import { MainEditArea } from "./features/main-edit-area/main-edit-area";
 import { actions } from "./store/actions";
@@ -23,11 +24,11 @@ const PageRoot = () => {
 };
 
 const App = () => {
-  // const { playing, bpm, masterVolume } = store.useSnapshot();
-  // const masterGain = useMemo(
-  //   () => mapKnobGainDb(masterVolume, 0.5),
-  //   [masterVolume],
-  // );
+  const { playing, bpm, masterVolume } = store.useSnapshot();
+  const masterGain = useMemo(
+    () => mapKnobGainDb(masterVolume, 0.5),
+    [masterVolume],
+  );
   useEffect(
     () =>
       setupMidiKeyboardInput({
@@ -37,14 +38,14 @@ const App = () => {
     [],
   );
   return (
-    // <HostAppProvider
-    //   hostSystem={hostSystem}
-    //   playing={playing}
-    //   bpm={bpm}
-    //   masterGain={masterGain}
-    // >
-    <PageRoot />
-    // </HostAppProvider>
+    <HostAppProvider
+      hostSystem={hostSystem}
+      playing={playing}
+      bpm={bpm}
+      masterGain={masterGain}
+    >
+      <PageRoot />
+    </HostAppProvider>
   );
 };
 
