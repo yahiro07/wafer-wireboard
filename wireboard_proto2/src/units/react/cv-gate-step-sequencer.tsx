@@ -23,9 +23,9 @@ export const createCvGateStepSequencerUnit: ReactUnitTemplateFn = (
 
   const output = unitInterface.primaryOutputPort.cvGateOutput;
 
-  unitInterface.completeSetupWithAttributes({
-    unitFeatures: {
-      type: "sequencer",
+  unitInterface.completeSetup({
+    unitAspects: {
+      unitType: "sequencer",
       outputs: ["cvGate"],
       inputs: ["clock", "state"],
     },

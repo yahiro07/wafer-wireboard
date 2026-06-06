@@ -61,9 +61,9 @@ export const createKeyboardUnit: ReactUnitTemplateFn = (unitInterface) => {
     },
   };
 
-  unitInterface.completeSetupWithAttributes({
-    unitFeatures: {
-      type: "sequencer",
+  unitInterface.completeSetup({
+    unitAspects: {
+      unitType: "sequencer",
       outputs: ["note", "cvGate"],
     },
   });

@@ -76,9 +76,9 @@ export const createParametersControllerUnit: ReactUnitTemplateFn = (
     },
   });
 
-  unitInterface.completeSetupWithAttributes({
-    unitFeatures: {
-      type: "sequencer",
+  unitInterface.completeSetup({
+    unitAspects: {
+      unitType: "sequencer",
       outputs: ["automation"],
     },
   });

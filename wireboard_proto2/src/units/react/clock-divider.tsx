@@ -23,9 +23,9 @@ export const createClockDividerUnit: ReactUnitTemplateFn = (unitInterface) => {
     },
   };
 
-  unitInterface.completeSetupWithAttributes({
-    unitFeatures: {
-      type: "sequencer",
+  unitInterface.completeSetup({
+    unitAspects: {
+      unitType: "sequencer",
       outputs: ["clock"],
       inputs: ["clock", "state"],
     },

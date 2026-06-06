@@ -1,12 +1,10 @@
 import "../../../page.css";
 import "mofur/ax-ui/utility-classes.css";
 import { mountAppRoot } from "mofur/ax-react";
-import { UnitInterface } from "wus-unit-types";
+import { getUnitInterface } from "wus-unit-types";
 import { createOscillatorUnitCore } from "@/units/common/oscillator-unit-core";
 
-const unitInterface = (window as any).unitInterface as
-  | UnitInterface
-  | undefined;
+const unitInterface = getUnitInterface("wus-v02");
 
 const audioContext = unitInterface?.audioContext ?? new AudioContext();
 const destNode =
@@ -14,9 +12,9 @@ const destNode =
 
 const oscillatorCore = createOscillatorUnitCore(audioContext, destNode);
 
-unitInterface?.completeSetupWithAttributes({
-  unitFeatures: {
-    type: "instrument",
+unitInterface?.completeSetup({
+  unitAspects: {
+    unitType: "instrument",
     outputs: ["audio"],
     inputs: ["note"],
   },

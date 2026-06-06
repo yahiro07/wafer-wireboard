@@ -30,11 +30,12 @@ export const createTwoPortsKeyboardUnit: ReactUnitTemplateFn = (
     },
   };
 
-  unitInterface.completeSetupWithAttributes({
-    unitFeatures: {
-      type: "sequencer",
+  unitInterface.completeSetup({
+    unitAspects: {
+      unitType: "sequencer",
       outputs: ["note"],
     },
+    multiChannelOutputPorts: outputPorts,
   });
 
   return {
