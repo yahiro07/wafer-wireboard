@@ -1,5 +1,5 @@
 import { ScalerBoxAutoSized } from "mofur/mo-react";
-import { UnitFrame } from "wus-host-react/react";
+import { UnitFrame } from "wus-host/react";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
 
 export const UnitFrameEx = ({

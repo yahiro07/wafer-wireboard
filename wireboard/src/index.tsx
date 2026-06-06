@@ -5,7 +5,7 @@ import { mountAppRoot } from "mofur/ax-react";
 import { mapKnobGainDb } from "mofur/mo-audio";
 import { setupMidiKeyboardInput } from "mofur/mx-audio";
 import { useEffect, useMemo } from "react";
-import { HostAppProvider } from "wus-host-react/react";
+import { HostAppProvider } from "wus-host/react";
 import { PickerColumn } from "@/features/picker/picker-column";
 import { hostSystem, store } from "@/store/store";
 import { InformationPanel } from "./features/information-panel";
