@@ -58,6 +58,7 @@ export const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
             unitId={unit.unitId}
             destUnitId={unit.destUnitId}
             catalogKey={unit.catalogKey}
+            templateFn={unit.templateFn}
           />
         </div>
         <div className="w-[40px] bg-gray-500 flex-v text-white py-1">

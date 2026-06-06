@@ -1,16 +1,19 @@
 import { ScalerBoxAutoSized } from "mofur/mo-react";
-import { UnitFrame } from "wus-host/react";
+import { ReactNode } from "react";
+import { ReactUnitFrame, ReactUnitTemplateFn, UnitFrame } from "wus-host/react";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
 
 export const UnitFrameEx = ({
   unitId,
   destUnitId,
   catalogKey,
+  templateFn,
   notes,
 }: {
   unitId: string;
   destUnitId?: string;
-  catalogKey: CatalogKey;
+  catalogKey?: CatalogKey;
+  templateFn?: ReactUnitTemplateFn;
   notes?: number[];
 }) => {
   // const state = store.useSnapshot();
@@ -27,14 +30,14 @@ export const UnitFrameEx = ({
   //     });
   //   };
   // }, []);
-  const frameSize = catalog[catalogKey].preferredSize;
-  return (
-    <ScalerBoxAutoSized>
+  let content: ReactNode;
+  if (catalogKey) {
+    content = (
       <UnitFrame
         unitId={unitId}
         destSpec={destUnitId}
         pageUrl={catalog[catalogKey].loaderPageUrl}
-        frameSize={frameSize}
+        frameSize={catalog[catalogKey].preferredSize}
         inputNotes={notes}
         // onIframeMounted={() => {
         //   console.log(`iframe mounted ${unitId}`);
@@ -43,6 +46,16 @@ export const UnitFrameEx = ({
         //   console.log(`unit instance loaded ${unitId}`);
         // }}
       />
-    </ScalerBoxAutoSized>
-  );
+    );
+  } else if (templateFn) {
+    content = (
+      <ReactUnitFrame
+        unitId={unitId}
+        destSpec={destUnitId}
+        unitTemplateFn={templateFn}
+        inputNotes={notes}
+      />
+    );
+  }
+  return <ScalerBoxAutoSized>{content}</ScalerBoxAutoSized>;
 };

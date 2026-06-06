@@ -1,11 +1,13 @@
 import { Point } from "mofur/ax-ui";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
+import { ReactUnitTemplateFn } from "wus-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
 import {
   createFieldSightHandlers,
   FieldSight,
 } from "@/features/main-edit-area/field-sight-plane";
+import { createBuiltinKeyboardUnit } from "@/units/keyboard/keyboard";
 
 const appConfig = {
   isDebug: import.meta.env.DEV,
@@ -14,7 +16,8 @@ const appConfig = {
 export type UnitItem = {
   unitId: string | "builtInPreOutput" | "builtInKeyboard";
   destUnitId?: string;
-  catalogKey: CatalogKey;
+  catalogKey?: CatalogKey;
+  templateFn?: ReactUnitTemplateFn;
   position: Point;
 };
 
@@ -48,7 +51,7 @@ export const sightHandlers = createFieldSightHandlers(
 
 function buildDefaultScene() {
   const by = 2400;
-  if (!appConfig.isDebug) {
+  if (!appConfig.isDebug || 1) {
     const unitItems: UnitItem[] = [
       {
         destUnitId: "$output",
@@ -65,7 +68,7 @@ function buildDefaultScene() {
       {
         unitId: "builtInKeyboard",
         destUnitId: "unit1",
-        catalogKey: "mu4Keyboard",
+        templateFn: createBuiltinKeyboardUnit,
         position: { x: 4600, y: by + 620 },
       },
     ];
@@ -81,7 +84,7 @@ function buildDefaultScene() {
       },
       {
         unitId: "builtInKeyboard",
-        catalogKey: "mu4Keyboard",
+        templateFn: createBuiltinKeyboardUnit,
         position: { x: 4600, y: by + 620 },
       },
     ];
