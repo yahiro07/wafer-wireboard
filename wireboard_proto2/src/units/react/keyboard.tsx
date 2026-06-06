@@ -1,4 +1,4 @@
-import { ReactUnitTemplateFn } from "wus-host-react/react";
+import { ReactUnitTemplateFn } from "wus-host/react";
 
 const cvBaseFrequency = 20;
 const cvPerOctave = 0.1;

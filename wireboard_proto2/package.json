@@ -26,7 +26,7 @@
     "typescript": "~6.0.3",
     "vite": "^8.0.12",
     "vitest": "^4.1.8",
-    "wus-host-react": "../../webaudio-unit-system/framework/wus-host-react",
+    "wus-host": "../../webaudio-unit-system/framework/wus-host",
     "wus-unit-types": "../../webaudio-unit-system/contract/wus-unit-types"
   }
 }

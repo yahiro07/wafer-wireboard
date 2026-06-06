@@ -1,6 +1,6 @@
 import { Point } from "mofur/ax-ui";
-import { DestinationCode } from "wus-host-react/host";
-import { ReactUnitTemplateFn } from "wus-host-react/react";
+import { DestinationCode } from "wus-host/host";
+import { ReactUnitTemplateFn } from "wus-host/react";
 import { PortSubtype } from "wus-unit-types";
 
 export type PortDirection = "input" | "output";

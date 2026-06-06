@@ -1,4 +1,4 @@
-import { ReactUnitTemplateFn } from "wus-host-react/react";
+import { ReactUnitTemplateFn } from "wus-host/react";
 
 export const createTwoPortsKeyboardUnit: ReactUnitTemplateFn = (
   unitInterface,

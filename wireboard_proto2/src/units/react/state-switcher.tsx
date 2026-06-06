@@ -1,5 +1,5 @@
 import { createStore } from "snap-store";
-import { ReactUnitTemplateFn } from "wus-host-react/react";
+import { ReactUnitTemplateFn } from "wus-host/react";
 
 type StateSlotId = 1 | 2;
 

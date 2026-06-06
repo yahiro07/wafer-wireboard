@@ -1,6 +1,6 @@
 import { createSequencerTickDriver } from "mofur/mx-audio";
 import { createStore } from "snap-store";
-import { ReactUnitTemplateFn } from "wus-host-react/react";
+import { ReactUnitTemplateFn } from "wus-host/react";
 import { Button } from "@/shared/components/button";
 import { Icons } from "@/shared/components/icons";
 import { NumberSliderBox } from "@/shared/components/number-slider-box";
@@ -22,7 +22,8 @@ export const createMasterClockUnit: ReactUnitTemplateFn = (unitInterface) => {
         clockOutput.start?.();
         tickDriver.start({
           processStep() {
-            clockOutput.processStep?.(stepIndex++);
+            const stepDurationSec = 60 / store.state.bpm / 4;
+            clockOutput.processStep?.(stepIndex++, stepDurationSec);
           },
         });
         store.setPlaying(true);

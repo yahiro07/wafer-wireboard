@@ -1,5 +1,5 @@
 import { createStore } from "snap-store";
-import { ReactUnitTemplateFn } from "wus-host-react/react";
+import { ReactUnitTemplateFn } from "wus-host/react";
 import { Knob } from "@/shared/components/knob";
 import { UpperLabel } from "@/shared/components/upper-label";
 import {

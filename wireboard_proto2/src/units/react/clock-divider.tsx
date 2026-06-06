@@ -1,5 +1,5 @@
 import { createStore } from "snap-store";
-import { ReactUnitTemplateFn } from "wus-host-react/react";
+import { ReactUnitTemplateFn } from "wus-host/react";
 import { Button } from "@/shared/components/button";
 
 type ClockDivision = 1 | 2 | 4;
@@ -34,12 +34,15 @@ export const createClockDividerUnit: ReactUnitTemplateFn = (unitInterface) => {
         start() {
           clockOutput.start?.();
         },
-        processStep(stepIndex) {
+        processStep(stepIndex, unitDurationSec) {
           const division = store.state.division;
           if (stepIndex % division !== 0) {
             return;
           }
-          clockOutput.processStep?.(stepIndex / division);
+          clockOutput.processStep?.(
+            stepIndex / division,
+            unitDurationSec * division,
+          );
         },
         stop() {
           clockOutput.stop?.();

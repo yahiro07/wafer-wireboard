@@ -1,6 +1,6 @@
 import { seqNumbers } from "mofur/ax";
 import { ReactNode } from "react";
-import { DestinationCode, HsUnitPortsSpec } from "wus-host-react/host";
+import { DestinationCode, HsUnitPortsSpec } from "wus-host/host";
 import { PortSubtype } from "wus-unit-types";
 import { getPortKey } from "@/host-app/common";
 import { PortCell } from "@/host-app/organisms/port-cell";

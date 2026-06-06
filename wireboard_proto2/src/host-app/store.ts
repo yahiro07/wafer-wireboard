@@ -1,5 +1,5 @@
 import { createStore } from "snap-store";
-import { createHostSystem } from "wus-host-react/host";
+import { createHostSystem } from "wus-host/host";
 import { PortItem, UnitItem } from "@/host-app/types";
 import { reactUnitFactories } from "@/units/react";
 

@@ -1,6 +1,6 @@
 import { seqNumbers } from "mofur/ax";
 import { createStore } from "snap-store";
-import { ReactUnitTemplateFn } from "wus-host-react/react";
+import { ReactUnitTemplateFn } from "wus-host/react";
 import { Knob } from "@/shared/components/knob";
 
 export const createMixerUnit: ReactUnitTemplateFn = (unitInterface) => {
@@ -12,9 +12,11 @@ export const createMixerUnit: ReactUnitTemplateFn = (unitInterface) => {
   if (0) {
     //debug
     inputPorts.forEach((port, i) => {
-      port.setCallbacks({
-        onConnectedFrom(subPortTypes) {
-          console.log(`mixer ch${i} connected from`, subPortTypes);
+      port.setHandlers({
+        callbacks: {
+          onConnectedFrom(subPortTypes) {
+            console.log(`mixer ch${i} connected from`, subPortTypes);
+          },
         },
       });
     });

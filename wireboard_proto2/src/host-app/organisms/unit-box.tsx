@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { HsUnitInstance } from "wus-host-react/host";
-import { ReactUnitFrame, UnitFrame } from "wus-host-react/react";
+import { HsUnitInstance } from "wus-host/host";
+import { ReactUnitFrame, UnitFrame } from "wus-host/react";
 import { getDomUnitBoxId } from "@/host-app/common";
 import { UnitIdsBox } from "@/host-app/organisms/unit-ids-box";
 import { hostSystem } from "@/host-app/store";
