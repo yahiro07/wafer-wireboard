@@ -57,7 +57,14 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
     <SystemPortBox
       unit={unit}
       yOffset={-50}
-      iconContent={<Icons.Speaker size={65} />}
+      iconContent={
+        <div
+          className="relative w-full h-full flex-c relative pt-2 cursor-pointer"
+          onPointerDown={(e) => handleGripPointerDown(e, unit)}
+        >
+          <Icons.Speaker size={65} />
+        </div>
+      }
       sideContent={
         <div className="h-full bg-black text-white">
           <UnitFrameEx
@@ -89,12 +96,13 @@ export const KeyboardSystemPortBox = ({
   unit: UnitItem;
   notes: number[];
 }) => {
-  const handleKeyboardPortClick = () => {
+  const handleKeyboardPortClick = (e: React.PointerEvent) => {
     if (unit.destUnitId === undefined) {
       actions.connectToNearestUnit("builtInKeyboard");
     } else {
       actions.removeConnection("builtInKeyboard");
     }
+    e.stopPropagation();
   };
   return (
     <SystemPortBox
@@ -102,12 +110,18 @@ export const KeyboardSystemPortBox = ({
       yOffset={50}
       iconContent={
         <div
-          className="relative w-full h-full flex-c cursor-pointer"
-          onClick={handleKeyboardPortClick}
+          className="relative w-full h-full flex-c relative pt-2"
+          onPointerDown={(e) => handleGripPointerDown(e, unit)}
         >
           <Icons.Piano size={65} />
-          <div className="absolute-full flex-h justify-center p-1">
-            <IconsEx.ConnectorPortUp size={18} />
+
+          <div className="absolute-full flex-v items-center cursor-pointer">
+            <div
+              onPointerDown={handleKeyboardPortClick}
+              className=" w-12 h-12 flex-h justify-center pt-2 cursor-pointer"
+            >
+              <IconsEx.ConnectorPortUp size={18} />
+            </div>
           </div>
         </div>
       }
