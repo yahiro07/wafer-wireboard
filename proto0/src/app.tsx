@@ -3,9 +3,8 @@ import { Size } from "mofur/ax-ui";
 import { setupMidiKeyboardInput } from "mofur/mx-audio";
 import { useCallback, useEffect, useMemo } from "react";
 import { createStore } from "snap-store";
-import { createHostSystem, createSequenceTickDriver } from "wus-host/host";
+import { createHostSystem } from "wus-host/host";
 import { HostAppProvider, UnitFrame } from "wus-host/react";
-import { normalizeFrameSize } from "wus-host/react/frame-size";
 import { Button } from "@/components/button";
 import { Icons } from "@/components/icons";
 import { NumberSliderBox } from "@/components/number-slider-box";
@@ -16,8 +15,6 @@ import {
 } from "@/components-ex/field-sight-plane";
 import { UnitFrameScaler } from "@/components-ex/unit-frame-scaler";
 import catalog from "./unit-inventories.json";
-
-catalog;
 
 type CatalogKey = keyof typeof catalog;
 
@@ -34,7 +31,6 @@ type StoreState = {
 
 const audioContext = new AudioContext();
 const hostSystem = createHostSystem(audioContext);
-const sequenceTickDriver = createSequenceTickDriver(hostSystem);
 
 const store = createStore<StoreState>({
   bpm: 120,
@@ -60,15 +56,9 @@ const actions = {
   },
   togglePlayState() {
     store.setPlaying((prev) => !prev);
-    if (store.state.playing) {
-      sequenceTickDriver.start();
-    } else {
-      sequenceTickDriver.stop();
-    }
   },
   setBpm(bpm: number) {
     store.setBpm(bpm);
-    sequenceTickDriver.setBpm(bpm);
   },
   setWholeSlotsVisible(wholeSlotsVisible: boolean) {
     store.setWholeSlotsVisible(wholeSlotsVisible);
@@ -133,7 +123,6 @@ const UnitFrameEx = ({
   containerSize: Size;
   frameSizeOverride?: Size;
 }) => {
-  const state = store.useSnapshot();
   const onIframeMounted = useCallback((iframe: HTMLIFrameElement) => {
     const win = iframe.contentWindow as Window;
     win.addEventListener("wheel", sightHandlers.onWheel);
@@ -148,16 +137,14 @@ const UnitFrameEx = ({
     };
   }, []);
   const frameSize = useMemo(
-    () =>
-      frameSizeOverride ??
-      normalizeFrameSize(catalog[catalogKey].preferredSize)!,
+    () => frameSizeOverride ?? catalog[catalogKey].preferredSize!,
     [catalogKey, frameSizeOverride],
   );
   return (
     <UnitFrameScaler containerSize={containerSize} unitFrameSize={frameSize}>
       <UnitFrame
         unitId={unitId}
-        destUnitId={destUnitId}
+        destSpec={destUnitId}
         pageUrl={catalog[catalogKey].loaderPageUrl}
         frameSize={frameSize}
         onIframeMounted={onIframeMounted}
