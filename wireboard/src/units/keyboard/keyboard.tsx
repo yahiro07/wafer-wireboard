@@ -1,28 +1,34 @@
+import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wus-host/react";
+import {
+  KeyboardOctaveBlock,
+  KeyboardTopKey,
+} from "@/units/keyboard/keyboard-block";
 
 export const createBuiltinKeyboardUnit: ReactUnitTemplateFn = (
   unitInterface,
 ) => {
-  const audioContext = unitInterface.audioContext;
-  const outputPort = unitInterface.primaryOutputPort;
-  const activeNotes = new Set<number>();
+  const { primaryOutputPort } = unitInterface;
+  const { noteOutput } = primaryOutputPort;
 
-  outputPort.setCallbacks({
+  const store = createStore({
+    notes: [] as number[],
+  });
+
+  primaryOutputPort.setCallbacks({
     onDisconnectTo() {
-      activeNotes.clear();
+      store.setState({ notes: [] });
     },
   });
 
   const actions = {
-    async noteOn(note: number) {
-      if (audioContext.state === "suspended") {
-        await audioContext.resume();
-        console.log("resumed");
-      }
-      outputPort.noteOutput.noteOn(note);
+    async noteOn(noteNumber: number) {
+      store.mutations.setNotes((prev) => [...prev, noteNumber]);
+      noteOutput.noteOn(noteNumber);
     },
-    noteOff(note: number) {
-      outputPort.noteOutput.noteOff(note);
+    noteOff(noteNumber: number) {
+      store.mutations.setNotes((prev) => prev.filter((n) => n !== noteNumber));
+      noteOutput.noteOff(noteNumber);
     },
   };
 
@@ -31,29 +37,39 @@ export const createBuiltinKeyboardUnit: ReactUnitTemplateFn = (
       unitType: "sequencer",
       categoryHint: "keyboard",
       outputs: ["note"],
+      inputs: ["note"],
+    },
+    primaryInputPortHandlers: {
+      noteInput: {
+        noteOn: actions.noteOn,
+        noteOff: actions.noteOff,
+      },
     },
   });
 
   return {
     RenderUi() {
+      const { notes } = store.useSnapshot();
       return (
-        <div className="w-[200px] h-[100px] flex-c gap-2">
-          <button
-            type="button"
-            onPointerDown={() => actions.noteOn(57)}
-            onPointerUp={() => actions.noteOff(57)}
-            className="cursor-pointer bg-gray-200 px-4 py-2"
-          >
-            A
-          </button>
-          <button
-            type="button"
-            onPointerDown={() => actions.noteOn(60)}
-            onPointerUp={() => actions.noteOff(60)}
-            className="cursor-pointer bg-gray-200 px-4 py-2"
-          >
-            C
-          </button>
+        <div className="w-[200px] h-[100px] flex-c">
+          <KeyboardOctaveBlock
+            baseNoteNumber={48}
+            activeNotes={notes}
+            noteOn={actions.noteOn}
+            noteOff={actions.noteOff}
+          />
+          <KeyboardOctaveBlock
+            baseNoteNumber={60}
+            activeNotes={notes}
+            noteOn={actions.noteOn}
+            noteOff={actions.noteOff}
+          />
+          <KeyboardTopKey
+            noteNumber={72}
+            activeNotes={notes}
+            noteOn={actions.noteOn}
+            noteOff={actions.noteOff}
+          />
         </div>
       );
     },
