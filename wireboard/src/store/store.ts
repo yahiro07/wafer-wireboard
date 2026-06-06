@@ -7,6 +7,10 @@ import {
   FieldSight,
 } from "@/features/main-edit-area/field-sight-plane";
 
+const appConfig = {
+  isDebug: import.meta.env.DEV,
+};
+
 export type UnitItem = {
   unitId: string | "builtInPreOutput" | "builtInKeyboard";
   destUnitId?: string;
@@ -44,26 +48,44 @@ export const sightHandlers = createFieldSightHandlers(
 
 function buildDefaultScene() {
   const by = 2400;
-  const unitItems: UnitItem[] = [
-    {
-      destUnitId: "$output",
-      unitId: "builtInPreOutput",
-      catalogKey: "mu5Visualizer",
-      position: { x: 4500, y: by + 100 },
-    },
-    {
-      unitId: "unit1",
-      destUnitId: "builtInPreOutput",
-      catalogKey: "protoEnginePtmOsc",
-      position: { x: 4500, y: by + 360 },
-    },
-    {
-      unitId: "builtInKeyboard",
-      destUnitId: "unit1",
-      catalogKey: "mu4Keyboard",
-      position: { x: 4600, y: by + 620 },
-    },
-  ];
-  store.setUnitItems(unitItems);
+  if (!appConfig.isDebug) {
+    const unitItems: UnitItem[] = [
+      {
+        destUnitId: "$output",
+        unitId: "builtInPreOutput",
+        catalogKey: "mu5Visualizer",
+        position: { x: 4500, y: by + 100 },
+      },
+      {
+        unitId: "unit1",
+        destUnitId: "builtInPreOutput",
+        catalogKey: "protoEnginePtmOsc",
+        position: { x: 4500, y: by + 360 },
+      },
+      {
+        unitId: "builtInKeyboard",
+        destUnitId: "unit1",
+        catalogKey: "mu4Keyboard",
+        position: { x: 4600, y: by + 620 },
+      },
+    ];
+    store.setUnitItems(unitItems);
+  } else {
+    const by = 2400;
+    const unitItems: UnitItem[] = [
+      {
+        destUnitId: "$output",
+        unitId: "builtInPreOutput",
+        catalogKey: "mu5Visualizer",
+        position: { x: 4500, y: by + 100 },
+      },
+      {
+        unitId: "builtInKeyboard",
+        catalogKey: "mu4Keyboard",
+        position: { x: 4600, y: by + 620 },
+      },
+    ];
+    store.setUnitItems(unitItems);
+  }
 }
 buildDefaultScene();
