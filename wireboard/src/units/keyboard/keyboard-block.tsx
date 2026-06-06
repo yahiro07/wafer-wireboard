@@ -1,5 +1,5 @@
 import { seqNumbers } from "mofur/ax";
-import { npx } from "mofur/ax-ui";
+import { npx, startDragSession } from "mofur/ax-ui";
 
 const configs = {
   defaultKeyWidth: 17,
@@ -7,6 +7,20 @@ const configs = {
   blackKeyWidthRatio: 0.8,
   blackKeyHeightRatio: 0.55,
 };
+
+function handleKeyPointerDown(
+  e: React.PointerEvent,
+  noteNumber: number,
+  noteOn: (noteNumber: number) => void,
+  noteOff: (noteNumber: number) => void,
+) {
+  noteOn(noteNumber);
+  startDragSession(e.nativeEvent, {
+    onUpOrCancel() {
+      noteOff(noteNumber);
+    },
+  });
+}
 
 export const KeyboardOctaveBlock = ({
   baseNoteNumber,
@@ -41,8 +55,9 @@ export const KeyboardOctaveBlock = ({
                 width: npx(keyWidth),
                 height: npx(keyHeight),
               }}
-              onPointerDown={() => noteOn(noteNumber)}
-              onPointerUp={() => noteOff(noteNumber)}
+              onPointerDown={(e) =>
+                handleKeyPointerDown(e, noteNumber, noteOn, noteOff)
+              }
             />
           );
         })}
@@ -65,8 +80,9 @@ export const KeyboardOctaveBlock = ({
                 width: npx(blackKeyWidth),
                 height: npx(blackKeyHeight),
               }}
-              onPointerDown={() => noteOn(noteNumber)}
-              onPointerUp={() => noteOff(noteNumber)}
+              onPointerDown={(e) =>
+                handleKeyPointerDown(e, noteNumber, noteOn, noteOff)
+              }
             />
           );
         })}
@@ -104,8 +120,9 @@ export const KeyboardTopKey = ({
                 width: npx(keyWidth),
                 height: npx(keyHeight),
               }}
-              onPointerDown={() => noteOn(noteNumber)}
-              onPointerUp={() => noteOff(noteNumber)}
+              onPointerDown={(e) =>
+                handleKeyPointerDown(e, noteNumber, noteOn, noteOff)
+              }
             />
           );
         })}
