@@ -2,7 +2,7 @@ import { seqNumbers } from "mofur/ax";
 import { npx } from "mofur/ax-ui";
 
 const configs = {
-  defaultKeyWidth: 18,
+  defaultKeyWidth: 17,
   defaultKeyHeight: 70,
   blackKeyWidthRatio: 0.8,
   blackKeyHeightRatio: 0.55,

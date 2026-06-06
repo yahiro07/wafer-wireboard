@@ -8,6 +8,7 @@ import {
   FieldSight,
 } from "@/features/main-edit-area/field-sight-plane";
 import { createBuiltinKeyboardUnit } from "@/units/keyboard/keyboard";
+import { createBuiltinVisualizerUnit } from "@/units/visualizer/visualizer";
 
 const appConfig = {
   isDebug: import.meta.env.DEV,
@@ -56,7 +57,7 @@ function buildDefaultScene() {
       {
         destUnitId: "$output",
         unitId: "builtInPreOutput",
-        catalogKey: "mu5Visualizer",
+        templateFn: createBuiltinVisualizerUnit,
         position: { x: 4500, y: by + 100 },
       },
       {
@@ -79,7 +80,7 @@ function buildDefaultScene() {
       {
         destUnitId: "$output",
         unitId: "builtInPreOutput",
-        catalogKey: "mu5Visualizer",
+        templateFn: createBuiltinVisualizerUnit,
         position: { x: 4500, y: by + 100 },
       },
       {
