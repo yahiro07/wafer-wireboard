@@ -1,3 +1,5 @@
+import clsx from "clsx";
+import { useEffect, useRef } from "react";
 import { appConfigs } from "@/base/constants";
 import { unitCatalogKeyDragMime } from "@/base/drag-drop-key";
 import { catalog } from "@/base/showcase-entries";
@@ -51,22 +53,77 @@ function useDropHandlers() {
   };
 }
 
+const DraggingCover = () => {
+  const { draggingCoverVisible } = store.useSnapshot();
+  return (
+    draggingCoverVisible && (
+      <div className={clsx("absolute-full cursor-move flex-c")} />
+    )
+  );
+};
+
+function useMainAreaInputHandlers(
+  baseDivRef: React.RefObject<HTMLDivElement | null>,
+) {
+  useEffect(() => {
+    const keyHandler = (e: KeyboardEvent) => {
+      console.log(`key event on page`, { key: e.key });
+      if (e.repeat) return;
+      if (e.key === "Meta") {
+        actions.setDraggingCoverVisible(e.type === "keydown");
+      }
+    };
+    window.addEventListener("keydown", keyHandler);
+    window.addEventListener("keyup", keyHandler);
+    return () => {
+      window.removeEventListener("keydown", keyHandler);
+      window.removeEventListener("keyup", keyHandler);
+    };
+  }, []);
+
+  const handlers = sightHandlers;
+  useEffect(() => {
+    window.addEventListener("pointerdown", handlers.onPointerDown, {
+      capture: true,
+    });
+    return () => {
+      window.removeEventListener("pointerdown", handlers.onPointerDown, {
+        capture: true,
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    const baseDiv = baseDivRef.current;
+    if (baseDiv) {
+      const onWheel = (e: WheelEvent) => {
+        handlers.onWheel(e);
+        e.preventDefault();
+      };
+
+      baseDiv.addEventListener("wheel", onWheel, { passive: false });
+      return () => {
+        baseDiv.removeEventListener("wheel", onWheel);
+      };
+    }
+  }, [baseDivRef]);
+}
+
 export const MainEditArea = () => {
   const { unitItems, sight, notes } = store.useSnapshot();
   const wires = useWireItems();
   const dropHandlers = useDropHandlers();
+  const baseDivRef = useRef<HTMLDivElement>(null);
   useKeyboardAutoTarget();
+  useMainAreaInputHandlers(baseDivRef);
   return (
     <div
       className="grow relative"
       onDragOver={dropHandlers.onDragOver}
       onDrop={dropHandlers.onDrop}
+      ref={baseDivRef}
     >
-      <FieldSightPlane
-        sight={sight}
-        handlers={sightHandlers}
-        boardSize={boardSize}
-      >
+      <FieldSightPlane sight={sight} boardSize={boardSize}>
         <WiringLayer boardSize={boardSize} wires={wires} />
         <div className="relative h-full" style={{ border: "solid 2px #ccc8" }}>
           {unitItems.map((item) => {
@@ -89,6 +146,7 @@ export const MainEditArea = () => {
       <InfoButton />
       <GithubBadge />
       <TopControlBar />
+      <DraggingCover />
     </div>
   );
 };

@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { clampValue } from "mofur/ax";
 import { Size, startDragSession } from "mofur/ax-ui";
 import { useDomElementSize } from "mofur/mo-react";
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useMemo, useRef } from "react";
 
 export type FieldSight = {
   eyeScaling: number;
@@ -66,42 +66,15 @@ export function createFieldSightHandlers(
 export const FieldSightPlane = ({
   className,
   sight,
-  handlers,
   children,
   boardSize,
 }: {
   className?: string;
   sight: FieldSight;
-  handlers: FieldSightHandlers;
   children: React.ReactNode;
   boardSize: Size;
 }) => {
   const baseDivRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    window.addEventListener("pointerdown", handlers.onPointerDown, {
-      capture: true,
-    });
-    return () => {
-      window.removeEventListener("pointerdown", handlers.onPointerDown, {
-        capture: true,
-      });
-    };
-  }, [handlers]);
-
-  useEffect(() => {
-    const baseDiv = baseDivRef.current;
-    if (!baseDiv) return;
-    const onWheel = (e: WheelEvent) => {
-      handlers.onWheel(e);
-      e.preventDefault();
-    };
-
-    baseDiv.addEventListener("wheel", onWheel, { passive: false });
-    return () => {
-      baseDiv.removeEventListener("wheel", onWheel);
-    };
-  }, [handlers]);
-
   const outerAreaSize = useDomElementSize(baseDivRef);
 
   const transformSpec = useMemo(() => {

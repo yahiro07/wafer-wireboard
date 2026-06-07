@@ -30,6 +30,7 @@ export type StoreState = {
   playing: boolean;
   masterVolume: number;
   infoPanelVisible: boolean;
+  draggingCoverVisible: boolean;
 };
 
 const audioContext = new AudioContext();
@@ -43,6 +44,7 @@ export const store = createStore<StoreState>({
   playing: false,
   masterVolume: 0.5,
   infoPanelVisible: false,
+  draggingCoverVisible: false,
 });
 export const sightHandlers = createFieldSightHandlers(
   () => store.state.sight,

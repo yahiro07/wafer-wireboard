@@ -68,4 +68,7 @@ export const actions = {
   setMasterVolume(volume: number) {
     store.setMasterVolume(volume);
   },
+  setDraggingCoverVisible(visible: boolean) {
+    store.setDraggingCoverVisible(visible);
+  },
 };
