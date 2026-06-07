@@ -65,7 +65,7 @@ function buildDefaultScene() {
       {
         unitId: "unit1",
         destUnitId: "builtInPreOutput",
-        catalogKey: "protoEnginePtmOsc",
+        catalogKey: "miniSynthGe",
         position: { x: 4500, y: by + 360 },
       },
       {
