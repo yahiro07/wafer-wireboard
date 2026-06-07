@@ -1,29 +1,53 @@
-import clsx from "clsx";
 import { npx } from "mofur/ax-ui";
 import { ReactNode } from "react";
 import { Icons, IconsEx } from "@/base/icons";
+import { systemPortCardDimensions } from "@/base/slot-card-dimensions";
 import { handleGripPointerDown } from "@/features/unit-box/common-card-handlers";
 import { UnitFrameEx } from "@/features/unit-box/unit-frame-ex";
 import { actions } from "@/store/actions";
 import { UnitItem } from "@/store/store";
 
+const PortRelativePositionDebugOverlay = () => {
+  const inputPos = systemPortCardDimensions.inputPort;
+  const outputPos = systemPortCardDimensions.outputPort;
+  return (
+    <div className="absolute-full">
+      <div
+        className="absolute w-[30px] h-[30px] bg-pink-500 opacity-30"
+        style={{
+          left: npx(outputPos.x),
+          top: npx(outputPos.y),
+          transform: "translate(-50%, -50%)",
+        }}
+      />
+      <div
+        className="absolute w-[30px] h-[30px] bg-pink-500 opacity-30"
+        style={{
+          left: npx(inputPos.x),
+          top: npx(inputPos.y),
+          transform: "translate(-50%, -50%)",
+        }}
+      />
+    </div>
+  );
+};
+
 const SystemPortBox = ({
   unit,
   iconContent,
   sideContent,
-  yOffset = 0,
 }: {
   unit: UnitItem;
   iconContent: ReactNode;
   sideContent?: ReactNode;
-  yOffset?: number;
 }) => {
+  const sd = systemPortCardDimensions;
   return (
     <div
-      className={clsx("absolute -translate-x-1/2 -translate-y-1/2")}
+      className="absolute"
       style={{
-        left: npx(unit.position.x),
-        top: npx(unit.position.y + yOffset),
+        left: npx(unit.position.x - sd.width / 2),
+        top: npx(unit.position.y - sd.height / 2),
       }}
     >
       <div className="relative">
@@ -43,6 +67,7 @@ const SystemPortBox = ({
             </div>
           </div>
         </div>
+        {false && <PortRelativePositionDebugOverlay />}
       </div>
     </div>
   );
@@ -52,7 +77,6 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
   return (
     <SystemPortBox
       unit={unit}
-      yOffset={-50}
       iconContent={
         <div
           className="relative w-full h-full flex-c relative pt-2 cursor-pointer"
@@ -93,7 +117,6 @@ export const KeyboardSystemPortBox = ({
   return (
     <SystemPortBox
       unit={unit}
-      yOffset={50}
       iconContent={
         <div
           className="relative w-full h-full flex-c relative pt-2"
