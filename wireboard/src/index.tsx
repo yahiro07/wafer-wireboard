@@ -1,5 +1,6 @@
 import "./page.css";
 import "mofur/ax-ui/utility-classes.css";
+import "mofur-components/style.css";
 //
 import { mountAppRoot } from "mofur/ax-react";
 import { mapKnobGainDb } from "mofur/mo-audio";

@@ -9,6 +9,7 @@ import {
   KeyboardSystemPortBox,
   SpeakerSystemPortBox,
 } from "@/features/system-port/system-port-box";
+import { TopControlBar } from "@/features/top-control-bar/top-control-bar";
 import { SlotCardBox } from "@/features/unit-box/slot-card-box";
 import { snapUnitCoordToGrid } from "@/features/unit-box/snapping";
 import { useWireItems } from "@/features/wiring/use-wire-items";
@@ -87,6 +88,7 @@ export const MainEditArea = () => {
       </FieldSightPlane>
       <InfoButton />
       <GithubBadge />
+      <TopControlBar />
     </div>
   );
 };

@@ -6,19 +6,16 @@ import { handleGripPointerDown } from "@/features/unit-box/common-card-handlers"
 import { UnitFrameEx } from "@/features/unit-box/unit-frame-ex";
 import { actions } from "@/store/actions";
 import { UnitItem } from "@/store/store";
-import { SystemControlUiA, SystemControlUiB } from "./system-control-ui";
 
 const SystemPortBox = ({
   unit,
   iconContent,
   sideContent,
   yOffset = 0,
-  additionalUi,
 }: {
   unit: UnitItem;
   iconContent: ReactNode;
   sideContent?: ReactNode;
-  additionalUi?: ReactNode;
   yOffset?: number;
 }) => {
   return (
@@ -46,7 +43,6 @@ const SystemPortBox = ({
             </div>
           </div>
         </div>
-        {additionalUi}
       </div>
     </div>
   );
@@ -74,16 +70,6 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
             templateFn={unit.templateFn}
           />
         </div>
-      }
-      additionalUi={
-        <>
-          <div className="absolute top-0 right-[200px] w-[300px] h-[120px] bg-gray-500 flex-c">
-            <SystemControlUiA />
-          </div>
-          <div className="absolute top-0 left-[600px] w-[200px] h-[120px] bg-gray-500">
-            <SystemControlUiB />
-          </div>
-        </>
       }
     />
   );
