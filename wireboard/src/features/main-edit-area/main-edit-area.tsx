@@ -6,6 +6,7 @@ import { catalog } from "@/base/showcase-entries";
 import { InfoButton } from "@/features/foreground-ui/floating-icons";
 import { GithubBadge } from "@/features/foreground-ui/github-badge";
 import { FieldSightPlane } from "@/features/main-edit-area/field-sight-plane";
+import { setupMainAreaInputHandlers } from "@/features/main-edit-area/sight-control-handlers";
 import { useKeyboardAutoTarget } from "@/features/system-port/keyboard-auto-target";
 import {
   KeyboardSystemPortBox,
@@ -17,7 +18,7 @@ import { snapUnitCoordToGrid } from "@/features/unit-box/snapping";
 import { useWireItems } from "@/features/wiring/use-wire-items";
 import { WiringLayer } from "@/features/wiring/wiring-layer";
 import { actions } from "@/store/actions";
-import { sightHandlers, store } from "@/store/store";
+import { store } from "@/store/store";
 
 const boardSize = { width: 9000, height: 6000 };
 
@@ -53,7 +54,7 @@ function useDropHandlers() {
   };
 }
 
-const DraggingCover = () => {
+const SightDraggingCover = () => {
   const { draggingCoverVisible } = store.useSnapshot();
   return (
     draggingCoverVisible && (
@@ -62,60 +63,18 @@ const DraggingCover = () => {
   );
 };
 
-function useMainAreaInputHandlers(
-  baseDivRef: React.RefObject<HTMLDivElement | null>,
-) {
-  useEffect(() => {
-    const keyHandler = (e: KeyboardEvent) => {
-      console.log(`key event on page`, { key: e.key });
-      if (e.repeat) return;
-      if (e.key === "Meta") {
-        actions.setDraggingCoverVisible(e.type === "keydown");
-      }
-    };
-    window.addEventListener("keydown", keyHandler);
-    window.addEventListener("keyup", keyHandler);
-    return () => {
-      window.removeEventListener("keydown", keyHandler);
-      window.removeEventListener("keyup", keyHandler);
-    };
-  }, []);
-
-  const handlers = sightHandlers;
-  useEffect(() => {
-    window.addEventListener("pointerdown", handlers.onPointerDown, {
-      capture: true,
-    });
-    return () => {
-      window.removeEventListener("pointerdown", handlers.onPointerDown, {
-        capture: true,
-      });
-    };
-  }, []);
-
-  useEffect(() => {
-    const baseDiv = baseDivRef.current;
-    if (baseDiv) {
-      const onWheel = (e: WheelEvent) => {
-        handlers.onWheel(e);
-        e.preventDefault();
-      };
-
-      baseDiv.addEventListener("wheel", onWheel, { passive: false });
-      return () => {
-        baseDiv.removeEventListener("wheel", onWheel);
-      };
-    }
-  }, [baseDivRef]);
-}
-
 export const MainEditArea = () => {
   const { unitItems, sight, notes } = store.useSnapshot();
   const wires = useWireItems();
   const dropHandlers = useDropHandlers();
   const baseDivRef = useRef<HTMLDivElement>(null);
   useKeyboardAutoTarget();
-  useMainAreaInputHandlers(baseDivRef);
+  useEffect(() => {
+    const baseDiv = baseDivRef.current;
+    if (baseDiv) {
+      return setupMainAreaInputHandlers(baseDiv);
+    }
+  }, []);
   return (
     <div
       className="grow relative"
@@ -146,7 +105,7 @@ export const MainEditArea = () => {
       <InfoButton />
       <GithubBadge />
       <TopControlBar />
-      <DraggingCover />
+      <SightDraggingCover />
     </div>
   );
 };
