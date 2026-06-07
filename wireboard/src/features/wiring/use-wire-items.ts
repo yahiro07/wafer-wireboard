@@ -1,8 +1,5 @@
 import { useMemo } from "react";
-import {
-  slotCardDimensions,
-  systemPortCardDimensions,
-} from "@/base/slot-card-dimensions";
+import { getUnitCardDimensions } from "@/base/slot-card-dimensions";
 import { WiringLayerWire } from "@/features/wiring/wiring-layer";
 import { store, UnitItem } from "@/store/store";
 
@@ -10,9 +7,7 @@ function getUnitPortPosition(
   item: UnitItem,
   targetKey: "inputPort" | "outputPort",
 ) {
-  const sd = item.unitId.startsWith("builtIn")
-    ? systemPortCardDimensions
-    : slotCardDimensions;
+  const sd = getUnitCardDimensions(item.unitId);
   return {
     x: item.position.x - sd.width / 2 + sd[targetKey].x,
     y: item.position.y - sd.height / 2 + sd[targetKey].y,

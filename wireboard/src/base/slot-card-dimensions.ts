@@ -11,3 +11,9 @@ export const systemPortCardDimensions = {
   outputPort: { x: 40, y: 17 },
   inputPort: { x: 40, y: 103 },
 };
+
+export function getUnitCardDimensions(unitId: string) {
+  return unitId.startsWith("builtIn")
+    ? systemPortCardDimensions
+    : slotCardDimensions;
+}
