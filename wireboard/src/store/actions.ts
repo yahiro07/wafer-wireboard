@@ -2,6 +2,7 @@ import { Point } from "mofur/ax-ui";
 import { CatalogKey } from "@/base/showcase-entries";
 import { store, UnitItem } from "@/store/store";
 import { findNearestConnectionTargetUnit } from "@/store/unit-coordinate-helper";
+import { getNextUnitId } from "@/store/unit-id-helper";
 
 const actionsInternal = {
   patchUnitItem(unitId: string, attrs: Partial<UnitItem>) {
@@ -12,18 +13,6 @@ const actionsInternal = {
     );
   },
 };
-
-function getNextUnitId(existingItems: UnitItem[]) {
-  const existingUnitNumbers = existingItems
-    .map((item) => {
-      const match = item.unitId.match(/^unit(\d+)$/);
-      if (!match) return NaN;
-      return parseInt(match[1], 10);
-    })
-    .filter(Number.isFinite);
-  const maxNumber = Math.max(...[0, ...existingUnitNumbers]);
-  return `unit${maxNumber + 1}`;
-}
 
 export const actions = {
   setUnitPosition(unitId: string, position: Point) {
