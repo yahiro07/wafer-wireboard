@@ -76,7 +76,7 @@ function buildDefaultScene() {
       },
     ];
     store.setUnitItems(unitItems);
-    store.patchSight({ eyeScaling: 1.3, eyeOffset: { x: -400, y: 0 } });
+    store.patchSight({ eyeScaling: 1.0, eyeOffset: { x: 0, y: 250 } });
   } else {
     const by = 2400;
     const unitItems: UnitItem[] = [
