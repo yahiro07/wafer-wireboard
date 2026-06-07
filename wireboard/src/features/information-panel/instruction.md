@@ -24,6 +24,8 @@ Each unit has a grip icon on the right edge of its frame. Drag this grip to move
 
 Use the mouse wheel to zoom in and out. Hold the wheel button and drag to pan around the board.
 
+In some units, you may not be able to adjust the view using the scroll wheel. In this case, press the Ctrl key (Cmd key on Mac) to enable view control while the key is held down.
+
 ## Connect units
 
 ![vertical-two-unit-cards-with-output-port-annotated](https://cdn.jsdelivr.net/gh/yahiro07/synth-rd-2604@e7412ad3c307307a23f603935ffb5b8630a39a20/images/no-image.png)
