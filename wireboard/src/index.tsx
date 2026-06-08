@@ -17,8 +17,8 @@ const PageRoot = () => {
   const { infoPanelVisible } = store.useSnapshot();
   return (
     <div className="w-dvw h-dvh bg-[hsl(216,22%,18%)] flex-h">
+            <MainEditArea />
       <PickerColumn />
-      <MainEditArea />
       {infoPanelVisible && <InformationPanel />}
     </div>
   );
