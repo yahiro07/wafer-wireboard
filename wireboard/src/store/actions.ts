@@ -98,4 +98,7 @@ export const actions = {
       }
     }
   },
+  toggleSceneSwitcherVisible() {
+    store.toggleSceneSwitcherVisible();
+  },
 };

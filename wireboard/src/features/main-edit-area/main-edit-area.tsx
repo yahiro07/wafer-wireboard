@@ -65,7 +65,7 @@ const SightDraggingCover = () => {
 };
 
 export const MainEditArea = () => {
-  const { unitItems, sight, notes } = store.useSnapshot();
+  const { unitItems, sight, notes, sceneSwitcherVisible } = store.useSnapshot();
   const wires = useWireItems();
   const dropHandlers = useDropHandlers();
   const baseDivRef = useRef<HTMLDivElement>(null);
@@ -107,7 +107,7 @@ export const MainEditArea = () => {
       <GithubBadge />
       <TopControlBar />
       <SightDraggingCover />
-      <SceneSwitcherBar />
+      {sceneSwitcherVisible && <SceneSwitcherBar />}
     </div>
   );
 };

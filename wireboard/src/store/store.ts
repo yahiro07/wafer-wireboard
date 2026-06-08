@@ -39,6 +39,7 @@ export type StoreState = {
   draggingCoverVisible: boolean;
   scenes: Scene[];
   currentSceneId: string;
+  sceneSwitcherVisible: boolean;
 };
 
 export const store = createStore<StoreState>({
@@ -55,6 +56,7 @@ export const store = createStore<StoreState>({
     unitStates: [],
   })),
   currentSceneId: "scene0",
+  sceneSwitcherVisible: false,
 });
 
 export const sightHandlers = createFieldSightHandlers(
