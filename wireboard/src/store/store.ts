@@ -1,6 +1,6 @@
+import { seqNumbers } from "mofur/ax";
 import { Point } from "mofur/ax-ui";
 import { createStore } from "snap-store";
-import { createHostSystem } from "wus-host/host";
 import { ReactUnitTemplateFn } from "wus-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
 import {
@@ -22,6 +22,16 @@ export type UnitItem = {
   position: Point;
 };
 
+type UnitState = {
+  unitId: string;
+  data: any;
+};
+
+export type Scene = {
+  sceneId: string;
+  unitStates: UnitState[];
+};
+
 export type StoreState = {
   unitItems: UnitItem[];
   sight: FieldSight;
@@ -31,10 +41,9 @@ export type StoreState = {
   masterVolume: number;
   infoPanelVisible: boolean;
   draggingCoverVisible: boolean;
+  scenes: Scene[];
+  currentSceneId: string;
 };
-
-const audioContext = new AudioContext();
-export const hostSystem = createHostSystem(audioContext);
 
 export const store = createStore<StoreState>({
   unitItems: [],
@@ -45,7 +54,13 @@ export const store = createStore<StoreState>({
   masterVolume: 0.5,
   infoPanelVisible: false,
   draggingCoverVisible: false,
+  scenes: seqNumbers(4).map((i) => ({
+    sceneId: `scene${i}`,
+    unitStates: [],
+  })),
+  currentSceneId: "scene0",
 });
+
 export const sightHandlers = createFieldSightHandlers(
   () => store.state.sight,
   (attrs) => store.patchSight(attrs),

@@ -71,4 +71,7 @@ export const actions = {
   setDraggingCoverVisible(visible: boolean) {
     store.setDraggingCoverVisible(visible);
   },
+  selectScene(sceneId: string) {
+    store.setCurrentSceneId(sceneId);
+  },
 };
