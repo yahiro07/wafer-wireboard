@@ -8,6 +8,7 @@ import {
   createFieldSightHandlers,
   FieldSight,
 } from "@/features/main-edit-area/field-sight-plane";
+import { createChordProgressionUnit } from "@/units/chord-progression/chord-progression-unit";
 import { createBuiltinKeyboardUnit } from "@/units/keyboard/keyboard";
 import { createBuiltinVisualizerUnit } from "@/units/visualizer/visualizer";
 
@@ -86,6 +87,11 @@ function buildDefaultScene() {
         destUnitId: "unit1",
         templateFn: createBuiltinKeyboardUnit,
         position: { x: 4600, y: by + 620 },
+      },
+      {
+        unitId: "builtInProgression",
+        templateFn: createChordProgressionUnit,
+        position: { x: 4100, y: by + 620 },
       },
     ];
     store.setUnitItems(unitItems);
