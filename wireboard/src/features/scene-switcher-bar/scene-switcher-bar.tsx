@@ -1,4 +1,5 @@
 import { Button } from "mofur-components/mono2";
+import { actions } from "@/store/actions";
 import { store } from "@/store/store";
 
 export const SceneSwitcherBar = () => {
@@ -11,7 +12,7 @@ export const SceneSwitcherBar = () => {
             key={scene.sceneId}
             asr={1.4}
             active={scene.sceneId === currentSceneId}
-            onClick={() => store.setCurrentSceneId(scene.sceneId)}
+            onClick={() => actions.selectScene(scene.sceneId)}
           >
             {i + 1}
           </Button>

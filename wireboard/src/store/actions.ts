@@ -1,5 +1,6 @@
 import { Point } from "mofur/ax-ui";
 import { CatalogKey } from "@/base/showcase-entries";
+import { hostSystem } from "@/store/host-system-instance";
 import { store, UnitItem } from "@/store/store";
 import { findNearestConnectionTargetUnit } from "@/store/unit-coordinate-helper";
 import { getNextUnitId } from "@/store/unit-id-helper";
@@ -72,6 +73,29 @@ export const actions = {
     store.setDraggingCoverVisible(visible);
   },
   selectScene(sceneId: string) {
+    if (sceneId === store.state.currentSceneId) return;
+    {
+      //preserve current scene
+      const unitStates = hostSystem.exportUnitStates();
+      // console.log(`preserve scene ${store.state.currentSceneId}:`, unitStates);
+      store.setScenes((prev) =>
+        prev.map((scene) =>
+          scene.sceneId === store.state.currentSceneId
+            ? { ...scene, unitStates }
+            : scene,
+        ),
+      );
+    }
     store.setCurrentSceneId(sceneId);
+    {
+      //load next scene
+      const nextScene = store.state.scenes.find(
+        (scene) => scene.sceneId === sceneId,
+      );
+      if (nextScene) {
+        // console.log(`load scene ${sceneId}:`, nextScene.unitStates);
+        hostSystem.reserveImportUnitStates(nextScene.unitStates);
+      }
+    }
   },
 };

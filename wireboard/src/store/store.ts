@@ -1,6 +1,7 @@
 import { seqNumbers } from "mofur/ax";
 import { Point } from "mofur/ax-ui";
 import { createStore } from "snap-store";
+import { HsUnitStateData } from "wus-host/host";
 import { ReactUnitTemplateFn } from "wus-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
 import {
@@ -22,14 +23,9 @@ export type UnitItem = {
   position: Point;
 };
 
-type UnitState = {
-  unitId: string;
-  data: any;
-};
-
 export type Scene = {
   sceneId: string;
-  unitStates: UnitState[];
+  unitStates: HsUnitStateData[];
 };
 
 export type StoreState = {
