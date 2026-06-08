@@ -7,6 +7,7 @@ import { InfoButton } from "@/features/foreground-ui/floating-icons";
 import { GithubBadge } from "@/features/foreground-ui/github-badge";
 import { FieldSightPlane } from "@/features/main-edit-area/field-sight-plane";
 import { setupMainAreaInputHandlers } from "@/features/main-edit-area/sight-control-handlers";
+import { SceneSwitcherBar } from "@/features/scene-switcher-bar/scene-switcher-bar";
 import { useKeyboardAutoTarget } from "@/features/system-port/keyboard-auto-target";
 import {
   KeyboardSystemPortBox,
@@ -106,6 +107,7 @@ export const MainEditArea = () => {
       <GithubBadge />
       <TopControlBar />
       <SightDraggingCover />
+      <SceneSwitcherBar />
     </div>
   );
 };
