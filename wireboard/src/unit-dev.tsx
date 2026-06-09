@@ -3,6 +3,7 @@ import { setupMidiKeyboardInput } from "mofur/mx-audio";
 import { Button } from "mofur-components/mono2";
 import { useEffect } from "react";
 import { createStore } from "snap-store";
+import { createUnit1 } from "wb-react-units";
 import { HostAppProvider } from "wus-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
 import { UnitFrameEx } from "@/features/unit-box/unit-frame-ex";
@@ -67,6 +68,7 @@ const App = () => {
               templateFn={createChordProgressionUnit}
               unitId="chordProgression"
             />
+            <UnitFrameEx templateFn={createUnit1} unitId="unit1dev" />
           </div>
           <div className="flex-v w-[500px] h-[500px]">
             <UnitFrameEx
