@@ -94,7 +94,7 @@ function createProgressionCore(defaultState: ProgressionState) {
   const state = defaultState;
 
   function emitPatternInput(data: DynamicPatternInput) {
-    console.log("emitting", data.key, data.chordRootNote);
+    // console.log("emitting", data.key, data.chordRootNote);
     hostSystem.emitMetaAttributes({ dynamicPatternInput: data });
   }
 

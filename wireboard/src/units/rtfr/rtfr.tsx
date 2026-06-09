@@ -246,7 +246,7 @@ function createSequencer(unitInterface: UnitInterface) {
             state.octaveShift,
           );
           const endTime = time + sss.stepDuration * state.noteDuty;
-          console.log("output", noteNumber, time, endTime);
+          // console.log("output", noteNumber, time, endTime);
           noteOutput.noteOn(noteNumber, time, 1);
           noteOutput.noteOff(noteNumber, endTime);
         }
@@ -268,7 +268,6 @@ function createSequencer(unitInterface: UnitInterface) {
           if (!state.isClockInputActive) {
             sequencerTickDriver.setBpm(state.bpm);
             const startTime = unitInterface.audioContext.currentTime;
-            console.log({ startTime });
             sequencerTickDriver.start({
               processTickRange(ppqFrom, ppqTo) {
                 core.processClock(startTime, ppqFrom, ppqTo, state.bpm);
@@ -293,16 +292,12 @@ function createSequencer(unitInterface: UnitInterface) {
             sequencerTickDriver.stop();
             state.isInternalTickRunning = false;
           }
-          console.log("start clock");
-          const stt = unitInterface.audioContext.currentTime;
-          console.log({ stt });
         },
         stop() {
           state.isClockInputActive = false;
           state.chordRootNote = undefined;
         },
         processScheduling(startTime, ppqFrom, ppqTo, bpm) {
-          console.log("processScheduling", ppqFrom, ppqTo, bpm);
           core.processClock(startTime, ppqFrom, ppqTo, bpm);
         },
       },
