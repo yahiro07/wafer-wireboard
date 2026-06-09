@@ -254,73 +254,55 @@ function createSequencer(unitInterface: UnitInterface) {
     },
   };
 
-  unitInterface.completeSetup({
-    unitAspects: {
-      unitType: "sequencer",
-      outputs: ["note"],
-      inputs: ["clock", "note"],
-    },
-    primaryInputPortHandlers: {
-      noteInput: {
-        noteOn(note, _timeAt, _velocity) {
-          // noteOutput.noteOn(note, timeAt, velocity);
-          state.chordRootNote = note;
-          if (!state.isClockInputActive) {
-            sequencerTickDriver.setBpm(state.bpm);
-            const startTime = unitInterface.audioContext.currentTime;
-            sequencerTickDriver.start({
-              processTickRange(ppqFrom, ppqTo) {
-                core.processClock(startTime, ppqFrom, ppqTo, state.bpm);
-              },
-            });
-            state.isInternalTickRunning = true;
-          }
-        },
-        noteOff(_note, _timeAt) {
-          state.chordRootNote = undefined;
-          // noteOutput.noteOff(note, timeAt);
-          if (state.isInternalTickRunning) {
-            sequencerTickDriver.stop();
-            state.isInternalTickRunning = false;
-          }
-        },
-      },
-      clockInput: {
-        start() {
-          state.isClockInputActive = true;
-          if (state.isInternalTickRunning) {
-            sequencerTickDriver.stop();
-            state.isInternalTickRunning = false;
-          }
-        },
-        stop() {
-          state.isClockInputActive = false;
-          state.chordRootNote = undefined;
-        },
-        processScheduling(startTime, ppqFrom, ppqTo, bpm) {
-          core.processClock(startTime, ppqFrom, ppqTo, bpm);
-        },
-      },
-    },
-    hostCallbacks: {
-      setBpm(bpm) {
-        state.bpm = bpm;
-      },
-      setMetaAttributes(attrs: DynamicPatternMeta) {
-        if (attrs.dynamicPatternInput) {
-          const { key, chordRootNote } = attrs.dynamicPatternInput;
-          if (key !== undefined) {
-            state.key = key;
-          }
-          if (chordRootNote !== undefined) {
-            state.chordRootNote = chordRootNote;
-          }
-        }
-      },
-    },
-  });
-
   return {
+    inputNoteOn(note: number, timeAt: number, velocity: number) {
+      // noteOutput.noteOn(note, timeAt, velocity);
+      state.chordRootNote = note;
+      if (!state.isClockInputActive) {
+        sequencerTickDriver.setBpm(state.bpm);
+        const startTime = unitInterface.audioContext.currentTime;
+        sequencerTickDriver.start({
+          processTickRange(ppqFrom, ppqTo) {
+            core.processClock(startTime, ppqFrom, ppqTo, state.bpm);
+          },
+        });
+        state.isInternalTickRunning = true;
+      }
+    },
+    inputNoteOff(_note: number, _timeAt: number) {
+      state.chordRootNote = undefined;
+      if (state.isInternalTickRunning) {
+        // noteOutput.noteOff(note, timeAt);
+        sequencerTickDriver.stop();
+        state.isInternalTickRunning = false;
+      }
+    },
+    clockStart() {
+      state.isClockInputActive = true;
+      if (state.isInternalTickRunning) {
+        sequencerTickDriver.stop();
+        state.isInternalTickRunning = false;
+      }
+    },
+    clockStop() {
+      state.isClockInputActive = false;
+      state.chordRootNote = undefined;
+    },
+    processClock: core.processClock,
+    setBpm(bpm: number) {
+      state.bpm = bpm;
+    },
+    setMetaAttributes(attrs: DynamicPatternMeta) {
+      if (attrs.dynamicPatternInput) {
+        const { key, chordRootNote } = attrs.dynamicPatternInput;
+        if (key !== undefined) {
+          state.key = key;
+        }
+        if (chordRootNote !== undefined) {
+          state.chordRootNote = chordRootNote;
+        }
+      }
+    },
     setPattern(newPattern: number[]) {
       state.pattern = newPattern;
     },
@@ -358,6 +340,29 @@ export const createRtfrUnit: ReactUnitTemplateFn = (unitInterface) => {
     if (noteDuty !== undefined) {
       sequencer.setNoteDuty(noteDuty);
     }
+  });
+
+  unitInterface.completeSetup({
+    unitAspects: {
+      unitType: "sequencer",
+      outputs: ["note"],
+      inputs: ["clock", "note"],
+    },
+    primaryInputPortHandlers: {
+      noteInput: {
+        noteOn: sequencer.inputNoteOn,
+        noteOff: sequencer.inputNoteOff,
+      },
+      clockInput: {
+        start: sequencer.clockStart,
+        stop: sequencer.clockStop,
+        processScheduling: sequencer.processClock,
+      },
+    },
+    hostCallbacks: {
+      setBpm: sequencer.setBpm,
+      setMetaAttributes: sequencer.setMetaAttributes,
+    },
   });
 
   return {
