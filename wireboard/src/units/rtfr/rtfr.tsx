@@ -5,6 +5,7 @@ import {
   createPlainSelectorOptions,
   GeneralSelector,
 } from "mofur-components/mono2";
+import { useMemo } from "react";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wus-host/react";
 import { LabeledRow } from "@/components/labeled-row";
@@ -167,11 +168,10 @@ export const createRtfrUnit: ReactUnitTemplateFn = (unitInterface) => {
   return {
     RenderUi() {
       const st = store.useSnapshot();
-      const pattern = generatePattern(
-        st.noteRange,
-        st.directionMode,
-        st.wrappingMode,
-        8,
+      const pattern = useMemo(
+        () =>
+          generatePattern(st.noteRange, st.directionMode, st.wrappingMode, 8),
+        [st.noteRange, st.directionMode, st.wrappingMode],
       );
       return (
         <div className="w-[400px] h-[200px] bg-[#eee] p-2">
