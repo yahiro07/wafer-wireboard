@@ -22,7 +22,7 @@ const App = () => {
   const synthCategoryKey: CatalogKey = "miniSynthGe";
   return (
     <HostAppProvider hostSystem={hostSystem} playing={playing} bpm={bpm}>
-      <div className="w-dvw h-dvh flex-vc bd-red">
+      <div className="w-dvw h-dvh flex-vc p-4 gap-4">
         <UnitFrameEx
           unitId="synth"
           destUnitId="$output"

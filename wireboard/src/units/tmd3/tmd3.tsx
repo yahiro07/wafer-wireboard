@@ -1,4 +1,62 @@
+import { seqNumbers } from "mofur/ax";
+import {
+  createPlainSelectorOptions,
+  GeneralSelector,
+} from "mofur-components/mono2";
+import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wus-host/react";
+import { LabeledRow } from "@/components/labeled-row";
+
+const noteRangeValues = [
+  "T",
+  "TT",
+  "TTT",
+  "TD",
+  "TDT",
+  "TDTD",
+  "TDTDT",
+  "TMD",
+  "TMDT",
+  "TMDTM",
+  "TMDTMD",
+  "TMDTMDT",
+];
+type NoteRange = (typeof noteRangeValues)[number];
+
+const noteRangeOptions = createPlainSelectorOptions(noteRangeValues);
+
+type NoteDuration = "/16" | "/8" | "/4" | "/2" | "1";
+const noteDurationValues: NoteDuration[] = ["/16", "/8", "/4", "/2", "1"];
+
+const noteDurationOptions =
+  createPlainSelectorOptions<NoteDuration>(noteDurationValues);
+
+function mapNoteRangeToIndices(noteRange: NoteRange): number[] {
+  const indices: number[] = [];
+  let octave = 0;
+  for (let i = 0; i < noteRange.length; i++) {
+    const code = noteRange[i];
+    if (code === "T") {
+      if (indices.length === 0) {
+      } else {
+        octave++;
+      }
+      indices.push(octave * 3);
+    } else if (code === "M") {
+      indices.push(octave * 3 + 1);
+    } else if (code === "D") {
+      indices.push(octave * 3 + 2);
+    }
+  }
+  return indices;
+}
+
+function generatePattern(noteRange: NoteRange, stepCount: number): number[] {
+  const noteIndices = mapNoteRangeToIndices(noteRange);
+  return seqNumbers(stepCount).map((i) => {
+    return noteIndices[i % noteIndices.length];
+  });
+}
 
 export const createTmd3Unit: ReactUnitTemplateFn = (unitInterface) => {
   const noteOutput = unitInterface.primaryOutputPort.noteOutput;
@@ -19,9 +77,41 @@ export const createTmd3Unit: ReactUnitTemplateFn = (unitInterface) => {
     },
   });
 
+  const store = createStore<{
+    noteRange: NoteRange;
+    noteDuration: NoteDuration;
+  }>({
+    noteRange: "TMDT",
+    noteDuration: "/8",
+  });
+
   return {
     RenderUi() {
-      return <div>tmd3</div>;
+      const st = store.useSnapshot();
+
+      const pattern = generatePattern(st.noteRange, 8);
+      return (
+        <div className="w-[400px] h-[200px] bg-[#eee] p-2">
+          <div>tmd3</div>
+          <div className="flex-h gap-4">
+            <LabeledRow label="note range">
+              <GeneralSelector
+                options={noteRangeOptions}
+                value={st.noteRange}
+                onChange={store.setNoteRange}
+              />
+            </LabeledRow>
+            <LabeledRow label="note duration">
+              <GeneralSelector
+                options={noteDurationOptions}
+                value={st.noteDuration}
+                onChange={store.setNoteDuration}
+              />
+            </LabeledRow>
+          </div>
+          <div>pattern: {pattern}</div>
+        </div>
+      );
     },
   };
 };
