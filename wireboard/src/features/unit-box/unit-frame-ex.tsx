@@ -18,7 +18,16 @@ export const UnitFrameEx = ({
   notes?: number[];
 }) => {
   let content: ReactNode;
-  if (catalogKey) {
+  if (templateFn) {
+    content = (
+      <ReactUnitFrame
+        unitId={unitId}
+        destSpec={destUnitId}
+        unitTemplateFn={templateFn}
+        inputNotes={notes}
+      />
+    );
+  } else if (catalogKey) {
     content = (
       <UnitFrame
         unitId={unitId}
@@ -27,15 +36,6 @@ export const UnitFrameEx = ({
         frameSize={catalog[catalogKey].preferredSize}
         inputNotes={notes}
         onIframeMounted={setupIframeInputHandlers}
-      />
-    );
-  } else if (templateFn) {
-    content = (
-      <ReactUnitFrame
-        unitId={unitId}
-        destSpec={destUnitId}
-        unitTemplateFn={templateFn}
-        inputNotes={notes}
       />
     );
   }

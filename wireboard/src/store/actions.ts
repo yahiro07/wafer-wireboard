@@ -1,4 +1,5 @@
 import { Point } from "mofur/ax-ui";
+import { ReactUnitTemplateFn } from "wus-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
 import { hostSystem } from "@/store/host-system-instance";
 import { store, UnitItem } from "@/store/store";
@@ -19,12 +20,17 @@ export const actions = {
   setUnitPosition(unitId: string, position: Point) {
     actionsInternal.patchUnitItem(unitId, { position });
   },
-  addUnit(catalogKey: CatalogKey, position: Point) {
+  addUnit(
+    catalogKey: CatalogKey,
+    position: Point,
+    templateFn?: ReactUnitTemplateFn,
+  ) {
     store.setUnitItems((prev) => [
       ...prev,
       {
         unitId: getNextUnitId(prev),
         catalogKey,
+        templateFn,
         position,
       },
     ]);
