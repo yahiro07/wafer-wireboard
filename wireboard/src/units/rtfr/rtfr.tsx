@@ -206,8 +206,10 @@ function createSequencer(unitInterface: UnitInterface) {
     key: "Am",
     chordRootNote: 60 as number | undefined,
     octaveShift: 0,
-    noteDuty: 1,
+    noteDuty: 0.9,
     bpm: 120,
+    isClockInputActive: false,
+    isInternalTickRunning: false,
   };
 
   const noteOutput = unitInterface.primaryOutputPort.noteOutput;
@@ -237,12 +239,10 @@ function createSequencer(unitInterface: UnitInterface) {
             state.chordRootNote,
             state.octaveShift,
           );
-          console.log("output", noteNumber);
+          const endTime = time + sss.stepDuration * state.noteDuty;
+          console.log("output", noteNumber, time, endTime);
           noteOutput.noteOn(noteNumber, time, 1);
-          noteOutput.noteOff(
-            noteNumber,
-            time + sss.stepDuration * state.noteDuty,
-          );
+          noteOutput.noteOff(noteNumber, endTime);
         }
       });
     },
@@ -256,27 +256,47 @@ function createSequencer(unitInterface: UnitInterface) {
     },
     primaryInputPortHandlers: {
       noteInput: {
-        noteOn(note, timeAt, velocity) {
+        noteOn(note, _timeAt, _velocity) {
           // noteOutput.noteOn(note, timeAt, velocity);
           state.chordRootNote = note;
-          sequencerTickDriver.setBpm(state.bpm);
-          const starTime = unitInterface.audioContext.currentTime;
-          sequencerTickDriver.start({
-            processTickRange(ppqFrom, ppqTo) {
-              core.processClock(starTime, ppqFrom, ppqTo, state.bpm);
-            },
-          });
+          if (!state.isClockInputActive) {
+            sequencerTickDriver.setBpm(state.bpm);
+            const startTime = unitInterface.audioContext.currentTime;
+            console.log({ startTime });
+            sequencerTickDriver.start({
+              processTickRange(ppqFrom, ppqTo) {
+                core.processClock(startTime, ppqFrom, ppqTo, state.bpm);
+              },
+            });
+            state.isInternalTickRunning = true;
+          }
         },
-        noteOff(note, timeAt) {
+        noteOff(_note, _timeAt) {
           state.chordRootNote = undefined;
           // noteOutput.noteOff(note, timeAt);
-          sequencerTickDriver.stop();
+          if (state.isInternalTickRunning) {
+            sequencerTickDriver.stop();
+            state.isInternalTickRunning = false;
+          }
         },
       },
       clockInput: {
-        start() {},
-        stop() {},
+        start() {
+          state.isClockInputActive = true;
+          if (state.isInternalTickRunning) {
+            sequencerTickDriver.stop();
+            state.isInternalTickRunning = false;
+          }
+          console.log("start clock");
+          const stt = unitInterface.audioContext.currentTime;
+          console.log({ stt });
+        },
+        stop() {
+          state.isClockInputActive = false;
+          state.chordRootNote = undefined;
+        },
         processScheduling(startTime, ppqFrom, ppqTo, bpm) {
+          console.log("processScheduling", ppqFrom, ppqTo, bpm);
           core.processClock(startTime, ppqFrom, ppqTo, bpm);
         },
       },
