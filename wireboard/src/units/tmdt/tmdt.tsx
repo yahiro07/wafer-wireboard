@@ -36,6 +36,24 @@ const directionModeValues: DirectionMode[] = ["up", "upDown"];
 const directionModeOptions =
   createPlainSelectorOptions<DirectionMode>(directionModeValues);
 
+type WrappingMode =
+  | "bottom"
+  | "bottom1"
+  | "top1"
+  | "top"
+  | "even-lower"
+  | "even-higher";
+const wrappingModeValues: WrappingMode[] = [
+  "bottom",
+  "bottom1",
+  "top1",
+  "top",
+  "even-lower",
+  "even-higher",
+];
+const wrappingModeOptions =
+  createPlainSelectorOptions<WrappingMode>(wrappingModeValues);
+
 function generateNoteIndexSeries(noteRange: NoteRange): number[] {
   const indices: number[] = [];
   let octave = 0;
@@ -59,12 +77,13 @@ function generateNoteIndexSeries(noteRange: NoteRange): number[] {
 function generatePattern(
   noteRange: NoteRange,
   directionMode: DirectionMode,
+  wrappingMode: WrappingMode,
   stepCount: number,
 ): number[] {
   const noteIndices = generateNoteIndexSeries(noteRange);
   let pos = 0;
   let dir = 1;
-  return seqNumbers(stepCount).map(() => {
+  return seqNumbers(stepCount).map((i) => {
     const note = noteIndices[pos];
     pos += dir;
     if (pos >= noteIndices.length) {
@@ -72,10 +91,27 @@ function generatePattern(
         dir = -dir;
         pos -= 2;
       } else {
-        pos = 0;
+        const restCount = stepCount - i;
+        // console.log({ restCount, len: noteIndices.length });
+        if (restCount <= noteIndices.length) {
+          if (wrappingMode === "bottom") {
+            pos = 0;
+          } else if (wrappingMode === "bottom1") {
+            pos = 1;
+          } else if (wrappingMode === "top1") {
+            pos = noteIndices.length - restCount;
+          } else if (wrappingMode === "top") {
+            pos = noteIndices.length - restCount + 1;
+          } else if (wrappingMode === "even-lower") {
+            pos = 0;
+          } else if (wrappingMode === "even-higher") {
+            pos = 1;
+          }
+        } else {
+          pos = 0;
+        }
       }
-    } else if (pos < 0) {
-      pos = 1;
+    } else if (pos === 0) {
       dir = 1;
     }
     return note;
@@ -105,16 +141,23 @@ export const createTmdtUnit: ReactUnitTemplateFn = (unitInterface) => {
     noteRange: NoteRange;
     noteDuration: NoteDuration;
     directionMode: DirectionMode;
+    wrappingMode: WrappingMode;
   }>({
-    noteRange: "TMDT",
+    noteRange: "TMD",
     noteDuration: "/8",
-    directionMode: "upDown",
+    directionMode: "up",
+    wrappingMode: "bottom",
   });
 
   return {
     RenderUi() {
       const st = store.useSnapshot();
-      const pattern = generatePattern(st.noteRange, st.directionMode, 8);
+      const pattern = generatePattern(
+        st.noteRange,
+        st.directionMode,
+        st.wrappingMode,
+        8,
+      );
       return (
         <div className="w-[400px] h-[200px] bg-[#eee] p-2">
           <div>tmdt</div>
@@ -134,12 +177,19 @@ export const createTmdtUnit: ReactUnitTemplateFn = (unitInterface) => {
               />
             </LabeledRow>
           </div>
-          <div>
-            <LabeledRow label="direction mode">
+          <div className="flex-h gap-4">
+            <LabeledRow label="direction">
               <GeneralSelector
                 options={directionModeOptions}
                 value={st.directionMode}
                 onChange={store.setDirectionMode}
+              />
+            </LabeledRow>
+            <LabeledRow label="wrapping">
+              <GeneralSelector
+                options={wrappingModeOptions}
+                value={st.wrappingMode}
+                onChange={store.setWrappingMode}
               />
             </LabeledRow>
           </div>
