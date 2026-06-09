@@ -28,6 +28,7 @@
     "vite": "^8.0.12",
     "wus-host": "file:../../webaudio-unit-system/framework/wus-host",
     "wus-unit-types": "file:../../webaudio-unit-system/contract/wus-unit-types",
-    "wus-vite-unit-loader-plugin": "file:../../webaudio-unit-system/framework/wus-vite-unit-loader-plugin"
+    "wus-vite-unit-loader-plugin": "file:../../webaudio-unit-system/framework/wus-vite-unit-loader-plugin",
+    "wb-react-units": "file:../wb-react-units"
   }
 }
