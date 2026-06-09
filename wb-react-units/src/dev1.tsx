@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
 import { HostAppProvider, ReactUnitFrame } from "wus-host/react";
+import { createMetronomeUnit } from "./units/metronome";
 import { createTestOscUnit } from "./units/test-osc";
 import { createUnit1 } from "./units/unit1";
 
@@ -20,7 +21,7 @@ export type StoreState = {
 
 export const store = createStore<StoreState>({
   notes: [],
-  bpm: 120,
+  bpm: 110,
   playing: false,
   feedNotesToSequencer: false,
 });
@@ -61,6 +62,11 @@ const App = () => {
               feed
             </Button>
           </div>
+          <ReactUnitFrame
+            unitId="metronome"
+            destSpec="$output"
+            unitTemplateFn={createMetronomeUnit}
+          />
           <ReactUnitFrame
             unitId="testOsc1"
             destSpec="$output"
