@@ -6,7 +6,7 @@ import { CatalogKey } from "@/base/showcase-entries";
 import { UnitFrameEx } from "@/features/unit-box/unit-frame-ex";
 import { hostSystem } from "@/store/host-system-instance";
 import { store } from "@/store/store";
-import { createTmdtUnit } from "@/units/tmdt/tmdt";
+import { createRtfrUnit } from "@/units/rtfr/rtfr";
 import { actions } from "./store/actions";
 
 const App = () => {
@@ -31,7 +31,7 @@ const App = () => {
         <UnitFrameEx
           unitId="sequencer"
           destUnitId="synth"
-          templateFn={createTmdtUnit}
+          templateFn={createRtfrUnit}
           notes={notes}
         />
       </div>

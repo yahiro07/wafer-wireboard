@@ -118,7 +118,7 @@ function generatePattern(
   });
 }
 
-export const createTmdtUnit: ReactUnitTemplateFn = (unitInterface) => {
+export const createRtfrUnit: ReactUnitTemplateFn = (unitInterface) => {
   const noteOutput = unitInterface.primaryOutputPort.noteOutput;
   unitInterface.completeSetup({
     unitAspects: {
