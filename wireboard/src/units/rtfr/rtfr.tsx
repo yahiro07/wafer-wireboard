@@ -4,7 +4,9 @@ import { npx } from "mofur/ax-ui";
 import { createSequencerTickDriver } from "mofur/mx-audio";
 import {
   createPlainSelectorOptions,
+  createSelectorOptions,
   GeneralSelector,
+  Knob,
 } from "mofur-components/mono2";
 import { useEffect, useMemo } from "react";
 import { createStore } from "snap-store";
@@ -54,6 +56,10 @@ type WrappingMode = "bottom" | "bottom1" | "top1" | "top";
 const wrappingModeValues: WrappingMode[] = ["bottom", "bottom1", "top1", "top"];
 const wrappingModeOptions =
   createPlainSelectorOptions<WrappingMode>(wrappingModeValues);
+
+const octaveShiftOptions = createSelectorOptions(
+  seqNumbers(7).map((i) => [i - 3, `${i - 3}`]),
+);
 
 function generateNoteIndexSeries(noteRange: NoteRange): number[] {
   const indices: number[] = [];
@@ -350,6 +356,14 @@ export const createRtfrUnit: ReactUnitTemplateFn = (unitInterface) => {
     octaveShift: 0,
     noteDuty: 1,
   });
+  store.subscribe(({ octaveShift, noteDuty }) => {
+    if (octaveShift !== undefined) {
+      sequencer.setOctaveShift(octaveShift);
+    }
+    if (noteDuty !== undefined) {
+      sequencer.setNoteDuty(noteDuty);
+    }
+  });
 
   return {
     RenderUi() {
@@ -363,7 +377,7 @@ export const createRtfrUnit: ReactUnitTemplateFn = (unitInterface) => {
         sequencer.setPattern(pattern);
       }, [pattern, sequencer]);
       return (
-        <div className="w-[400px] h-[200px] bg-[#eee] p-2">
+        <div className="w-[400px] h-[240px] bg-[#eee] p-2">
           <div>RTFR</div>
           <div className="flex-h gap-4">
             <LabeledRow label="note range">
@@ -394,6 +408,26 @@ export const createRtfrUnit: ReactUnitTemplateFn = (unitInterface) => {
                 options={wrappingModeOptions}
                 value={st.wrappingMode}
                 onChange={store.setWrappingMode}
+                reverseOptionsOrder
+              />
+            </LabeledRow>
+          </div>
+          <div className="flex-h gap-4">
+            <LabeledRow label="octave">
+              <GeneralSelector
+                options={octaveShiftOptions}
+                value={st.octaveShift}
+                onChange={store.setOctaveShift}
+                reverseOptionsOrder
+              />
+            </LabeledRow>
+            <LabeledRow label="duty">
+              <Knob
+                value={st.noteDuty}
+                onChange={store.setNoteDuty}
+                min={0.01}
+                max={1}
+                step={0.01}
               />
             </LabeledRow>
           </div>

@@ -44,7 +44,7 @@ const App = () => {
       }),
     [],
   );
-  const synthCategoryKey: CatalogKey = "webaudioSynthV2";
+  const synthCategoryKey: CatalogKey = "webaudioTinysynthSimple";
   // const synthCategoryKey: CatalogKey = "wavicle";
 
   return (
