@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
 import { HostAppProvider, ReactUnitFrame } from "wus-host/react";
+import { createTestOscUnit } from "./units/test-osc";
 import { createUnit1 } from "./units/unit1";
 
 const audioContext = new AudioContext();
@@ -34,7 +35,7 @@ const actions = {
 };
 
 const App = () => {
-  const { playing, bpm } = store.useSnapshot();
+  const { playing, bpm, notes } = store.useSnapshot();
   useEffect(
     () =>
       setupMidiKeyboardInput({
@@ -47,7 +48,13 @@ const App = () => {
   return (
     <HostAppProvider hostSystem={hostSystem} playing={playing} bpm={bpm}>
       <div className="w-dvw h-dvh flex-c">
-        <div className="flex-ha gap-4">
+        <div className="flex-v gap-2">
+          <ReactUnitFrame
+            unitId="testOsc1"
+            destSpec="$output"
+            unitTemplateFn={createTestOscUnit}
+            inputNotes={notes}
+          />
           <ReactUnitFrame unitId="unit1" unitTemplateFn={createUnit1} />
         </div>
       </div>
