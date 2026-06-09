@@ -143,7 +143,7 @@ export const createRtfrUnit: ReactUnitTemplateFn = (unitInterface) => {
       );
       return (
         <div className="w-[400px] h-[200px] bg-[#eee] p-2">
-          <div>tmdt</div>
+          <div>RTFR</div>
           <div className="flex-h gap-4">
             <LabeledRow label="note range">
               <GeneralSelector
