@@ -53,9 +53,13 @@ const App = () => {
             unitId="testOsc1"
             destSpec="$output"
             unitTemplateFn={createTestOscUnit}
+          />
+          <ReactUnitFrame
+            unitId="unit1"
+            destSpec="testOsc1"
+            unitTemplateFn={createUnit1}
             inputNotes={notes}
           />
-          <ReactUnitFrame unitId="unit1" unitTemplateFn={createUnit1} />
         </div>
       </div>
     </HostAppProvider>
