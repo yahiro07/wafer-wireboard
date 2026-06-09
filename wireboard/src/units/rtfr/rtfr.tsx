@@ -255,7 +255,7 @@ function createSequencer(unitInterface: UnitInterface) {
   };
 
   return {
-    inputNoteOn(note: number, timeAt: number, velocity: number) {
+    inputNoteOn(note: number, _timeAt: number, _velocity: number) {
       // noteOutput.noteOn(note, timeAt, velocity);
       state.chordRootNote = note;
       if (!state.isClockInputActive) {
@@ -346,7 +346,7 @@ export const createRtfrUnit: ReactUnitTemplateFn = (unitInterface) => {
     unitAspects: {
       unitType: "sequencer",
       outputs: ["note"],
-      inputs: ["clock", "note"],
+      inputs: ["note", "clock", "state"],
     },
     primaryInputPortHandlers: {
       noteInput: {
@@ -357,6 +357,14 @@ export const createRtfrUnit: ReactUnitTemplateFn = (unitInterface) => {
         start: sequencer.clockStart,
         stop: sequencer.clockStop,
         processScheduling: sequencer.processClock,
+      },
+      stateInput: {
+        emitState() {
+          return { ...store.state };
+        },
+        applyState(state) {
+          store.setState(state);
+        },
       },
     },
     hostCallbacks: {

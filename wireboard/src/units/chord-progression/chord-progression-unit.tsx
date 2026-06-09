@@ -147,16 +147,6 @@ export const createChordProgressionUnit: ReactUnitTemplateFn = (
   const store = createStore<ProgressionState>(initialProgressionState);
   store.subscribe(core.setState);
 
-  unitInterface.completeSetup({
-    unitAspects: {
-      unitType: "sequencer",
-      inputs: ["clock"],
-    },
-    primaryInputPortHandlers: {
-      clockInput: core.clockInput,
-    },
-  });
-
   const actions = {
     setRelative(index: number, relative: number) {
       store.setState({
@@ -166,6 +156,25 @@ export const createChordProgressionUnit: ReactUnitTemplateFn = (
       });
     },
   };
+
+  unitInterface.completeSetup({
+    unitAspects: {
+      unitType: "sequencer",
+      inputs: ["clock", "state"],
+    },
+    primaryInputPortHandlers: {
+      clockInput: core.clockInput,
+      stateInput: {
+        emitState() {
+          return { ...store.state };
+        },
+        applyState(state) {
+          store.setState(state);
+        },
+      },
+    },
+  });
+
   return {
     RenderUi() {
       const { key, loopBars, relatives } = store.useSnapshot();
