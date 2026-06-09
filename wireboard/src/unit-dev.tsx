@@ -19,7 +19,7 @@ const App = () => {
       }),
     [],
   );
-  const synthCategoryKey: CatalogKey = "miniSynthGe";
+  const synthCategoryKey: CatalogKey = "webaudioTinysynthSimple";
   return (
     <HostAppProvider hostSystem={hostSystem} playing={playing} bpm={bpm}>
       <div className="w-dvw h-dvh flex-vc p-4 gap-4">

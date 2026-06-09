@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { seqNumbers } from "mofur/ax";
 import { npx } from "mofur/ax-ui";
+import { createSequencerTickDriver } from "mofur/mx-audio";
 import {
   createPlainSelectorOptions,
   GeneralSelector,
@@ -203,12 +204,15 @@ function createSequencer(unitInterface: UnitInterface) {
   const state = {
     pattern: seqNumbers(8).map(() => 0),
     key: "Am",
-    chordRootNote: 60,
+    chordRootNote: 60 as number | undefined,
     octaveShift: 0,
     noteDuty: 1,
+    bpm: 120,
   };
 
   const noteOutput = unitInterface.primaryOutputPort.noteOutput;
+
+  const sequencerTickDriver = createSequencerTickDriver();
 
   const core = {
     processClock(
@@ -222,7 +226,11 @@ function createSequencer(unitInterface: UnitInterface) {
       sss.stepPoints.forEach(({ time, stepIndex }) => {
         const rtfNote = pattern[stepIndex % pattern.length];
         const songKey = checkKeyValid(state.key);
-        if (songKey && rtfNote !== undefined) {
+        if (
+          songKey &&
+          rtfNote !== undefined &&
+          state.chordRootNote !== undefined
+        ) {
           const noteNumber = applyDynamicNoteShift(
             rtfNote,
             songKey,
@@ -249,10 +257,20 @@ function createSequencer(unitInterface: UnitInterface) {
     primaryInputPortHandlers: {
       noteInput: {
         noteOn(note, timeAt, velocity) {
-          noteOutput.noteOn(note, timeAt, velocity);
+          // noteOutput.noteOn(note, timeAt, velocity);
+          state.chordRootNote = note;
+          sequencerTickDriver.setBpm(state.bpm);
+          const starTime = unitInterface.audioContext.currentTime;
+          sequencerTickDriver.start({
+            processTickRange(ppqFrom, ppqTo) {
+              core.processClock(starTime, ppqFrom, ppqTo, state.bpm);
+            },
+          });
         },
         noteOff(note, timeAt) {
-          noteOutput.noteOff(note, timeAt);
+          state.chordRootNote = undefined;
+          // noteOutput.noteOff(note, timeAt);
+          sequencerTickDriver.stop();
         },
       },
       clockInput: {
@@ -264,6 +282,9 @@ function createSequencer(unitInterface: UnitInterface) {
       },
     },
     hostCallbacks: {
+      setBpm(bpm) {
+        state.bpm = bpm;
+      },
       setMetaAttributes(attrs: DynamicPatternMeta) {
         if (attrs.dynamicPatternInput) {
           const { key, chordRootNote } = attrs.dynamicPatternInput;
