@@ -5,10 +5,20 @@ import {
   createPlainSelectorOptions,
   GeneralSelector,
 } from "mofur-components/mono2";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wus-host/react";
+import { UnitInterface } from "wus-unit-types";
 import { LabeledRow } from "@/components/labeled-row";
+import { makeStepSchedulingSource } from "@/units/common/step-scheduling-source";
+
+type DynamicPatternInput = {
+  key?: string; //"C", "Am", etc.
+  chordRootNote?: number; //in midi note number
+};
+type DynamicPatternMeta = {
+  dynamicPatternInput?: DynamicPatternInput;
+};
 
 const noteRangeValues = [
   "R",
@@ -134,11 +144,106 @@ const PatternView = ({ pattern }: { pattern: number[] }) => {
   );
 };
 
-export const createRtfrUnit: ReactUnitTemplateFn = (unitInterface) => {
+type SongKey = "Am" | "C" | "Dm" | "Em" | "F" | "G" | "B";
+
+function checkKeyValid(key: string): SongKey | undefined {
+  const valid = ["Am", "B", "C", "Dm", "Em", "F", "G"].includes(key as SongKey);
+  return valid ? (key as SongKey) : undefined;
+}
+
+function getKeyRootNoteIndex(key: SongKey): number {
+  const noteName = key.replace("m", "") as
+    | "A"
+    | "B"
+    | "C"
+    | "D"
+    | "E"
+    | "F"
+    | "G";
+  return {
+    C: 0,
+    D: 2,
+    E: 4,
+    F: 5,
+    G: 7,
+    A: 9,
+    B: 11,
+  }[noteName];
+}
+
+function checkIsMinorChord(key: SongKey, chordRootNote: number): boolean {
+  const isKeyMinor = key.endsWith("m");
+  const keyRootNoteIndex = getKeyRootNoteIndex(key);
+  const chordRootNoteIndex = chordRootNote % 12;
+  const relativeIndex = (chordRootNoteIndex - keyRootNoteIndex + 12) % 12;
+  if (!isKeyMinor) {
+    //major key
+    return [0, 2, 4, 9, 11].includes(relativeIndex);
+  } else {
+    //minor key
+    return [0, 2, 5, 7].includes(relativeIndex);
+  }
+}
+
+function applyDynamicNoteShift(
+  rtfNote: number, //0 for root, 1 for third, 2 for fifth, 3 for root in next octave, etc.
+  key: SongKey, //C, Am, etc.
+  chordRootNote: number, //MIDI note number of the chord root
+  octaveShift: number, // octave shift
+): number {
+  const isMinor = checkIsMinorChord(key, chordRootNote);
+  const intervals = isMinor ? [0, 3, 7] : [0, 4, 7];
+  const rtfOctave = Math.floor(rtfNote / 3);
+  return (
+    chordRootNote + intervals[rtfNote % 3] + (octaveShift + rtfOctave) * 12
+  );
+}
+
+function createSequencer(unitInterface: UnitInterface) {
+  const state = {
+    pattern: seqNumbers(8).map(() => 0),
+    key: "Am",
+    chordRootNote: 60,
+    octaveShift: 0,
+    noteDuty: 1,
+  };
+
   const noteOutput = unitInterface.primaryOutputPort.noteOutput;
+
+  const core = {
+    processClock(
+      startTime: number,
+      ppqFrom: number,
+      ppqTo: number,
+      bpm: number,
+    ) {
+      const { pattern } = state;
+      const sss = makeStepSchedulingSource(startTime, ppqFrom, ppqTo, bpm);
+      sss.stepPoints.forEach(({ time, stepIndex }) => {
+        const rtfNote = pattern[stepIndex % pattern.length];
+        const songKey = checkKeyValid(state.key);
+        if (songKey && rtfNote !== undefined) {
+          const noteNumber = applyDynamicNoteShift(
+            rtfNote,
+            songKey,
+            state.chordRootNote,
+            state.octaveShift,
+          );
+          console.log("output", noteNumber);
+          noteOutput.noteOn(noteNumber, time, 1);
+          noteOutput.noteOff(
+            noteNumber,
+            time + sss.stepDuration * state.noteDuty,
+          );
+        }
+      });
+    },
+  };
+
   unitInterface.completeSetup({
     unitAspects: {
       unitType: "sequencer",
+      outputs: ["note"],
       inputs: ["clock", "note"],
     },
     primaryInputPortHandlers: {
@@ -150,19 +255,59 @@ export const createRtfrUnit: ReactUnitTemplateFn = (unitInterface) => {
           noteOutput.noteOff(note, timeAt);
         },
       },
+      clockInput: {
+        start() {},
+        stop() {},
+        processScheduling(startTime, ppqFrom, ppqTo, bpm) {
+          core.processClock(startTime, ppqFrom, ppqTo, bpm);
+        },
+      },
+    },
+    hostCallbacks: {
+      setMetaAttributes(attrs: DynamicPatternMeta) {
+        if (attrs.dynamicPatternInput) {
+          const { key, chordRootNote } = attrs.dynamicPatternInput;
+          if (key !== undefined) {
+            state.key = key;
+          }
+          if (chordRootNote !== undefined) {
+            state.chordRootNote = chordRootNote;
+          }
+        }
+      },
     },
   });
+
+  return {
+    setPattern(newPattern: number[]) {
+      state.pattern = newPattern;
+    },
+    setOctaveShift(octaveShift: number) {
+      state.octaveShift = octaveShift;
+    },
+    setNoteDuty(noteDuty: number) {
+      state.noteDuty = noteDuty;
+    },
+  };
+}
+
+export const createRtfrUnit: ReactUnitTemplateFn = (unitInterface) => {
+  const sequencer = createSequencer(unitInterface);
 
   const store = createStore<{
     noteRange: NoteRange;
     noteDuration: NoteDuration;
     directionMode: DirectionMode;
     wrappingMode: WrappingMode;
+    octaveShift: number;
+    noteDuty: number;
   }>({
     noteRange: "RTF",
     noteDuration: "/8",
     directionMode: "up",
     wrappingMode: "bottom",
+    octaveShift: 0,
+    noteDuty: 1,
   });
 
   return {
@@ -173,6 +318,9 @@ export const createRtfrUnit: ReactUnitTemplateFn = (unitInterface) => {
           generatePattern(st.noteRange, st.directionMode, st.wrappingMode, 8),
         [st.noteRange, st.directionMode, st.wrappingMode],
       );
+      useEffect(() => {
+        sequencer.setPattern(pattern);
+      }, [pattern, sequencer]);
       return (
         <div className="w-[400px] h-[200px] bg-[#eee] p-2">
           <div>RTFR</div>
