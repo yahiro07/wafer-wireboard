@@ -81,6 +81,7 @@ const App = () => {
               unitId="sequencer"
               destUnitId="synth"
               templateFn={createRtfrUnit}
+              // templateFn={createUnit1}
               notes={feedNotesToSequencer ? notes : undefined}
             />
           </div>
