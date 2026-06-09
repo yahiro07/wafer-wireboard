@@ -8,18 +8,18 @@ import { ReactUnitTemplateFn } from "wus-host/react";
 import { LabeledRow } from "@/components/labeled-row";
 
 const noteRangeValues = [
-  "T",
-  "TT",
-  "TTT",
-  "TD",
-  "TDT",
-  "TDTD",
-  "TDTDT",
-  "TMD",
-  "TMDT",
-  "TMDTM",
-  "TMDTMD",
-  "TMDTMDT",
+  "R",
+  "RR",
+  "RRR",
+  "RF",
+  "RFR",
+  "RFRF",
+  "RFRFR",
+  "RTF",
+  "RTFR",
+  "RTFRT",
+  "RTFRTF",
+  "RTFRTFR",
 ];
 type NoteRange = (typeof noteRangeValues)[number];
 
@@ -59,15 +59,15 @@ function generateNoteIndexSeries(noteRange: NoteRange): number[] {
   let octave = 0;
   for (let i = 0; i < noteRange.length; i++) {
     const code = noteRange[i];
-    if (code === "T") {
+    if (code === "R") {
       if (indices.length === 0) {
       } else {
         octave++;
       }
       indices.push(octave * 3);
-    } else if (code === "M") {
+    } else if (code === "T") {
       indices.push(octave * 3 + 1);
-    } else if (code === "D") {
+    } else if (code === "F") {
       indices.push(octave * 3 + 2);
     }
   }
@@ -143,7 +143,7 @@ export const createTmdtUnit: ReactUnitTemplateFn = (unitInterface) => {
     directionMode: DirectionMode;
     wrappingMode: WrappingMode;
   }>({
-    noteRange: "TMD",
+    noteRange: "RTF",
     noteDuration: "/8",
     directionMode: "up",
     wrappingMode: "bottom",
