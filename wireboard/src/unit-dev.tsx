@@ -14,12 +14,14 @@ export type StoreState = {
   notes: number[];
   bpm: number;
   playing: boolean;
+  feedNotesToSequencer: boolean;
 };
 
 export const store = createStore<StoreState>({
   notes: [],
   bpm: 120,
   playing: false,
+  feedNotesToSequencer: false,
 });
 const actions = {
   midiInNoteOn(noteNumber: number) {
@@ -33,7 +35,7 @@ const actions = {
 };
 
 const App = () => {
-  const { playing, bpm, notes } = store.useSnapshot();
+  const { playing, bpm, notes, feedNotesToSequencer } = store.useSnapshot();
   useEffect(
     () =>
       setupMidiKeyboardInput({
@@ -42,15 +44,25 @@ const App = () => {
       }),
     [],
   );
-  const synthCategoryKey: CatalogKey = "webaudioTinysynthSimple";
+  const synthCategoryKey: CatalogKey = "webaudioSynthV2";
+  // const synthCategoryKey: CatalogKey = "wavicle";
+
   return (
     <HostAppProvider hostSystem={hostSystem} playing={playing} bpm={bpm}>
       <div className="w-dvw h-dvh flex-c">
         <div className="flex-ha gap-4">
           <div className="flex-v w-[500px] h-[500px]">
-            <Button active={playing} onClick={store.togglePlaying}>
-              play
-            </Button>
+            <div className="flex-ha gap-2">
+              <Button active={playing} onClick={store.togglePlaying}>
+                play
+              </Button>
+              <Button
+                active={feedNotesToSequencer}
+                onClick={store.toggleFeedNotesToSequencer}
+              >
+                feed
+              </Button>
+            </div>
             <UnitFrameEx
               templateFn={createChordProgressionUnit}
               unitId="chordProgression"
@@ -61,21 +73,16 @@ const App = () => {
               unitId="synth"
               destUnitId="$output"
               catalogKey={synthCategoryKey}
+              notes={!feedNotesToSequencer ? notes : undefined}
             />
             <UnitFrameEx
               unitId="sequencer"
               destUnitId="synth"
               templateFn={createRtfrUnit}
-              notes={notes}
+              notes={feedNotesToSequencer ? notes : undefined}
             />
           </div>
         </div>
-        {/* <div className="flex-v gap-4 bd-red">
-          <UnitFrameEx
-            templateFn={createChordProgressionUnit}
-            unitId="chordProgression"
-          />
-        </div> */}
       </div>
     </HostAppProvider>
   );
