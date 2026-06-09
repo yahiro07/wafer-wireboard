@@ -36,21 +36,8 @@ const directionModeValues: DirectionMode[] = ["up", "upDown"];
 const directionModeOptions =
   createPlainSelectorOptions<DirectionMode>(directionModeValues);
 
-type WrappingMode =
-  | "bottom"
-  | "bottom1"
-  | "top1"
-  | "top"
-  | "even-lower"
-  | "even-higher";
-const wrappingModeValues: WrappingMode[] = [
-  "bottom",
-  "bottom1",
-  "top1",
-  "top",
-  "even-lower",
-  "even-higher",
-];
+type WrappingMode = "bottom" | "bottom1" | "top1" | "top";
+const wrappingModeValues: WrappingMode[] = ["bottom", "bottom1", "top1", "top"];
 const wrappingModeOptions =
   createPlainSelectorOptions<WrappingMode>(wrappingModeValues);
 
@@ -102,10 +89,6 @@ function generatePattern(
             pos = noteIndices.length - restCount;
           } else if (wrappingMode === "top") {
             pos = noteIndices.length - restCount + 1;
-          } else if (wrappingMode === "even-lower") {
-            pos = 0;
-          } else if (wrappingMode === "even-higher") {
-            pos = 1;
           }
         } else {
           pos = 0;
