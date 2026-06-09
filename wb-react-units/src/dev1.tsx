@@ -1,7 +1,8 @@
 import { mountAppRoot } from "mofur/ax-react";
+import { mapKnobGainDb } from "mofur/mo-audio";
 import { setupMidiKeyboardInput } from "mofur/mx-audio";
-import { Button } from "mofur-components/mono2";
-import { useEffect } from "react";
+import { Button, Knob } from "mofur-components/mono2";
+import { useEffect, useMemo } from "react";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
 import { HostAppProvider, ReactUnitFrame } from "wus-host/react";
@@ -17,6 +18,7 @@ export type StoreState = {
   bpm: number;
   playing: boolean;
   feedNotesToSequencer: boolean;
+  masterVolume: number;
 };
 
 export const store = createStore<StoreState>({
@@ -24,6 +26,7 @@ export const store = createStore<StoreState>({
   bpm: 110,
   playing: false,
   feedNotesToSequencer: false,
+  masterVolume: 0.3,
 });
 const actions = {
   midiInNoteOn(noteNumber: number) {
@@ -37,7 +40,8 @@ const actions = {
 };
 
 const App = () => {
-  const { playing, bpm, notes, feedNotesToSequencer } = store.useSnapshot();
+  const { playing, bpm, notes, feedNotesToSequencer, masterVolume } =
+    store.useSnapshot();
   useEffect(
     () =>
       setupMidiKeyboardInput({
@@ -46,9 +50,18 @@ const App = () => {
       }),
     [],
   );
+  const masterGain = useMemo(
+    () => mapKnobGainDb(masterVolume, 0.5),
+    [masterVolume],
+  );
 
   return (
-    <HostAppProvider hostSystem={hostSystem} playing={playing} bpm={bpm}>
+    <HostAppProvider
+      hostSystem={hostSystem}
+      playing={playing}
+      bpm={bpm}
+      masterGain={masterGain}
+    >
       <div className="w-dvw h-dvh flex-c">
         <div className="flex-v gap-2">
           <div className="flex-ha gap-2">
@@ -61,6 +74,7 @@ const App = () => {
             >
               feed
             </Button>
+            <Knob value={masterVolume} onChange={store.setMasterVolume} />
           </div>
           <ReactUnitFrame
             unitId="metronome"
