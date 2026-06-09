@@ -1,5 +1,6 @@
 import { mountAppRoot } from "mofur/ax-react";
 import { setupMidiKeyboardInput } from "mofur/mx-audio";
+import { Button } from "mofur-components/mono2";
 import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
@@ -35,7 +36,7 @@ const actions = {
 };
 
 const App = () => {
-  const { playing, bpm, notes } = store.useSnapshot();
+  const { playing, bpm, notes, feedNotesToSequencer } = store.useSnapshot();
   useEffect(
     () =>
       setupMidiKeyboardInput({
@@ -49,6 +50,17 @@ const App = () => {
     <HostAppProvider hostSystem={hostSystem} playing={playing} bpm={bpm}>
       <div className="w-dvw h-dvh flex-c">
         <div className="flex-v gap-2">
+          <div className="flex-ha gap-2">
+            <Button active={playing} onClick={store.togglePlaying}>
+              play
+            </Button>
+            <Button
+              active={feedNotesToSequencer}
+              onClick={store.toggleFeedNotesToSequencer}
+            >
+              feed
+            </Button>
+          </div>
           <ReactUnitFrame
             unitId="testOsc1"
             destSpec="$output"
