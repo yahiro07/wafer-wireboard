@@ -82,7 +82,7 @@ function generatePattern(
   });
 }
 
-export const createTmd3Unit: ReactUnitTemplateFn = (unitInterface) => {
+export const createTmdtUnit: ReactUnitTemplateFn = (unitInterface) => {
   const noteOutput = unitInterface.primaryOutputPort.noteOutput;
   unitInterface.completeSetup({
     unitAspects: {
@@ -117,7 +117,7 @@ export const createTmd3Unit: ReactUnitTemplateFn = (unitInterface) => {
       const pattern = generatePattern(st.noteRange, st.directionMode, 8);
       return (
         <div className="w-[400px] h-[200px] bg-[#eee] p-2">
-          <div>tmd3</div>
+          <div>tmdt</div>
           <div className="flex-h gap-4">
             <LabeledRow label="note range">
               <GeneralSelector
