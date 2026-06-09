@@ -13,6 +13,7 @@ import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wus-host/react";
 import { UnitInterface } from "wus-unit-types";
 import { LabeledRow } from "@/components/labeled-row";
+import { createNoteOffSchedulingAdapter } from "@/units/common/note-off-scheduling-adapter";
 import { makeStepSchedulingSource } from "@/units/common/step-scheduling-source";
 
 type DynamicPatternInput = {
@@ -218,7 +219,9 @@ function createSequencer(unitInterface: UnitInterface) {
     isInternalTickRunning: false,
   };
 
-  const noteOutput = unitInterface.primaryOutputPort.noteOutput;
+  const adaptedNoteOutput = createNoteOffSchedulingAdapter(
+    unitInterface.primaryOutputPort.noteOutput,
+  );
 
   const sequencerTickDriver = createSequencerTickDriver();
 
@@ -246,11 +249,11 @@ function createSequencer(unitInterface: UnitInterface) {
             state.octaveShift,
           );
           const endTime = time + sss.stepDuration * state.noteDuty;
-          // console.log("output", noteNumber, time, endTime);
-          noteOutput.noteOn(noteNumber, time, 1);
-          noteOutput.noteOff(noteNumber, endTime);
+          adaptedNoteOutput.noteOn(noteNumber, time, 1);
+          adaptedNoteOutput.noteOff(noteNumber, endTime);
         }
       });
+      adaptedNoteOutput.clock(startTime, ppqFrom, ppqTo, bpm);
     },
   };
 
@@ -275,6 +278,7 @@ function createSequencer(unitInterface: UnitInterface) {
         // noteOutput.noteOff(note, timeAt);
         sequencerTickDriver.stop();
         state.isInternalTickRunning = false;
+        adaptedNoteOutput.flush();
       }
     },
     clockStart() {
@@ -287,6 +291,7 @@ function createSequencer(unitInterface: UnitInterface) {
     clockStop() {
       state.isClockInputActive = false;
       state.chordRootNote = undefined;
+      adaptedNoteOutput.flush();
     },
     processClock: core.processClock,
     setBpm(bpm: number) {
