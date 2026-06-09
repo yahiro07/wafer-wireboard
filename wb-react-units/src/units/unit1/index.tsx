@@ -8,7 +8,9 @@ export const createUnit1: ReactUnitTemplateFn = (unitInterface) => {
   });
   return {
     RenderUi() {
-      return <div className="w-[200px] h-[100px] bd-red">unit1 hello</div>;
+      return (
+        <div className="w-[400px] h-[200px] bg-gray-200 p-2">unit1 hello</div>
+      );
     },
   };
 };
