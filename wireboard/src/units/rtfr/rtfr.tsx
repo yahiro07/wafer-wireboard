@@ -1,4 +1,6 @@
+import clsx from "clsx";
 import { seqNumbers } from "mofur/ax";
+import { npx } from "mofur/ax-ui";
 import {
   createPlainSelectorOptions,
   GeneralSelector,
@@ -101,6 +103,36 @@ function generatePattern(
   });
 }
 
+const degreeTexts = ["R", "T", "F", "R", "T", "F", "R"];
+
+const PatternView = ({ pattern }: { pattern: number[] }) => {
+  return (
+    <div className="flex-h gap-2">
+      {pattern.map((y, i) => {
+        return (
+          <div
+            key={i}
+            className="rounded-full bg-gray-300"
+            style={{
+              paddingTop: npx((6 - y) * 10),
+            }}
+          >
+            <div
+              className={clsx(
+                "text-[8px] w-[18px] h-[18px] rounded-full flex-c text-white border",
+                y % 3 === 0 && "bg-orange-400 border-orange-500",
+                y % 3 !== 0 && "bg-yellow-300 border-yellow-400",
+              )}
+            >
+              {degreeTexts[y]}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 export const createRtfrUnit: ReactUnitTemplateFn = (unitInterface) => {
   const noteOutput = unitInterface.primaryOutputPort.noteOutput;
   unitInterface.completeSetup({
@@ -177,6 +209,9 @@ export const createRtfrUnit: ReactUnitTemplateFn = (unitInterface) => {
             </LabeledRow>
           </div>
           <div>pattern: {pattern}</div>
+          <div className="flex-c">
+            <PatternView pattern={pattern} />
+          </div>
         </div>
       );
     },
