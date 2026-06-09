@@ -31,7 +31,12 @@ const noteDurationValues: NoteDuration[] = ["/16", "/8", "/4", "/2", "1"];
 const noteDurationOptions =
   createPlainSelectorOptions<NoteDuration>(noteDurationValues);
 
-function mapNoteRangeToIndices(noteRange: NoteRange): number[] {
+type DirectionMode = "up" | "upDown";
+const directionModeValues: DirectionMode[] = ["up", "upDown"];
+const directionModeOptions =
+  createPlainSelectorOptions<DirectionMode>(directionModeValues);
+
+function generateNoteIndexSeries(noteRange: NoteRange): number[] {
   const indices: number[] = [];
   let octave = 0;
   for (let i = 0; i < noteRange.length; i++) {
@@ -51,10 +56,29 @@ function mapNoteRangeToIndices(noteRange: NoteRange): number[] {
   return indices;
 }
 
-function generatePattern(noteRange: NoteRange, stepCount: number): number[] {
-  const noteIndices = mapNoteRangeToIndices(noteRange);
-  return seqNumbers(stepCount).map((i) => {
-    return noteIndices[i % noteIndices.length];
+function generatePattern(
+  noteRange: NoteRange,
+  directionMode: DirectionMode,
+  stepCount: number,
+): number[] {
+  const noteIndices = generateNoteIndexSeries(noteRange);
+  let pos = 0;
+  let dir = 1;
+  return seqNumbers(stepCount).map(() => {
+    const note = noteIndices[pos];
+    pos += dir;
+    if (pos >= noteIndices.length) {
+      if (directionMode === "upDown") {
+        dir = -dir;
+        pos -= 2;
+      } else {
+        pos = 0;
+      }
+    } else if (pos < 0) {
+      pos = 1;
+      dir = 1;
+    }
+    return note;
   });
 }
 
@@ -80,16 +104,17 @@ export const createTmd3Unit: ReactUnitTemplateFn = (unitInterface) => {
   const store = createStore<{
     noteRange: NoteRange;
     noteDuration: NoteDuration;
+    directionMode: DirectionMode;
   }>({
     noteRange: "TMDT",
     noteDuration: "/8",
+    directionMode: "upDown",
   });
 
   return {
     RenderUi() {
       const st = store.useSnapshot();
-
-      const pattern = generatePattern(st.noteRange, 8);
+      const pattern = generatePattern(st.noteRange, st.directionMode, 8);
       return (
         <div className="w-[400px] h-[200px] bg-[#eee] p-2">
           <div>tmd3</div>
@@ -106,6 +131,15 @@ export const createTmd3Unit: ReactUnitTemplateFn = (unitInterface) => {
                 options={noteDurationOptions}
                 value={st.noteDuration}
                 onChange={store.setNoteDuration}
+              />
+            </LabeledRow>
+          </div>
+          <div>
+            <LabeledRow label="direction mode">
+              <GeneralSelector
+                options={directionModeOptions}
+                value={st.directionMode}
+                onChange={store.setDirectionMode}
               />
             </LabeledRow>
           </div>
