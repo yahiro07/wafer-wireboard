@@ -1,11 +1,8 @@
 import { UnitInventorySpec } from "wus-vite-unit-loader-plugin";
 import _catalog from "../unit-inventories.json";
 
-const catalog = _catalog as Record<string, UnitInventorySpec>;
-
-export { catalog };
-
-export type CatalogKey = keyof typeof catalog;
+export type CatalogKey = keyof typeof _catalog;
+export const catalog = _catalog as Record<CatalogKey, UnitInventorySpec>;
 
 export type ShowcaseEntry = {
   name: string;
