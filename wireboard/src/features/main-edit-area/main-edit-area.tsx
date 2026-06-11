@@ -2,11 +2,12 @@ import clsx from "clsx";
 import { useEffect, useRef } from "react";
 import { appConfigs } from "@/base/constants";
 import { unitCatalogKeyDragMime } from "@/base/drag-drop-key";
-import { catalog } from "@/base/showcase-entries";
+import { showcaseEntries } from "@/base/showcase-entries";
 import { InfoButton } from "@/features/foreground-ui/floating-icons";
 import { GithubBadge } from "@/features/foreground-ui/github-badge";
 import { FieldSightPlane } from "@/features/main-edit-area/field-sight-plane";
 import { setupMainAreaInputHandlers } from "@/features/main-edit-area/sight-control-handlers";
+import { SceneSwitcherBar } from "@/features/scene-switcher-bar/scene-switcher-bar";
 import { useKeyboardAutoTarget } from "@/features/system-port/keyboard-auto-target";
 import {
   KeyboardSystemPortBox,
@@ -32,7 +33,11 @@ function useDropHandlers() {
     },
     onDrop(e: React.DragEvent<HTMLDivElement>) {
       const catalogKey = e.dataTransfer.getData(unitCatalogKeyDragMime);
-      if (!catalog[catalogKey]) return;
+
+      const showcaseEntry = showcaseEntries.find(
+        (it) => it.catalogKey === catalogKey,
+      );
+      if (!showcaseEntry) return;
 
       e.preventDefault();
       const rect = e.currentTarget.getBoundingClientRect();
@@ -49,7 +54,11 @@ function useDropHandlers() {
       if (appConfigs.snapUnitCoordToGrid) {
         position = snapUnitCoordToGrid(position);
       }
-      actions.addUnit(catalogKey, position);
+      actions.addUnit(
+        showcaseEntry.catalogKey,
+        position,
+        showcaseEntry.templateFn,
+      );
     },
   };
 }
@@ -64,7 +73,7 @@ const SightDraggingCover = () => {
 };
 
 export const MainEditArea = () => {
-  const { unitItems, sight, notes } = store.useSnapshot();
+  const { unitItems, sight, notes, sceneSwitcherVisible } = store.useSnapshot();
   const wires = useWireItems();
   const dropHandlers = useDropHandlers();
   const baseDivRef = useRef<HTMLDivElement>(null);
@@ -106,6 +115,7 @@ export const MainEditArea = () => {
       <GithubBadge />
       <TopControlBar />
       <SightDraggingCover />
+      {sceneSwitcherVisible && <SceneSwitcherBar />}
     </div>
   );
 };

@@ -1,12 +1,14 @@
+import { seqNumbers } from "mofur/ax";
 import { Point } from "mofur/ax-ui";
 import { createStore } from "snap-store";
-import { createHostSystem } from "wus-host/host";
+import { HsUnitStateData } from "wus-host/host";
 import { ReactUnitTemplateFn } from "wus-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
 import {
   createFieldSightHandlers,
   FieldSight,
 } from "@/features/main-edit-area/field-sight-plane";
+import { createChordProgressionUnit } from "@/units/chord-progression/chord-progression-unit";
 import { createBuiltinKeyboardUnit } from "@/units/keyboard/keyboard";
 import { createBuiltinVisualizerUnit } from "@/units/visualizer/visualizer";
 
@@ -22,6 +24,11 @@ export type UnitItem = {
   position: Point;
 };
 
+export type Scene = {
+  sceneId: string;
+  unitStates: HsUnitStateData[];
+};
+
 export type StoreState = {
   unitItems: UnitItem[];
   sight: FieldSight;
@@ -31,10 +38,10 @@ export type StoreState = {
   masterVolume: number;
   infoPanelVisible: boolean;
   draggingCoverVisible: boolean;
+  scenes: Scene[];
+  currentSceneId: string;
+  sceneSwitcherVisible: boolean;
 };
-
-const audioContext = new AudioContext();
-export const hostSystem = createHostSystem(audioContext);
 
 export const store = createStore<StoreState>({
   unitItems: [],
@@ -45,7 +52,14 @@ export const store = createStore<StoreState>({
   masterVolume: 0.5,
   infoPanelVisible: false,
   draggingCoverVisible: false,
+  scenes: seqNumbers(4).map((i) => ({
+    sceneId: `scene${i}`,
+    unitStates: [],
+  })),
+  currentSceneId: "scene0",
+  sceneSwitcherVisible: false,
 });
+
 export const sightHandlers = createFieldSightHandlers(
   () => store.state.sight,
   (attrs) => store.patchSight(attrs),
@@ -73,6 +87,11 @@ function buildDefaultScene() {
         destUnitId: "unit1",
         templateFn: createBuiltinKeyboardUnit,
         position: { x: 4600, y: by + 620 },
+      },
+      {
+        unitId: "builtInProgression",
+        templateFn: createChordProgressionUnit,
+        position: { x: 4100, y: by + 620 },
       },
     ];
     store.setUnitItems(unitItems);

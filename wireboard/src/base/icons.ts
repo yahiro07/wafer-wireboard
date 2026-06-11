@@ -6,6 +6,7 @@ import {
 import { BsFillSpeakerFill, BsPlayFill } from "react-icons/bs";
 import { CgChevronDown } from "react-icons/cg";
 import { FaGithub } from "react-icons/fa";
+import { HiQueueList } from "react-icons/hi2";
 import { IoCloseSharp } from "react-icons/io5";
 import { PiPianoKeysFill } from "react-icons/pi";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -31,4 +32,5 @@ export const IconsEx = {
   ConnectorPortUp: TbNavigationFilled,
   KeyboardOctaveShiftL: BiSolidLeftArrow,
   KeyboardOctaveShiftR: BiSolidRightArrow,
+  SceneSwitcher: HiQueueList,
 };

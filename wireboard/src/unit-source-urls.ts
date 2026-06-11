@@ -5,7 +5,7 @@ function toAbsolutePath(path: string): string {
 }
 
 function getUnitSourceUrls() {
-  if (0) {
+  if (1) {
     const unitsDevDistDir = toAbsolutePath(
       "../../../webaudio-unit-system/unit-examples/dist",
     );
@@ -47,8 +47,8 @@ function getUnitSourceUrls() {
       // "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/specbar/",
       // "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/proto-engine-ptm-osc/",
       // "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/proto-engine-pd-fm/",
-      // "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/mini-synth/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/mini-synth-ge/",
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/mini-synth/",
+      // "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/mini-synth-ge/",
       // "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/mini-synth-gp/",
       "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/useq/",
       "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/lseq1/",
