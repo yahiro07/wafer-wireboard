@@ -6,7 +6,7 @@ import {
 } from "mofur-components/mono2";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wus-host/react";
-import { ClockPort } from "wus-unit-types/v02";
+import { ClockInputPort } from "wus-unit-types/v02";
 import { hostSystem } from "@/store/host-system-instance";
 
 type DynamicPatternInput = {
@@ -106,7 +106,7 @@ function createProgressionCore(defaultState: ProgressionState) {
 
   let prevIndex = -1;
 
-  const clockInput: ClockPort = {
+  const clockInput: ClockInputPort = {
     start() {
       emitPatternInputFromState(0, true);
       prevIndex = 0;
