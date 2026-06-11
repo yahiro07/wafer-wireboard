@@ -32,9 +32,9 @@ export const createOscUnit: ReactUnitTemplateFn = (unitInterface) => {
   oscillatorCore.setParameter("octave", store.state.octave);
   oscillatorCore.setParameter("volume", store.state.volume);
 
-  unitInterface.completeSetupWithAttributes({
-    unitFeatures: {
-      type: "instrument",
+  unitInterface.completeSetup({
+    unitAspects: {
+      unitType: "instrument",
       outputs: ["audio"],
       inputs: ["note", "automation", "state"],
     },
