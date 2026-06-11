@@ -11,7 +11,7 @@ import {
 import { useEffect, useMemo } from "react";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wus-host/react";
-import { UnitInterface } from "wus-unit-types";
+import { UnitInterface } from "wus-unit-types/v02";
 import { LabeledRow } from "@/components/labeled-row";
 import { createNoteOffSchedulingAdapter } from "@/units/common/note-off-scheduling-adapter";
 import { makeStepSchedulingSource } from "@/units/common/step-scheduling-source";

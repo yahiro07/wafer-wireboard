@@ -6,7 +6,7 @@ import {
 } from "mofur-components/mono2";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wus-host/react";
-import { ClockPort } from "wus-unit-types";
+import { ClockPort } from "wus-unit-types/v02";
 import { hostSystem } from "@/store/host-system-instance";
 
 type DynamicPatternInput = {
