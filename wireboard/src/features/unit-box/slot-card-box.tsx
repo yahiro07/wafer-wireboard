@@ -58,10 +58,12 @@ export const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
         </div>
         <div className="grow bg-gray-600">
           <UnitFrameEx
+            key={unit.fileChangeRevision}
             unitId={unit.unitId}
             destUnitId={unit.destUnitId}
             catalogKey={unit.catalogKey}
             templateFn={unit.templateFn}
+            moduleUrl={unit.moduleUrl}
           />
         </div>
         <div className="w-[40px] bg-gray-500 flex-v text-white py-1">
