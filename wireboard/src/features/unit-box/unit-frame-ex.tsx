@@ -1,6 +1,11 @@
 import { ScalerBoxAutoSized } from "mofur/mo-react";
 import { ReactNode } from "react";
-import { ReactUnitFrame, ReactUnitTemplateFn, UnitFrame } from "wus-host/react";
+import {
+  CustomElementUnitFrameFI,
+  ReactUnitFrame,
+  ReactUnitTemplateFn,
+  UnitFrame,
+} from "wus-host/react";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
 import { setupIframeInputHandlers } from "@/features/main-edit-area/sight-control-handlers";
 
@@ -9,16 +14,27 @@ export const UnitFrameEx = ({
   destUnitId,
   catalogKey,
   templateFn,
+  moduleUrl,
   notes,
 }: {
   unitId: string;
   destUnitId?: string;
   catalogKey?: CatalogKey;
   templateFn?: ReactUnitTemplateFn;
+  moduleUrl?: string;
   notes?: number[];
 }) => {
   let content: ReactNode;
-  if (templateFn) {
+  if (moduleUrl) {
+    content = (
+      <CustomElementUnitFrameFI
+        unitId={unitId}
+        destSpec={destUnitId}
+        scriptUrl={moduleUrl}
+        inputNotes={notes}
+      />
+    );
+  } else if (templateFn) {
     content = (
       <ReactUnitFrame
         unitId={unitId}

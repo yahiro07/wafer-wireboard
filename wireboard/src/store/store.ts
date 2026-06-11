@@ -21,6 +21,7 @@ export type UnitItem = {
   destUnitId?: string;
   catalogKey?: CatalogKey;
   templateFn?: ReactUnitTemplateFn;
+  moduleUrl?: string;
   position: Point;
 };
 

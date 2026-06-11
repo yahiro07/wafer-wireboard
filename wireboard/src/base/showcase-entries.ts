@@ -12,7 +12,8 @@ const additionalUnitTemplateMap = {
 
 export type CatalogKey =
   | keyof typeof _catalog
-  | keyof typeof additionalUnitTemplateMap;
+  | keyof typeof additionalUnitTemplateMap
+  | "ku2Osc";
 
 export const catalog = _catalog as Record<CatalogKey, UnitInventorySpec>;
 
@@ -21,6 +22,7 @@ export type ShowcaseEntry = {
   catalogKey: CatalogKey;
   templateFn?: ReactUnitTemplateFn;
   thumbnailUrl?: string;
+  moduleUrl?: string;
 };
 
 export const showcaseEntries: ShowcaseEntry[] = [
@@ -39,4 +41,10 @@ if (appConfigs.isDevelopment) {
       templateFn,
     })),
   );
+
+  showcaseEntries.push({
+    name: "ku2-osc",
+    catalogKey: 'ku2Osc',
+    moduleUrl: '/dev-units/ku2-osc/index.js',
+  })
 }

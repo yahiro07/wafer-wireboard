@@ -24,6 +24,7 @@ export const actions = {
     catalogKey: CatalogKey,
     position: Point,
     templateFn?: ReactUnitTemplateFn,
+    moduleUrl?: string,
   ) {
     store.setUnitItems((prev) => [
       ...prev,
@@ -31,6 +32,7 @@ export const actions = {
         unitId: getNextUnitId(prev),
         catalogKey,
         templateFn,
+        moduleUrl,
         position,
       },
     ]);

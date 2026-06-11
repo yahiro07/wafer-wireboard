@@ -58,6 +58,7 @@ function useDropHandlers() {
         showcaseEntry.catalogKey,
         position,
         showcaseEntry.templateFn,
+        showcaseEntry.moduleUrl,
       );
     },
   };
