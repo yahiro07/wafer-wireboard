@@ -24,36 +24,51 @@ export const UnitFrameEx = ({
   moduleUrl?: string;
   notes?: number[];
 }) => {
-  let content: ReactNode;
-  if (moduleUrl) {
-    content = (
-      <CustomElementUnitFrameFI
-        unitId={unitId}
-        destSpec={destUnitId}
-        scriptUrl={moduleUrl}
-        inputNotes={notes}
-      />
-    );
-  } else if (templateFn) {
-    content = (
-      <ReactUnitFrame
-        unitId={unitId}
-        destSpec={destUnitId}
-        unitTemplateFn={templateFn}
-        inputNotes={notes}
-      />
-    );
-  } else if (catalogKey) {
-    content = (
-      <UnitFrame
-        unitId={unitId}
-        destSpec={destUnitId}
-        pageUrl={catalog[catalogKey].loaderPageUrl}
-        frameSize={catalog[catalogKey].preferredSize}
-        inputNotes={notes}
-        onIframeMounted={setupIframeInputHandlers}
-      />
-    );
-  }
+  const content: ReactNode = (() => {
+    if (moduleUrl) {
+      return (
+        <CustomElementUnitFrameFI
+          unitId={unitId}
+          destSpec={destUnitId}
+          scriptUrl={moduleUrl}
+          inputNotes={notes}
+        />
+      );
+    } else if (templateFn) {
+      return (
+        <ReactUnitFrame
+          unitId={unitId}
+          destSpec={destUnitId}
+          unitTemplateFn={templateFn}
+          inputNotes={notes}
+        />
+      );
+    } else if (catalogKey) {
+      const catalogItem = catalog[catalogKey];
+      if (!catalogItem) return null;
+      if (catalogItem.loaderPageUrl.endsWith("/index.js")) {
+        return (
+          <CustomElementUnitFrameFI
+            unitId={unitId}
+            destSpec={destUnitId}
+            scriptUrl={catalogItem.loaderPageUrl}
+            frameSize={catalogItem.preferredSize}
+            inputNotes={notes}
+          />
+        );
+      } else {
+        return (
+          <UnitFrame
+            unitId={unitId}
+            destSpec={destUnitId}
+            pageUrl={catalogItem.loaderPageUrl}
+            frameSize={catalogItem.preferredSize}
+            inputNotes={notes}
+            onIframeMounted={setupIframeInputHandlers}
+          />
+        );
+      }
+    }
+  })();
   return <ScalerBoxAutoSized>{content}</ScalerBoxAutoSized>;
 };

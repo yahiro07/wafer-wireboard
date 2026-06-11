@@ -44,7 +44,7 @@ if (appConfigs.isDevelopment) {
 
   showcaseEntries.push({
     name: "ku2-osc",
-    catalogKey: 'ku2Osc',
-    moduleUrl: '/dev-units/ku2-osc/index.js',
-  })
+    catalogKey: "ku2Osc",
+    moduleUrl: "/dev-units/ku2-osc/index.js",
+  });
 }
