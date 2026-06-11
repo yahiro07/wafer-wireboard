@@ -23,6 +23,7 @@ export type UnitItem = {
   templateFn?: ReactUnitTemplateFn;
   moduleUrl?: string;
   position: Point;
+  fileChangeRevision?: number;
 };
 
 export type Scene = {

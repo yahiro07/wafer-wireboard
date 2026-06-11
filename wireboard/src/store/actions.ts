@@ -109,4 +109,14 @@ export const actions = {
   toggleSceneSwitcherVisible() {
     store.toggleSceneSwitcherVisible();
   },
+  handleUnitSourceUpdate(catalogKey: CatalogKey) {
+    store.produceUnitItems((draft) => {
+      for (const item of draft) {
+        if (item.catalogKey === catalogKey) {
+          item.fileChangeRevision ??= 0;
+          item.fileChangeRevision++;
+        }
+      }
+    });
+  },
 };
