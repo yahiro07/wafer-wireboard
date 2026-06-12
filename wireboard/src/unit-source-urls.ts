@@ -23,6 +23,8 @@ function getUnitSourceUrls() {
       `file://${wusUnitsLocalDistDir}/mini-synth-gp/`,
       `file://${wusUnitsLocalDistDir}/bseq1/`,
       `file://${wusUnitsLocalDistDir}/lseq1/`,
+      `file://${wusUnitsLocalDistDir}/chord-caster/`,
+      `file://${wusUnitsLocalDistDir}/rtfr/`,
       //
       `file://${wusCustomUnitsLocalDistDir}/additive/`,
       `file://${wusCustomUnitsLocalDistDir}/drum-machine/`,
