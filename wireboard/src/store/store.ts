@@ -75,23 +75,34 @@ function buildDefaultScene() {
         destUnitId: "$output",
         unitId: "builtInPreOutput",
         templateFn: createBuiltinVisualizerUnit,
-        position: { x: 4500, y: by + 100 },
+        position: { x: 4500, y: by + 50 },
       },
       {
-        unitId: "unit1",
         destUnitId: "builtInPreOutput",
+        unitId: "unit1",
         catalogKey: "miniSynthGe",
-        position: { x: 4500, y: by + 360 },
+        position: { x: 4500, y: by + 260 },
       },
       {
-        unitId: "builtInKeyboard",
         destUnitId: "unit1",
+        unitId: "unit2",
+        catalogKey: "rtfs1",
+        position: { x: 4500, y: by + 450 },
+      },
+      {
+        destUnitId: "unit2",
+        unitId: "builtInKeyboard",
         templateFn: createBuiltinKeyboardUnit,
-        position: { x: 4600, y: by + 620 },
+        position: { x: 4600, y: by + 640 },
+      },
+      {
+        unitId: "unit3",
+        catalogKey: "chordCaster",
+        position: { x: 4000, y: by + 450 },
       },
     ];
     store.setUnitItems(unitItems);
-    store.patchSight({ eyeScaling: 1.0, eyeOffset: { x: 0, y: 250 } });
+    store.patchSight({ eyeScaling: 1.0, eyeOffset: { x: 200, y: 250 } });
   } else {
     const by = 2400;
     const unitItems: UnitItem[] = [
