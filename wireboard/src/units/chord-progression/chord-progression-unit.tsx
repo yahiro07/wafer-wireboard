@@ -6,8 +6,7 @@ import {
 } from "mofur-components/mono2";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wus-host/react";
-import { ClockInputPort } from "wus-unit-types/v02";
-import { hostSystem } from "@/store/host-system-instance";
+import { ClockInputPort, UnitInterface } from "wus-unit-types/v02";
 
 type DynamicPatternInput = {
   key?: string; //"C", "Am", etc.
@@ -90,12 +89,15 @@ function getRelativeOptions(key: string): SelectorOption<number>[] {
   return createSelectorOptions(relNotes.map((i) => [i, getChordName(key, i)]));
 }
 
-function createProgressionCore(defaultState: ProgressionState) {
+function createProgressionCore(
+  defaultState: ProgressionState,
+  unitInterface: UnitInterface,
+) {
   const state = defaultState;
 
   function emitPatternInput(data: DynamicPatternInput) {
     // console.log("emitting", data.key, data.chordRootNote);
-    hostSystem.emitMetaAttributes({ dynamicPatternInput: data });
+    unitInterface.emitMetaAttributes({ dynamicPatternInput: data });
   }
 
   function emitPatternInputFromState(index: number, withKey?: boolean) {
@@ -127,7 +129,7 @@ function createProgressionCore(defaultState: ProgressionState) {
     setState(attrs: Partial<ProgressionState>) {
       Object.assign(state, attrs);
       if (attrs.key) {
-        hostSystem.emitMetaAttributes({ key: attrs.key });
+        unitInterface.emitMetaAttributes({ key: attrs.key });
       }
     },
     clockInput,
@@ -142,7 +144,7 @@ export const createChordProgressionUnit: ReactUnitTemplateFn = (
     loopBars: 4,
     relatives: [0, -5, -4, -2], //Am-Em-F-G
   };
-  const core = createProgressionCore(initialProgressionState);
+  const core = createProgressionCore(initialProgressionState, unitInterface);
 
   const store = createStore<ProgressionState>(initialProgressionState);
   store.subscribe(core.setState);
