@@ -1,7 +1,7 @@
 import "../../../page.css";
 import "mofur/ax-ui/utility-classes.css";
 import { mountAppRoot } from "mofur/ax-react";
-import { queryUnitInterface } from "wus-unit-types/v02";
+import { queryUnitInterface } from "wus-unit-types";
 import { createOscillatorUnitCore } from "@/units/common/oscillator-unit-core";
 
 const unitInterface = queryUnitInterface("wus-v02");

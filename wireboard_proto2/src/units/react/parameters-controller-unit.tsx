@@ -1,6 +1,6 @@
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wus-host/react";
-import { ParameterSpec } from "wus-unit-types/v02";
+import { ParameterSpec } from "wus-unit-types";
 import { Knob } from "@/shared/components/knob";
 import { UpperLabel } from "@/shared/components/upper-label";
 

@@ -27,6 +27,6 @@
     "vite": "^8.0.12",
     "vitest": "^4.1.8",
     "wus-host": "../../webaudio-unit-system/framework/wus-host",
-    "wus-unit-types": "../../webaudio-unit-system/contract/wus-unit-types"
+    "wus-unit-types": "../../webaudio-unit-system/contract/wus-unit-types-v02-beta"
   }
 }
