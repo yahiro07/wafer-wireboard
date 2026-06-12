@@ -25,6 +25,7 @@ function getUnitSourceUrls() {
       `file://${wusUnitsLocalDistDir}/lseq1/`,
       `file://${wusUnitsLocalDistDir}/chord-caster/`,
       `file://${wusUnitsLocalDistDir}/rtfr/`,
+      `file://${wusUnitsLocalDistDir}/rtfs1/`,
       //
       `file://${wusCustomUnitsLocalDistDir}/additive/`,
       `file://${wusCustomUnitsLocalDistDir}/drum-machine/`,
