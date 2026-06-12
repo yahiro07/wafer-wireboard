@@ -4,7 +4,11 @@ import { setupMidiKeyboardInput } from "mofur/mx-audio";
 import { useCallback, useEffect, useMemo } from "react";
 import { createStore } from "snap-store";
 import { createHostSystem } from "wus-host/host";
-import { HostAppProvider, UnitFrame } from "wus-host/react";
+import {
+  CustomElementUnitFrameFI,
+  HostAppProvider,
+  UnitFrame,
+} from "wus-host/react";
 import { Button } from "@/components/button";
 import { Icons } from "@/components/icons";
 import { NumberSliderBox } from "@/components/number-slider-box";
@@ -140,15 +144,25 @@ const UnitFrameEx = ({
     () => frameSizeOverride ?? catalog[catalogKey].preferredSize!,
     [catalogKey, frameSizeOverride],
   );
+  const targetUrl = catalog[catalogKey].loaderPageUrl;
   return (
     <UnitFrameScaler containerSize={containerSize} unitFrameSize={frameSize}>
-      <UnitFrame
-        unitId={unitId}
-        destSpec={destUnitId}
-        pageUrl={catalog[catalogKey].loaderPageUrl}
-        frameSize={frameSize}
-        onIframeMounted={onIframeMounted}
-      />
+      {targetUrl.endsWith("index.js") ? (
+        <CustomElementUnitFrameFI
+          unitId={unitId}
+          destSpec={destUnitId}
+          scriptUrl={targetUrl}
+          frameSize={frameSize}
+        />
+      ) : (
+        <UnitFrame
+          unitId={unitId}
+          destSpec={destUnitId}
+          pageUrl={targetUrl}
+          frameSize={frameSize}
+          onIframeMounted={onIframeMounted}
+        />
+      )}
     </UnitFrameScaler>
   );
 };
@@ -230,7 +244,7 @@ const PageRoot = () => {
               <PartSlot
                 partSlotId="ps2"
                 instrumentUnitKey="miniSynthGe"
-                sequencerUnitKey="useq"
+                sequencerUnitKey="bseq1"
               />
               <PartSlot
                 partSlotId="ps3"
@@ -267,7 +281,7 @@ const PageRoot2 = () => {
               <PartSlot
                 partSlotId="ps2"
                 instrumentUnitKey="miniSynthGe"
-                sequencerUnitKey="useq"
+                sequencerUnitKey="bseq1"
               />
               <PartSlot
                 partSlotId="ps3"

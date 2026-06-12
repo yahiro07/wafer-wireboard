@@ -21,7 +21,7 @@ function getUnitSourceUrls() {
       `file://${wusUnitsLocalDistDir}/mini-synth/`,
       `file://${wusUnitsLocalDistDir}/mini-synth-ge/`,
       `file://${wusUnitsLocalDistDir}/mini-synth-gp/`,
-      `file://${wusUnitsLocalDistDir}/useq/`,
+      `file://${wusUnitsLocalDistDir}/bseq1/`,
       `file://${wusUnitsLocalDistDir}/lseq1/`,
       //
       `file://${wusCustomUnitsLocalDistDir}/additive/`,

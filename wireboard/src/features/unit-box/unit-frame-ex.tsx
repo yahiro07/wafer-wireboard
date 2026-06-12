@@ -52,7 +52,7 @@ export const UnitFrameEx = ({
             unitId={unitId}
             destSpec={destUnitId}
             scriptUrl={catalogItem.loaderPageUrl}
-            frameSize={catalogItem.preferredSize}
+            // frameSize={catalogItem.preferredSize}
             inputNotes={notes}
           />
         );
