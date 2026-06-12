@@ -1,4 +1,4 @@
-import { NotePort } from "wus-unit-types/v02";
+import { NotePort } from "wus-unit-types";
 
 export function createNoteOffSchedulingAdapter(noteOutput: NotePort) {
   type NoteOffItem = { noteNumber: number; timeAt: number };

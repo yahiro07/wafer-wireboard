@@ -20,6 +20,12 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "wus-unit-types": [
+        "../../webaudio-unit-system/contract/wus-unit-types-v02-beta/src/index.ts"
+      ],
+      "wus-unit-types-v01": [
+        "../../webaudio-unit-system/contract/wus-unit-types-v01/src/index.ts"
       ]
     }
   },
