@@ -43,23 +43,25 @@ function getUnitSourceUrls() {
     ];
   } else {
     return [
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/wavicle/",
-      // "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/specbar/",
-      // "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/proto-engine-ptm-osc/",
-      // "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/proto-engine-pd-fm/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/mini-synth/",
-      // "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/mini-synth-ge/",
-      // "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/mini-synth-gp/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/useq/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r13/lseq1/",
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/wavicle/",
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/mini-synth/",
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/bseq1/",
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/lseq1/",
       //
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r13/additive/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r13/drum-machine/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r13/wasyn-1/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r13/webaudio-tinysynth-simple/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r13/bc-010/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r13/koodori/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r13/webaudio-synth-v2/",
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/specbar/",
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/proto-engine-ptm-osc/",
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/proto-engine-pd-fm/",
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/mini-synth-ge/",
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/mini-synth-gp/",
+
+      //
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/additive/",
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/drum-machine/",
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/wasyn-1/",
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/webaudio-tinysynth-simple/",
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/bc-010/",
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/koodori/",
+      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/webaudio-synth-v2/",
       //
       // "https://cdn.jsdelivr.net/gh/yahiro07/webaudio-unit-system@r1/unit-examples/dist/mu1-instrument/",
       // "https://cdn.jsdelivr.net/gh/yahiro07/webaudio-unit-system@r1/unit-examples/dist/mu2-sequencer/",
