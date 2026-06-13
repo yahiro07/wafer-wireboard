@@ -86,7 +86,7 @@ function buildDefaultScene() {
       {
         destUnitId: "unit1",
         unitId: "unit2",
-        catalogKey: "rtfs1",
+        catalogKey: "rtfs2",
         position: { x: 4500, y: by + 450 },
       },
       {
@@ -96,7 +96,7 @@ function buildDefaultScene() {
         position: { x: 4600, y: by + 640 },
       },
       {
-        unitId: "unit3",
+        unitId: "chordCaster1",
         catalogKey: "chordCaster",
         position: { x: 4000, y: by + 450 },
       },
