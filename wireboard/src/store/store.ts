@@ -86,7 +86,7 @@ function buildDefaultScene() {
       {
         destUnitId: "unit1",
         unitId: "unit2",
-        catalogKey: "rtfs2",
+        catalogKey: "perseq",
         position: { x: 4500, y: by + 450 },
       },
       {
