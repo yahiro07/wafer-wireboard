@@ -193,7 +193,7 @@ const PartSlot = ({
             destUnitId="$output"
             catalogKey={effectCatalogKey}
             containerSize={containerSizeForEffect}
-            frameSizeOverride={containerSizeForEffect}
+            // frameSizeOverride={containerSizeForEffect}
           />
         )}
       </div>
@@ -332,7 +332,7 @@ const App = () => {
       bpm={state.bpm}
       playing={state.playing}
     >
-      <PageRoot />
+      <PageRoot2 />
     </HostAppProvider>
   );
 };
