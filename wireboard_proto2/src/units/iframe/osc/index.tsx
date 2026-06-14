@@ -1,10 +1,10 @@
 import "../../../page.css";
 import "mofur/ax-ui/utility-classes.css";
 import { mountAppRoot } from "mofur/ax-react";
-import { getUnitInterface } from "wus-unit-types";
+import { queryUnitInterface } from "wus-unit-types";
 import { createOscillatorUnitCore } from "@/units/common/oscillator-unit-core";
 
-const unitInterface = getUnitInterface("wus-v02");
+const unitInterface = queryUnitInterface("wus-v02");
 
 const audioContext = unitInterface?.audioContext ?? new AudioContext();
 const destNode =

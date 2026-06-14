@@ -8,7 +8,6 @@ import {
   createFieldSightHandlers,
   FieldSight,
 } from "@/features/main-edit-area/field-sight-plane";
-import { createChordProgressionUnit } from "@/units/chord-progression/chord-progression-unit";
 import { createBuiltinKeyboardUnit } from "@/units/keyboard/keyboard";
 import { createBuiltinVisualizerUnit } from "@/units/visualizer/visualizer";
 
@@ -76,28 +75,34 @@ function buildDefaultScene() {
         destUnitId: "$output",
         unitId: "builtInPreOutput",
         templateFn: createBuiltinVisualizerUnit,
-        position: { x: 4500, y: by + 100 },
+        position: { x: 4500, y: by + 50 },
       },
       {
-        unitId: "unit1",
         destUnitId: "builtInPreOutput",
+        unitId: "unit1",
         catalogKey: "miniSynthGe",
-        position: { x: 4500, y: by + 360 },
+        position: { x: 4500, y: by + 260 },
       },
       {
-        unitId: "builtInKeyboard",
         destUnitId: "unit1",
-        templateFn: createBuiltinKeyboardUnit,
-        position: { x: 4600, y: by + 620 },
+        unitId: "unit2",
+        catalogKey: "perseq",
+        position: { x: 4500, y: by + 450 },
       },
       {
-        unitId: "builtInProgression",
-        templateFn: createChordProgressionUnit,
-        position: { x: 4100, y: by + 620 },
+        destUnitId: "unit2",
+        unitId: "builtInKeyboard",
+        templateFn: createBuiltinKeyboardUnit,
+        position: { x: 4600, y: by + 640 },
+      },
+      {
+        unitId: "chordCaster1",
+        catalogKey: "chordCaster",
+        position: { x: 4000, y: by + 450 },
       },
     ];
     store.setUnitItems(unitItems);
-    store.patchSight({ eyeScaling: 1.0, eyeOffset: { x: 0, y: 250 } });
+    store.patchSight({ eyeScaling: 1.0, eyeOffset: { x: 200, y: 250 } });
   } else {
     const by = 2400;
     const unitItems: UnitItem[] = [
