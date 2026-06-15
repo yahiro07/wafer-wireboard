@@ -28,6 +28,6 @@
     "typescript": "~6.0.3",
     "vite": "^8.0.12",
     "wrangler": "^4.99.0",
-    "wafer-host": "^0.0.3"
+    "wafer-host": "file:../../wafer/wafer"
   }
 }
