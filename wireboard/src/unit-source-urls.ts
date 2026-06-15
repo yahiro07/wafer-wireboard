@@ -37,14 +37,8 @@ function getUnitSourceUrls() {
       `file://${wusCustomUnitsLocalDistDir}/bc-010/`,
       `file://${wusCustomUnitsLocalDistDir}/koodori/`,
       `file://${wusCustomUnitsLocalDistDir}/webaudio-synth-v2/`,
-      // {
-      //   url: `file://${wusCustomUnitsLocalDir}/vissonance/web/`,
-      //   key: "vissonance",
-      // },
-      {
-        url: `file://${wusCustomUnitsLocalDir}/threejs-audio-reactive-visual/dist/`,
-        key: "threejs-audio-reactive-visual",
-      },
+      `file://${wusCustomUnitsLocalDistDir}/vissonance/`,
+      `file://${wusCustomUnitsLocalDistDir}/threejs-audio-reactive-visual/`,
       //
       `file://${homeDir}/wus-units/my-drum-machine/`,
       `file://${homeDir}/wus-units/twsq1/`,
