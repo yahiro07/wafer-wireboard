@@ -8,8 +8,6 @@ import { HostAppProvider } from "wus-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
 import { UnitFrameEx } from "@/features/unit-box/unit-frame-ex";
 import { hostSystem } from "@/store/host-system-instance";
-import { createChordProgressionUnit } from "@/units/chord-progression/chord-progression-unit";
-import { createRtfrUnit } from "@/units/rtfr/rtfr";
 
 export type StoreState = {
   notes: number[];
@@ -64,10 +62,10 @@ const App = () => {
                 feed
               </Button>
             </div>
-            <UnitFrameEx
+            {/* <UnitFrameEx
               templateFn={createChordProgressionUnit}
               unitId="chordProgression"
-            />
+            /> */}
             <UnitFrameEx templateFn={createUnit1} unitId="unit1dev" />
           </div>
           <div className="flex-v w-[500px] h-[500px]">
@@ -80,8 +78,8 @@ const App = () => {
             <UnitFrameEx
               unitId="sequencer"
               destUnitId="synth"
-              templateFn={createRtfrUnit}
-              // templateFn={createUnit1}
+              // templateFn={createRtfrUnit}
+              templateFn={createUnit1}
               notes={feedNotesToSequencer ? notes : undefined}
             />
           </div>
