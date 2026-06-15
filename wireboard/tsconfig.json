@@ -3,33 +3,16 @@
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "bundler",
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable"
-    ],
-    "types": [
-      "node",
-      "vite/client",
-    ],
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "types": ["node", "vite/client"],
     "jsx": "react-jsx",
     "strict": true,
     "noEmit": true,
     "skipLibCheck": true,
     "preserveSymlinks": true,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "wus-unit-types": [
-        "../../webaudio-unit-system/contract/wus-unit-types-v02-beta/src/index.ts"
-      ],
-      "wus-unit-types-v01": [
-        "../../webaudio-unit-system/contract/wus-unit-types-v01/src/index.ts"
-      ]
+      "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
