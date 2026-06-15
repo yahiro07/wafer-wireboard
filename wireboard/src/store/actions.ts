@@ -29,7 +29,7 @@ export const actions = {
     store.setUnitItems((prev) => [
       ...prev,
       {
-        unitId: getNextUnitId(prev),
+        unitId: `${catalogKey}_${getNextUnitId(prev)}`,
         catalogKey,
         templateFn,
         moduleUrl,

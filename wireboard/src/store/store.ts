@@ -83,23 +83,23 @@ function buildDefaultScene() {
         catalogKey: "miniSynthGe",
         position: { x: 4500, y: by + 260 },
       },
+      // {
+      //   destUnitId: "unit1",
+      //   unitId: "unit2",
+      //   catalogKey: "perseq",
+      //   position: { x: 4500, y: by + 450 },
+      // },
       {
         destUnitId: "unit1",
-        unitId: "unit2",
-        catalogKey: "perseq",
-        position: { x: 4500, y: by + 450 },
-      },
-      {
-        destUnitId: "unit2",
         unitId: "builtInKeyboard",
         templateFn: createBuiltinKeyboardUnit,
         position: { x: 4600, y: by + 640 },
       },
-      {
-        unitId: "chordCaster1",
-        catalogKey: "chordCaster",
-        position: { x: 4000, y: by + 450 },
-      },
+      // {
+      //   unitId: "chordCaster1",
+      //   catalogKey: "chordCaster",
+      //   position: { x: 4000, y: by + 450 },
+      // },
     ];
     store.setUnitItems(unitItems);
     store.patchSight({ eyeScaling: 1.0, eyeOffset: { x: 200, y: 250 } });

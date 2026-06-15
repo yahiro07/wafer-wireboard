@@ -13,6 +13,7 @@ function getUnitSourceUrls() {
     const wusCustomUnitsLocalDistDir = toAbsolutePath(
       "../../../wus-custom-units/dist",
     );
+    const wusCustomUnitsLocalDir = toAbsolutePath("../../../wus-custom-units");
     return [
       `file://${wusUnitsLocalDistDir}/wavicle/`,
       `file://${wusUnitsLocalDistDir}/specbar/`,
@@ -36,6 +37,14 @@ function getUnitSourceUrls() {
       `file://${wusCustomUnitsLocalDistDir}/bc-010/`,
       `file://${wusCustomUnitsLocalDistDir}/koodori/`,
       `file://${wusCustomUnitsLocalDistDir}/webaudio-synth-v2/`,
+      // {
+      //   url: `file://${wusCustomUnitsLocalDir}/vissonance/web/`,
+      //   key: "vissonance",
+      // },
+      {
+        url: `file://${wusCustomUnitsLocalDir}/threejs-audio-reactive-visual/dist/`,
+        key: "threejs-audio-reactive-visual",
+      },
       //
       `file://${homeDir}/wus-units/my-drum-machine/`,
       `file://${homeDir}/wus-units/twsq1/`,
