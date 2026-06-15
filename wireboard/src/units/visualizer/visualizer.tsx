@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { ReactUnitTemplateFn } from "wus-host/react";
+import { ReactUnitTemplateFn } from "wafer-host/react";
 import { renderSpectrum } from "./spectrum-renderer";
 
 export const createBuiltinVisualizerUnit: ReactUnitTemplateFn = (
@@ -8,8 +8,8 @@ export const createBuiltinVisualizerUnit: ReactUnitTemplateFn = (
   const audioContext = unitInterface.audioContext;
   const analyzer = audioContext.createAnalyser();
   analyzer.fftSize = 1024;
-  unitInterface.primaryInputPort.audioInput.node.connect(analyzer);
-  analyzer.connect(unitInterface.primaryOutputPort.audioOutput.node);
+  unitInterface.audioInputNode.connect(analyzer);
+  analyzer.connect(unitInterface.audioOutputNode);
 
   unitInterface.completeSetup({
     unitAspects: {

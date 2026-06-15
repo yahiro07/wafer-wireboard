@@ -1,5 +1,5 @@
 import { Point } from "mofur/ax-ui";
-import { ReactUnitTemplateFn } from "wus-host/react";
+import { ReactUnitTemplateFn } from "wafer-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
 import { hostSystem } from "@/store/host-system-instance";
 import { store, UnitItem } from "@/store/store";

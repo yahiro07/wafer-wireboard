@@ -3,8 +3,7 @@ import { setupMidiKeyboardInput } from "mofur/mx-audio";
 import { Button } from "mofur-components/mono2";
 import { useEffect } from "react";
 import { createStore } from "snap-store";
-import { createUnit1 } from "wb-react-units";
-import { HostAppProvider } from "wus-host/react";
+import { HostAppProvider } from "wafer-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
 import { UnitFrameEx } from "@/features/unit-box/unit-frame-ex";
 import { hostSystem } from "@/store/host-system-instance";
@@ -66,7 +65,7 @@ const App = () => {
               templateFn={createChordProgressionUnit}
               unitId="chordProgression"
             /> */}
-            <UnitFrameEx templateFn={createUnit1} unitId="unit1dev" />
+            {/* <UnitFrameEx templateFn={createUnit1} unitId="unit1dev" /> */}
           </div>
           <div className="flex-v w-[500px] h-[500px]">
             <UnitFrameEx
@@ -78,8 +77,9 @@ const App = () => {
             <UnitFrameEx
               unitId="sequencer"
               destUnitId="synth"
+              catalogKey="mu4Keyboard"
               // templateFn={createRtfrUnit}
-              templateFn={createUnit1}
+              // templateFn={createUnit1}
               notes={feedNotesToSequencer ? notes : undefined}
             />
           </div>

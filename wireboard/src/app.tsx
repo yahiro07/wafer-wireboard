@@ -2,7 +2,7 @@ import { mountAppRoot } from "mofur/ax-react";
 import { mapKnobGainDb } from "mofur/mo-audio";
 import { setupMidiKeyboardInput } from "mofur/mx-audio";
 import { useEffect, useMemo } from "react";
-import { HostAppProvider } from "wus-host/react";
+import { HostAppProvider } from "wafer-host/react";
 import { PickerColumn } from "@/features/picker/picker-column";
 import { hostSystem } from "@/store/host-system-instance";
 import { store } from "@/store/store";

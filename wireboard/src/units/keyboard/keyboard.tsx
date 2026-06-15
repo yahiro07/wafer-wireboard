@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { createStore } from "snap-store";
-import { ReactUnitTemplateFn } from "wus-host/react";
+import { ReactUnitTemplateFn } from "wafer-host/react";
 import {
   KeyboardOctaveBlock,
   KeyboardTopKey,
@@ -10,8 +10,7 @@ import { OctaveShifter } from "./octave-shifter";
 export const createBuiltinKeyboardUnit: ReactUnitTemplateFn = (
   unitInterface,
 ) => {
-  const { primaryOutputPort } = unitInterface;
-  const { noteOutput } = primaryOutputPort;
+  const noteOutput = unitInterface.noteOutputPort;
 
   const notesMap = new Map<number, number>(); // key: noteKey, value: noteNumber
 
@@ -20,11 +19,11 @@ export const createBuiltinKeyboardUnit: ReactUnitTemplateFn = (
     octave: 0, //-2~+2
   });
 
-  primaryOutputPort.setCallbacks({
-    onDisconnectTo() {
-      store.setState({ notes: [] });
-    },
-  });
+  // noteOutput.setCallbacks({
+  //   onDisconnectTo() {
+  //     store.setState({ notes: [] });
+  //   },
+  // });
 
   const actions = {
     async noteOn(noteKey: number) {
@@ -53,11 +52,9 @@ export const createBuiltinKeyboardUnit: ReactUnitTemplateFn = (
       outputs: ["note"],
       inputs: ["note"],
     },
-    primaryInputPortHandlers: {
-      noteInput: {
-        noteOn: actions.noteOn,
-        noteOff: actions.noteOff,
-      },
+    noteInput: {
+      noteOn: actions.noteOn,
+      noteOff: actions.noteOff,
     },
   });
 

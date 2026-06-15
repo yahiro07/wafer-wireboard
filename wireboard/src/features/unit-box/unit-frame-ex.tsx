@@ -5,7 +5,7 @@ import {
   ReactUnitFrame,
   ReactUnitTemplateFn,
   UnitFrame,
-} from "wus-host/react";
+} from "wafer-host/react";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
 import { setupIframeInputHandlers } from "@/features/main-edit-area/sight-control-handlers";
 

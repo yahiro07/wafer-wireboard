@@ -1,8 +1,8 @@
 import { seqNumbers } from "mofur/ax";
 import { Point } from "mofur/ax-ui";
 import { createStore } from "snap-store";
-import { HsUnitStateData } from "wus-host/host";
-import { ReactUnitTemplateFn } from "wus-host/react";
+import { HsUnitStateData } from "wafer-host/core";
+import { ReactUnitTemplateFn } from "wafer-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
 import {
   createFieldSightHandlers,

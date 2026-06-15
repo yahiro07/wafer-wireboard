@@ -1,5 +1,5 @@
-import { ReactUnitTemplateFn } from "wus-host/react";
-import { UnitInventorySpec } from "wus-vite-unit-loader-plugin";
+import { ReactUnitTemplateFn } from "wafer-host/react";
+import { UnitInventorySpec } from "wafer-host/vite-plugin";
 import _catalog from "../unit-inventories.json";
 
 export type CatalogKey = keyof typeof _catalog;
