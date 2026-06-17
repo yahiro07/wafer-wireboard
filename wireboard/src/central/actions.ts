@@ -3,7 +3,6 @@ import { ReactUnitTemplateFn } from "wafer-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
 import { hostSystem } from "@/central/host-system-instance";
 import { store, UnitItem } from "@/central/store";
-import { findNearestConnectionTargetUnit } from "@/central/unit-coordinate-helper";
 import { getNextUnitId } from "@/central/unit-id-helper";
 
 const actionsInternal = {
@@ -42,11 +41,6 @@ export const actions = {
   },
   removeConnection(unitId: string) {
     actionsInternal.patchUnitItem(unitId, { destUnitId: undefined });
-  },
-  connectToNearestUnit(unitId: string) {
-    const nearestUnit = findNearestConnectionTargetUnit(unitId);
-    if (!nearestUnit) return;
-    actionsInternal.patchUnitItem(unitId, { destUnitId: nearestUnit.unitId });
   },
   removeUnit(unitId: string) {
     actionsInternal.patchUnitItem(unitId, { destUnitId: undefined });

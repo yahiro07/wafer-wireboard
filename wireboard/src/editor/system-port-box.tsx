@@ -2,9 +2,9 @@ import { npx } from "mofur/ax-ui";
 import { ReactNode } from "react";
 import { Icons, IconsEx } from "@/base/icons";
 import { systemPortCardDimensions } from "@/base/slot-card-dimensions";
-import { actions } from "@/central/actions";
 import { UnitItem } from "@/central/store";
 import { UnitFrameEx } from "@/components/unit-frame-ex";
+import { connectionLogic_toggleSingleConnectionToNearest } from "@/core-handlers/connection-logic";
 import { handleGripPointerDown } from "@/handlers/common-card-handlers";
 
 const PortRelativePositionDebugOverlay = () => {
@@ -107,11 +107,7 @@ export const KeyboardSystemPortBox = ({
   notes: number[];
 }) => {
   const handleKeyboardPortClick = (e: React.PointerEvent) => {
-    if (unit.destUnitId === undefined) {
-      actions.connectToNearestUnit("builtInKeyboard");
-    } else {
-      actions.removeConnection("builtInKeyboard");
-    }
+    connectionLogic_toggleSingleConnectionToNearest(unit);
     e.stopPropagation();
   };
   return (

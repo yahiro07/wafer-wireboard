@@ -1,6 +1,6 @@
 import { IconsEx } from "@/base/icons";
-import { actions } from "@/central/actions";
 import { UnitItem } from "@/central/store";
+import { connectionLogic_toggleSingleConnectionToNearest } from "@/core-handlers/connection-logic";
 
 export const PortCell = ({
   withIcon,
@@ -21,11 +21,7 @@ export const PortCell = ({
 
 export const OutputPortCell = ({ unit }: { unit: UnitItem }) => {
   const handlePointerDown = (e: React.PointerEvent) => {
-    if (unit.destUnitId) {
-      actions.removeConnection(unit.unitId);
-    } else {
-      actions.connectToNearestUnit(unit.unitId);
-    }
+    connectionLogic_toggleSingleConnectionToNearest(unit);
     e.stopPropagation();
   };
   return <PortCell withIcon onPointerDown={handlePointerDown} />;

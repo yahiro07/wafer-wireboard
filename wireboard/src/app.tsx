@@ -6,8 +6,8 @@ import { HostAppProvider } from "wafer-host/react";
 import { hostSystem } from "@/central/host-system-instance";
 import { store } from "@/central/store";
 import { actions } from "./central/actions";
-import { PageRoot } from "./features/page-root";
 import { setupHmrHandler } from "./handlers/hmr-handler";
+import { PageRoot } from "./sections/page-root";
 
 const App = () => {
   const { playing, bpm, masterVolume } = store.useSnapshot();
