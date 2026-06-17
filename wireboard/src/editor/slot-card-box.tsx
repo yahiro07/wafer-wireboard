@@ -1,11 +1,11 @@
 import { npx } from "mofur/ax-ui";
 import { Icons } from "@/base/icons";
 import { slotCardDimensions } from "@/base/slot-card-dimensions";
-import { InputPortCell, OutputPortCell } from "@/features/unit-box/port-cell";
-import { UnitFrameEx } from "@/features/unit-box/unit-frame-ex";
-import { actions } from "@/store/actions";
-import { UnitItem } from "@/store/store";
-import { handleGripPointerDown } from "./common-card-handlers";
+import { actions } from "@/central/actions";
+import { UnitItem } from "@/central/store";
+import { UnitFrameEx } from "@/components/unit-frame-ex";
+import { InputPortCell, OutputPortCell } from "@/editor/port-cell";
+import { handleGripPointerDown } from "../handlers/common-card-handlers";
 
 const PortRelativePositionDebugOverlay = () => {
   const inputPos = slotCardDimensions.inputPort;

@@ -5,8 +5,8 @@ import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { HostAppProvider } from "wafer-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
-import { UnitFrameEx } from "@/features/unit-box/unit-frame-ex";
-import { hostSystem } from "@/store/host-system-instance";
+import { hostSystem } from "@/central/host-system-instance";
+import { UnitFrameEx } from "@/components/unit-frame-ex";
 
 export type StoreState = {
   notes: number[];

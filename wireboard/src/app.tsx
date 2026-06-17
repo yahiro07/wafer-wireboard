@@ -3,23 +3,11 @@ import { mapKnobGainDb } from "mofur/mo-audio";
 import { setupMidiKeyboardInput } from "mofur/mx-audio";
 import { useEffect, useMemo } from "react";
 import { HostAppProvider } from "wafer-host/react";
-import { PickerColumn } from "@/features/picker/picker-column";
-import { hostSystem } from "@/store/host-system-instance";
-import { store } from "@/store/store";
-import { InformationPanel } from "./features/information-panel";
-import { MainEditArea } from "./features/main-edit-area/main-edit-area";
-import { actions } from "./store/actions";
-
-const PageRoot = () => {
-  const { infoPanelVisible } = store.useSnapshot();
-  return (
-    <div className="w-dvw h-dvh bg-[hsl(216,22%,18%)] flex-h">
-      <MainEditArea />
-      <PickerColumn />
-      {infoPanelVisible && <InformationPanel />}
-    </div>
-  );
-};
+import { hostSystem } from "@/central/host-system-instance";
+import { store } from "@/central/store";
+import { actions } from "./central/actions";
+import { PageRoot } from "./features/page-root";
+import { setupHmrHandler } from "./handlers/hmr-handler";
 
 const App = () => {
   const { playing, bpm, masterVolume } = store.useSnapshot();
@@ -49,12 +37,4 @@ const App = () => {
 
 mountAppRoot(<App />);
 
-if (import.meta.hot) {
-  import.meta.hot.on("custom:unit-source-changed", (data) => {
-    const { catalogKey } = data;
-    if (catalogKey) {
-      console.log("unit source changed", catalogKey);
-      actions.handleUnitSourceUpdate(catalogKey);
-    }
-  });
-}
+setupHmrHandler();

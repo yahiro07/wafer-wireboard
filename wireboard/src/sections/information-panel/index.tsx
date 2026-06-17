@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Icons } from "@/base/icons";
-import { TabButton } from "@/features/information-panel/tab-button";
-import { store } from "@/store/store";
+import { store } from "@/central/store";
+import { TabButton } from "@/components/tab-button";
 import { CreditContents } from "./credit-contents";
 import { UsageContents } from "./usage-content";
 

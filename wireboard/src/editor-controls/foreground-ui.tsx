@@ -1,7 +1,7 @@
 import { Icons } from "@/base/icons";
+import { store } from "@/central/store";
 import { GithubBadge } from "@/components/github-badge";
 import { IconButton } from "@/components/icon-button";
-import { store } from "@/store/store";
 
 export const InfoButton = () => {
   return (

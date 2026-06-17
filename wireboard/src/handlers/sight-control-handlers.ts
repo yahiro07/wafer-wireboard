@@ -1,5 +1,5 @@
-import { actions } from "@/store/actions";
-import { sightHandlers } from "@/store/store";
+import { actions } from "@/central/actions";
+import { sightHandlers } from "@/central/store";
 
 export function setupMainAreaInputHandlers(baseDiv: HTMLDivElement) {
   const keyHandler = (e: KeyboardEvent) => {

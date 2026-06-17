@@ -1,5 +1,5 @@
 import { getUnitCardDimensions } from "@/base/slot-card-dimensions";
-import { store } from "@/store/store";
+import { store } from "@/central/store";
 
 export function findNearestConnectionTargetUnit(sourceUnitId: string) {
   const { unitItems } = store.state;

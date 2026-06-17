@@ -5,8 +5,8 @@ import {
   UpperLabel,
 } from "mofur-components/mono2";
 import { Icons, IconsEx } from "@/base/icons";
-import { actions } from "@/store/actions";
-import { store } from "@/store/store";
+import { actions } from "@/central/actions";
+import { store } from "@/central/store";
 
 export const TopControlBar = () => {
   const { playing, bpm, masterVolume, sceneSwitcherVisible } =

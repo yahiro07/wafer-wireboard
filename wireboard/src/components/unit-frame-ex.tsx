@@ -7,7 +7,7 @@ import {
   UnitFrame,
 } from "wafer-host/react";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
-import { setupIframeInputHandlers } from "@/features/main-edit-area/sight-control-handlers";
+import { setupIframeInputHandlers } from "@/handlers/sight-control-handlers";
 
 export const UnitFrameEx = ({
   unitId,

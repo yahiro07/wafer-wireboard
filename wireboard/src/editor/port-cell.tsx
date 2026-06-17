@@ -1,6 +1,6 @@
 import { IconsEx } from "@/base/icons";
-import { actions } from "@/store/actions";
-import { UnitItem } from "@/store/store";
+import { actions } from "@/central/actions";
+import { UnitItem } from "@/central/store";
 
 export const PortCell = ({
   withIcon,

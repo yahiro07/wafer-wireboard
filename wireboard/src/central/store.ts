@@ -7,7 +7,7 @@ import { CatalogKey } from "@/base/showcase-entries";
 import {
   createFieldSightHandlers,
   FieldSight,
-} from "@/features/main-edit-area/field-sight-plane";
+} from "@/components/field-sight-plane";
 import { createBuiltinKeyboardUnit } from "@/units/keyboard/keyboard";
 import { createBuiltinVisualizerUnit } from "@/units/visualizer/visualizer";
 

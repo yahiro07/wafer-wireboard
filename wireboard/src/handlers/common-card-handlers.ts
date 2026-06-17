@@ -1,8 +1,8 @@
 import { startDragSession } from "mofur/ax-ui";
 import { appConfigs } from "@/base/constants";
-import { snapUnitCoordToGrid } from "@/features/unit-box/snapping";
-import { actions } from "@/store/actions";
-import { store, UnitItem } from "@/store/store";
+import { actions } from "@/central/actions";
+import { snapUnitCoordToGrid } from "@/central/snapping";
+import { store, UnitItem } from "@/central/store";
 
 export const handleGripPointerDown = (
   e0: React.PointerEvent,

@@ -1,10 +1,10 @@
 import { Point } from "mofur/ax-ui";
 import { ReactUnitTemplateFn } from "wafer-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
-import { hostSystem } from "@/store/host-system-instance";
-import { store, UnitItem } from "@/store/store";
-import { findNearestConnectionTargetUnit } from "@/store/unit-coordinate-helper";
-import { getNextUnitId } from "@/store/unit-id-helper";
+import { hostSystem } from "@/central/host-system-instance";
+import { store, UnitItem } from "@/central/store";
+import { findNearestConnectionTargetUnit } from "@/central/unit-coordinate-helper";
+import { getNextUnitId } from "@/central/unit-id-helper";
 
 const actionsInternal = {
   patchUnitItem(unitId: string, attrs: Partial<UnitItem>) {
