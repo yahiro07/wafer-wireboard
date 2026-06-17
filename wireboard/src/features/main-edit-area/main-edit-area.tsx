@@ -3,8 +3,6 @@ import { useEffect, useRef } from "react";
 import { appConfigs } from "@/base/constants";
 import { unitCatalogKeyDragMime } from "@/base/drag-drop-key";
 import { showcaseEntries } from "@/base/showcase-entries";
-import { InfoButton } from "@/features/foreground-ui/floating-icons";
-import { GithubBadge } from "@/features/foreground-ui/github-badge";
 import { FieldSightPlane } from "@/features/main-edit-area/field-sight-plane";
 import { setupMainAreaInputHandlers } from "@/features/main-edit-area/sight-control-handlers";
 import { SceneSwitcherBar } from "@/features/scene-switcher-bar/scene-switcher-bar";
@@ -18,6 +16,7 @@ import { SlotCardBox } from "@/features/unit-box/slot-card-box";
 import { snapUnitCoordToGrid } from "@/features/unit-box/snapping";
 import { useWireItems } from "@/features/wiring/use-wire-items";
 import { WiringLayer } from "@/features/wiring/wiring-layer";
+import { CornerGithubBadge, InfoButton } from "@/organisms/foreground-ui";
 import { actions } from "@/store/actions";
 import { store } from "@/store/store";
 
@@ -113,7 +112,7 @@ export const MainEditArea = () => {
         </div>
       </FieldSightPlane>
       <InfoButton />
-      <GithubBadge />
+      <CornerGithubBadge />
       <TopControlBar />
       <SightDraggingCover />
       {sceneSwitcherVisible && <SceneSwitcherBar />}
