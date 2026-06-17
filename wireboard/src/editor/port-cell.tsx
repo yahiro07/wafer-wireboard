@@ -1,6 +1,9 @@
 import { IconsEx } from "@/base/icons";
 import { UnitItem } from "@/central/store";
-import { connectionLogic_toggleSingleConnectionToNearest } from "@/core-handlers/connection-logic";
+import {
+  connectionLogic_toggleMultiConnectionToNearest,
+  connectionLogic_toggleSingleConnectionToNearest,
+} from "@/core-handlers/connection-logic";
 
 export const PortCell = ({
   withIcon,
@@ -21,7 +24,13 @@ export const PortCell = ({
 
 export const OutputPortCell = ({ unit }: { unit: UnitItem }) => {
   const handlePointerDown = (e: React.PointerEvent) => {
-    connectionLogic_toggleSingleConnectionToNearest(unit);
+    if (1) {
+      //fan out supported
+      connectionLogic_toggleMultiConnectionToNearest(unit);
+    } else {
+      //single connection mode
+      connectionLogic_toggleSingleConnectionToNearest(unit);
+    }
     e.stopPropagation();
   };
   return <PortCell withIcon onPointerDown={handlePointerDown} />;
