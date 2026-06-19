@@ -29,6 +29,7 @@ function getUnitSourceUrls() {
       `file://${wusUnitsLocalDistDir}/rtfs1/`,
       `file://${wusUnitsLocalDistDir}/rtfs2/`,
       `file://${wusUnitsLocalDistDir}/perseq/`,
+      `file://${wusUnitsLocalDistDir}/partex/`,
       //
       `file://${wusCustomUnitsLocalDistDir}/additive/`,
       `file://${wusCustomUnitsLocalDistDir}/drum-machine/`,
