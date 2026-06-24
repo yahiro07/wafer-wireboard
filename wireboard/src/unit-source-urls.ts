@@ -43,6 +43,7 @@ function getUnitSourceUrls() {
       //
       `file://${homeDir}/wus-units/my-drum-machine/`,
       `file://${homeDir}/wus-units/twsq1/`,
+      `file://${homeDir}/wus-units/loop-mapper/`,
       //
       `file://${unitsDevDistDir}/mu1-instrument/`,
       `file://${unitsDevDistDir}/mu2-sequencer/`,
