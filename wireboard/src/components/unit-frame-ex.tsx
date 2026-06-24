@@ -1,7 +1,7 @@
 import { ScalerBoxAutoSized } from "mofur/mo-react";
 import { ReactNode } from "react";
 import {
-  CustomElementUnitFrameFI,
+  CustomElementUnitFrame,
   ReactUnitFrame,
   ReactUnitTemplateFn,
   UnitFrame,
@@ -27,7 +27,7 @@ export const UnitFrameEx = ({
   const content: ReactNode = (() => {
     if (moduleUrl) {
       return (
-        <CustomElementUnitFrameFI
+        <CustomElementUnitFrame
           unitId={unitId}
           destSpec={destUnitId}
           scriptUrl={moduleUrl}
@@ -48,7 +48,7 @@ export const UnitFrameEx = ({
       if (!catalogItem) return null;
       if (catalogItem.loaderPageUrl.endsWith("/index.js")) {
         return (
-          <CustomElementUnitFrameFI
+          <CustomElementUnitFrame
             unitId={unitId}
             destSpec={destUnitId}
             scriptUrl={catalogItem.loaderPageUrl}

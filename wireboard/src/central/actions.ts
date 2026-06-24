@@ -78,7 +78,7 @@ export const actions = {
     if (sceneId === store.state.currentSceneId) return;
     {
       //preserve current scene
-      const unitStates = hostSystem.exportUnitStates();
+      const unitStates = hostSystem.getAllUnitStates();
       // console.log(`preserve scene ${store.state.currentSceneId}:`, unitStates);
       store.setScenes((prev) =>
         prev.map((scene) =>
@@ -96,7 +96,7 @@ export const actions = {
       );
       if (nextScene) {
         // console.log(`load scene ${sceneId}:`, nextScene.unitStates);
-        hostSystem.reserveImportUnitStates(nextScene.unitStates);
+        hostSystem.setAllUnitStates(nextScene.unitStates);
       }
     }
   },
