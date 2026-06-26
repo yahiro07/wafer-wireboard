@@ -33,11 +33,8 @@ function getUnitSourceUrls() {
       `file://${wusUnitsLocalDistDir}/drum-seq/`,
       //
       `file://${wusCustomUnitsLocalDistDir}/additive/`,
-      `file://${wusCustomUnitsLocalDistDir}/drum-machine/`,
       `file://${wusCustomUnitsLocalDistDir}/wasyn-1/`,
       `file://${wusCustomUnitsLocalDistDir}/webaudio-tinysynth-simple/`,
-      `file://${wusCustomUnitsLocalDistDir}/bc-010/`,
-      `file://${wusCustomUnitsLocalDistDir}/koodori/`,
       `file://${wusCustomUnitsLocalDistDir}/webaudio-synth-v2/`,
       `file://${wusCustomUnitsLocalDistDir}/vissonance/`,
       `file://${wusCustomUnitsLocalDistDir}/threejs-audio-reactive-visual/`,
@@ -67,11 +64,8 @@ function getUnitSourceUrls() {
 
       //
       "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/additive/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/drum-machine/",
       "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/wasyn-1/",
       "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/webaudio-tinysynth-simple/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/bc-010/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/koodori/",
       "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/webaudio-synth-v2/",
       //
       // "https://cdn.jsdelivr.net/gh/yahiro07/webaudio-unit-system@r1/unit-examples/dist/mu1-instrument/",
