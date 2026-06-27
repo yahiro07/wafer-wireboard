@@ -22,7 +22,8 @@
       "a11y": {
         "noSvgWithoutTitle": "off",
         "noStaticElementInteractions": "off",
-        "useKeyWithClickEvents": "off"
+        "useKeyWithClickEvents": "off",
+        "useButtonType": "off"
       }
     }
   }
