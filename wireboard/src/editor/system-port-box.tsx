@@ -79,7 +79,7 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
       unit={unit}
       iconContent={
         <div
-          className="relative w-full h-full flex-c relative pt-2 cursor-pointer"
+          className="relative w-full h-full flex-c pt-2 cursor-pointer"
           onPointerDown={(e) => handleGripPointerDown(e, unit)}
         >
           <Icons.Speaker size={65} />
@@ -115,7 +115,7 @@ export const KeyboardSystemPortBox = ({
       unit={unit}
       iconContent={
         <div
-          className="relative w-full h-full flex-c relative pt-2"
+          className="relative w-full h-full flex-c pt-2"
           onPointerDown={(e) => handleGripPointerDown(e, unit)}
         >
           <Icons.Piano size={65} />
