@@ -3,11 +3,11 @@ import { mapKnobGainDb } from "mofur/mo-audio";
 import { setupMidiKeyboardInput } from "mofur/mx-audio";
 import { useEffect, useMemo } from "react";
 import { HostAppProvider } from "wafer-host/react";
-import { hostSystem } from "@/central/host-system-instance";
-import { store } from "@/central/store";
-import { actions } from "./central/actions";
-import { setupHmrHandler } from "./handlers/hmr-handler";
-import { PageRoot } from "./sections/page-root";
+import { actions } from "@/model/actions";
+import { hostSystem } from "@/model/host-system-instance";
+import { store } from "@/model/store";
+import { setupHmrHandler } from "@/presenter/hmr-handler";
+import { PageRoot } from "@/views/page-root";
 
 const App = () => {
   const { playing, bpm, masterVolume } = store.useSnapshot();
