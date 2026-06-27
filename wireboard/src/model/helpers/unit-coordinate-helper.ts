@@ -1,8 +1,10 @@
 import { getUnitCardDimensions } from "@/base/slot-card-dimensions";
-import { store } from "@/model/store";
+import { UnitItem } from "@/model/types";
 
-export function findNearestConnectionTargetUnit(sourceUnitId: string) {
-  const { unitItems } = store.state;
+export function findNearestConnectionTargetUnit(
+  unitItems: UnitItem[],
+  sourceUnitId: string,
+) {
   const unit = unitItems.find((item) => item.unitId === sourceUnitId);
   if (!unit) return;
   const sourceHalfHeight = getUnitCardDimensions(sourceUnitId).height / 2;

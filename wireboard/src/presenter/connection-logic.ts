@@ -1,6 +1,7 @@
 import { actions } from "@/model/actions";
+import { findNearestConnectionTargetUnit } from "@/model/helpers/unit-coordinate-helper";
+import { store } from "@/model/store";
 import { UnitItem } from "@/model/types";
-import { findNearestConnectionTargetUnit } from "@/presenter/unit-coordinate-helper";
 import { unitDestSpecOp } from "../model/helpers/unit-dest-spec-op";
 
 export function connectionLogic_toggleSingleConnectionToNearest(
@@ -9,7 +10,8 @@ export function connectionLogic_toggleSingleConnectionToNearest(
   if (unit.destUnitId) {
     actions.removeConnection(unit.unitId);
   } else {
-    const nearestUnit = findNearestConnectionTargetUnit(unit.unitId);
+    const { unitItems } = store.state;
+    const nearestUnit = findNearestConnectionTargetUnit(unitItems, unit.unitId);
     if (nearestUnit) {
       actions.connectUnitTo(unit.unitId, nearestUnit.unitId);
     }
@@ -17,7 +19,8 @@ export function connectionLogic_toggleSingleConnectionToNearest(
 }
 
 export function connectionLogic_toggleMultiConnectionToNearest(unit: UnitItem) {
-  const nearestUnit = findNearestConnectionTargetUnit(unit.unitId);
+  const { unitItems } = store.state;
+  const nearestUnit = findNearestConnectionTargetUnit(unitItems, unit.unitId);
   if (!nearestUnit) return;
   const destSpec = unit.destUnitId;
   const newDestSpec = unitDestSpecOp.toggle(destSpec ?? "", nearestUnit.unitId);

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { actions } from "@/model/actions";
+import { findNearestConnectionTargetUnit } from "@/model/helpers/unit-coordinate-helper";
 import { store } from "@/model/store";
-import { findNearestConnectionTargetUnit } from "@/presenter/unit-coordinate-helper";
 
 export function useKeyboardAutoTarget() {
   const { unitItems } = store.useSnapshot();
@@ -12,6 +12,7 @@ export function useKeyboardAutoTarget() {
   useEffect(() => {
     if (keyboardUnit?.destUnitId) {
       const nearestTargetUnit = findNearestConnectionTargetUnit(
+        unitItems,
         keyboardUnit.unitId,
       );
       if (

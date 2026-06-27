@@ -1,7 +1,7 @@
 import { seqNumbers } from "mofur/ax";
 import { createStore } from "snap-store";
 import { appConfig } from "@/base/app-config";
-import { FieldSight } from "@/components-ex/field-sight-plane";
+import { FieldSight } from "@/components/field-sight-plane";
 import { createBuiltinKeyboardUnit } from "@/internal-units/keyboard/keyboard";
 import { createBuiltinVisualizerUnit } from "@/internal-units/visualizer/visualizer";
 import { Scene, UnitItem } from "@/model/types";

@@ -1,5 +1,5 @@
 import { boardSize } from "@/base/constants";
-import { FieldSightPlane } from "@/components-ex/field-sight-plane";
+import { FieldSightPlane } from "@/components/field-sight-plane";
 import { store } from "@/model/store";
 import { useWireItems } from "@/presenter/use-wire-items";
 import { SlotCardBox } from "@/views/editor/slot-card-box";
