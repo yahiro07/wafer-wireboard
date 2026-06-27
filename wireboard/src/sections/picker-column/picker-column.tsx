@@ -11,7 +11,7 @@ export const PickerColumn = () => {
           onDragStart={(e) => handlePickerItemDragStart(e, entry)}
           className="flex-vc bg-gray-700/50 text-gray-300 py-1 cursor-pointer"
         >
-          <div className="w-[100px] aspect-[1.5]">
+          <div className="h-[67px] aspect-[1.5]">
             {entry.thumbnailUrl ? (
               <img
                 src={entry.thumbnailUrl}
