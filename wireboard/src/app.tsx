@@ -5,9 +5,12 @@ import { useEffect, useMemo } from "react";
 import { HostAppProvider } from "wafer-host/react";
 import { actions } from "@/model/actions";
 import { hostSystem } from "@/model/host-system-instance";
+import { prepareProject } from "@/model/project/project-setup";
 import { store } from "@/model/store";
 import { setupHmrHandler } from "@/presenter/hmr-handler";
 import { PageRoot } from "@/views/page-root";
+
+const projectLifecycleFn = prepareProject();
 
 const App = () => {
   const { playing, bpm, masterVolume } = store.useSnapshot();
@@ -23,6 +26,7 @@ const App = () => {
       }),
     [],
   );
+  useEffect(projectLifecycleFn, []);
   return (
     <HostAppProvider
       hostSystem={hostSystem}

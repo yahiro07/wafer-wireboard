@@ -1,10 +1,11 @@
+import { dequal } from "dequal";
 import { Point } from "mofur/ax-ui";
 import { ReactUnitTemplateFn } from "wafer-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
 import { getNextUnitId } from "@/model/helpers/unit-id-helper";
 import { hostSystem } from "@/model/host-system-instance";
 import { store } from "@/model/store";
-import { UnitItem } from "@/model/types";
+import { Scene, UnitItem } from "@/model/types";
 
 const actionsInternal = {
   patchUnitItem(unitId: string, attrs: Partial<UnitItem>) {
@@ -13,6 +14,14 @@ const actionsInternal = {
         item.unitId === unitId ? { ...item, ...attrs } : item,
       ),
     );
+  },
+  patchScene(sceneId: string, attrs: Partial<Scene>) {
+    store.produceScenes((draft) => {
+      const scene = draft.find((scene) => scene.sceneId === sceneId);
+      if (scene) {
+        Object.assign(scene, attrs);
+      }
+    });
   },
 };
 
@@ -81,13 +90,7 @@ export const actions = {
       //preserve current scene
       const unitStates = hostSystem.getAllUnitStates();
       // console.log(`preserve scene ${store.state.currentSceneId}:`, unitStates);
-      store.setScenes((prev) =>
-        prev.map((scene) =>
-          scene.sceneId === store.state.currentSceneId
-            ? { ...scene, unitStates }
-            : scene,
-        ),
-      );
+      actionsInternal.patchScene(store.state.currentSceneId, { unitStates });
     }
     store.setCurrentSceneId(sceneId);
     {
@@ -113,5 +116,29 @@ export const actions = {
         }
       }
     });
+  },
+  reservePushCurrentSceneStateToHost(awaited: boolean) {
+    const { currentSceneId, scenes } = store.state;
+    const currentScene = scenes.find(
+      (scene) => scene.sceneId === currentSceneId,
+    );
+    if (currentScene) {
+      if (awaited) {
+        (async () => {
+          await hostSystem.waitUnitsLoaded();
+          hostSystem.setAllUnitStates(currentScene.unitStates);
+        })();
+      } else {
+        hostSystem.setAllUnitStates(currentScene.unitStates);
+      }
+    }
+  },
+  pullCurrentSceneStateFromUnits() {
+    const unitStates = hostSystem.getAllUnitStates();
+    const { currentSceneId, scenes } = store.state;
+    const scene = scenes.find((scene) => scene.sceneId === currentSceneId);
+    if (scene && !dequal(unitStates, scene.unitStates)) {
+      actionsInternal.patchScene(currentSceneId, { unitStates });
+    }
   },
 };
