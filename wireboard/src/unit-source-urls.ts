@@ -21,6 +21,10 @@ function getUnitSourceUrls() {
 
       `file://${wusCustomUnitsLocalDistDir}/wasyn-1/`,
       `file://${wusCustomUnitsLocalDistDir}/webaudio-tinysynth-simple/`,
+
+      `file://${wusUnitsLocalDistDir}/multi-lfo/`,
+      `file://${wusUnitsLocalDistDir}/step-automator/`,
+
       `file://${wusCustomUnitsLocalDistDir}/webaudio-synth-v2/`,
       `file://${wusCustomUnitsLocalDistDir}/additive/`,
 
