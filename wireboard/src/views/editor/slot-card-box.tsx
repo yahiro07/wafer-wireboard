@@ -62,7 +62,7 @@ export const SlotCardBox = ({ unit }: { unit: UnitItem }) => {
             unitId={unit.unitId}
             destUnitId={unit.destUnitId}
             catalogKey={unit.catalogKey}
-            templateFn={unit.templateFn}
+            internalUnitKey={unit.internalUnitKey}
             moduleUrl={unit.moduleUrl}
           />
         </div>

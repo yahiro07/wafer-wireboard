@@ -3,24 +3,27 @@ import { ReactNode } from "react";
 import {
   CustomElementUnitFrame,
   ReactUnitFrame,
-  ReactUnitTemplateFn,
   UnitFrame,
 } from "wafer-host/react";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
+import {
+  internalUnitFunctions,
+  InternalUnitKey,
+} from "@/model/internal-unit-definitions";
 import { setupIframeInputHandlers } from "@/presenter/sight-control-handlers";
 
 export const UnitFrameEx = ({
   unitId,
   destUnitId,
   catalogKey,
-  templateFn,
+  internalUnitKey,
   moduleUrl,
   notes,
 }: {
   unitId: string;
   destUnitId?: string;
   catalogKey?: CatalogKey;
-  templateFn?: ReactUnitTemplateFn;
+  internalUnitKey?: InternalUnitKey;
   moduleUrl?: string;
   notes?: number[];
 }) => {
@@ -34,7 +37,8 @@ export const UnitFrameEx = ({
           inputNotes={notes}
         />
       );
-    } else if (templateFn) {
+    } else if (internalUnitKey) {
+      const templateFn = internalUnitFunctions[internalUnitKey];
       return (
         <ReactUnitFrame
           unitId={unitId}

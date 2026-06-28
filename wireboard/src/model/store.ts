@@ -2,8 +2,6 @@ import { seqNumbers } from "mofur/ax";
 import { createStore } from "snap-store";
 import { appConfig } from "@/base/app-config";
 import { FieldSight } from "@/components/field-sight-plane";
-import { createBuiltinKeyboardUnit } from "@/internal-units/keyboard/keyboard";
-import { createBuiltinVisualizerUnit } from "@/internal-units/visualizer/visualizer";
 import { Scene, UnitItem } from "@/model/types";
 
 export type StoreState = {
@@ -44,7 +42,7 @@ function buildDefaultScene() {
       {
         destUnitId: "$output",
         unitId: "builtInPreOutput",
-        templateFn: createBuiltinVisualizerUnit,
+        internalUnitKey: "builtInVisualizer",
         position: { x: 4500, y: by + 50 },
       },
       {
@@ -62,7 +60,7 @@ function buildDefaultScene() {
       {
         destUnitId: "unit1",
         unitId: "builtInKeyboard",
-        templateFn: createBuiltinKeyboardUnit,
+        internalUnitKey: "builtInKeyboard",
         position: { x: 4600, y: by + 640 },
       },
       // {
@@ -79,12 +77,12 @@ function buildDefaultScene() {
       {
         destUnitId: "$output",
         unitId: "builtInPreOutput",
-        templateFn: createBuiltinVisualizerUnit,
+        internalUnitKey: "builtInVisualizer",
         position: { x: 4500, y: by + 100 },
       },
       {
         unitId: "builtInKeyboard",
-        templateFn: createBuiltinKeyboardUnit,
+        internalUnitKey: "builtInKeyboard",
         position: { x: 4600, y: by + 620 },
       },
     ];

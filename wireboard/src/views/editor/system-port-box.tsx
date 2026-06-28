@@ -91,7 +91,7 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
             unitId={unit.unitId}
             destUnitId={unit.destUnitId}
             catalogKey={unit.catalogKey}
-            templateFn={unit.templateFn}
+            internalUnitKey={unit.internalUnitKey}
           />
         </div>
       }
@@ -136,7 +136,7 @@ export const KeyboardSystemPortBox = ({
             unitId={unit.unitId}
             destUnitId={unit.destUnitId}
             catalogKey={unit.catalogKey}
-            templateFn={unit.templateFn}
+            internalUnitKey={unit.internalUnitKey}
             notes={notes}
           />
         </div>
