@@ -24,6 +24,7 @@ function getUnitSourceUrls() {
 
       `file://${wusUnitsLocalDistDir}/multi-lfo/`,
       `file://${wusUnitsLocalDistDir}/step-automator/`,
+      `file://${wusUnitsLocalDistDir}/delay/`,
 
       `file://${wusCustomUnitsLocalDistDir}/webaudio-synth-v2/`,
       `file://${wusCustomUnitsLocalDistDir}/additive/`,
