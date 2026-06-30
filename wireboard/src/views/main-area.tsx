@@ -3,12 +3,9 @@ import { store } from "@/model/store";
 import { setupMainAreaInputHandlers } from "@/presenter/sight-control-handlers";
 import { useKeyboardAutoTarget } from "@/presenter/use-keyboard-auto-target";
 import { EditorLayer } from "@/views/editor/editor-layer";
-import {
-  CornerGithubBadge,
-  InfoButton,
-} from "@/views/editor-controls/foreground-ui";
+import { CornerGithubBadge } from "@/views/editor-controls/foreground-ui";
 import { SceneSwitcherBar } from "@/views/editor-controls/scene-switcher-bar";
-import { TopControlBar } from "@/views/editor-controls/top-control-bar";
+import { TopBar } from "@/views/editor-controls/top-bar";
 import { useMainAreaDropHandlers } from "../presenter/picker-drag-drop";
 import { SightDraggingCover } from "./editor-controls/sight-dragging-cover";
 
@@ -24,18 +21,19 @@ export const MainArea = () => {
     }
   }, []);
   return (
-    <div
-      className="grow relative"
-      onDragOver={dropHandlers.onDragOver}
-      onDrop={dropHandlers.onDrop}
-      ref={baseDivRef}
-    >
-      <EditorLayer />
-      <InfoButton />
-      <CornerGithubBadge />
-      <TopControlBar />
-      <SightDraggingCover />
-      {sceneSwitcherVisible && <SceneSwitcherBar />}
+    <div className="grow flex-v">
+      <TopBar />
+      <div
+        className="grow relative"
+        onDragOver={dropHandlers.onDragOver}
+        onDrop={dropHandlers.onDrop}
+        ref={baseDivRef}
+      >
+        <EditorLayer />
+        <CornerGithubBadge />
+        <SightDraggingCover />
+        {sceneSwitcherVisible && <SceneSwitcherBar />}
+      </div>
     </div>
   );
 };
