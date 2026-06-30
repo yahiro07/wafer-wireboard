@@ -7,8 +7,8 @@ import {
 } from "wafer-host/react";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
 import {
-  internalUnitFunctions,
   InternalUnitKey,
+  internalUnitFunctions,
 } from "@/model/internal-unit-definitions";
 import { setupIframeInputHandlers } from "@/presenter/sight-control-handlers";
 

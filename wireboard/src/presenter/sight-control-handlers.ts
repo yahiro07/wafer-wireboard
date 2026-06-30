@@ -35,7 +35,7 @@ export function setupMainAreaInputHandlers(baseDiv: HTMLDivElement) {
   };
 }
 
-export function setupIframeInputHandlers(iframe: HTMLIFrameElement) {
+function setupIframeInputHandlers_controlModeKey(iframe: HTMLIFrameElement) {
   const win = iframe.contentWindow as Window;
   const keyHandler = (e: KeyboardEvent) => {
     if (e.repeat) return;
@@ -50,5 +50,28 @@ export function setupIframeInputHandlers(iframe: HTMLIFrameElement) {
   return () => {
     win.removeEventListener("keydown", keyHandler);
     win.removeEventListener("keyup", keyHandler);
+  };
+}
+
+function setupIframeInputHandlers_pointerInput(iframe: HTMLIFrameElement) {
+  const win = iframe.contentWindow as Window;
+  win.addEventListener("wheel", sightHandlers.onWheel);
+  win.addEventListener("pointerdown", sightHandlers.onPointerDown, {
+    capture: true,
+  });
+  return () => {
+    win.removeEventListener("wheel", sightHandlers.onWheel);
+    win.removeEventListener("pointerdown", sightHandlers.onPointerDown, {
+      capture: true,
+    });
+  };
+}
+
+export function setupIframeInputHandlers(iframe: HTMLIFrameElement) {
+  const cleanup1 = setupIframeInputHandlers_controlModeKey(iframe);
+  const cleanup2 = setupIframeInputHandlers_pointerInput(iframe);
+  return () => {
+    cleanup1();
+    cleanup2();
   };
 }
