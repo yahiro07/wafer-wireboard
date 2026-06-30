@@ -4,13 +4,13 @@ import {
   BiSolidRightArrow,
 } from "react-icons/bi";
 import { BsFillSpeakerFill, BsPlayFill } from "react-icons/bs";
-import { CgChevronDown } from "react-icons/cg";
+import { CgChevronDown, CgSpinnerTwoAlt } from "react-icons/cg";
 import { FaGithub } from "react-icons/fa";
 import { HiQueueList } from "react-icons/hi2";
-import { IoCloseSharp } from "react-icons/io5";
+import { IoCloseSharp, IoShareSocial } from "react-icons/io5";
 import { PiPianoKeysFill } from "react-icons/pi";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { TbNavigationFilled } from "react-icons/tb";
+import { TbNavigationFilled, TbSettings } from "react-icons/tb";
 import { VscGripper } from "react-icons/vsc";
 
 export const Icons = {
@@ -23,6 +23,9 @@ export const Icons = {
   Info: BiInfoCircle,
   Close: IoCloseSharp,
   Github: FaGithub,
+  Share: IoShareSocial,
+  Spinner: CgSpinnerTwoAlt,
+  Settings: TbSettings,
 };
 
 export const IconsEx = {
