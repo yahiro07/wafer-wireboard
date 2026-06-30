@@ -14,7 +14,7 @@ function getUnitSourceUrls() {
       "../../../wus-custom-units/dist",
     );
     return [
-      `file://${wusUnitsLocalDistDir}/drum-seq/`,
+      `file://${wusUnitsLocalDistDir}/graphite-drum-machine/`,
       `file://${homeDir}/wus-units/my-drum-machine/`,
 
       `file://${wusUnitsLocalDistDir}/wavicle/`,
@@ -24,7 +24,7 @@ function getUnitSourceUrls() {
 
       `file://${wusUnitsLocalDistDir}/multi-lfo/`,
       `file://${wusUnitsLocalDistDir}/step-automator/`,
-      `file://${wusUnitsLocalDistDir}/delay/`,
+      `file://${wusUnitsLocalDistDir}/sunset-delay/`,
       `file://${wusUnitsLocalDistDir}/toner-sequencer/`,
       `file://${wusUnitsLocalDistDir}/bseq2/`,
 
