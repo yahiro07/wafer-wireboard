@@ -30,7 +30,7 @@ export const MainArea = () => {
         ref={baseDivRef}
       >
         <EditorLayer />
-        <CornerGithubBadge />
+        <CornerGithubBadge side="right" />
         <SightDraggingCover />
         {sceneSwitcherVisible && <SceneSwitcherBar />}
       </div>

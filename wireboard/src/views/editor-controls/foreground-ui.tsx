@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Icons } from "@/base/icons";
 import { GithubBadge } from "@/components/github-badge";
 import { IconButton } from "@/components/icon-button";
@@ -11,10 +12,12 @@ export const InfoButton = () => {
   );
 };
 
-export const CornerGithubBadge = () => {
+export const CornerGithubBadge = ({ side }: { side: "left" | "right" }) => {
   return (
-    <div className="absolute top-0 right-0">
-      <GithubBadge url="https://github.com/yahiro07/mini-groove" />
+    <div
+      className={clsx("absolute top-0", side === "left" ? "left-0" : "right-0")}
+    >
+      <GithubBadge url="https://github.com/yahiro07/mini-groove" side={side} />
     </div>
   );
 };
