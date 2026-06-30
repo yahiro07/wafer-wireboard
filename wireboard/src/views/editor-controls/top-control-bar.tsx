@@ -1,10 +1,8 @@
-import {
-  Button,
-  Knob,
-  NumberSliderBox,
-  UpperLabel,
-} from "mofur-components/mono2";
 import { Icons, IconsEx } from "@/base/icons";
+import { Button } from "@/components/button";
+import { Knob } from "@/components/knob";
+import { NumberSliderBox } from "@/components/number-slider-box";
+import { UpperLabel } from "@/components/upper-label";
 import { actions } from "@/model/actions";
 import { store } from "@/model/store";
 
@@ -12,8 +10,7 @@ export const TopControlBar = () => {
   const { playing, bpm, masterVolume, sceneSwitcherVisible } =
     store.useSnapshot();
   return (
-    // <div className="absolute top-0 left-0 w-full p-1 flex-c pointer-events-none">
-    <div className="flex-c px-4 gap-4 pt-3.5 pb-1.5 pointer-events-auto">
+    <div className="flex-c px-4 gap-4 pt-3.5 pb-1.5 pointer-events-auto mb-[-3px]">
       <div className="flex-ha gap-4">
         <Button active={playing} onClick={actions.togglePlayState}>
           <Icons.Play size={20} />
@@ -42,6 +39,5 @@ export const TopControlBar = () => {
         </UpperLabel>
       </div>
     </div>
-    // </div>
   );
 };

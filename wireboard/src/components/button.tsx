@@ -1,0 +1,42 @@
+import clsx from "clsx";
+import { npx } from "mofur/ax-ui";
+import { ReactNode } from "react";
+
+export const Button = ({
+  active,
+  text,
+  children,
+  onClick,
+  disabled,
+  asr = 1.6,
+}: {
+  active?: boolean;
+  text?: string;
+  children?: ReactNode;
+  onClick?: () => void;
+  disabled?: boolean;
+  asr?: number;
+}) => {
+  const height = 32;
+  const width = height * asr;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      className={clsx(
+        "flex-c bg-gray-400 text-white border border-gray-600",
+        active && "bg-sky-600",
+      )}
+      style={{
+        width: npx(width),
+        height: npx(height),
+        cursor: disabled ? "default" : "pointer",
+        opacity: disabled ? 0.5 : 1,
+      }}
+    >
+      {text && <span>{text}</span>}
+      {children}
+    </button>
+  );
+};

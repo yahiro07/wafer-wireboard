@@ -1,4 +1,4 @@
-import { Button } from "mofur-components/mono2";
+import { Button } from "@/components/button";
 import { actions } from "@/model/actions";
 import { store } from "@/model/store";
 
