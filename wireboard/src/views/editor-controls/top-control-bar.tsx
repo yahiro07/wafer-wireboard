@@ -1,3 +1,4 @@
+import { appConfig } from "@/base/app-config";
 import { Icons, IconsEx } from "@/base/icons";
 import { Button } from "@/components/button";
 import { Knob } from "@/components/knob";
@@ -26,13 +27,15 @@ export const TopControlBar = () => {
           />
         </UpperLabel>
       </div>
-      <button
-        onClick={actions.toggleSceneSwitcherVisible}
-        className="text-white cursor-pointer p-2 text-xl"
-        style={!sceneSwitcherVisible ? { opacity: 0.5 } : undefined}
-      >
-        <IconsEx.SceneSwitcher />
-      </button>
+      {appConfig.isDevelopment && false && (
+        <button
+          onClick={actions.toggleSceneSwitcherVisible}
+          className="text-white cursor-pointer p-2 text-xl"
+          style={!sceneSwitcherVisible ? { opacity: 0.5 } : undefined}
+        >
+          <IconsEx.SceneSwitcher />
+        </button>
+      )}
       <div className="flex-ha gap-2">
         <UpperLabel label="MASTER" yOffset={-1}>
           <Knob value={masterVolume} onChange={actions.setMasterVolume} />

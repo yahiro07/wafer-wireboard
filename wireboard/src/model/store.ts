@@ -37,7 +37,7 @@ export const store = createStore<StoreState>({
 
 function buildDefaultScene() {
   const by = 2400;
-  if (!appConfig.isDebug || 1) {
+  if (!appConfig.isDevelopment || 1) {
     const unitItems: UnitItem[] = [
       {
         destUnitId: "$output",
