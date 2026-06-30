@@ -26,6 +26,7 @@ function getUnitSourceUrls() {
       `file://${wusUnitsLocalDistDir}/step-automator/`,
       `file://${wusUnitsLocalDistDir}/delay/`,
       `file://${wusUnitsLocalDistDir}/toner-sequencer/`,
+      `file://${wusUnitsLocalDistDir}/bseq2/`,
 
       `file://${wusCustomUnitsLocalDistDir}/webaudio-synth-v2/`,
       `file://${wusCustomUnitsLocalDistDir}/additive/`,
