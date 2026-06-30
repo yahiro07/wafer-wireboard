@@ -8,7 +8,7 @@ export const Button = ({
   children,
   onClick,
   disabled,
-  asr = 1.6,
+  asr = 1.8,
 }: {
   active?: boolean;
   text?: string;
@@ -25,7 +25,7 @@ export const Button = ({
       onClick={onClick}
       disabled={disabled}
       className={clsx(
-        "flex-c bg-gray-400 text-white border border-gray-600",
+        "flex-c bg-gray-400 text-white border border-gray-600/80 text-sm",
         active && "bg-sky-600",
       )}
       style={{

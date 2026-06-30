@@ -23,12 +23,17 @@ const InfoButton = () => {
   );
 };
 
+const ShareButton = () => {
+  return <IconButton icon={Icons.Share} onClick={() => {}} />;
+};
+
 export const TopBar = () => {
   return (
-    <div className="w-full h-12 bg-[#68c] flex-ha justify-between">
-      <h1 className="text-white text-xl font-bold pl-2">Wafer Wireboard</h1>
+    <div className="w-full bg-[#68c] flex-ha justify-between">
+      <h1 className="text-white text-lg font-bold pl-2">Wafer Wireboard</h1>
       <TopControlBar />
-      <div className="flex-ha gap-2">
+      <div className="flex-ha gap-1">
+        <ShareButton />
         <InfoButton />
       </div>
     </div>

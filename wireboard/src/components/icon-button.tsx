@@ -8,7 +8,7 @@ type Props = {
 export const IconButton = ({ icon: Icon, onClick }: Props) => {
   return (
     <button
-      className="text-white/80 m-2 text-[34px] cursor-pointer"
+      className="text-white/80 m-2 text-[30px] cursor-pointer"
       onClick={onClick}
     >
       <Icon />

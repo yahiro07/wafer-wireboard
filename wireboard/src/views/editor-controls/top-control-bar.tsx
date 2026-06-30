@@ -11,9 +11,9 @@ export const TopControlBar = () => {
   const { playing, bpm, masterVolume, sceneSwitcherVisible } =
     store.useSnapshot();
   return (
-    <div className="flex-c px-4 gap-4 pt-3.5 pb-1.5 pointer-events-auto mb-[-3px]">
-      <div className="flex-ha gap-4">
-        <Button active={playing} onClick={actions.togglePlayState}>
+    <div className="flex-c px-4 gap-8 pt-3.5 pb-1 pointer-events-auto">
+      <div className="flex-ha gap-2">
+        <Button asr={1.5} active={playing} onClick={actions.togglePlayState}>
           <Icons.Play size={20} />
         </Button>
         <UpperLabel label="BPM">
@@ -26,20 +26,28 @@ export const TopControlBar = () => {
             fracDigits={0}
           />
         </UpperLabel>
+
+        {appConfig.isDevelopment && false && (
+          <button
+            onClick={actions.toggleSceneSwitcherVisible}
+            className="text-white cursor-pointer p-2 text-xl"
+            style={!sceneSwitcherVisible ? { opacity: 0.5 } : undefined}
+          >
+            <IconsEx.SceneSwitcher />
+          </button>
+        )}
+        <div className="flex-ha gap-2">
+          <UpperLabel label="MASTER" yOffset={-1}>
+            <Knob value={masterVolume} onChange={actions.setMasterVolume} />
+          </UpperLabel>
+        </div>
       </div>
-      {appConfig.isDevelopment && false && (
-        <button
-          onClick={actions.toggleSceneSwitcherVisible}
-          className="text-white cursor-pointer p-2 text-xl"
-          style={!sceneSwitcherVisible ? { opacity: 0.5 } : undefined}
-        >
-          <IconsEx.SceneSwitcher />
-        </button>
-      )}
-      <div className="flex-ha gap-2">
-        <UpperLabel label="MASTER" yOffset={-1}>
-          <Knob value={masterVolume} onChange={actions.setMasterVolume} />
-        </UpperLabel>
+
+      <div className="flex-ha gap-1.5">
+        <Button text="Init" />
+        <Button text="Clear" />
+        <Button text="Import" />
+        <Button text="Export" />
       </div>
     </div>
   );
