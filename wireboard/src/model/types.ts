@@ -18,4 +18,4 @@ export type Scene = {
   unitStates: HsUnitStateData[];
 };
 
-export type LiveClockingTarget = "none" | "single" | "all";
+export type LiveClockingTarget = "none" | "single" | "chain" | "all";

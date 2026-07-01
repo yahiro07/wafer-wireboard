@@ -34,7 +34,7 @@ export const store = createStore<StoreState>({
   })),
   currentSceneId: "scene0",
   sceneSwitcherVisible: false,
-  liveClockingTarget: "single",
+  liveClockingTarget: "chain",
 });
 
 function buildDefaultScene() {
