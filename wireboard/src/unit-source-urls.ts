@@ -27,6 +27,7 @@ function getUnitSourceUrls() {
       `file://${wusUnitsLocalDistDir}/sunset-delay/`,
       `file://${wusUnitsLocalDistDir}/toner-sequencer/`,
       `file://${wusUnitsLocalDistDir}/bseq2/`,
+      `file://${wusUnitsLocalDistDir}/lofier/`,
 
       `file://${wusCustomUnitsLocalDistDir}/webaudio-synth-v2/`,
       `file://${wusCustomUnitsLocalDistDir}/additive/`,
