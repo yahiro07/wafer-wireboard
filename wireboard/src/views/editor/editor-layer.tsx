@@ -10,7 +10,7 @@ import {
 import { WiringLayer } from "@/views/editor/wiring-layer";
 
 export const EditorLayer = () => {
-  const { unitItems, sight, notes } = store.useSnapshot();
+  const { unitItems, sight } = store.useSnapshot();
   const wires = useWireItems();
   return (
     <FieldSightPlane sight={sight} boardSize={boardSize}>
@@ -18,13 +18,7 @@ export const EditorLayer = () => {
       <div className="relative h-full" style={{ border: "solid 2px #ccc8" }}>
         {unitItems.map((item) => {
           if (item.unitId === "builtInKeyboard") {
-            return (
-              <KeyboardSystemPortBox
-                key={item.unitId}
-                unit={item}
-                notes={notes}
-              />
-            );
+            return <KeyboardSystemPortBox key={item.unitId} unit={item} />;
           } else if (item.unitId === "builtInPreOutput") {
             return <SpeakerSystemPortBox key={item.unitId} unit={item} />;
           } else {

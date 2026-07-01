@@ -64,14 +64,14 @@ export const actions = {
     }
     store.setUnitItems((prev) => prev.filter((item) => item.unitId !== unitId));
   },
-  midiInNoteOn(noteNumber: number) {
-    if (!store.state.notes.includes(noteNumber)) {
-      store.setNotes((prev) => [...prev, noteNumber]);
-    }
-  },
-  midiInNoteOff(noteNumber: number) {
-    store.setNotes((prev) => prev.filter((item) => item !== noteNumber));
-  },
+  // midiInNoteOn(noteNumber: number) {
+  //   if (!store.state.notes.includes(noteNumber)) {
+  //     store.setNotes((prev) => [...prev, noteNumber]);
+  //   }
+  // },
+  // midiInNoteOff(noteNumber: number) {
+  //   store.setNotes((prev) => prev.filter((item) => item !== noteNumber));
+  // },
   togglePlayState() {
     store.setPlaying((prev) => !prev);
   },

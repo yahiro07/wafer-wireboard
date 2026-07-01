@@ -18,14 +18,12 @@ export const UnitFrameEx = ({
   catalogKey,
   internalUnitKey,
   moduleUrl,
-  notes,
 }: {
   unitId: string;
   destUnitId?: string;
   catalogKey?: CatalogKey;
   internalUnitKey?: InternalUnitKey;
   moduleUrl?: string;
-  notes?: number[];
 }) => {
   const content: ReactNode = (() => {
     if (moduleUrl) {
@@ -34,7 +32,6 @@ export const UnitFrameEx = ({
           unitId={unitId}
           destSpec={destUnitId}
           scriptUrl={moduleUrl}
-          inputNotes={notes}
         />
       );
     } else if (internalUnitKey) {
@@ -44,7 +41,6 @@ export const UnitFrameEx = ({
           unitId={unitId}
           destSpec={destUnitId}
           unitTemplateFn={templateFn}
-          inputNotes={notes}
         />
       );
     } else if (catalogKey) {
@@ -57,7 +53,6 @@ export const UnitFrameEx = ({
             destSpec={destUnitId}
             scriptUrl={catalogItem.loaderPageUrl}
             // frameSize={catalogItem.preferredSize}
-            inputNotes={notes}
           />
         );
       } else {
@@ -67,7 +62,6 @@ export const UnitFrameEx = ({
             destSpec={destUnitId}
             pageUrl={catalogItem.loaderPageUrl}
             frameSize={catalogItem.preferredSize}
-            inputNotes={notes}
             onIframeMounted={setupIframeInputHandlers}
           />
         );

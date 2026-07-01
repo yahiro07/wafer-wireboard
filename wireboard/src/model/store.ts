@@ -7,7 +7,7 @@ import { Scene, UnitItem } from "@/model/types";
 export type StoreState = {
   unitItems: UnitItem[];
   sight: FieldSight;
-  notes: number[];
+  // notes: number[];
   bpm: number;
   playing: boolean;
   masterVolume: number;
@@ -21,7 +21,7 @@ export type StoreState = {
 export const store = createStore<StoreState>({
   unitItems: [],
   sight: { eyeScaling: 0.5, eyeOffset: { x: 0, y: 0 } },
-  notes: [],
+  // notes: [],
   bpm: 120,
   playing: false,
   masterVolume: 0.5,

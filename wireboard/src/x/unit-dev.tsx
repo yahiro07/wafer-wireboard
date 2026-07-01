@@ -33,7 +33,7 @@ const actions = {
 };
 
 const App = () => {
-  const { playing, bpm, notes, feedNotesToSequencer } = store.useSnapshot();
+  const { playing, bpm, feedNotesToSequencer } = store.useSnapshot();
   useEffect(
     () =>
       setupMidiKeyboardInput({
@@ -72,7 +72,7 @@ const App = () => {
               unitId="synth"
               destUnitId="$output"
               catalogKey={synthCategoryKey}
-              notes={!feedNotesToSequencer ? notes : undefined}
+              // notes={!feedNotesToSequencer ? notes : undefined}
             />
             <UnitFrameEx
               unitId="sequencer"
@@ -80,7 +80,7 @@ const App = () => {
               catalogKey="mu4Keyboard"
               // templateFn={createRtfrUnit}
               // templateFn={createUnit1}
-              notes={feedNotesToSequencer ? notes : undefined}
+              // notes={feedNotesToSequencer ? notes : undefined}
             />
           </div>
         </div>

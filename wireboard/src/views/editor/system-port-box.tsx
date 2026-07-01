@@ -99,13 +99,7 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
   );
 };
 
-export const KeyboardSystemPortBox = ({
-  unit,
-  notes,
-}: {
-  unit: UnitItem;
-  notes: number[];
-}) => {
+export const KeyboardSystemPortBox = ({ unit }: { unit: UnitItem }) => {
   const handleKeyboardPortClick = (e: React.PointerEvent) => {
     connectionLogic_toggleSingleConnectionToNearest(unit);
     e.stopPropagation();
@@ -137,7 +131,6 @@ export const KeyboardSystemPortBox = ({
             destUnitId={unit.destUnitId}
             catalogKey={unit.catalogKey}
             internalUnitKey={unit.internalUnitKey}
-            notes={notes}
           />
         </div>
       }

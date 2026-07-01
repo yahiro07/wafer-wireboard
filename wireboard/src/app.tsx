@@ -6,7 +6,6 @@ import {
   HostAppProvider,
   useSequencerTickDriverRunner,
 } from "wafer-host/react";
-import { actions } from "@/model/actions";
 import { hostSystem, sequencerTickDriver } from "@/model/host-system-instance";
 import { prepareProject } from "@/model/project/project-setup";
 import { store } from "@/model/store";
@@ -15,20 +14,25 @@ import { PageRoot } from "@/views/page-root";
 
 const projectLifecycleFn = prepareProject();
 
+function setupMidiInHandling() {
+  const destUnitId = "builtInKeyboard";
+  return setupMidiKeyboardInput({
+    noteOn(noteNumber) {
+      hostSystem.deliverNote({ destUnitId, noteNumber, isOn: true });
+    },
+    noteOff(noteNumber) {
+      hostSystem.deliverNote({ destUnitId, noteNumber, isOn: false });
+    },
+  });
+}
+
 const App = () => {
   const { playing, bpm, masterVolume } = store.useSnapshot();
   const masterGain = useMemo(
     () => mapKnobGainDb(masterVolume, 0.5),
     [masterVolume],
   );
-  useEffect(
-    () =>
-      setupMidiKeyboardInput({
-        noteOn: actions.midiInNoteOn,
-        noteOff: actions.midiInNoteOff,
-      }),
-    [],
-  );
+  useEffect(setupMidiInHandling, []);
   useEffect(projectLifecycleFn, []);
   useSequencerTickDriverRunner({ sequencerTickDriver, playing, bpm });
   return (
