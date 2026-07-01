@@ -1,6 +1,5 @@
 import { mountAppRoot } from "mofur/ax-react";
 import { mapKnobGainDb } from "mofur/mo-audio";
-import { setupMidiKeyboardInput } from "mofur/mx-audio";
 import { useEffect, useMemo } from "react";
 import {
   HostAppProvider,
@@ -9,22 +8,12 @@ import {
 import { hostSystem, sequencerTickDriver } from "@/model/host-system-instance";
 import { prepareProject } from "@/model/project/project-setup";
 import { store } from "@/model/store";
+import { setupDynamicClockingSupport } from "@/periphery/dynamic-clocking-support";
+import { setupMidiInputHandling } from "@/periphery/midi-input-handling";
 import { setupHmrHandler } from "@/presenter/hmr-handler";
 import { PageRoot } from "@/views/page-root";
 
 const projectLifecycleFn = prepareProject();
-
-function setupMidiInHandling() {
-  const destUnitId = "builtInKeyboard";
-  return setupMidiKeyboardInput({
-    noteOn(noteNumber) {
-      hostSystem.deliverNote({ destUnitId, noteNumber, isOn: true });
-    },
-    noteOff(noteNumber) {
-      hostSystem.deliverNote({ destUnitId, noteNumber, isOn: false });
-    },
-  });
-}
 
 const App = () => {
   const { playing, bpm, masterVolume } = store.useSnapshot();
@@ -32,9 +21,10 @@ const App = () => {
     () => mapKnobGainDb(masterVolume, 0.5),
     [masterVolume],
   );
-  useEffect(setupMidiInHandling, []);
+  useEffect(setupMidiInputHandling, []);
   useEffect(projectLifecycleFn, []);
   useSequencerTickDriverRunner({ sequencerTickDriver, playing, bpm });
+  useEffect(setupDynamicClockingSupport, []);
   return (
     <HostAppProvider
       hostSystem={hostSystem}

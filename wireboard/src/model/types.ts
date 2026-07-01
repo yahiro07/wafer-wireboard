@@ -17,3 +17,5 @@ export type Scene = {
   sceneId: string;
   unitStates: HsUnitStateData[];
 };
+
+export type LiveClockingTarget = "none" | "single" | "all";

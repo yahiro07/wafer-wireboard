@@ -2,7 +2,7 @@ import { seqNumbers } from "mofur/ax";
 import { createStore } from "snap-store";
 import { appConfig } from "@/base/app-config";
 import { FieldSight } from "@/components/field-sight-plane";
-import { Scene, UnitItem } from "@/model/types";
+import { LiveClockingTarget, Scene, UnitItem } from "@/model/types";
 
 export type StoreState = {
   unitItems: UnitItem[];
@@ -16,6 +16,7 @@ export type StoreState = {
   scenes: Scene[];
   currentSceneId: string;
   sceneSwitcherVisible: boolean;
+  liveClockingTarget: LiveClockingTarget;
 };
 
 export const store = createStore<StoreState>({
@@ -33,6 +34,7 @@ export const store = createStore<StoreState>({
   })),
   currentSceneId: "scene0",
   sceneSwitcherVisible: false,
+  liveClockingTarget: "single",
 });
 
 function buildDefaultScene() {
