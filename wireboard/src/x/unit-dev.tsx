@@ -1,10 +1,10 @@
 import { mountAppRoot } from "mofur/ax-react";
 import { setupMidiKeyboardInput } from "mofur/mx-audio";
-import { Button } from "mofur-components/mono2";
 import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { HostAppProvider } from "wafer-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
+import { Button } from "@/components/button";
 import { hostSystem } from "@/model/host-system-instance";
 import { UnitFrameEx } from "@/views/editor/unit-frame-ex";
 
