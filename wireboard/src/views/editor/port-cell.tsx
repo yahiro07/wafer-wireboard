@@ -24,7 +24,7 @@ export const PortCell = ({
 
 export const OutputPortCell = ({ unit }: { unit: UnitItem }) => {
   const handlePointerDown = (e: React.PointerEvent) => {
-    if (1) {
+    if (0) {
       //fan out supported
       connectionLogic_toggleMultiConnectionToNearest(unit);
     } else {
