@@ -1,8 +1,15 @@
+import { Point } from "mofur/ax-ui";
 import { useMemo } from "react";
 import { getUnitCardDimensions } from "@/base/slot-card-dimensions";
 import { store } from "@/model/store";
 import { UnitItem } from "@/model/types";
-import { WiringLayerWire } from "@/views/editor/wiring-layer";
+
+export type WiringLayerWire = {
+  id: string;
+  p1: Point;
+  p2: Point;
+  rightAngled: boolean;
+};
 
 function getUnitPortPosition(
   item: UnitItem,
@@ -30,7 +37,8 @@ export function useWireItems() {
         const destItem = unitItemMap.get(code);
         if (!destItem) continue;
         const p2 = getUnitPortPosition(destItem, "inputPort");
-        wires.push({ id, p1, p2 });
+        const rightAngled = code === "builtInPreOutput";
+        wires.push({ id, p1, p2, rightAngled });
       }
     }
     return wires;
