@@ -35,10 +35,11 @@ export const actions = {
     templateFn?: ReactUnitTemplateFn,
     moduleUrl?: string,
   ) {
+    const unitId = getNextUnitId(catalogKey, store.state.unitItems);
     store.setUnitItems((prev) => [
       ...prev,
       {
-        unitId: `${catalogKey}_${getNextUnitId(prev)}`,
+        unitId,
         catalogKey,
         templateFn,
         moduleUrl,
