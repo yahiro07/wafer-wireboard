@@ -28,6 +28,7 @@ function getUnitSourceUrls() {
       `file://${wusUnitsLocalDistDir}/toner-sequencer/`,
       `file://${wusUnitsLocalDistDir}/bseq2/`,
       `file://${wusUnitsLocalDistDir}/lofier/`,
+      `file://${wusUnitsLocalDistDir}/channel-strip/`,
 
       `file://${wusCustomUnitsLocalDistDir}/webaudio-synth-v2/`,
       `file://${wusCustomUnitsLocalDistDir}/additive/`,
