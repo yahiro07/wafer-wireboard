@@ -11,7 +11,6 @@ export type ShowcaseEntry = {
   catalogKey: CatalogKey;
   templateFn?: ReactUnitTemplateFn;
   thumbnailUrl?: string;
-  moduleUrl?: string;
 };
 
 export const showcaseEntries: ShowcaseEntry[] = [

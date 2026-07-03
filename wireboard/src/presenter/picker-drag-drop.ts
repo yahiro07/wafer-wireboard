@@ -49,7 +49,6 @@ export function useMainAreaDropHandlers() {
         showcaseEntry.catalogKey,
         position,
         showcaseEntry.templateFn,
-        showcaseEntry.moduleUrl,
       );
     },
   };

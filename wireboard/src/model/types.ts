@@ -8,7 +8,6 @@ export type UnitItem = {
   destUnitId?: string;
   catalogKey?: CatalogKey;
   internalUnitKey?: InternalUnitKey;
-  moduleUrl?: string;
   position: Point;
   fileChangeRevision?: number;
 };
