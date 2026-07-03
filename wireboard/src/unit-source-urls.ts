@@ -29,6 +29,9 @@ function getUnitSourceUrls() {
       `file://${wusUnitsLocalDistDir}/bseq2/`,
       `file://${wusUnitsLocalDistDir}/crusher/`,
       `file://${wusUnitsLocalDistDir}/channel-strip/`,
+      `file://${wusUnitsLocalDistDir}/noise-mix/`,
+      `file://${wusUnitsLocalDistDir}/sunset-chorus-mini/`,
+      `file://${wusUnitsLocalDistDir}/lofi2/`,
 
       `file://${wusCustomUnitsLocalDistDir}/webaudio-synth-v2/`,
       `file://${wusCustomUnitsLocalDistDir}/additive/`,
