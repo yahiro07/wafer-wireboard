@@ -1,14 +1,35 @@
 import { Point } from "mofur/ax-ui";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { domEditAreaId } from "@/base/constants";
 import { IconsEx } from "@/base/icons";
 import { connectionActions } from "@/port/connection-actions";
+import {
+  PortHighlightingState,
+  usePortHighlightingModel,
+} from "@/port/port-highlighting-model";
 import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
-import { domEditAreaId } from "@/base/constants";
 
-type PortCellPositionCallbacks = {
-  onAdd: (position: Point) => void;
-  onMove: (position: Point) => void;
-  onRemove: () => void;
+const PortCellView = ({
+  withIcon,
+  highlightingState,
+}: {
+  withIcon?: boolean;
+  highlightingState: PortHighlightingState;
+}) => {
+  return (
+    <div
+      className="w-[30px] h-[30px] bg-gray-400 cursor-pointer flex-c text-gray-100"
+      style={{
+        background: highlightingState === "truthy" ? "orange" : undefined,
+        border:
+          highlightingState === "truthyOutlined"
+            ? "1.5px solid orange"
+            : undefined,
+      }}
+    >
+      {withIcon && <IconsEx.ConnectorPortUp />}
+    </div>
+  );
 };
 
 function getElementCenterPositionInBoard(
@@ -30,97 +51,47 @@ function getElementCenterPositionInBoard(
   };
 }
 
-export const PortCell = ({
-  withIcon,
-  onPointerDown,
-  positionCallbacks,
-}: {
-  withIcon?: boolean;
-  onPointerDown?: (e: React.PointerEvent) => void;
-  positionCallbacks: PortCellPositionCallbacks;
-}) => {
-  const portDivRef = useRef<HTMLDivElement>(null);
+function useAffectPortPositionToStore(
+  portDivRef: React.RefObject<HTMLDivElement | null>,
+  port: UnitTemporalPort,
+) {
   useEffect(() => {
     const boardDom = document.getElementById(domEditAreaId);
     const el = portDivRef.current;
     if (el && boardDom) {
       const position = getElementCenterPositionInBoard(el, boardDom);
-      positionCallbacks.onAdd(position);
+      const { portKey, subtypes, direction } = port;
+      const unitId = portKey.split(".")[0];
+      const portItem = { portKey, unitId, direction, subtypes, position };
+      connectionActions.addPortItem(portItem);
       return () => {
-        positionCallbacks.onRemove();
+        connectionActions.removePortItem(portKey);
       };
     }
-  }, [positionCallbacks]);
-  return (
-    <div
-      ref={portDivRef}
-      className="w-[30px] h-[30px] bg-gray-400 cursor-pointer flex-c text-gray-100"
-      onPointerDown={onPointerDown}
-    >
-      {withIcon && <IconsEx.ConnectorPortUp />}
-    </div>
-  );
-};
-
-function createPortCellPositionCallbacks(
-  port: UnitTemporalPort,
-): PortCellPositionCallbacks {
-  const { portKey, subtypes, direction } = port;
-  return {
-    onAdd(position: Point) {
-      connectionActions.addPortItem({
-        portKey,
-        unitId: portKey.split(".")[0],
-        direction,
-        subtypes,
-        position,
-      });
-    },
-    onMove(position: Point) {
-      connectionActions.setPortItemPosition(portKey, position);
-    },
-    onRemove() {
-      connectionActions.removePortItem(portKey);
-    },
-  };
+  }, [port, portDivRef]);
 }
 
-export const OutputPortCell = ({ port }: { port: UnitTemporalPort }) => {
-  const positionCallbacks = useMemo(
-    () => createPortCellPositionCallbacks(port),
-    [port],
-  );
+export const PortCell = ({ port }: { port: UnitTemporalPort }) => {
+  const highlightingState = usePortHighlightingModel(port.portKey);
+  const isOutput = port.direction === "output";
+  const portDivRef = useRef<HTMLDivElement>(null);
+  useAffectPortPositionToStore(portDivRef, port);
   const handlePointerDown = (e: React.PointerEvent) => {
-    // if (1) {
-    //   //fan out supported
-    //   connectionLogic_toggleMultiConnectionToNearest(unit);
-    // } else {
-    //   //single connection mode
-    //   connectionLogic_toggleSingleConnectionToNearest(unit);
-    // }
+    if (isOutput) {
+      // if (1) {
+      //   //fan out supported
+      //   connectionLogic_toggleMultiConnectionToNearest(unit);
+      // } else {
+      //   //single connection mode
+      //   connectionLogic_toggleSingleConnectionToNearest(unit);
+      // }
+      // handlePortCellDragging(e, port.portKey);
+    }
     e.stopPropagation();
   };
   return (
-    <PortCell
-      withIcon
-      onPointerDown={handlePointerDown}
-      positionCallbacks={positionCallbacks}
-    />
-  );
-};
-
-export const InputPortCell = ({ port }: { port: UnitTemporalPort }) => {
-  const positionCallbacks = useMemo(
-    () => createPortCellPositionCallbacks(port),
-    [port],
-  );
-  const handlePointerDown = (e: React.PointerEvent) => {
-    e.stopPropagation();
-  };
-  return (
-    <PortCell
-      onPointerDown={handlePointerDown}
-      positionCallbacks={positionCallbacks}
-    />
+    <div ref={portDivRef} onPointerDown={handlePointerDown}>
+      <PortCellView withIcon={isOutput} highlightingState={highlightingState} />
+    </div>
   );
 };

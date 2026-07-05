@@ -6,7 +6,7 @@ import { Icons } from "@/base/icons";
 import { slotCardDimensions } from "@/base/slot-card-dimensions";
 import { actions } from "@/model/actions";
 import { UnitItem } from "@/model/types";
-import { InputPortCell, OutputPortCell } from "@/port/port-cell";
+import { PortCell } from "@/port/port-cell";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
 import {
   buildUnitTemporalPortsModel,
@@ -49,7 +49,7 @@ const AdditionalPortColumn = ({ port }: { port: UnitTemporalPort }) => {
         isOutput ? "justify-start" : "justify-end",
       )}
     >
-      {isOutput && <OutputPortCell port={port} />}
+      {isOutput && <PortCell port={port} />}
       <div
         className={clsx(
           "text-white text-[14px] leading-none whitespace-nowrap",
@@ -62,7 +62,7 @@ const AdditionalPortColumn = ({ port }: { port: UnitTemporalPort }) => {
       >
         {port.label ?? port.id}
       </div>
-      {port.portType === "additionalInput" && <InputPortCell port={port} />}
+      {port.portType === "additionalInput" && <PortCell port={port} />}
     </div>
   );
 };
@@ -92,10 +92,10 @@ export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
           onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
         >
           {unitPortsModel?.primaryOut && (
-            <OutputPortCell port={unitPortsModel.primaryOut} />
+            <PortCell port={unitPortsModel.primaryOut} />
           )}
           {unitPortsModel?.primaryIn && (
-            <InputPortCell port={unitPortsModel.primaryIn} />
+            <PortCell port={unitPortsModel.primaryIn} />
           )}
         </div>
         <div className="grow bg-gray-600">
