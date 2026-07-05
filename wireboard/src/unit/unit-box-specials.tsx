@@ -1,11 +1,12 @@
 import { npx } from "mofur/ax-ui";
 import { ReactNode } from "react";
-import { Icons, IconsEx } from "@/base/icons";
+import { Icons } from "@/base/icons";
 import { systemPortCardDimensions } from "@/base/slot-card-dimensions";
 import { UnitItem } from "@/model/types";
-import { connectionLogic } from "@/port/connection-logic";
+import { KeyboardPortCell } from "@/port/port-cell";
 import { handleGripPointerDown } from "@/unit/unit-box-drag-handler";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
+import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
 
 const PortRelativePositionDebugOverlay = () => {
   const inputPos = systemPortCardDimensions.inputPort;
@@ -99,11 +100,24 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
   );
 };
 
+const systemPortUnitTemporalPorts = {
+  speakerInput: {
+    portType: "primaryInput",
+    direction: "input",
+    subtypes: ["audio"],
+    portKey: "builtInPreOutput.primaryInput",
+    id: "builtInPreOutput.primaryInput",
+  },
+  keyboardOutput: {
+    portType: "primaryOutput",
+    direction: "output",
+    subtypes: ["note"],
+    portKey: "builtInKeyboard.primaryOutput",
+    id: "builtInKeyboard.primaryOutput",
+  },
+} satisfies Record<string, UnitTemporalPort>;
+
 export const KeyboardSystemPortBox = ({ unit }: { unit: UnitItem }) => {
-  const handleKeyboardPortClick = (e: React.PointerEvent) => {
-    connectionLogic.toggleSingleConnectionToNearest(unit);
-    e.stopPropagation();
-  };
   return (
     <SystemPortBox
       unit={unit}
@@ -113,14 +127,10 @@ export const KeyboardSystemPortBox = ({ unit }: { unit: UnitItem }) => {
           onPointerDown={(e) => handleGripPointerDown(e, unit)}
         >
           <Icons.Piano size={65} />
-
-          <div className="absolute-full flex-v items-center cursor-pointer">
-            <div
-              onPointerDown={handleKeyboardPortClick}
-              className=" w-12 h-12 flex-h justify-center pt-2 cursor-pointer"
-            >
-              <IconsEx.ConnectorPortUp size={18} />
-            </div>
+          <div className="absolute-full flex-v items-center cursor-pointer pt-0.5">
+            <KeyboardPortCell
+              port={systemPortUnitTemporalPorts.keyboardOutput}
+            />
           </div>
         </div>
       }

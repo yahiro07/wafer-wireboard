@@ -31,7 +31,7 @@ export const EditorLayer = () => {
           }
         })}
       </div>
-      <DebugPortsLayer />
+      {false && <DebugPortsLayer />}
     </FieldSightPlane>
   );
 };

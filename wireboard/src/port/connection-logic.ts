@@ -1,8 +1,5 @@
 import { store } from "@/model/store";
-import { PortSubtype, UnitItem } from "@/model/types";
-import { connectionActions } from "@/port/connection-actions";
-import { findNearestConnectionTargetUnit } from "@/port/unit-coordinate-helper";
-import { primaryDest, unitDestSpecOp } from "@/port/unit-dest-spec-op";
+import { PortSubtype } from "@/model/types";
 
 export function getUnitIdFromPortKey(portKey: string): string {
   return portKey.split(".")[0];
@@ -15,34 +12,70 @@ export function checkSubtypeOverlap(
   return subtypes1.some((st) => subtypes2.includes(st));
 }
 
+// const internalActions = {
+//   removeConnectionsFromUnit(unitId: string) {},
+// };
+
 export const connectionLogic = {
-  toggleSingleConnectionToNearest(unit: UnitItem) {
-    if (unit.destSpec) {
-      connectionActions.removeConnection(unit.unitId);
-    } else {
-      const { unitItems } = store.state;
-      const nearestUnit = findNearestConnectionTargetUnit(
-        unitItems,
-        unit.unitId,
+  // toggleSingleConnectionToNearest(unit: UnitItem) {
+  //   const portKey = `${unit.unitId}.primaryOutput`;
+  //   const hasConnection = Object.values(store.state.portItems).some((port) => port.portKey === portKey);
+  //   if(hasConnection) {
+  //     internalActions.removeConnectionsFromUnit(unit.unitId);
+  //   } else {
+  //     const { unitItems } = store.state;
+  //     const nearestUnit = findNearestConnectionTargetUnit(
+  //       unitItems,
+  //       unit.unitId,
+  //     );
+  //     if (nearestUnit) {
+  //       connectionActions.replaceUnitDestSpec(
+  //         unit.unitId,
+  //         primaryDest(nearestUnit.unitId),
+  //       );
+  //     }
+  //   }
+
+  // if (unit.destSpec) {
+  //   connectionActions.removeConnection(unit.unitId);
+  // } else {
+  //   const { unitItems } = store.state;
+  //   const nearestUnit = findNearestConnectionTargetUnit(
+  //     unitItems,
+  //     unit.unitId,
+  //   );
+  //   if (nearestUnit) {
+  //     connectionActions.replaceUnitDestSpec(
+  //       unit.unitId,
+  //       primaryDest(nearestUnit.unitId),
+  //     );
+  //   }
+  // }
+  // },
+  // toggleMultiConnectionToNearest(unit: UnitItem) {
+  //   const { unitItems } = store.state;
+  //   const nearestUnit = findNearestConnectionTargetUnit(unitItems, unit.unitId);
+  //   if (!nearestUnit) return;
+  //   const destSpec = unit.destSpec;
+  //   const newDestSpec = unitDestSpecOp.toggle(destSpec, nearestUnit.unitId);
+  //   connectionActions.replaceUnitDestSpec(unit.unitId, newDestSpec);
+  // },
+  updateConnectionSingle(sourcePortKey: string, destinationPortKey: string) {
+    const connectionKey = `${sourcePortKey}-${destinationPortKey}`;
+    const existingWireItem = store.state.wireItems.find(
+      (wire) => wire.sourcePortKey === sourcePortKey,
+    );
+    if (existingWireItem) {
+      store.setWireItems((prev) =>
+        prev.filter((wire) => wire.sourcePortKey !== sourcePortKey),
       );
-      if (nearestUnit) {
-        connectionActions.replaceUnitDestSpec(
-          unit.unitId,
-          primaryDest(nearestUnit.unitId),
-        );
-      }
+    } else {
+      const wireItem = { connectionKey, sourcePortKey, destinationPortKey };
+      store.setWireItems((prev) => [...prev, wireItem]);
     }
   },
-  toggleMultiConnectionToNearest(unit: UnitItem) {
-    const { unitItems } = store.state;
-    const nearestUnit = findNearestConnectionTargetUnit(unitItems, unit.unitId);
-    if (!nearestUnit) return;
-    const destSpec = unit.destSpec;
-    const newDestSpec = unitDestSpecOp.toggle(destSpec, nearestUnit.unitId);
-    connectionActions.replaceUnitDestSpec(unit.unitId, newDestSpec);
-  },
   updateConnection(sourcePortKey: string, destinationPortKey: string) {
-    console.log("updateConnection", sourcePortKey, destinationPortKey);
+    // console.log("updateConnection", sourcePortKey, destinationPortKey);
     const connectionKey = `${sourcePortKey}-${destinationPortKey}`;
     const existingWireItem = store.state.wireItems.find(
       (wire) => wire.connectionKey === connectionKey,

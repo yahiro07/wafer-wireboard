@@ -1,7 +1,7 @@
 import { InformationPanel } from "@/information-panel";
 import { store } from "@/model/store";
 import { MainArea } from "./main-area";
-import { PickerColumn } from "./picker-column";
+import { PickerColumn } from "./picker";
 
 export const PageRoot = () => {
   const { infoPanelVisible } = store.useSnapshot();

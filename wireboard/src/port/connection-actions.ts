@@ -1,7 +1,6 @@
 import { Point } from "mofur/ax-ui";
-import { actionsInternal } from "@/model/actions";
 import { store } from "@/model/store";
-import { AppUnitDestinationSpec, PortItem } from "@/model/types";
+import { PortItem } from "@/model/types";
 
 export const connectionActions = {
   addPortItem(portItem: PortItem) {
@@ -26,10 +25,10 @@ export const connectionActions = {
   setTappingPortKey(portKey: string | null) {
     store.setTappingPortKey(portKey);
   },
-  replaceUnitDestSpec(unitId: string, destSpec: AppUnitDestinationSpec) {
-    actionsInternal.patchUnitItem(unitId, { destSpec });
-  },
-  removeConnection(unitId: string) {
-    actionsInternal.patchUnitItem(unitId, { destSpec: undefined });
-  },
+  // replaceUnitDestSpec(unitId: string, destSpec: AppUnitDestinationSpec) {
+  //   actionsInternal.patchUnitItem(unitId, { destSpec });
+  // },
+  // removeConnection(unitId: string) {
+  //   actionsInternal.patchUnitItem(unitId, { destSpec: undefined });
+  // },
 };

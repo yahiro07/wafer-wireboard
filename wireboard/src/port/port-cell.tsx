@@ -1,9 +1,13 @@
+import clsx from "clsx";
 import { Point } from "mofur/ax-ui";
 import { useEffect, useRef } from "react";
 import { domEditAreaId } from "@/base/constants";
 import { IconsEx } from "@/base/icons";
 import { connectionActions } from "@/port/connection-actions";
-import { handlePortCellDragging } from "@/port/port-cell-drag-handler";
+import {
+  handleKeyboardPortCellClick,
+  handlePortCellDragging,
+} from "@/port/port-cell-drag-handler";
 import {
   PortCellHighlightingState,
   usePortCellHighlightingModel,
@@ -11,15 +15,21 @@ import {
 import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
 
 const PortCellView = ({
-  withIcon,
   highlightingState,
+  noBg,
+  isOutput,
 }: {
-  withIcon?: boolean;
+  isOutput?: boolean;
   highlightingState: PortCellHighlightingState;
+  noBg?: boolean;
 }) => {
   return (
     <div
-      className="w-[30px] h-[30px] bg-gray-400 cursor-pointer flex-c text-gray-100"
+      className={clsx(
+        "w-[30px] h-[30px] flex-c text-gray-100",
+        isOutput && "cursor-pointer",
+        !noBg && "bg-gray-400",
+      )}
       style={{
         background: highlightingState === "truthy" ? "orange" : undefined,
         border:
@@ -28,7 +38,7 @@ const PortCellView = ({
             : undefined,
       }}
     >
-      {withIcon && <IconsEx.ConnectorPortUp />}
+      {isOutput && <IconsEx.ConnectorPortUp />}
     </div>
   );
 };
@@ -92,7 +102,26 @@ export const PortCell = ({ port }: { port: UnitTemporalPort }) => {
   };
   return (
     <div ref={portDivRef} onPointerDown={handlePointerDown}>
-      <PortCellView withIcon={isOutput} highlightingState={highlightingState} />
+      <PortCellView isOutput={isOutput} highlightingState={highlightingState} />
+    </div>
+  );
+};
+
+export const KeyboardPortCell = ({ port }: { port: UnitTemporalPort }) => {
+  const highlightingState = usePortCellHighlightingModel(port.portKey);
+  const portDivRef = useRef<HTMLDivElement>(null);
+  useAffectPortPositionToStore(portDivRef, port);
+  const handlePointerDown = (e: React.PointerEvent) => {
+    handleKeyboardPortCellClick(e, port.portKey);
+    e.stopPropagation();
+  };
+  return (
+    <div ref={portDivRef} onPointerDown={handlePointerDown}>
+      <PortCellView
+        isOutput={true}
+        highlightingState={highlightingState}
+        noBg
+      />
     </div>
   );
 };

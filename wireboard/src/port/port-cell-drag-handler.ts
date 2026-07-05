@@ -1,5 +1,5 @@
 import { DragHandlerEvent, Point, startDragSession } from "mofur/ax-ui";
-import { findItemMappedMinimum } from "@/auxialiaries/general-utils";
+import { findItemMappedMinimum } from "@/auxiliaries/general-utils";
 import { domEditAreaId } from "@/base/constants";
 import { store } from "@/model/store";
 import { PortItem, PortSubtype } from "@/model/types";
@@ -152,5 +152,45 @@ export function handlePortCellDragging(
     },
     { coordinate: "page" },
   );
+  e0.stopPropagation();
+}
+
+export function handleKeyboardPortCellClick(
+  e0: React.PointerEvent,
+  portKey: string,
+) {
+  const sourcePort = store.state.portItems[portKey];
+  if (!sourcePort) return;
+  const portItems = Object.values(store.state.portItems);
+
+  const boardDom = document.getElementById(domEditAreaId)!;
+  const boardRect = boardDom.getBoundingClientRect();
+
+  const scale = store.state.sight.eyeScaling;
+
+  const getPositionOnEditArea = (e: React.PointerEvent) => {
+    return {
+      x: (e.clientX - boardRect.left) / scale,
+      y: (e.clientY - boardRect.top) / scale,
+    };
+  };
+
+  const internal = {
+    toggleConnectionForNearestPort(pos: Point) {
+      const candidatePorts = filterCandidatePorts(
+        portItems,
+        portKey,
+        sourcePort.subtypes,
+      );
+      const targetPort = findNearestPort(candidatePorts, pos);
+      if (targetPort) {
+        connectionLogic.updateConnectionSingle(portKey, targetPort.portKey);
+      }
+    },
+  };
+
+  const pos = getPositionOnEditArea(e0);
+  internal.toggleConnectionForNearestPort(pos);
+
   e0.stopPropagation();
 }
