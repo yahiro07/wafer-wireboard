@@ -31,3 +31,9 @@ export type PortItem = {
   subtypes: PortSubtype[];
   position: Point;
 };
+
+export type WireItem = {
+  connectionKey: string; //${sourcePortKey}-${destinationPortKey}
+  sourcePortKey: string;
+  destinationPortKey: string;
+};

@@ -8,6 +8,7 @@ import { SceneSwitcherBar } from "@/views/editor-controls/scene-switcher-bar";
 import { TopBar } from "@/views/editor-controls/top-bar";
 import { SightDraggingCover } from "./editor-controls/sight-dragging-cover";
 import { useMainAreaDropHandlers } from "./picker-drag-drop";
+import { DebugOverlay } from "@/views/debug-overlay";
 
 export const MainArea = () => {
   const { sceneSwitcherVisible } = store.useSnapshot();
@@ -33,6 +34,7 @@ export const MainArea = () => {
         <CornerGithubBadge side="right" />
         <SightDraggingCover />
         {sceneSwitcherVisible && <SceneSwitcherBar />}
+        <DebugOverlay />
       </div>
     </div>
   );

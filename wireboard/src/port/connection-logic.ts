@@ -37,8 +37,21 @@ export const connectionLogic = {
     const newDestSpec = unitDestSpecOp.toggle(destSpec, nearestUnit.unitId);
     connectionActions.replaceUnitDestSpec(unit.unitId, newDestSpec);
   },
+  updateConnection(sourcePortKey: string, destinationPortKey: string) {
+    console.log("updateConnection", sourcePortKey, destinationPortKey);
+    const connectionKey = `${sourcePortKey}-${destinationPortKey}`;
+    const existingWireItem = store.state.wireItems.find(
+      (wire) => wire.connectionKey === connectionKey,
+    );
+    if (existingWireItem) {
+      store.setWireItems((prev) =>
+        prev.filter((wire) => wire.connectionKey !== connectionKey),
+      );
+    } else {
+      const wireItem = { connectionKey, sourcePortKey, destinationPortKey };
+      store.setWireItems((prev) => [...prev, wireItem]);
+    }
 
-  updateConnection(sourcePortKey: string, targetPortKey: string) {
     // const { unitId: sourceUnitId, portIndex: sourcePortIndex } =
     //   decodePortKey(sourcePortKey);
     // const sourceUnit = readers.findUnit(sourceUnitId);
@@ -66,6 +79,10 @@ export const connectionLogic = {
     // actionsInternal.patchUnitItem(sourceUnitId, { destSpec: nextPortsCode });
   },
   clearConnection(sourcePortKey: string) {
+    console.log("clearConnection", sourcePortKey);
+    store.setWireItems((prev) =>
+      prev.filter((wire) => wire.sourcePortKey !== sourcePortKey),
+    );
     // const { unitId: sourceUnitId } = decodePortKey(sourcePortKey);
     // const sourceUnit = readers.findUnit(sourceUnitId);
     // if (!sourceUnit) return;
@@ -74,6 +91,7 @@ export const connectionLogic = {
     // }
   },
   replaceToSingleConnection(sourcePortKey: string, targetPortKey: string) {
+    console.log("replaceToSingleConnection", sourcePortKey, targetPortKey);
     // const { unitId } = decodePortKey(sourcePortKey);
     // const unitItem = readers.findUnit(unitId);
     // const destSpec = mapPortKeyToDestSpec(targetPortKey);

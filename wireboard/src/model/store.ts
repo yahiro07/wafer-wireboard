@@ -2,12 +2,19 @@ import { seqNumbers } from "mofur/ax";
 import { createStore } from "snap-store";
 import { appConfig } from "@/base/app-config";
 import { FieldSight } from "@/components/field-sight-plane";
-import { LiveClockingTarget, PortItem, Scene, UnitItem } from "@/model/types";
+import {
+  LiveClockingTarget,
+  PortItem,
+  Scene,
+  UnitItem,
+  WireItem,
+} from "@/model/types";
 import { primaryDest } from "@/port/unit-dest-spec-op";
 
 export type StoreState = {
   unitItems: UnitItem[];
   portItems: Record<string, PortItem>;
+  wireItems: WireItem[];
   sight: FieldSight;
   // notes: number[];
   bpm: number;
@@ -27,6 +34,7 @@ export type StoreState = {
 export const store = createStore<StoreState>({
   unitItems: [],
   portItems: {},
+  wireItems: [],
   sight: { eyeScaling: 0.5, eyeOffset: { x: 0, y: 0 } },
   // notes: [],
   bpm: 120,

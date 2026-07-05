@@ -3,10 +3,11 @@ import { useEffect, useRef } from "react";
 import { domEditAreaId } from "@/base/constants";
 import { IconsEx } from "@/base/icons";
 import { connectionActions } from "@/port/connection-actions";
+import { handlePortCellDragging } from "@/port/port-cell-drag-handler";
 import {
-  PortHighlightingState,
-  usePortHighlightingModel,
-} from "@/port/port-highlighting-model";
+  PortCellHighlightingState,
+  usePortCellHighlightingModel,
+} from "@/port/port-cell-highlighting-model";
 import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
 
 const PortCellView = ({
@@ -14,7 +15,7 @@ const PortCellView = ({
   highlightingState,
 }: {
   withIcon?: boolean;
-  highlightingState: PortHighlightingState;
+  highlightingState: PortCellHighlightingState;
 }) => {
   return (
     <div
@@ -72,7 +73,7 @@ function useAffectPortPositionToStore(
 }
 
 export const PortCell = ({ port }: { port: UnitTemporalPort }) => {
-  const highlightingState = usePortHighlightingModel(port.portKey);
+  const highlightingState = usePortCellHighlightingModel(port.portKey);
   const isOutput = port.direction === "output";
   const portDivRef = useRef<HTMLDivElement>(null);
   useAffectPortPositionToStore(portDivRef, port);
@@ -85,7 +86,7 @@ export const PortCell = ({ port }: { port: UnitTemporalPort }) => {
       //   //single connection mode
       //   connectionLogic_toggleSingleConnectionToNearest(unit);
       // }
-      // handlePortCellDragging(e, port.portKey);
+      handlePortCellDragging(e, port.portKey);
     }
     e.stopPropagation();
   };

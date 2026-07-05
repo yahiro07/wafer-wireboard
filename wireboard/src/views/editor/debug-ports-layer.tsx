@@ -3,7 +3,7 @@ import { store } from "@/model/store";
 export const DebugPortsLayer = () => {
   const { portItems } = store.useSnapshot();
   return (
-    <div className="absolute-full pointer-events-none border border-red-500">
+    <div className="absolute-full pointer-events-none">
       {Object.values(portItems).map((port) => (
         <div
           key={port.portKey}
