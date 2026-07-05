@@ -35,8 +35,12 @@ function filterCandidatePorts(
 function findNearestPort(
   portItems: PortItem[],
   position: Point,
+  filterYAbove: boolean,
 ): PortItem | undefined {
-  return findItemMappedMinimum(portItems, (port) => {
+  const filteredPorts = filterYAbove
+    ? portItems.filter((port) => port.position.y < position.y - 30)
+    : portItems;
+  return findItemMappedMinimum(filteredPorts, (port) => {
     const dx = port.position.x - position.x;
     const dy = port.position.y - position.y;
     return Math.hypot(dx, dy);
@@ -74,7 +78,7 @@ export function handlePortCellDragging(
         sourcePort.subtypes,
         true,
       );
-      const targetPort = findNearestPort(candidatePorts, pos);
+      const targetPort = findNearestPort(candidatePorts, pos, false);
       if (targetPort && store.state.previewDestPortKey !== targetPort.portKey) {
         connectionActions.setPreviewDestPortKey(targetPort.portKey);
       }
@@ -97,7 +101,7 @@ export function handlePortCellDragging(
         portKey,
         sourcePort.subtypes,
       );
-      const targetPort = findNearestPort(candidatePorts, pos);
+      const targetPort = findNearestPort(candidatePorts, pos, true);
       if (targetPort) {
         connectionLogic.updateConnectionSingle(portKey, targetPort.portKey);
       }
@@ -182,7 +186,7 @@ export function handleKeyboardPortCellClick(
         portKey,
         sourcePort.subtypes,
       );
-      const targetPort = findNearestPort(candidatePorts, pos);
+      const targetPort = findNearestPort(candidatePorts, pos, true);
       if (targetPort) {
         connectionLogic.updateConnectionSingle(portKey, targetPort.portKey);
       }

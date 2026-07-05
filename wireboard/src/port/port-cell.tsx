@@ -34,7 +34,7 @@ const PortCellView = ({
         background: highlightingState === "truthy" ? "orange" : undefined,
         border:
           highlightingState === "truthyOutlined"
-            ? "1.5px solid orange"
+            ? "2px solid orange"
             : undefined,
       }}
     >
