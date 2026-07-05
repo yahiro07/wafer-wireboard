@@ -99,7 +99,7 @@ export function handlePortCellDragging(
       );
       const targetPort = findNearestPort(candidatePorts, pos);
       if (targetPort) {
-        connectionLogic.updateConnection(portKey, targetPort.portKey);
+        connectionLogic.updateConnectionSingle(portKey, targetPort.portKey);
       }
     },
   };
