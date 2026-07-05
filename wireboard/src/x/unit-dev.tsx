@@ -70,13 +70,13 @@ const App = () => {
           <div className="flex-v w-[500px] h-[500px]">
             <UnitFrameEx
               unitId="synth"
-              destUnitId="$output"
+              destSpec="$output"
               catalogKey={synthCategoryKey}
               // notes={!feedNotesToSequencer ? notes : undefined}
             />
             <UnitFrameEx
               unitId="sequencer"
-              destUnitId="synth"
+              destSpec="synth"
               catalogKey="mu4Keyboard"
               // templateFn={createRtfrUnit}
               // templateFn={createUnit1}

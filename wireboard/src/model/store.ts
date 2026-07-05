@@ -2,6 +2,7 @@ import { seqNumbers } from "mofur/ax";
 import { createStore } from "snap-store";
 import { appConfig } from "@/base/app-config";
 import { FieldSight } from "@/components/field-sight-plane";
+import { primaryDest } from "@/model/helpers/unit-dest-spec-op";
 import { LiveClockingTarget, Scene, UnitItem } from "@/model/types";
 
 export type StoreState = {
@@ -42,13 +43,13 @@ function buildDefaultScene() {
   if (!appConfig.isDevelopment || 1) {
     const unitItems: UnitItem[] = [
       {
-        destUnitId: "$output",
+        destSpec: primaryDest("$output"),
         unitId: "builtInPreOutput",
         internalUnitKey: "builtInVisualizer",
         position: { x: 4500, y: by + 50 },
       },
       {
-        destUnitId: "builtInPreOutput",
+        destSpec: primaryDest("builtInPreOutput"),
         unitId: "unit1",
         catalogKey: "miniSynthGe",
         position: { x: 4500, y: by + 260 },
@@ -60,7 +61,7 @@ function buildDefaultScene() {
       //   position: { x: 4500, y: by + 450 },
       // },
       {
-        destUnitId: "unit1",
+        destSpec: primaryDest("unit1"),
         unitId: "builtInKeyboard",
         internalUnitKey: "builtInKeyboard",
         position: { x: 4600, y: by + 640 },
@@ -77,7 +78,7 @@ function buildDefaultScene() {
     const by = 2400;
     const unitItems: UnitItem[] = [
       {
-        destUnitId: "$output",
+        destSpec: primaryDest("$output"),
         unitId: "builtInPreOutput",
         internalUnitKey: "builtInVisualizer",
         position: { x: 4500, y: by + 100 },

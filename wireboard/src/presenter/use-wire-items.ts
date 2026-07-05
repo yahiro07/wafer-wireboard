@@ -28,9 +28,9 @@ export function useWireItems() {
     const unitItemMap = new Map(unitItems.map((item) => [item.unitId, item]));
     const wires: WiringLayerWire[] = [];
     for (const item of unitItems) {
-      if (!item.destUnitId) continue;
-      const destSpec = item.destUnitId;
-      const codes = destSpec.split("&");
+      if (!item.destSpec) continue;
+      const destSpec = item.destSpec;
+      const codes = destSpec.$primary;
       for (const code of codes) {
         const id = `${item.unitId}->${code}`;
         const p1 = getUnitPortPosition(item, "outputPort");

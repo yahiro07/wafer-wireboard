@@ -3,9 +3,11 @@ import { HsUnitStateData } from "wafer-host/core";
 import { CatalogKey } from "@/base/showcase-entries";
 import { InternalUnitKey } from "@/model/internal-unit-definitions";
 
+export type AppUnitDestinationSpec = Record<string, string[]>;
+
 export type UnitItem = {
   unitId: string | "builtInPreOutput" | "builtInKeyboard";
-  destUnitId?: string;
+  destSpec?: AppUnitDestinationSpec;
   catalogKey?: CatalogKey;
   internalUnitKey?: InternalUnitKey;
   position: Point;

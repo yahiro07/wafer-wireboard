@@ -89,7 +89,7 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
         <div className="h-full bg-black text-white">
           <UnitFrameEx
             unitId={unit.unitId}
-            destUnitId={unit.destUnitId}
+            destSpec={unit.destSpec}
             catalogKey={unit.catalogKey}
             internalUnitKey={unit.internalUnitKey}
           />
@@ -128,7 +128,7 @@ export const KeyboardSystemPortBox = ({ unit }: { unit: UnitItem }) => {
         <div className="h-full bg-white text-black">
           <UnitFrameEx
             unitId={unit.unitId}
-            destUnitId={unit.destUnitId}
+            destSpec={unit.destSpec}
             catalogKey={unit.catalogKey}
             internalUnitKey={unit.internalUnitKey}
           />

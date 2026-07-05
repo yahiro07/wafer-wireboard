@@ -5,7 +5,7 @@ import { CatalogKey } from "@/base/showcase-entries";
 import { getNextUnitId } from "@/model/helpers/unit-id-helper";
 import { hostSystem } from "@/model/host-system-instance";
 import { store } from "@/model/store";
-import { Scene, UnitItem } from "@/model/types";
+import { AppUnitDestinationSpec, Scene, UnitItem } from "@/model/types";
 
 const actionsInternal = {
   patchUnitItem(unitId: string, attrs: Partial<UnitItem>) {
@@ -45,20 +45,20 @@ export const actions = {
       },
     ]);
   },
-  connectUnitTo(unitId: string, destUnitId: string) {
-    actionsInternal.patchUnitItem(unitId, { destUnitId });
+  replaceUnitDestSpec(unitId: string, destSpec: AppUnitDestinationSpec) {
+    actionsInternal.patchUnitItem(unitId, { destSpec });
   },
   removeConnection(unitId: string) {
-    actionsInternal.patchUnitItem(unitId, { destUnitId: undefined });
+    actionsInternal.patchUnitItem(unitId, { destSpec: undefined });
   },
   removeUnit(unitId: string) {
-    actionsInternal.patchUnitItem(unitId, { destUnitId: undefined });
-    const dependentUnits = store.state.unitItems.filter(
-      (item) => item.destUnitId === unitId,
+    actionsInternal.patchUnitItem(unitId, { destSpec: undefined });
+    const dependentUnits = store.state.unitItems.filter((item) =>
+      item.destSpec?.$primary.includes(unitId),
     );
     for (const dependentUnit of dependentUnits) {
       actionsInternal.patchUnitItem(dependentUnit.unitId, {
-        destUnitId: undefined,
+        destSpec: undefined,
       });
     }
     store.setUnitItems((prev) => prev.filter((item) => item.unitId !== unitId));

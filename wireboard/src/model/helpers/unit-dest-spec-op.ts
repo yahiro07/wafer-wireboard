@@ -1,25 +1,33 @@
+import { AppUnitDestinationSpec } from "@/model/types";
+
 function modifyCodesUnique(
-  destSpec: string,
+  destSpec: AppUnitDestinationSpec | undefined,
   fn: (codeSet: Set<string>) => void,
-) {
-  const codes = destSpec.split("&");
+): AppUnitDestinationSpec {
+  const codes = destSpec?.$primary ?? [];
   const codeSet = new Set(codes);
   fn(codeSet);
-  return Array.from(codeSet).join("&");
+  return { $primary: Array.from(codeSet) };
 }
 
 export const unitDestSpecOp = {
-  add(destSpec: string, code: string) {
+  add(
+    destSpec: AppUnitDestinationSpec | undefined,
+    code: string,
+  ): AppUnitDestinationSpec {
     return modifyCodesUnique(destSpec, (codeSet) => {
       codeSet.add(code);
     });
   },
-  remove(destSpec: string, code: string) {
+  remove(destSpec: AppUnitDestinationSpec, code: string) {
     return modifyCodesUnique(destSpec, (codeSet) => {
       codeSet.delete(code);
     });
   },
-  toggle(destSpec: string, code: string) {
+  toggle(
+    destSpec: AppUnitDestinationSpec | undefined,
+    code: string,
+  ): AppUnitDestinationSpec {
     return modifyCodesUnique(destSpec, (codeSet) => {
       if (codeSet.has(code)) {
         codeSet.delete(code);
@@ -29,3 +37,7 @@ export const unitDestSpecOp = {
     });
   },
 };
+
+export function primaryDest(destSpec: string): AppUnitDestinationSpec {
+  return { $primary: [destSpec] };
+}
