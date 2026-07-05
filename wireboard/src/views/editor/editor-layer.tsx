@@ -6,6 +6,7 @@ import {
   KeyboardSystemPortBox,
   SpeakerSystemPortBox,
 } from "@/unit/unit-box-specials";
+import { Connections } from "@/views/editor/connections";
 import { DebugPortsLayer } from "@/views/editor/debug-ports-layer";
 import { WiringLayer } from "@/views/editor/wiring-layer";
 import { useWiringLayerWireItems } from "@/views/editor/wiring-layer-wire-items";
@@ -31,6 +32,7 @@ export const EditorLayer = () => {
           }
         })}
       </div>
+      <Connections />
       {false && <DebugPortsLayer />}
     </FieldSightPlane>
   );
