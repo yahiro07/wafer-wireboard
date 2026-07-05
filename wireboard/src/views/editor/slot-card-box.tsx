@@ -37,15 +37,8 @@ const PortRelativePositionDebugOverlay = () => {
   );
 };
 
-const AdditionalPortColumn = ({
-  port,
-  unitItem,
-}: {
-  port: UnitTemporalPort;
-  unitItem: UnitItem;
-}) => {
+const AdditionalPortColumn = ({ port }: { port: UnitTemporalPort }) => {
   const isOutput = port.portType === "additionalOutput";
-
   return (
     <div
       key={port.id}
@@ -54,7 +47,7 @@ const AdditionalPortColumn = ({
         isOutput ? "justify-start" : "justify-end",
       )}
     >
-      {isOutput && <OutputPortCell unit={unitItem} />}
+      {isOutput && <OutputPortCell port={port} />}
       <div
         className={clsx(
           "text-white text-[14px] leading-none whitespace-nowrap",
@@ -67,7 +60,7 @@ const AdditionalPortColumn = ({
       >
         {port.label ?? port.id}
       </div>
-      {port.portType === "additionalInput" && <InputPortCell />}
+      {port.portType === "additionalInput" && <InputPortCell port={port} />}
     </div>
   );
 };
@@ -92,8 +85,12 @@ export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
           className="w-[40px] bg-gray-500 flex-v justify-between items-center p-2 cursor-pointer"
           onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
         >
-          {unitPortsModel?.primaryOut && <OutputPortCell unit={unitItem} />}
-          {unitPortsModel?.primaryIn && <InputPortCell />}
+          {unitPortsModel?.primaryOut && (
+            <OutputPortCell port={unitPortsModel.primaryOut} />
+          )}
+          {unitPortsModel?.primaryIn && (
+            <InputPortCell port={unitPortsModel.primaryIn} />
+          )}
         </div>
         <div className="grow bg-gray-600">
           <UnitFrameEx
@@ -127,11 +124,7 @@ export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
         {unitPortsModel?.additional && (
           <div className="absolute top-0 right-full h-full flex-h gap-1 mx-1">
             {unitPortsModel.additional.map((port) => (
-              <AdditionalPortColumn
-                key={port.id}
-                port={port}
-                unitItem={unitItem}
-              />
+              <AdditionalPortColumn key={port.id} port={port} />
             ))}
           </div>
         )}

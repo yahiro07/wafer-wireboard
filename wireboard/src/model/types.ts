@@ -20,3 +20,11 @@ export type Scene = {
 };
 
 export type LiveClockingTarget = "none" | "single" | "chain" | "all";
+
+export type PortSubtype = "audio" | "note" | "automation";
+
+export type PortItem = {
+  portKey: string; //${unitId}.${portId}, portIds are "primaryOut", "primaryIn", or arbitrary id for additional ports
+  subtypes: PortSubtype[];
+  position: Point;
+};

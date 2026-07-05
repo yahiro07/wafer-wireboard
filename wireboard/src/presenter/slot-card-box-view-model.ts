@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
-import { UnitItem } from "@/model/types";
-
-type PortSubtype = "audio" | "note" | "automation";
+import { PortSubtype, UnitItem } from "@/model/types";
 
 type UnitTemporalPortType =
   | "primaryOutput"
@@ -13,6 +11,7 @@ type UnitTemporalPortType =
 export type UnitTemporalPort = {
   portType: UnitTemporalPortType;
   subtypes: PortSubtype[];
+  portKey: string;
   id: string;
   label?: string;
 };
@@ -26,23 +25,31 @@ type UnitPortsModel = {
 function buildUnitPortsModel(unitInstance: HsUnitInstance): UnitPortsModel {
   const model: UnitPortsModel = {};
 
-  if (unitInstance.outputPorts) {
-    const ports = unitInstance.outputPorts;
+  const {
+    unitId,
+    outputPorts,
+    inputPorts,
+    additionalAudioInputs,
+    additionalAudioOutputs,
+  } = unitInstance;
+
+  if (outputPorts) {
     const subtypes = [
-      ports.audioOutput && "audio",
-      ports.noteOutput && "note",
-      ports.automationOutput && "automation",
+      outputPorts.audioOutput && "audio",
+      outputPorts.noteOutput && "note",
+      outputPorts.automationOutput && "automation",
     ].filter(Boolean) as PortSubtype[];
     if (subtypes.length > 0) {
       model.primaryOut = {
         portType: "primaryOutput",
         id: "primaryOutput",
+        portKey: `${unitId}.primaryOutput`,
         subtypes,
       };
     }
   }
-  if (unitInstance.inputPorts) {
-    const ports = unitInstance.inputPorts;
+  if (inputPorts) {
+    const ports = inputPorts;
     const subtypes = [
       ports.audioInput && "audio",
       ports.noteInput && "note",
@@ -52,27 +59,30 @@ function buildUnitPortsModel(unitInstance: HsUnitInstance): UnitPortsModel {
       model.primaryIn = {
         portType: "primaryInput",
         id: "primaryInput",
+        portKey: `${unitId}.primaryInput`,
         subtypes,
       };
     }
   }
   const additional: UnitTemporalPort[] = [
-    ...(unitInstance.additionalAudioOutputs
-      ? Object.values(unitInstance.additionalAudioOutputs).map(
+    ...(additionalAudioOutputs
+      ? Object.values(additionalAudioOutputs).map(
           (p): UnitTemporalPort => ({
             portType: "additionalOutput",
             subtypes: ["audio"],
             id: p.id,
+            portKey: `${unitId}.${p.id}`,
             label: p.label,
           }),
         )
       : []),
-    ...(unitInstance.additionalAudioInputs
-      ? Object.values(unitInstance.additionalAudioInputs).map(
+    ...(additionalAudioInputs
+      ? Object.values(additionalAudioInputs).map(
           (p): UnitTemporalPort => ({
             portType: "additionalInput",
             subtypes: ["audio"],
             id: p.id,
+            portKey: `${unitId}.${p.id}`,
             label: p.label,
           }),
         )
@@ -88,12 +98,14 @@ function buildUnitPortsModel(unitInstance: HsUnitInstance): UnitPortsModel {
         portType: "additionalOutput",
         subtypes: ["audio"],
         id: "kick",
+        portKey: `${unitId}.kick`,
         label: "kick",
       },
       {
         portType: "additionalInput",
         subtypes: ["audio"],
         id: "detector",
+        portKey: `${unitId}.detector`,
         label: "detector",
       },
     ];
