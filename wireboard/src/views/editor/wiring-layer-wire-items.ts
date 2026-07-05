@@ -47,14 +47,19 @@ export function useWiringLayerWireItems(): WiringLayerWire[] {
   const { wireItems, portItems } = store.useSnapshot();
   return useMemo(
     () =>
-      wireItems.map((wire) => {
-        const id = wire.connectionKey;
-        const p1 = portItems[wire.sourcePortKey].position;
-        const p2 = portItems[wire.destinationPortKey].position;
-        const rightAngled =
-          wire.destinationPortKey === "builtInPreOutput.primaryInput";
-        return { id, p1, p2, rightAngled };
-      }),
+      wireItems
+        .map((wire) => {
+          const id = wire.connectionKey;
+          const p1 = portItems[wire.sourcePortKey]?.position;
+          const p2 = portItems[wire.destinationPortKey]?.position;
+          if (p1 && p2) {
+            const rightAngled =
+              wire.destinationPortKey === "builtInPreOutput.primaryInput";
+            return { id, p1, p2, rightAngled };
+          }
+          return undefined;
+        })
+        .filter(Boolean) as WiringLayerWire[],
     [wireItems, portItems],
   );
   // const unitItemMap = new Map(unitItems.map((item) => [item.unitId, item]));

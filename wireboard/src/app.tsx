@@ -13,7 +13,7 @@ import { setupHmrHandler } from "@/periphery/hmr-handler";
 import { setupMidiInputHandling } from "@/periphery/midi-input-handling";
 import { PageRoot } from "@/views/page-root";
 
-const projectLifecycleFn = prepareProject();
+const projectLifecycleFn = prepareProject(false);
 
 const App = () => {
   const { playing, bpm, masterVolume } = store.useSnapshot();

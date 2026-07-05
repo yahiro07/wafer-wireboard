@@ -6,6 +6,7 @@ import { getNextUnitId } from "@/model/helpers/unit-id-helper";
 import { hostSystem } from "@/model/host-system-instance";
 import { store } from "@/model/store";
 import { Scene, UnitItem } from "@/model/types";
+import { getUnitIdFromPortKey } from "@/port/connection-logic";
 
 type Vector = { x: number; y: number };
 
@@ -28,12 +29,10 @@ export const actionsInternal = {
   patchPortPositions(unitId: string, delta: Vector) {
     store.producePortItems((draft) => {
       for (const key in draft) {
-        if (key.split(".")[0] === unitId) {
-          const port = draft[key];
-          if (port.portKey.split(".")[0] === unitId) {
-            port.position.x += delta.x;
-            port.position.y += delta.y;
-          }
+        const port = draft[key];
+        if (getUnitIdFromPortKey(port.portKey) === unitId) {
+          port.position.x += delta.x;
+          port.position.y += delta.y;
         }
       }
     });
@@ -69,16 +68,21 @@ export const actions = {
     ]);
   },
   removeUnit(unitId: string) {
-    actionsInternal.patchUnitItem(unitId, { destSpec: undefined });
-    const dependentUnits = store.state.unitItems.filter((item) =>
-      item.destSpec?.$primary.includes(unitId),
-    );
-    for (const dependentUnit of dependentUnits) {
-      actionsInternal.patchUnitItem(dependentUnit.unitId, {
-        destSpec: undefined,
-      });
-    }
     store.setUnitItems((prev) => prev.filter((item) => item.unitId !== unitId));
+    store.producePortItems((draft) => {
+      for (const key in draft) {
+        if (getUnitIdFromPortKey(key) === unitId) {
+          delete draft[key];
+        }
+      }
+    });
+    store.setWireItems((prev) =>
+      prev.filter(
+        (wire) =>
+          getUnitIdFromPortKey(wire.sourcePortKey) !== unitId &&
+          getUnitIdFromPortKey(wire.destinationPortKey) !== unitId,
+      ),
+    );
   },
   // midiInNoteOn(noteNumber: number) {
   //   if (!store.state.notes.includes(noteNumber)) {

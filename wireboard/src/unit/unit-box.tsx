@@ -102,7 +102,7 @@ export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
           <UnitFrameEx
             key={unitItem.fileChangeRevision}
             unitId={unitItem.unitId}
-            destSpec={unitItem.destSpec}
+            // destSpec={unitItem.destSpec}
             catalogKey={unitItem.catalogKey}
             internalUnitKey={unitItem.internalUnitKey}
             onUnitInstanceLoaded={setUnitInstance}

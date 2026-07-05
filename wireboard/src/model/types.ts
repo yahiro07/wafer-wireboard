@@ -7,7 +7,7 @@ export type AppUnitDestinationSpec = Record<string, string[]>;
 
 export type UnitItem = {
   unitId: string | "builtInPreOutput" | "builtInKeyboard";
-  destSpec?: AppUnitDestinationSpec;
+  // destSpec?: AppUnitDestinationSpec;
   catalogKey?: CatalogKey;
   internalUnitKey?: InternalUnitKey;
   position: Point;

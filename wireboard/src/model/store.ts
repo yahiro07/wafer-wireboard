@@ -9,7 +9,6 @@ import {
   UnitItem,
   WireItem,
 } from "@/model/types";
-import { primaryDest } from "@/port/unit-dest-spec-op";
 
 export type StoreState = {
   unitItems: UnitItem[];
@@ -54,18 +53,42 @@ export const store = createStore<StoreState>({
   tappingPortKey: null,
 });
 
+function extractPresetUnitItems(
+  source: (UnitItem & { destUnitId?: string })[],
+): {
+  unitItems: UnitItem[];
+  wireItems: WireItem[];
+} {
+  const unitItems = source.map((item) => ({
+    unitId: item.unitId,
+    catalogKey: item.catalogKey,
+    internalUnitKey: item.internalUnitKey,
+    position: item.position,
+  }));
+  const wireItems = source
+    .filter((item) => item.destUnitId)
+    .map((item) => {
+      const sourcePortKey = `${item.unitId}.primaryOutput`;
+      const destinationPortKey = `${item.destUnitId}.primaryInput`;
+      const connectionKey = `${sourcePortKey}-${destinationPortKey}`;
+      return { sourcePortKey, destinationPortKey, connectionKey };
+    });
+  return { unitItems, wireItems };
+}
+
 function buildDefaultScene() {
   const by = 2400;
   if (!appConfig.isDevelopment || 1) {
-    const unitItems: UnitItem[] = [
+    const { unitItems, wireItems } = extractPresetUnitItems([
       {
-        destSpec: primaryDest("$output"),
+        // destSpec: primaryDest("$output"),
+        destUnitId: "$output",
         unitId: "builtInPreOutput",
         internalUnitKey: "builtInVisualizer",
         position: { x: 4500, y: by + 50 },
       },
       {
-        destSpec: primaryDest("builtInPreOutput"),
+        destUnitId: "builtInPreOutput",
         unitId: "unit1",
         catalogKey: "miniSynthGe",
         position: { x: 4500, y: by + 260 },
@@ -77,7 +100,7 @@ function buildDefaultScene() {
       //   position: { x: 4500, y: by + 450 },
       // },
       {
-        destSpec: primaryDest("unit1"),
+        destUnitId: "unit1",
         unitId: "builtInKeyboard",
         internalUnitKey: "builtInKeyboard",
         position: { x: 4600, y: by + 640 },
@@ -87,14 +110,19 @@ function buildDefaultScene() {
       //   catalogKey: "chordCaster",
       //   position: { x: 4000, y: by + 450 },
       // },
-    ];
-    store.setUnitItems(unitItems);
-    store.patchSight({ eyeScaling: 1.0, eyeOffset: { x: 200, y: 250 } });
+    ]);
+    store.assign({
+      unitItems,
+      wireItems,
+      sight: { eyeScaling: 1.0, eyeOffset: { x: 200, y: 250 } },
+    });
+    // store.setUnitItems(unitItems);
+    // store.patchSight({ eyeScaling: 1.0, eyeOffset: { x: 200, y: 250 } });
   } else {
     const by = 2400;
     const unitItems: UnitItem[] = [
       {
-        destSpec: primaryDest("$output"),
+        // destSpec: primaryDest("$output"),
         unitId: "builtInPreOutput",
         internalUnitKey: "builtInVisualizer",
         position: { x: 4500, y: by + 100 },
