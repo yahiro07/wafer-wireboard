@@ -65,12 +65,16 @@ function getElementCenterPositionInBoard(
 function useAffectPortPositionToStore(
   portDivRef: React.RefObject<HTMLDivElement | null>,
   port: UnitTemporalPort,
+  yOffset?: number,
 ) {
   useEffect(() => {
     const boardDom = document.getElementById(domEditAreaId);
     const el = portDivRef.current;
     if (el && boardDom) {
       const position = getElementCenterPositionInBoard(el, boardDom);
+      if (yOffset !== undefined) {
+        position.y += yOffset;
+      }
       const { portKey, subtypes, direction } = port;
       const unitId = portKey.split(".")[0];
       const portItem = { portKey, unitId, direction, subtypes, position };
@@ -79,7 +83,7 @@ function useAffectPortPositionToStore(
         connectionActions.removePortItem(portKey);
       };
     }
-  }, [port, portDivRef]);
+  }, [port, portDivRef, yOffset]);
 }
 
 export const PortCell = ({ port }: { port: UnitTemporalPort }) => {
@@ -135,7 +139,7 @@ export const SpeakerPortCell = ({
 }) => {
   const highlightingState = usePortCellHighlightingModel(port.portKey);
   const portDivRef = useRef<HTMLDivElement>(null);
-  useAffectPortPositionToStore(portDivRef, port);
+  useAffectPortPositionToStore(portDivRef, port, 40);
   return (
     <div
       ref={portDivRef}

@@ -51,7 +51,8 @@ export function useWiringLayerWireItems(): WiringLayerWire[] {
         const id = wire.connectionKey;
         const p1 = portItems[wire.sourcePortKey].position;
         const p2 = portItems[wire.destinationPortKey].position;
-        const rightAngled = wire.destinationPortKey === "builtInPreOutput";
+        const rightAngled =
+          wire.destinationPortKey === "builtInPreOutput.primaryInput";
         return { id, p1, p2, rightAngled };
       }),
     [wireItems, portItems],
