@@ -3,8 +3,8 @@ import { ReactNode } from "react";
 import { Icons, IconsEx } from "@/base/icons";
 import { systemPortCardDimensions } from "@/base/slot-card-dimensions";
 import { UnitItem } from "@/model/types";
-import { handleGripPointerDown } from "@/presenter/common-card-handlers";
 import { connectionLogic_toggleSingleConnectionToNearest } from "@/presenter/connection-logic";
+import { handleGripPointerDown } from "@/views/editor/unit-box-drag-handler";
 import { UnitFrameEx } from "@/views/editor/unit-frame-ex";
 
 const PortRelativePositionDebugOverlay = () => {

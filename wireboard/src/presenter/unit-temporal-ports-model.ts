@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
-import { PortSubtype, UnitItem } from "@/model/types";
+import { PortSubtype } from "@/model/types";
 
 type UnitTemporalPortType =
   | "primaryOutput"
@@ -16,14 +15,16 @@ export type UnitTemporalPort = {
   label?: string;
 };
 
-type UnitPortsModel = {
+type UnitTemporalPortsModel = {
   primaryOut?: UnitTemporalPort;
   primaryIn?: UnitTemporalPort;
   additional?: UnitTemporalPort[];
 };
 
-function buildUnitPortsModel(unitInstance: HsUnitInstance): UnitPortsModel {
-  const model: UnitPortsModel = {};
+export function buildUnitTemporalPortsModel(
+  unitInstance: HsUnitInstance,
+): UnitTemporalPortsModel {
+  const model: UnitTemporalPortsModel = {};
 
   const {
     unitId,
@@ -111,24 +112,4 @@ function buildUnitPortsModel(unitInstance: HsUnitInstance): UnitPortsModel {
     ];
   }
   return model;
-}
-
-export function useSlotCardBoxViewModel(unitItem: UnitItem) {
-  const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
-
-  useEffect(() => {
-    if (unitInstance) {
-      console.log("unitInstance loaded", unitItem.unitId);
-      return () => {
-        console.log("unitInstance unloaded", unitItem.unitId);
-      };
-    }
-  }, [unitInstance, unitItem.unitId]);
-
-  const unitPortsModel = useMemo(
-    () => (unitInstance ? buildUnitPortsModel(unitInstance) : undefined),
-    [unitInstance],
-  );
-
-  return { unitPortsModel, setUnitInstance };
 }

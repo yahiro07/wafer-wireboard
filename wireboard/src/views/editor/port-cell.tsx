@@ -2,7 +2,7 @@ import { Point } from "mofur/ax-ui";
 import { useEffect, useMemo, useRef } from "react";
 import { IconsEx } from "@/base/icons";
 import { portCoordinatesModel } from "@/model/port-coordinates-model";
-import { UnitTemporalPort } from "@/presenter/slot-card-box-view-model";
+import { UnitTemporalPort } from "@/presenter/unit-temporal-ports-model";
 
 type PortCellPositionCallbacks = {
   onAdd: (position: Point) => void;

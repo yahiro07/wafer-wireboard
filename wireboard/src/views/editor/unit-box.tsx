@@ -1,16 +1,18 @@
 import clsx from "clsx";
 import { npx } from "mofur/ax-ui";
+import { useEffect, useMemo, useState } from "react";
+import { HsUnitInstance } from "wafer-host/core";
 import { Icons } from "@/base/icons";
 import { slotCardDimensions } from "@/base/slot-card-dimensions";
 import { actions } from "@/model/actions";
 import { UnitItem } from "@/model/types";
 import {
+  buildUnitTemporalPortsModel,
   UnitTemporalPort,
-  useSlotCardBoxViewModel,
-} from "@/presenter/slot-card-box-view-model";
+} from "@/presenter/unit-temporal-ports-model";
 import { InputPortCell, OutputPortCell } from "@/views/editor/port-cell";
 import { UnitFrameEx } from "@/views/editor/unit-frame-ex";
-import { handleGripPointerDown } from "../../presenter/common-card-handlers";
+import { handleGripPointerDown } from "./unit-box-drag-handler";
 
 const PortRelativePositionDebugOverlay = () => {
   const inputPos = slotCardDimensions.inputPort;
@@ -64,6 +66,27 @@ const AdditionalPortColumn = ({ port }: { port: UnitTemporalPort }) => {
     </div>
   );
 };
+
+function useSlotCardBoxViewModel(unitItem: UnitItem) {
+  const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
+
+  useEffect(() => {
+    if (unitInstance) {
+      console.log("unitInstance loaded", unitItem.unitId);
+      return () => {
+        console.log("unitInstance unloaded", unitItem.unitId);
+      };
+    }
+  }, [unitInstance, unitItem.unitId]);
+
+  const unitPortsModel = useMemo(
+    () =>
+      unitInstance ? buildUnitTemporalPortsModel(unitInstance) : undefined,
+    [unitInstance],
+  );
+
+  return { unitPortsModel, setUnitInstance };
+}
 
 export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
   const sd = slotCardDimensions;
