@@ -1,5 +1,5 @@
 import { HsUnitInstance } from "wafer-host/core";
-import { PortSubtype } from "@/model/types";
+import { PortDirection, PortSubtype } from "@/model/types";
 
 type UnitTemporalPortType =
   | "primaryOutput"
@@ -9,6 +9,7 @@ type UnitTemporalPortType =
 
 export type UnitTemporalPort = {
   portType: UnitTemporalPortType;
+  direction: PortDirection;
   subtypes: PortSubtype[];
   portKey: string;
   id: string;
@@ -43,6 +44,7 @@ export function buildUnitTemporalPortsModel(
     if (subtypes.length > 0) {
       model.primaryOut = {
         portType: "primaryOutput",
+        direction: "output",
         id: "primaryOutput",
         portKey: `${unitId}.primaryOutput`,
         subtypes,
@@ -59,6 +61,7 @@ export function buildUnitTemporalPortsModel(
     if (subtypes.length > 0) {
       model.primaryIn = {
         portType: "primaryInput",
+        direction: "input",
         id: "primaryInput",
         portKey: `${unitId}.primaryInput`,
         subtypes,
@@ -70,6 +73,7 @@ export function buildUnitTemporalPortsModel(
       ? Object.values(additionalAudioOutputs).map(
           (p): UnitTemporalPort => ({
             portType: "additionalOutput",
+            direction: "output",
             subtypes: ["audio"],
             id: p.id,
             portKey: `${unitId}.${p.id}`,
@@ -81,6 +85,7 @@ export function buildUnitTemporalPortsModel(
       ? Object.values(additionalAudioInputs).map(
           (p): UnitTemporalPort => ({
             portType: "additionalInput",
+            direction: "input",
             subtypes: ["audio"],
             id: p.id,
             portKey: `${unitId}.${p.id}`,
@@ -97,6 +102,7 @@ export function buildUnitTemporalPortsModel(
     model.additional = [
       {
         portType: "additionalOutput",
+        direction: "output",
         subtypes: ["audio"],
         id: "kick",
         portKey: `${unitId}.kick`,
@@ -104,6 +110,7 @@ export function buildUnitTemporalPortsModel(
       },
       {
         portType: "additionalInput",
+        direction: "input",
         subtypes: ["audio"],
         id: "detector",
         portKey: `${unitId}.detector`,

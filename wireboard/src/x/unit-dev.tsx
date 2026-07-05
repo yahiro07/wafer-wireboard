@@ -6,7 +6,7 @@ import { HostAppProvider } from "wafer-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
 import { Button } from "@/components/button";
 import { hostSystem } from "@/model/host-system-instance";
-import { UnitFrameEx } from "@/views/editor/unit-frame-ex";
+import { UnitFrameEx } from "@/unit/unit-frame-ex";
 
 export type StoreState = {
   notes: number[];

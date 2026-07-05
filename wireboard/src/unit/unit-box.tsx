@@ -6,12 +6,12 @@ import { Icons } from "@/base/icons";
 import { slotCardDimensions } from "@/base/slot-card-dimensions";
 import { actions } from "@/model/actions";
 import { UnitItem } from "@/model/types";
+import { InputPortCell, OutputPortCell } from "@/port/port-cell";
+import { UnitFrameEx } from "@/unit/unit-frame-ex";
 import {
   buildUnitTemporalPortsModel,
   UnitTemporalPort,
-} from "@/presenter/unit-temporal-ports-model";
-import { InputPortCell, OutputPortCell } from "@/views/editor/port-cell";
-import { UnitFrameEx } from "@/views/editor/unit-frame-ex";
+} from "@/unit/unit-temporal-ports-model";
 import { handleGripPointerDown } from "./unit-box-drag-handler";
 
 const PortRelativePositionDebugOverlay = () => {

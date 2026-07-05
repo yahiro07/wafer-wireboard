@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 import { store } from "@/model/store";
-import { setupMainAreaInputHandlers } from "@/presenter/sight-control-handlers";
-import { useKeyboardAutoTarget } from "@/presenter/use-keyboard-auto-target";
+import { setupMainAreaInputHandlers } from "@/periphery/sight-control-handlers";
+import { useKeyboardAutoTarget } from "@/unit/use-keyboard-auto-target";
 import { EditorLayer } from "@/views/editor/editor-layer";
 import { CornerGithubBadge } from "@/views/editor-controls/foreground-ui";
 import { SceneSwitcherBar } from "@/views/editor-controls/scene-switcher-bar";
 import { TopBar } from "@/views/editor-controls/top-bar";
-import { useMainAreaDropHandlers } from "../presenter/picker-drag-drop";
 import { SightDraggingCover } from "./editor-controls/sight-dragging-cover";
+import { useMainAreaDropHandlers } from "./picker-drag-drop";
 
 export const MainArea = () => {
   const { sceneSwitcherVisible } = store.useSnapshot();

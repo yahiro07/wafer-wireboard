@@ -11,7 +11,7 @@ import {
   InternalUnitKey,
   internalUnitFunctions,
 } from "@/model/internal-unit-definitions";
-import { setupIframeInputHandlers } from "@/presenter/sight-control-handlers";
+import { setupIframeInputHandlers } from "@/periphery/sight-control-handlers";
 
 export const UnitFrameEx = ({
   unitId,

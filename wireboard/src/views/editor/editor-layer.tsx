@@ -1,13 +1,13 @@
 import { boardSize } from "@/base/constants";
 import { FieldSightPlane } from "@/components/field-sight-plane";
 import { store } from "@/model/store";
-import { useWireItems } from "@/presenter/use-wire-items";
-import { DebugPortsLayer } from "@/views/editor/debug-ports-layer";
-import { SlotCardBox } from "@/views/editor/slot-card-box";
+import { useWireItems } from "@/port/use-wire-items";
+import { SlotCardBox } from "@/unit/unit-box";
 import {
   KeyboardSystemPortBox,
   SpeakerSystemPortBox,
-} from "@/views/editor/system-port-box";
+} from "@/unit/unit-box-specials";
+import { DebugPortsLayer } from "@/views/editor/debug-ports-layer";
 import { WiringLayer } from "@/views/editor/wiring-layer";
 
 export const EditorLayer = () => {

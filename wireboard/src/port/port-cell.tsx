@@ -2,7 +2,7 @@ import { Point } from "mofur/ax-ui";
 import { useEffect, useMemo, useRef } from "react";
 import { IconsEx } from "@/base/icons";
 import { portCoordinatesModel } from "@/model/port-coordinates-model";
-import { UnitTemporalPort } from "@/presenter/unit-temporal-ports-model";
+import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
 
 type PortCellPositionCallbacks = {
   onAdd: (position: Point) => void;
@@ -64,11 +64,12 @@ export const PortCell = ({
 function createPortCellPositionCallbacks(
   port: UnitTemporalPort,
 ): PortCellPositionCallbacks {
-  const { portKey, subtypes } = port;
+  const { portKey, subtypes, direction } = port;
   return {
     onAdd(position: Point) {
       portCoordinatesModel.addPortItem({
         portKey,
+        direction,
         subtypes,
         position,
       });

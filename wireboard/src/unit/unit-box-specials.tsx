@@ -3,9 +3,9 @@ import { ReactNode } from "react";
 import { Icons, IconsEx } from "@/base/icons";
 import { systemPortCardDimensions } from "@/base/slot-card-dimensions";
 import { UnitItem } from "@/model/types";
-import { connectionLogic_toggleSingleConnectionToNearest } from "@/presenter/connection-logic";
-import { handleGripPointerDown } from "@/views/editor/unit-box-drag-handler";
-import { UnitFrameEx } from "@/views/editor/unit-frame-ex";
+import { connectionLogic } from "@/port/connection-logic";
+import { handleGripPointerDown } from "@/unit/unit-box-drag-handler";
+import { UnitFrameEx } from "@/unit/unit-frame-ex";
 
 const PortRelativePositionDebugOverlay = () => {
   const inputPos = systemPortCardDimensions.inputPort;
@@ -101,7 +101,7 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
 
 export const KeyboardSystemPortBox = ({ unit }: { unit: UnitItem }) => {
   const handleKeyboardPortClick = (e: React.PointerEvent) => {
-    connectionLogic_toggleSingleConnectionToNearest(unit);
+    connectionLogic.toggleSingleConnectionToNearest(unit);
     e.stopPropagation();
   };
   return (

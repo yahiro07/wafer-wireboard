@@ -5,11 +5,11 @@ import { CatalogKey } from "@/base/showcase-entries";
 import { getNextUnitId } from "@/model/helpers/unit-id-helper";
 import { hostSystem } from "@/model/host-system-instance";
 import { store } from "@/model/store";
-import { AppUnitDestinationSpec, Scene, UnitItem } from "@/model/types";
+import { Scene, UnitItem } from "@/model/types";
 
 type Vector = { x: number; y: number };
 
-const actionsInternal = {
+export const actionsInternal = {
   patchUnitItem(unitId: string, attrs: Partial<UnitItem>) {
     store.setUnitItems((prev) =>
       prev.map((item) =>
@@ -64,12 +64,6 @@ export const actions = {
         position,
       },
     ]);
-  },
-  replaceUnitDestSpec(unitId: string, destSpec: AppUnitDestinationSpec) {
-    actionsInternal.patchUnitItem(unitId, { destSpec });
-  },
-  removeConnection(unitId: string) {
-    actionsInternal.patchUnitItem(unitId, { destSpec: undefined });
   },
   removeUnit(unitId: string) {
     actionsInternal.patchUnitItem(unitId, { destSpec: undefined });

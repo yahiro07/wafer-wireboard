@@ -19,6 +19,9 @@ export type StoreState = {
   currentSceneId: string;
   sceneSwitcherVisible: boolean;
   liveClockingTarget: LiveClockingTarget;
+  draggingPortKey: string | null;
+  previewDestPortKey: string | null;
+  tappingPortKey: string | null;
 };
 
 export const store = createStore<StoreState>({
@@ -38,6 +41,9 @@ export const store = createStore<StoreState>({
   currentSceneId: "scene0",
   sceneSwitcherVisible: false,
   liveClockingTarget: "chain",
+  draggingPortKey: null,
+  previewDestPortKey: null,
+  tappingPortKey: null,
 });
 
 function buildDefaultScene() {
