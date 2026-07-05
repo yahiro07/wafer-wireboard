@@ -25,10 +25,4 @@ export const connectionActions = {
   setTappingPortKey(portKey: string | null) {
     store.setTappingPortKey(portKey);
   },
-  // replaceUnitDestSpec(unitId: string, destSpec: AppUnitDestinationSpec) {
-  //   actionsInternal.patchUnitItem(unitId, { destSpec });
-  // },
-  // removeConnection(unitId: string) {
-  //   actionsInternal.patchUnitItem(unitId, { destSpec: undefined });
-  // },
 };

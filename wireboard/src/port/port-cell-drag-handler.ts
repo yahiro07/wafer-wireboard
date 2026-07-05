@@ -10,7 +10,7 @@ import {
   getUnitIdFromPortKey,
 } from "@/port/connection-logic";
 
-function filterCandidatePorts(
+export function filterCandidatePorts(
   portItems: PortItem[],
   sourcePortKey: string,
   portSubtypes: PortSubtype[],
@@ -32,7 +32,7 @@ function filterCandidatePorts(
   return ports;
 }
 
-function findNearestPort(
+export function findNearestPort(
   portItems: PortItem[],
   position: Point,
   filterYAbove: boolean,
@@ -90,7 +90,10 @@ export function handlePortCellDragging(
         previewDestPortKey &&
         previewDestPortKey !== draggingPortKey
       ) {
-        connectionLogic.updateConnection(draggingPortKey, previewDestPortKey);
+        connectionLogic.toggleConnectionInFanOut(
+          draggingPortKey,
+          previewDestPortKey,
+        );
       }
       connectionActions.setDraggingPortKey(null);
       connectionActions.setPreviewDestPortKey(null);
@@ -103,7 +106,7 @@ export function handlePortCellDragging(
       );
       const targetPort = findNearestPort(candidatePorts, pos, true);
       if (targetPort) {
-        connectionLogic.updateConnectionSingle(portKey, targetPort.portKey);
+        connectionLogic.toggleConnectionSingle(portKey, targetPort.portKey);
       }
     },
   };
@@ -188,7 +191,7 @@ export function handleKeyboardPortCellClick(
       );
       const targetPort = findNearestPort(candidatePorts, pos, true);
       if (targetPort) {
-        connectionLogic.updateConnectionSingle(portKey, targetPort.portKey);
+        connectionLogic.toggleConnectionSingle(portKey, targetPort.portKey);
       }
     },
   };

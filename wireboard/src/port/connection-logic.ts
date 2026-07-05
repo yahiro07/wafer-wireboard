@@ -60,8 +60,18 @@ export const connectionLogic = {
   //   const newDestSpec = unitDestSpecOp.toggle(destSpec, nearestUnit.unitId);
   //   connectionActions.replaceUnitDestSpec(unit.unitId, newDestSpec);
   // },
-  updateConnectionSingle(sourcePortKey: string, destinationPortKey: string) {
+  setConnectionSingle(sourcePortKey: string, destinationPortKey: string) {
     const connectionKey = `${sourcePortKey}-${destinationPortKey}`;
+    const newWire = { connectionKey, sourcePortKey, destinationPortKey };
+    const newWireItems = [
+      ...store.state.wireItems.filter(
+        (wire) => wire.sourcePortKey !== sourcePortKey,
+      ),
+      newWire,
+    ];
+    store.setWireItems(newWireItems);
+  },
+  toggleConnectionSingle(sourcePortKey: string, destinationPortKey: string) {
     const existingWireItem = store.state.wireItems.find(
       (wire) => wire.sourcePortKey === sourcePortKey,
     );
@@ -70,12 +80,12 @@ export const connectionLogic = {
         prev.filter((wire) => wire.sourcePortKey !== sourcePortKey),
       );
     } else {
+      const connectionKey = `${sourcePortKey}-${destinationPortKey}`;
       const wireItem = { connectionKey, sourcePortKey, destinationPortKey };
       store.setWireItems((prev) => [...prev, wireItem]);
     }
   },
-  updateConnection(sourcePortKey: string, destinationPortKey: string) {
-    // console.log("updateConnection", sourcePortKey, destinationPortKey);
+  toggleConnectionInFanOut(sourcePortKey: string, destinationPortKey: string) {
     const connectionKey = `${sourcePortKey}-${destinationPortKey}`;
     const existingWireItem = store.state.wireItems.find(
       (wire) => wire.connectionKey === connectionKey,

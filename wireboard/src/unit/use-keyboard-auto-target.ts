@@ -1,28 +1,34 @@
 import { useEffect } from "react";
 import { store } from "@/model/store";
-import { connectionActions } from "@/port/connection-actions";
-import { findNearestConnectionTargetUnit } from "@/port/unit-coordinate-helper";
-import { primaryDest } from "@/port/unit-dest-spec-op";
+import { connectionLogic } from "@/port/connection-logic";
+import {
+  filterCandidatePorts,
+  findNearestPort,
+} from "@/port/port-cell-drag-handler";
 
 export function useKeyboardAutoTarget() {
   const { unitItems } = store.useSnapshot();
-  const keyboardUnit = unitItems.find(
-    (item) => item.unitId === "builtInKeyboard",
-  );
-  // biome-ignore lint/correctness/useExhaustiveDependencies: execute only when position changes
+  const keyboardUnitId = "builtInKeyboard";
+  const keyboardPrimaryOutputPortKey = `${keyboardUnitId}.primaryOutput`;
+
+  const keyboardUnit = unitItems.find((item) => item.unitId === keyboardUnitId);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: manual management
   useEffect(() => {
-    if (keyboardUnit?.destSpec) {
-      const nearestTargetUnit = findNearestConnectionTargetUnit(
-        unitItems,
-        keyboardUnit.unitId,
-      );
+    const existingWire = store.state.wireItems.find(
+      (wire) => wire.sourcePortKey === keyboardPrimaryOutputPortKey,
+    );
+    if (existingWire) {
+      const sourcePort = store.state.portItems[keyboardPrimaryOutputPortKey];
+      const portItems = Object.values(store.state.portItems);
+      const ports = filterCandidatePorts(portItems, keyboardUnitId, ["note"]);
+      const nearestPort = findNearestPort(ports, sourcePort.position, true);
       if (
-        nearestTargetUnit &&
-        nearestTargetUnit?.unitId !== keyboardUnit.destSpec.$primary[0]
+        nearestPort &&
+        nearestPort.portKey !== existingWire.destinationPortKey
       ) {
-        connectionActions.replaceUnitDestSpec(
-          keyboardUnit.unitId,
-          primaryDest(nearestTargetUnit.unitId),
+        connectionLogic.setConnectionSingle(
+          sourcePort.portKey,
+          nearestPort.portKey,
         );
       }
     }
