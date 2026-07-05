@@ -1,5 +1,6 @@
 import { ScalerBoxAutoSized } from "mofur/mo-react";
 import { ReactNode } from "react";
+import { HsUnitInstance } from "wafer-host/core";
 import { ReactUnitFrame, UnitFrame } from "wafer-host/react";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
 import {
@@ -13,11 +14,13 @@ export const UnitFrameEx = ({
   destUnitId,
   catalogKey,
   internalUnitKey,
+  onUnitInstanceLoaded,
 }: {
   unitId: string;
   destUnitId?: string;
   catalogKey?: CatalogKey;
   internalUnitKey?: InternalUnitKey;
+  onUnitInstanceLoaded?: (unitInstance: HsUnitInstance) => void;
 }) => {
   const content: ReactNode = (() => {
     if (internalUnitKey) {
@@ -27,6 +30,7 @@ export const UnitFrameEx = ({
           unitId={unitId}
           destSpec={destUnitId}
           unitTemplateFn={templateFn}
+          onUnitInstanceLoaded={onUnitInstanceLoaded}
         />
       );
     } else if (catalogKey) {
@@ -38,6 +42,7 @@ export const UnitFrameEx = ({
           destSpec={destUnitId}
           unitUrl={catalogItem.loaderPageUrl}
           onIframeMounted={setupIframeInputHandlers}
+          onUnitInstanceLoaded={onUnitInstanceLoaded}
         />
       );
     }

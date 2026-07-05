@@ -22,7 +22,7 @@ export const EditorLayer = () => {
           } else if (item.unitId === "builtInPreOutput") {
             return <SpeakerSystemPortBox key={item.unitId} unit={item} />;
           } else {
-            return <SlotCardBox key={item.unitId} unit={item} />;
+            return <SlotCardBox key={item.unitId} unitItem={item} />;
           }
         })}
       </div>
