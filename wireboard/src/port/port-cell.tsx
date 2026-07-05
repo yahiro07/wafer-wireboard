@@ -125,3 +125,30 @@ export const KeyboardPortCell = ({ port }: { port: UnitTemporalPort }) => {
     </div>
   );
 };
+
+export const SpeakerPortCell = ({
+  port,
+  children,
+}: {
+  port: UnitTemporalPort;
+  children: React.ReactNode;
+}) => {
+  const highlightingState = usePortCellHighlightingModel(port.portKey);
+  const portDivRef = useRef<HTMLDivElement>(null);
+  useAffectPortPositionToStore(portDivRef, port);
+  return (
+    <div
+      ref={portDivRef}
+      style={{
+        background: highlightingState === "truthy" ? "orange" : undefined,
+        border:
+          highlightingState === "truthyOutlined"
+            ? "1.5px solid orange"
+            : undefined,
+        color: highlightingState === "truthy" ? "white" : undefined,
+      }}
+    >
+      {children}
+    </div>
+  );
+};

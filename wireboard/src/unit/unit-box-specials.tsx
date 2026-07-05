@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { Icons } from "@/base/icons";
 import { systemPortCardDimensions } from "@/base/slot-card-dimensions";
 import { UnitItem } from "@/model/types";
-import { KeyboardPortCell } from "@/port/port-cell";
+import { KeyboardPortCell, SpeakerPortCell } from "@/port/port-cell";
 import { handleGripPointerDown } from "@/unit/unit-box-drag-handler";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
 import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
@@ -79,12 +79,14 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
     <SystemPortBox
       unit={unit}
       iconContent={
-        <div
-          className="relative w-full h-full flex-c pt-2 cursor-pointer"
-          onPointerDown={(e) => handleGripPointerDown(e, unit)}
-        >
-          <Icons.Speaker size={65} />
-        </div>
+        <SpeakerPortCell port={systemPortUnitTemporalPorts.speakerInput}>
+          <div
+            className="relative w-full h-full flex-c pt-2 cursor-pointer"
+            onPointerDown={(e) => handleGripPointerDown(e, unit)}
+          >
+            <Icons.Speaker size={65} />
+          </div>
+        </SpeakerPortCell>
       }
       sideContent={
         <div className="h-full bg-black text-white">
