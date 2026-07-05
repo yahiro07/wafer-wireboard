@@ -7,6 +7,8 @@ import { hostSystem } from "@/model/host-system-instance";
 import { store } from "@/model/store";
 import { AppUnitDestinationSpec, Scene, UnitItem } from "@/model/types";
 
+type Vector = { x: number; y: number };
+
 const actionsInternal = {
   patchUnitItem(unitId: string, attrs: Partial<UnitItem>) {
     store.setUnitItems((prev) =>
@@ -23,11 +25,29 @@ const actionsInternal = {
       }
     });
   },
+  patchPortPositions(unitId: string, delta: Vector) {
+    store.producePortItems((draft) => {
+      for (const port of draft) {
+        if (port.portKey.split(".")[0] === unitId) {
+          port.position.x += delta.x;
+          port.position.y += delta.y;
+        }
+      }
+    });
+  },
 };
 
 export const actions = {
   setUnitPosition(unitId: string, position: Point) {
+    const unit = store.state.unitItems.find((item) => item.unitId === unitId);
+    if (!unit) return;
+    const prevPosition = unit.position;
+    const delta = {
+      x: position.x - prevPosition.x,
+      y: position.y - prevPosition.y,
+    };
     actionsInternal.patchUnitItem(unitId, { position });
+    actionsInternal.patchPortPositions(unitId, delta);
   },
   addUnit(
     catalogKey: CatalogKey,
