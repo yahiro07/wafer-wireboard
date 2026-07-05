@@ -3,7 +3,6 @@ import { npx } from "mofur/ax-ui";
 import { useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { Icons } from "@/base/icons";
-import { slotCardDimensions } from "@/base/slot-card-dimensions";
 import { actions } from "@/model/actions";
 import { UnitItem } from "@/model/types";
 import { PortCell } from "@/port/port-cell";
@@ -13,31 +12,6 @@ import {
   UnitTemporalPort,
 } from "@/unit/unit-temporal-ports-model";
 import { handleGripPointerDown } from "./unit-box-drag-handler";
-
-const PortRelativePositionDebugOverlay = () => {
-  const inputPos = slotCardDimensions.inputPort;
-  const outputPos = slotCardDimensions.outputPort;
-  return (
-    <div className="absolute w-full h-full">
-      <div
-        className="absolute w-[30px] h-[30px] bg-pink-500 opacity-30"
-        style={{
-          left: npx(outputPos.x),
-          top: npx(outputPos.y),
-          transform: "translate(-50%, -50%)",
-        }}
-      />
-      <div
-        className="absolute w-[30px] h-[30px] bg-pink-500 opacity-30"
-        style={{
-          left: npx(inputPos.x),
-          top: npx(inputPos.y),
-          transform: "translate(-50%, -50%)",
-        }}
-      />
-    </div>
-  );
-};
 
 const AdditionalPortColumn = ({ port }: { port: UnitTemporalPort }) => {
   const isOutput = port.portType === "additionalOutput";
@@ -68,7 +42,7 @@ const AdditionalPortColumn = ({ port }: { port: UnitTemporalPort }) => {
 };
 
 export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
-  const sd = slotCardDimensions;
+  const sd = { width: 400, height: 180 };
   const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
   const unitPortsModel = useMemo(
     () =>
@@ -102,7 +76,6 @@ export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
           <UnitFrameEx
             key={unitItem.fileChangeRevision}
             unitId={unitItem.unitId}
-            // destSpec={unitItem.destSpec}
             catalogKey={unitItem.catalogKey}
             internalUnitKey={unitItem.internalUnitKey}
             onUnitInstanceLoaded={setUnitInstance}
@@ -121,14 +94,12 @@ export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
           >
             <Icons.Grip />
           </div>
-          {/* <div
-            className="bd-red h-[40px] flex-c text-[20px] cursor-pointer"
-            onPointerDown={(e) => handleGripPointerDown(e, unit)}
-          /> */}
         </div>
-        {false && <PortRelativePositionDebugOverlay />}
         {unitPortsModel?.additional && (
-          <div className="absolute top-0 right-full h-full flex-h gap-1 mx-1">
+          <div
+            className="absolute top-0 right-full h-full flex-h gap-1 mx-1 cursor-pointer"
+            onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
+          >
             {unitPortsModel.additional.map((port) => (
               <AdditionalPortColumn key={port.id} port={port} />
             ))}

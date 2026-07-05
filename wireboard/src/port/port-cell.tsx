@@ -3,6 +3,7 @@ import { Point } from "mofur/ax-ui";
 import { useEffect, useRef } from "react";
 import { domEditAreaId } from "@/base/constants";
 import { IconsEx } from "@/base/icons";
+import { getUnitIdFromPortKey } from "@/model/factory";
 import { connectionActions } from "@/port/connection-actions";
 import {
   handleKeyboardPortCellClick,
@@ -76,7 +77,7 @@ function useAffectPortPositionToStore(
         position.y += yOffset;
       }
       const { portKey, subtypes, direction } = port;
-      const unitId = portKey.split(".")[0];
+      const unitId = getUnitIdFromPortKey(portKey);
       const portItem = { portKey, unitId, direction, subtypes, position };
       connectionActions.addPortItem(portItem);
       return () => {
@@ -93,13 +94,6 @@ export const PortCell = ({ port }: { port: UnitTemporalPort }) => {
   useAffectPortPositionToStore(portDivRef, port);
   const handlePointerDown = (e: React.PointerEvent) => {
     if (isOutput) {
-      // if (1) {
-      //   //fan out supported
-      //   connectionLogic_toggleMultiConnectionToNearest(unit);
-      // } else {
-      //   //single connection mode
-      //   connectionLogic_toggleSingleConnectionToNearest(unit);
-      // }
       handlePortCellDragging(e, port.portKey);
     }
     e.stopPropagation();

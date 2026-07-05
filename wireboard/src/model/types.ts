@@ -7,7 +7,6 @@ export type AppUnitDestinationSpec = Record<string, string[]>;
 
 export type UnitItem = {
   unitId: string | "builtInPreOutput" | "builtInKeyboard";
-  // destSpec?: AppUnitDestinationSpec;
   catalogKey?: CatalogKey;
   internalUnitKey?: InternalUnitKey;
   position: Point;
@@ -36,4 +35,6 @@ export type WireItem = {
   connectionKey: string; //${sourcePortKey}-${destinationPortKey}
   sourcePortKey: string;
   destinationPortKey: string;
+  sourceUnitId: string;
+  destinationUnitId: string;
 };

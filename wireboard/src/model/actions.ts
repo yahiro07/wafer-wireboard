@@ -6,7 +6,6 @@ import { getNextUnitId } from "@/model/helpers/unit-id-helper";
 import { hostSystem } from "@/model/host-system-instance";
 import { store } from "@/model/store";
 import { Scene, UnitItem } from "@/model/types";
-import { getUnitIdFromPortKey } from "@/port/connection-logic";
 
 type Vector = { x: number; y: number };
 
@@ -30,7 +29,7 @@ export const actionsInternal = {
     store.producePortItems((draft) => {
       for (const key in draft) {
         const port = draft[key];
-        if (getUnitIdFromPortKey(port.portKey) === unitId) {
+        if (port.unitId === unitId) {
           port.position.x += delta.x;
           port.position.y += delta.y;
         }
@@ -71,7 +70,8 @@ export const actions = {
     store.setUnitItems((prev) => prev.filter((item) => item.unitId !== unitId));
     store.producePortItems((draft) => {
       for (const key in draft) {
-        if (getUnitIdFromPortKey(key) === unitId) {
+        const port = draft[key];
+        if (port.unitId === unitId) {
           delete draft[key];
         }
       }
@@ -79,8 +79,7 @@ export const actions = {
     store.setWireItems((prev) =>
       prev.filter(
         (wire) =>
-          getUnitIdFromPortKey(wire.sourcePortKey) !== unitId &&
-          getUnitIdFromPortKey(wire.destinationPortKey) !== unitId,
+          wire.sourceUnitId !== unitId && wire.destinationUnitId !== unitId,
       ),
     );
   },

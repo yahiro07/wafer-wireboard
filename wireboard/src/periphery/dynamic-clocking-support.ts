@@ -1,7 +1,6 @@
 import { UnitNoteOutputMonitorFn } from "wafer-host/core";
 import { hostSystem, sequencerTickDriver } from "@/model/host-system-instance";
 import { store } from "@/model/store";
-import { getUnitIdFromPortKey } from "@/port/connection-logic";
 
 const flagsGenerator = {
   allActive() {
@@ -33,10 +32,9 @@ const flagsGenerator = {
 function getDestUnitIds(originatorUnitId: string): string[] {
   const resUnitIds = new Set<string>();
   for (const wire of store.state.wireItems) {
-    const sourceUnitId = getUnitIdFromPortKey(wire.sourcePortKey);
+    const sourceUnitId = wire.sourceUnitId;
     if (sourceUnitId === originatorUnitId) {
-      const destinationUnitId = getUnitIdFromPortKey(wire.destinationPortKey);
-      resUnitIds.add(destinationUnitId);
+      resUnitIds.add(wire.destinationUnitId);
     }
   }
   return Array.from(resUnitIds);

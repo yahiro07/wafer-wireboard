@@ -1,37 +1,11 @@
 import { npx } from "mofur/ax-ui";
 import { ReactNode } from "react";
 import { Icons } from "@/base/icons";
-import { systemPortCardDimensions } from "@/base/slot-card-dimensions";
 import { UnitItem } from "@/model/types";
 import { KeyboardPortCell, SpeakerPortCell } from "@/port/port-cell";
 import { handleGripPointerDown } from "@/unit/unit-box-drag-handler";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
 import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
-
-const PortRelativePositionDebugOverlay = () => {
-  const inputPos = systemPortCardDimensions.inputPort;
-  const outputPos = systemPortCardDimensions.outputPort;
-  return (
-    <div className="absolute-full">
-      <div
-        className="absolute w-[30px] h-[30px] bg-pink-500 opacity-30"
-        style={{
-          left: npx(outputPos.x),
-          top: npx(outputPos.y),
-          transform: "translate(-50%, -50%)",
-        }}
-      />
-      <div
-        className="absolute w-[30px] h-[30px] bg-pink-500 opacity-30"
-        style={{
-          left: npx(inputPos.x),
-          top: npx(inputPos.y),
-          transform: "translate(-50%, -50%)",
-        }}
-      />
-    </div>
-  );
-};
 
 const SystemPortBox = ({
   unit,
@@ -42,7 +16,7 @@ const SystemPortBox = ({
   iconContent: ReactNode;
   sideContent?: ReactNode;
 }) => {
-  const sd = systemPortCardDimensions;
+  const sd = { width: 560, height: 120 };
   return (
     <div
       className="absolute"
@@ -68,7 +42,6 @@ const SystemPortBox = ({
             </div>
           </div>
         </div>
-        {false && <PortRelativePositionDebugOverlay />}
       </div>
     </div>
   );
@@ -92,7 +65,6 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
         <div className="h-full bg-black text-white">
           <UnitFrameEx
             unitId={unit.unitId}
-            // destSpec={unit.destSpec}
             catalogKey={unit.catalogKey}
             internalUnitKey={unit.internalUnitKey}
           />
@@ -140,7 +112,6 @@ export const KeyboardSystemPortBox = ({ unit }: { unit: UnitItem }) => {
         <div className="h-full bg-white text-black">
           <UnitFrameEx
             unitId={unit.unitId}
-            // destSpec={unit.destSpec}
             catalogKey={unit.catalogKey}
             internalUnitKey={unit.internalUnitKey}
           />

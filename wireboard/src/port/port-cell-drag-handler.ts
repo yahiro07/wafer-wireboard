@@ -1,14 +1,11 @@
 import { DragHandlerEvent, Point, startDragSession } from "mofur/ax-ui";
 import { findItemMappedMinimum } from "@/auxiliaries/general-utils";
 import { domEditAreaId } from "@/base/constants";
+import { getUnitIdFromPortKey } from "@/model/factory";
 import { store } from "@/model/store";
 import { PortItem, PortSubtype } from "@/model/types";
 import { connectionActions } from "@/port/connection-actions";
-import {
-  checkSubtypeOverlap,
-  connectionLogic,
-  getUnitIdFromPortKey,
-} from "@/port/connection-logic";
+import { checkSubtypeOverlap, connectionLogic } from "@/port/connection-logic";
 
 export function filterCandidatePorts(
   portItems: PortItem[],
