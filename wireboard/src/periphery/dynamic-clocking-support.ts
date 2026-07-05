@@ -1,4 +1,8 @@
-/*
+import { UnitNoteOutputMonitorFn } from "wafer-host/core";
+import { hostSystem, sequencerTickDriver } from "@/model/host-system-instance";
+import { store } from "@/model/store";
+import { getUnitIdFromPortKey } from "@/port/connection-logic";
+
 const flagsGenerator = {
   allActive() {
     return Object.fromEntries(
@@ -26,26 +30,21 @@ const flagsGenerator = {
   },
 };
 
-function getBuiltinKeyboardDestUnitId() {
-  const keyboardUnitId = "builtInKeyboard";
-  const keyboardUnitItem = store.state.unitItems.find(
-    (item) => item.unitId === keyboardUnitId,
-  );
-  return keyboardUnitItem?.destSpec;
+function getDestUnitIds(originatorUnitId: string): string[] {
+  const resUnitIds = new Set<string>();
+  for (const wire of store.state.wireItems) {
+    const sourceUnitId = getUnitIdFromPortKey(wire.sourcePortKey);
+    if (sourceUnitId === originatorUnitId) {
+      const destinationUnitId = getUnitIdFromPortKey(wire.destinationPortKey);
+      resUnitIds.add(destinationUnitId);
+    }
+  }
+  return Array.from(resUnitIds);
 }
 
-function getDestUnitIds(originatorUnitId: string) {
-  const unitItem = store.state.unitItems.find(
-    (item) => item.unitId === originatorUnitId,
-  );
-  const destSpec = unitItem?.destSpec;
-  if (destSpec) {
-    return destSpec
-      .split("&")
-      .map((id) => id.trim())
-      .filter((id) => id.length > 0);
-  }
-  return [];
+function getBuiltinKeyboardDestUnitId() {
+  const keyboardUnitId = "builtInKeyboard";
+  return getDestUnitIds(keyboardUnitId)?.[0];
 }
 
 function addUnitGraphIdsUntilOutput(
@@ -176,19 +175,18 @@ function createNoteOutputMonitorSimple(): UnitNoteOutputMonitorFn {
     }
   };
 }
-*/
 
 export function setupDynamicClockingSupport() {
-  // const monitorSimple = createNoteOutputMonitorSimple();
-  // const monitorChained = createNoteOutputMonitorChained();
-  // hostSystem.setUnitNoteOutputMonitor((args) => {
-  //   if (store.state.liveClockingTarget === "chain") {
-  //     monitorChained(args);
-  //   } else {
-  //     monitorSimple(args);
-  //   }
-  // });
-  // return () => {
-  //   hostSystem.setUnitNoteOutputMonitor(undefined);
-  // };
+  const monitorSimple = createNoteOutputMonitorSimple();
+  const monitorChained = createNoteOutputMonitorChained();
+  hostSystem.setUnitNoteOutputMonitor((args) => {
+    if (store.state.liveClockingTarget === "chain") {
+      monitorChained(args);
+    } else {
+      monitorSimple(args);
+    }
+  });
+  return () => {
+    hostSystem.setUnitNoteOutputMonitor(undefined);
+  };
 }

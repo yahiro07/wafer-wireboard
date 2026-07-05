@@ -1,6 +1,11 @@
 import { store } from "@/model/store";
 import { PortSubtype } from "@/model/types";
 
+// export function decodePortKey(portKey: string): [string, string] {
+//   const [unitId, portId] = portKey.split(".");
+//   return [unitId, portId];
+// }
+
 export function getUnitIdFromPortKey(portKey: string): string {
   return portKey.split(".")[0];
 }
