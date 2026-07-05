@@ -1,7 +1,7 @@
 import { getUnitCardDimensions } from "@/base/slot-card-dimensions";
 import { UnitItem } from "@/model/types";
 
-export function findNearestConnectionTargetUnit(
+function _findNearestConnectionTargetUnit_notInUse(
   unitItems: UnitItem[],
   sourceUnitId: string,
 ) {
