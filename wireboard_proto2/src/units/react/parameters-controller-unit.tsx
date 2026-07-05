@@ -39,14 +39,14 @@ export const createParametersControllerUnit: ReactUnitTemplateFn = (
           outputPort.automationOutput.getParameter(spec.id),
         ]),
       );
-      store.setState({
+      store.assign({
         connected: true,
         parameterSpecs,
         parameterValues,
       });
     },
     clearParameters() {
-      store.setState({
+      store.assign({
         connected: false,
         parameterSpecs: [],
         parameterValues: {},
@@ -54,7 +54,7 @@ export const createParametersControllerUnit: ReactUnitTemplateFn = (
     },
     setParameter(id: string, value: number) {
       outputPort.automationOutput.setParameter(id, value);
-      store.setState({
+      store.assign({
         parameterValues: {
           ...store.state.parameterValues,
           [id]: value,

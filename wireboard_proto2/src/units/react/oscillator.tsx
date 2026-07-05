@@ -55,7 +55,7 @@ export const createOscUnit: ReactUnitTemplateFn = (unitInterface) => {
           return store.state[id as keyof OscParameters];
         },
         setParameter(id: string, value: number) {
-          store.setState({ [id]: value });
+          store.assign({ [id]: value });
         },
       },
       stateInput: {
@@ -64,7 +64,7 @@ export const createOscUnit: ReactUnitTemplateFn = (unitInterface) => {
         },
         applyState(state) {
           const { wave, octave, volume } = state;
-          store.setState({
+          store.assign({
             wave,
             octave,
             volume,

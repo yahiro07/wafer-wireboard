@@ -23,7 +23,7 @@ export const createMasterClockUnit: ReactUnitTemplateFn = (unitInterface) => {
         tickDriver.start({
           processStep() {
             const stepDurationSec = 60 / store.state.bpm / 4;
-            clockOutput.processStep?.(stepIndex++, stepDurationSec);
+            clockOutput.processStep?.(stepIndex++, 0, stepDurationSec);
           },
         });
         store.setPlaying(true);
