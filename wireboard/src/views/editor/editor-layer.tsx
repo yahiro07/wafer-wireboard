@@ -7,12 +7,12 @@ import {
   SpeakerSystemPortBox,
 } from "@/unit/unit-box-specials";
 import { DebugPortsLayer } from "@/views/editor/debug-ports-layer";
-import { useWireItems } from "@/views/editor/use-wire-items";
 import { WiringLayer } from "@/views/editor/wiring-layer";
+import { useWiringLayerWireItems } from "@/views/editor/wiring-layer-wire-items";
 
 export const EditorLayer = () => {
   const { unitItems, sight } = store.useSnapshot();
-  const wires = useWireItems();
+  const wires = useWiringLayerWireItems();
   return (
     <FieldSightPlane sight={sight} boardSize={boardSize}>
       <WiringLayer boardSize={boardSize} wires={wires} />

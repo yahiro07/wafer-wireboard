@@ -1,54 +1,14 @@
 import { DragHandlerEvent, Point, startDragSession } from "mofur/ax-ui";
+import { findItemMappedMinimum } from "@/auxialiaries/general-utils";
 import { domEditAreaId } from "@/base/constants";
 import { store } from "@/model/store";
 import { PortItem, PortSubtype } from "@/model/types";
 import { connectionActions } from "@/port/connection-actions";
-import { checkSubtypeOverlap, connectionLogic } from "@/port/connection-logic";
-
-// type SeekerPortItem = {
-//   portKey: string;
-//   position: Point;
-//   unitId: string;
-//   direction: PortDirection;
-//   portSubtypes: PortSubtype[];
-// };
-
-function getSeekerPortItems(): PortItem[] {
-  // const { unitItems, portItems } = store.state;
-  // return Object.entries(portItems)
-  //   .map(([portKey, portItem]) => {
-  //     const unit = unitItems.find((u) => u.unitId === portItem.unitId);
-  //     if (!unit) return null;
-  //     const portPosition = portItem.position;
-  //     return {
-  //       portKey,
-  //       position: portPosition,
-  //       unitId: portItem.unitId,
-  //       direction: portItem.direction,
-  //       portSubtypes: portItem.subtypes,
-  //     };
-  //   })
-  //   .filter(Boolean) as PortItem[];
-  return Object.values(store.state.portItems);
-}
-
-function findNearestPort(
-  portItems: PortItem[],
-  position: Point,
-): PortItem | undefined {
-  let nearestPort: PortItem | undefined;
-  let nearestDistance = Infinity;
-  for (const port of portItems) {
-    const dx = port.position.x - position.x;
-    const dy = port.position.y - position.y;
-    const distance = Math.hypot(dx, dy);
-    if (distance < nearestDistance) {
-      nearestDistance = distance;
-      nearestPort = port;
-    }
-  }
-  return nearestPort;
-}
+import {
+  checkSubtypeOverlap,
+  connectionLogic,
+  getUnitIdFromPortKey,
+} from "@/port/connection-logic";
 
 function filterCandidatePorts(
   portItems: PortItem[],
@@ -56,9 +16,11 @@ function filterCandidatePorts(
   portSubtypes: PortSubtype[],
   includeSourcePort = false,
 ) {
+  const sourceUnitId = getUnitIdFromPortKey(sourcePortKey);
   const ports = portItems.filter(
     (it) =>
       it.direction === "input" &&
+      it.unitId !== sourceUnitId &&
       checkSubtypeOverlap(it.subtypes, portSubtypes),
   );
   if (includeSourcePort) {
@@ -70,21 +32,34 @@ function filterCandidatePorts(
   return ports;
 }
 
+function findNearestPort(
+  portItems: PortItem[],
+  position: Point,
+): PortItem | undefined {
+  return findItemMappedMinimum(portItems, (port) => {
+    const dx = port.position.x - position.x;
+    const dy = port.position.y - position.y;
+    return Math.hypot(dx, dy);
+  });
+}
+
 export function handlePortCellDragging(
   e0: React.PointerEvent,
   portKey: string,
 ) {
-  const portItems = getSeekerPortItems();
-  const sourcePort = portItems.find((it) => it.portKey === portKey);
+  const sourcePort = store.state.portItems[portKey];
   if (!sourcePort) return;
+  const portItems = Object.values(store.state.portItems);
 
-  const baseDiv = document.getElementById(domEditAreaId)!;
-  const baseRect = baseDiv.getBoundingClientRect();
+  const boardDom = document.getElementById(domEditAreaId)!;
+  const boardRect = boardDom.getBoundingClientRect();
+
+  const scale = store.state.sight.eyeScaling;
 
   const getPositionOnEditArea = (e: DragHandlerEvent) => {
     return {
-      x: e.position.x - baseRect.left,
-      y: e.position.y - baseRect.top,
+      x: (e.position.x - boardRect.left) / scale,
+      y: (e.position.y - boardRect.top) / scale,
     };
   };
 

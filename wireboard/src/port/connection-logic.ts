@@ -4,6 +4,10 @@ import { connectionActions } from "@/port/connection-actions";
 import { findNearestConnectionTargetUnit } from "@/port/unit-coordinate-helper";
 import { primaryDest, unitDestSpecOp } from "@/port/unit-dest-spec-op";
 
+export function getUnitIdFromPortKey(portKey: string): string {
+  return portKey.split(".")[0];
+}
+
 export function checkSubtypeOverlap(
   subtypes1: PortSubtype[],
   subtypes2: PortSubtype[],
