@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { npx } from "mofur/ax-ui";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { Icons } from "@/base/icons";
 import { slotCardDimensions } from "@/base/slot-card-dimensions";
@@ -67,31 +67,14 @@ const AdditionalPortColumn = ({ port }: { port: UnitTemporalPort }) => {
   );
 };
 
-function useSlotCardBoxViewModel(unitItem: UnitItem) {
+export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
+  const sd = slotCardDimensions;
   const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
-
-  useEffect(() => {
-    if (unitInstance) {
-      console.log("unitInstance loaded", unitItem.unitId);
-      return () => {
-        console.log("unitInstance unloaded", unitItem.unitId);
-      };
-    }
-  }, [unitInstance, unitItem.unitId]);
-
   const unitPortsModel = useMemo(
     () =>
       unitInstance ? buildUnitTemporalPortsModel(unitInstance) : undefined,
     [unitInstance],
   );
-
-  return { unitPortsModel, setUnitInstance };
-}
-
-export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
-  const sd = slotCardDimensions;
-  const { unitPortsModel, setUnitInstance } = useSlotCardBoxViewModel(unitItem);
-
   return (
     <div
       className="absolute"
