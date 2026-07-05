@@ -1,5 +1,5 @@
 import { Point, Size } from "mofur/ax-ui";
-import { WiringLayerWire } from "@/port/use-wire-items";
+import { WiringLayerWire } from "@/views/editor/use-wire-items";
 
 type Props = {
   boardSize: Size;

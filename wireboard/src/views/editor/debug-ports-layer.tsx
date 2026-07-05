@@ -4,7 +4,7 @@ export const DebugPortsLayer = () => {
   const { portItems } = store.useSnapshot();
   return (
     <div className="absolute-full pointer-events-none border border-red-500">
-      {portItems.map((port) => (
+      {Object.values(portItems).map((port) => (
         <div
           key={port.portKey}
           className="absolute"

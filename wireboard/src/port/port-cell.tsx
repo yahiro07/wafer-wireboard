@@ -1,8 +1,9 @@
 import { Point } from "mofur/ax-ui";
 import { useEffect, useMemo, useRef } from "react";
 import { IconsEx } from "@/base/icons";
-import { portCoordinatesModel } from "@/model/port-coordinates-model";
+import { connectionActions } from "@/port/connection-actions";
 import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
+import { domEditAreaId } from "@/base/constants";
 
 type PortCellPositionCallbacks = {
   onAdd: (position: Point) => void;
@@ -40,7 +41,7 @@ export const PortCell = ({
 }) => {
   const portDivRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const boardDom = document.getElementById("domEditMainLayer");
+    const boardDom = document.getElementById(domEditAreaId);
     const el = portDivRef.current;
     if (el && boardDom) {
       const position = getElementCenterPositionInBoard(el, boardDom);
@@ -67,18 +68,19 @@ function createPortCellPositionCallbacks(
   const { portKey, subtypes, direction } = port;
   return {
     onAdd(position: Point) {
-      portCoordinatesModel.addPortItem({
+      connectionActions.addPortItem({
         portKey,
+        unitId: portKey.split(".")[0],
         direction,
         subtypes,
         position,
       });
     },
     onMove(position: Point) {
-      portCoordinatesModel.setPortItemPosition(portKey, position);
+      connectionActions.setPortItemPosition(portKey, position);
     },
     onRemove() {
-      portCoordinatesModel.removePortItem(portKey);
+      connectionActions.removePortItem(portKey);
     },
   };
 }

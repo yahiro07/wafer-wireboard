@@ -26,6 +26,7 @@ export type PortSubtype = "audio" | "note" | "automation";
 
 export type PortItem = {
   portKey: string; //${unitId}.${portId}, portIds are "primaryOut", "primaryIn", or arbitrary id for additional ports
+  unitId: string;
   direction: PortDirection;
   subtypes: PortSubtype[];
   position: Point;

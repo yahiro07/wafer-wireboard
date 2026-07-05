@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { findNearestConnectionTargetUnit } from "@/model/helpers/unit-coordinate-helper";
-import { primaryDest } from "@/model/helpers/unit-dest-spec-op";
 import { store } from "@/model/store";
 import { connectionActions } from "@/port/connection-actions";
+import { findNearestConnectionTargetUnit } from "@/port/unit-coordinate-helper";
+import { primaryDest } from "@/port/unit-dest-spec-op";
 
 export function useKeyboardAutoTarget() {
   const { unitItems } = store.useSnapshot();

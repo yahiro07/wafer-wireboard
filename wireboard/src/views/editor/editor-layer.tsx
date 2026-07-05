@@ -1,13 +1,13 @@
-import { boardSize } from "@/base/constants";
+import { boardSize, domEditAreaId } from "@/base/constants";
 import { FieldSightPlane } from "@/components/field-sight-plane";
 import { store } from "@/model/store";
-import { useWireItems } from "@/port/use-wire-items";
 import { SlotCardBox } from "@/unit/unit-box";
 import {
   KeyboardSystemPortBox,
   SpeakerSystemPortBox,
 } from "@/unit/unit-box-specials";
 import { DebugPortsLayer } from "@/views/editor/debug-ports-layer";
+import { useWireItems } from "@/views/editor/use-wire-items";
 import { WiringLayer } from "@/views/editor/wiring-layer";
 
 export const EditorLayer = () => {
@@ -17,7 +17,7 @@ export const EditorLayer = () => {
     <FieldSightPlane sight={sight} boardSize={boardSize}>
       <WiringLayer boardSize={boardSize} wires={wires} />
       <div
-        id="domEditMainLayer"
+        id={domEditAreaId}
         className="relative h-full"
         style={{ border: "solid 2px #ccc8" }}
       >

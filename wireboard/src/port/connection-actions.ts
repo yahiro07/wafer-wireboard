@@ -1,8 +1,22 @@
+import { Point } from "mofur/ax-ui";
 import { actionsInternal } from "@/model/actions";
 import { store } from "@/model/store";
-import { AppUnitDestinationSpec } from "@/model/types";
+import { AppUnitDestinationSpec, PortItem } from "@/model/types";
 
 export const connectionActions = {
+  addPortItem(portItem: PortItem) {
+    store.setPortItems((prev) => ({ ...prev, [portItem.portKey]: portItem }));
+  },
+  removePortItem(portKey: string) {
+    store.producePortItems((draft) => {
+      delete draft[portKey];
+    });
+  },
+  setPortItemPosition(portKey: string, position: Point) {
+    store.producePortItems((draft) => {
+      draft[portKey].position = position;
+    });
+  },
   setDraggingPortKey(portKey: string | null) {
     store.setDraggingPortKey(portKey);
   },

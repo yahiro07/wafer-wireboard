@@ -27,10 +27,13 @@ export const actionsInternal = {
   },
   patchPortPositions(unitId: string, delta: Vector) {
     store.producePortItems((draft) => {
-      for (const port of draft) {
-        if (port.portKey.split(".")[0] === unitId) {
-          port.position.x += delta.x;
-          port.position.y += delta.y;
+      for (const key in draft) {
+        if (key.split(".")[0] === unitId) {
+          const port = draft[key];
+          if (port.portKey.split(".")[0] === unitId) {
+            port.position.x += delta.x;
+            port.position.y += delta.y;
+          }
         }
       }
     });
