@@ -1,7 +1,6 @@
 import { seqNumbers } from "mofur/ax";
 import { createStore } from "snap-store";
 import { FieldSight } from "@/components/field-sight-plane";
-import { buildDefaultScene } from "@/model/default-scene";
 import {
   LiveClockingTarget,
   PortItem,
@@ -52,5 +51,3 @@ export const store = createStore<StoreState>({
   previewDestPortKey: null,
   tappingPortKey: null,
 });
-
-buildDefaultScene();

@@ -2,6 +2,7 @@ import { appConfig } from "@/base/app-config";
 import { actions } from "@/model/actions";
 import { StoreState, store } from "@/model/store";
 import { createPersistenceModel } from "@/project/persistence-model";
+import { createPresetProjectsModel } from "@/project/preset-projects";
 import {
   generateProjectData,
   ProjectData,
@@ -14,26 +15,39 @@ type ProjectsModel = {
   setupLifecycle(): (() => void) | undefined; //called with useEffect in first render
   exportProject(): void;
   importProject(): void;
+  loadDefaultProject(): void;
+  loadBlankProject(): void;
+  loadDemoProject(): void;
 };
 
 export function createProjectsModel(): ProjectsModel {
+  const presetProjectsModel = createPresetProjectsModel();
   const persistenceModel = createPersistenceModel();
   let autosaveEnabled = false;
+
+  const internal = {
+    loadProjectStates(states: Partial<StoreState>): void {
+      store.assign(states);
+      actions.reservePushCurrentSceneStateToHost(true);
+    },
+  };
   return {
     prepareProject(load: boolean): void {
-      const loadedStoreAttrs: Partial<StoreState> = {};
+      const storeAttrs: Partial<StoreState> = {};
       if (load) {
-        const persistedState = persistenceModel.loadPersistedState();
-        if (persistedState) {
-          Object.assign(loadedStoreAttrs, persistedState);
-        }
+        const initialStates =
+          persistenceModel.loadPersistedState() ??
+          presetProjectsModel.buildDefaultProjectStates();
+        Object.assign(storeAttrs, initialStates);
+      } else {
+        const states = presetProjectsModel.buildDefaultProjectStates();
+        Object.assign(storeAttrs, states);
       }
       const urlProjectData = sharedUrlSupport.loadUrlDataIfExists();
       if (urlProjectData) {
-        Object.assign(loadedStoreAttrs, urlProjectData);
+        Object.assign(storeAttrs, urlProjectData);
       }
-      store.assign(loadedStoreAttrs);
-      actions.reservePushCurrentSceneStateToHost(true);
+      internal.loadProjectStates(storeAttrs);
       autosaveEnabled = !urlProjectData;
     },
     setupLifecycle() {
@@ -70,6 +84,18 @@ export function createProjectsModel(): ProjectsModel {
         }
       };
       input.click();
+    },
+    loadDefaultProject() {
+      const states = presetProjectsModel.buildDefaultProjectStates();
+      internal.loadProjectStates(states);
+    },
+    loadBlankProject() {
+      const states = presetProjectsModel.buildBlankProjectStates();
+      internal.loadProjectStates(states);
+    },
+    loadDemoProject() {
+      const states = presetProjectsModel.buildDemoProjectStates();
+      internal.loadProjectStates(states);
     },
   };
 }
