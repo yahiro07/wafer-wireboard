@@ -31,7 +31,7 @@ export function createProjectsModel(): ProjectsModel {
   const internal = {
     loadProjectStates(states: Partial<StoreState>): void {
       store.assign(states);
-      // store.setProjectLoadedIndex((prev) => prev + 1);
+      store.setProjectLoadedIndex((prev) => prev + 1);
       actions.reservePushCurrentSceneStateToHost(true);
       iife(async () => {
         store.setUnitsLoading(true);
@@ -85,8 +85,7 @@ export function createProjectsModel(): ProjectsModel {
           const text = await file.text();
           const projectData = JSON.parse(text) as ProjectData;
           if (projectData.format === projectFormatKey) {
-            store.assign(projectData.states);
-            actions.reservePushCurrentSceneStateToHost(true);
+            internal.loadProjectStates(projectData.states);
           } else {
             alert("incompatible project format");
           }

@@ -29,7 +29,7 @@ export type StoreState = {
   tappingPortKey: string | null;
   modalPanelKind: ModalPanelKind | null;
   unitsLoading: boolean;
-  // projectLoadedIndex: number;
+  projectLoadedIndex: number;
 };
 
 export const store = createStore<StoreState>({
@@ -54,5 +54,5 @@ export const store = createStore<StoreState>({
   tappingPortKey: null,
   modalPanelKind: null,
   unitsLoading: false,
-  // projectLoadedIndex: 0,
+  projectLoadedIndex: 0,
 });

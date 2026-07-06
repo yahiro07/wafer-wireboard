@@ -66,7 +66,6 @@ export function createPresetProjectsModel() {
           position: { x: baseX, y: baseY + 50 },
         },
         {
-          destUnitId: "unit1",
           unitId: "builtInKeyboard",
           internalUnitKey: "builtInKeyboard",
           position: { x: baseX, y: baseY + 650 },
