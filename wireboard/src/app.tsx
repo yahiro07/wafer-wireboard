@@ -10,10 +10,10 @@ import { store } from "@/model/store";
 import { setupDynamicClockingSupport } from "@/periphery/dynamic-clocking-support";
 import { setupHmrHandler } from "@/periphery/hmr-handler";
 import { setupMidiInputHandling } from "@/periphery/midi-input-handling";
-import { prepareProject } from "@/project/project-setup";
+import { projectsModel } from "@/project/project-management-model";
 import { PageRoot } from "@/views/page-root";
 
-const projectLifecycleFn = prepareProject(true);
+projectsModel.prepareProject(true);
 
 const App = () => {
   const { playing, bpm, masterVolume } = store.useSnapshot();
@@ -22,7 +22,7 @@ const App = () => {
     [masterVolume],
   );
   useEffect(setupMidiInputHandling, []);
-  useEffect(projectLifecycleFn, []);
+  useEffect(projectsModel.setupLifecycle, []);
   useSequencerTickDriverRunner({ sequencerTickDriver, playing, bpm });
   useEffect(setupDynamicClockingSupport, []);
   return (
