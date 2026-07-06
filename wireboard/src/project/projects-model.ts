@@ -60,7 +60,7 @@ export function createProjectsModel(): ProjectsModel {
       const projectData = generateProjectData(store.state);
       const text = JSON.stringify(projectData, null, 2);
       const link = document.createElement("a");
-      link.href = `data:text/plain;charset=utf-8,${encodeURIComponent(text)}`;
+      link.href = `data:application/json;charset=utf-8,${encodeURIComponent(text)}`;
       const fileName = appConfig.isDevelopment
         ? "_project.json"
         : "project.json";
@@ -70,7 +70,7 @@ export function createProjectsModel(): ProjectsModel {
     importProject() {
       const input = document.createElement("input");
       input.type = "file";
-      input.accept = "application/json";
+      input.accept = ".json,application/json";
       input.onchange = async (e) => {
         const file = (e.target as HTMLInputElement).files?.[0];
         if (file) {
