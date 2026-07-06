@@ -38,3 +38,5 @@ export type WireItem = {
   sourceUnitId: string;
   destinationUnitId: string;
 };
+
+export type ModalPanelKind = "share";

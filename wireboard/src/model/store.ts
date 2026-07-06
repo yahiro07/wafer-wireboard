@@ -3,6 +3,7 @@ import { createStore } from "snap-store";
 import { FieldSight } from "@/components/field-sight-plane";
 import {
   LiveClockingTarget,
+  ModalPanelKind,
   PortItem,
   Scene,
   UnitItem,
@@ -27,6 +28,7 @@ export type StoreState = {
   draggingPortKey: string | null;
   previewDestPortKey: string | null;
   tappingPortKey: string | null;
+  modalPanelKind: ModalPanelKind | null;
 };
 
 export const store = createStore<StoreState>({
@@ -50,4 +52,5 @@ export const store = createStore<StoreState>({
   draggingPortKey: null,
   previewDestPortKey: null,
   tappingPortKey: null,
+  modalPanelKind: null,
 });

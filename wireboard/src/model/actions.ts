@@ -5,7 +5,7 @@ import { CatalogKey } from "@/base/showcase-entries";
 import { getNextUnitId } from "@/model/factory";
 import { hostSystem } from "@/model/host-system-instance";
 import { store } from "@/model/store";
-import { Scene, UnitItem } from "@/model/types";
+import { ModalPanelKind, Scene, UnitItem } from "@/model/types";
 
 type Vector = { x: number; y: number };
 
@@ -159,5 +159,16 @@ export const actions = {
     if (scene && !dequal(unitStates, scene.unitStates)) {
       actionsInternal.patchScene(currentSceneId, { unitStates });
     }
+  },
+  showModalPanel(kind: ModalPanelKind) {
+    store.setModalPanelKind(kind);
+  },
+  toggleModalPanel(modalPanelKind: ModalPanelKind) {
+    store.setModalPanelKind((prev) =>
+      prev === modalPanelKind ? null : modalPanelKind,
+    );
+  },
+  hideModalPanel() {
+    store.setModalPanelKind(null);
   },
 };

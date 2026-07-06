@@ -1,5 +1,6 @@
 import { Icons } from "@/base/icons";
 import { IconButton } from "@/components/icon-button";
+import { actions } from "@/model/actions";
 import { store } from "@/model/store";
 import { TopControlBar } from "@/views/editor-controls/top-control-bar";
 
@@ -24,7 +25,12 @@ const InfoButton = () => {
 };
 
 const ShareButton = () => {
-  return <IconButton icon={Icons.Share} onClick={() => {}} />;
+  return (
+    <IconButton
+      icon={Icons.Share}
+      onClick={() => actions.toggleModalPanel("share")}
+    />
+  );
 };
 
 export const TopBar = () => {

@@ -18,6 +18,7 @@ type ProjectsModel = {
   loadDefaultProject(): void;
   loadBlankProject(): void;
   loadDemoProject(): void;
+  emitSharedUrl(): string;
 };
 
 export function createProjectsModel(): ProjectsModel {
@@ -96,6 +97,9 @@ export function createProjectsModel(): ProjectsModel {
     loadDemoProject() {
       const states = presetProjectsModel.buildDemoProjectStates();
       internal.loadProjectStates(states);
+    },
+    emitSharedUrl() {
+      return sharedUrlSupport.generateSharedUrl(store.state);
     },
   };
 }
