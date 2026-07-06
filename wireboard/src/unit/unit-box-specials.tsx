@@ -52,7 +52,10 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
     <SystemPortBox
       unit={unit}
       iconContent={
-        <SpeakerPortCell port={systemPortUnitTemporalPorts.speakerInput}>
+        <SpeakerPortCell
+          port={systemPortUnitTemporalPorts.speakerInput}
+          unitPosition={unit.position}
+        >
           <div
             className="relative w-full h-full flex-c pt-2 cursor-pointer"
             onPointerDown={(e) => handleGripPointerDown(e, unit)}
@@ -104,6 +107,7 @@ export const KeyboardSystemPortBox = ({ unit }: { unit: UnitItem }) => {
           <div className="absolute-full flex-v items-center cursor-pointer pt-0.5">
             <KeyboardPortCell
               port={systemPortUnitTemporalPorts.keyboardOutput}
+              unitPosition={unit.position}
             />
           </div>
         </div>

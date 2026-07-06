@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { npx } from "mofur/ax-ui";
+import { npx, Point } from "mofur/ax-ui";
 import { useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { Icons } from "@/base/icons";
@@ -13,7 +13,13 @@ import {
 } from "@/unit/unit-temporal-ports-model";
 import { handleGripPointerDown } from "./unit-box-drag-handler";
 
-const AdditionalPortColumn = ({ port }: { port: UnitTemporalPort }) => {
+const AdditionalPortColumn = ({
+  port,
+  unitPosition,
+}: {
+  port: UnitTemporalPort;
+  unitPosition: Point;
+}) => {
   const isOutput = port.portType === "additionalOutput";
   return (
     <div
@@ -23,7 +29,7 @@ const AdditionalPortColumn = ({ port }: { port: UnitTemporalPort }) => {
         isOutput ? "justify-start" : "justify-end",
       )}
     >
-      {isOutput && <PortCell port={port} />}
+      {isOutput && <PortCell port={port} unitPosition={unitPosition} />}
       <div
         className={clsx(
           "text-white text-[14px] leading-none whitespace-nowrap",
@@ -36,7 +42,9 @@ const AdditionalPortColumn = ({ port }: { port: UnitTemporalPort }) => {
       >
         {port.label ?? port.id}
       </div>
-      {port.portType === "additionalInput" && <PortCell port={port} />}
+      {port.portType === "additionalInput" && (
+        <PortCell port={port} unitPosition={unitPosition} />
+      )}
     </div>
   );
 };
@@ -66,10 +74,16 @@ export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
           onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
         >
           {unitPortsModel?.primaryOut && (
-            <PortCell port={unitPortsModel.primaryOut} />
+            <PortCell
+              port={unitPortsModel.primaryOut}
+              unitPosition={unitItem.position}
+            />
           )}
           {unitPortsModel?.primaryIn && (
-            <PortCell port={unitPortsModel.primaryIn} />
+            <PortCell
+              port={unitPortsModel.primaryIn}
+              unitPosition={unitItem.position}
+            />
           )}
         </div>
         <div className="grow bg-gray-600">
@@ -101,7 +115,11 @@ export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
             onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
           >
             {unitPortsModel.additional.map((port) => (
-              <AdditionalPortColumn key={port.id} port={port} />
+              <AdditionalPortColumn
+                key={port.id}
+                port={port}
+                unitPosition={unitItem.position}
+              />
             ))}
           </div>
         )}

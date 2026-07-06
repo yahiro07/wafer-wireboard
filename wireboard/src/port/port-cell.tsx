@@ -66,6 +66,7 @@ function getElementCenterPositionInBoard(
 function useAffectPortPositionToStore(
   portDivRef: React.RefObject<HTMLDivElement | null>,
   port: UnitTemporalPort,
+  unitPosition: Point,
   yOffset?: number,
 ) {
   useEffect(() => {
@@ -85,13 +86,32 @@ function useAffectPortPositionToStore(
       };
     }
   }, [port, portDivRef, yOffset]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: manual management
+  useEffect(() => {
+    const boardDom = document.getElementById(domEditAreaId);
+    const el = portDivRef.current;
+    if (el && boardDom) {
+      const position = getElementCenterPositionInBoard(el, boardDom);
+      if (yOffset !== undefined) {
+        position.y += yOffset;
+      }
+      connectionActions.setPortItemPosition(port.portKey, position);
+    }
+  }, [port, portDivRef, yOffset, unitPosition]);
 }
 
-export const PortCell = ({ port }: { port: UnitTemporalPort }) => {
+export const PortCell = ({
+  port,
+  unitPosition,
+}: {
+  port: UnitTemporalPort;
+  unitPosition: Point;
+}) => {
   const highlightingState = usePortCellHighlightingModel(port.portKey);
   const isOutput = port.direction === "output";
   const portDivRef = useRef<HTMLDivElement>(null);
-  useAffectPortPositionToStore(portDivRef, port);
+  useAffectPortPositionToStore(portDivRef, port, unitPosition);
   const handlePointerDown = (e: React.PointerEvent) => {
     if (isOutput) {
       handlePortCellDragging(e, port.portKey);
@@ -105,10 +125,16 @@ export const PortCell = ({ port }: { port: UnitTemporalPort }) => {
   );
 };
 
-export const KeyboardPortCell = ({ port }: { port: UnitTemporalPort }) => {
+export const KeyboardPortCell = ({
+  port,
+  unitPosition,
+}: {
+  port: UnitTemporalPort;
+  unitPosition: Point;
+}) => {
   const highlightingState = usePortCellHighlightingModel(port.portKey);
   const portDivRef = useRef<HTMLDivElement>(null);
-  useAffectPortPositionToStore(portDivRef, port);
+  useAffectPortPositionToStore(portDivRef, port, unitPosition);
   const handlePointerDown = (e: React.PointerEvent) => {
     handleKeyboardPortCellClick(e, port.portKey);
     e.stopPropagation();
@@ -127,13 +153,15 @@ export const KeyboardPortCell = ({ port }: { port: UnitTemporalPort }) => {
 export const SpeakerPortCell = ({
   port,
   children,
+  unitPosition,
 }: {
   port: UnitTemporalPort;
   children: React.ReactNode;
+  unitPosition: Point;
 }) => {
   const highlightingState = usePortCellHighlightingModel(port.portKey);
   const portDivRef = useRef<HTMLDivElement>(null);
-  useAffectPortPositionToStore(portDivRef, port, 40);
+  useAffectPortPositionToStore(portDivRef, port, unitPosition, 40);
   return (
     <div
       ref={portDivRef}

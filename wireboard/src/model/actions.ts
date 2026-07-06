@@ -7,8 +7,6 @@ import { hostSystem } from "@/model/host-system-instance";
 import { store } from "@/model/store";
 import { ModalPanelKind, Scene, UnitItem } from "@/model/types";
 
-type Vector = { x: number; y: number };
-
 export const actionsInternal = {
   patchUnitItem(unitId: string, attrs: Partial<UnitItem>) {
     store.setUnitItems((prev) =>
@@ -25,30 +23,11 @@ export const actionsInternal = {
       }
     });
   },
-  patchPortPositions(unitId: string, delta: Vector) {
-    store.producePortItems((draft) => {
-      for (const key in draft) {
-        const port = draft[key];
-        if (port.unitId === unitId) {
-          port.position.x += delta.x;
-          port.position.y += delta.y;
-        }
-      }
-    });
-  },
 };
 
 export const actions = {
   setUnitPosition(unitId: string, position: Point) {
-    const unit = store.state.unitItems.find((item) => item.unitId === unitId);
-    if (!unit) return;
-    const prevPosition = unit.position;
-    const delta = {
-      x: position.x - prevPosition.x,
-      y: position.y - prevPosition.y,
-    };
     actionsInternal.patchUnitItem(unitId, { position });
-    actionsInternal.patchPortPositions(unitId, delta);
   },
   addUnit(
     catalogKey: CatalogKey,
