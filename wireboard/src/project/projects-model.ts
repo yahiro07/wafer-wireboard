@@ -1,5 +1,7 @@
+import { iife } from "mofur/ax";
 import { appConfig } from "@/base/app-config";
 import { actions } from "@/model/actions";
+import { hostSystem } from "@/model/host-system-instance";
 import { StoreState, store } from "@/model/store";
 import { createPersistenceModel } from "@/project/persistence-model";
 import { createPresetProjectsModel } from "@/project/preset-projects";
@@ -29,7 +31,13 @@ export function createProjectsModel(): ProjectsModel {
   const internal = {
     loadProjectStates(states: Partial<StoreState>): void {
       store.assign(states);
+      // store.setProjectLoadedIndex((prev) => prev + 1);
       actions.reservePushCurrentSceneStateToHost(true);
+      iife(async () => {
+        store.setUnitsLoading(true);
+        await hostSystem.waitUnitsLoaded();
+        store.setUnitsLoading(false);
+      });
     },
   };
   return {

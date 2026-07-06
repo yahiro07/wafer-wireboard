@@ -13,7 +13,7 @@ import { setupMidiInputHandling } from "@/periphery/midi-input-handling";
 import { projectsModel } from "@/project/projects-model";
 import { PageRoot } from "@/views/page-root";
 
-projectsModel.prepareProject(false);
+projectsModel.prepareProject(true);
 
 const App = () => {
   const { playing, bpm, masterVolume } = store.useSnapshot();

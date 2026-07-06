@@ -15,7 +15,6 @@ export type StoreState = {
   portItems: Record<string, PortItem>;
   wireItems: WireItem[];
   sight: FieldSight;
-  // notes: number[];
   bpm: number;
   playing: boolean;
   masterVolume: number;
@@ -29,6 +28,8 @@ export type StoreState = {
   previewDestPortKey: string | null;
   tappingPortKey: string | null;
   modalPanelKind: ModalPanelKind | null;
+  unitsLoading: boolean;
+  // projectLoadedIndex: number;
 };
 
 export const store = createStore<StoreState>({
@@ -36,7 +37,6 @@ export const store = createStore<StoreState>({
   portItems: {},
   wireItems: [],
   sight: { eyeScaling: 0.5, eyeOffset: { x: 0, y: 0 } },
-  // notes: [],
   bpm: 120,
   playing: false,
   masterVolume: 0.5,
@@ -53,4 +53,6 @@ export const store = createStore<StoreState>({
   previewDestPortKey: null,
   tappingPortKey: null,
   modalPanelKind: null,
+  unitsLoading: false,
+  // projectLoadedIndex: 0,
 });
