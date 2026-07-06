@@ -1,8 +1,7 @@
-import {
-  preApplyPersistenceState,
-  setupPersistence,
-} from "@/project/persistence";
-import { loadUrlDataIfExists } from "@/project/shared-url-support";
+import { actions } from "@/model/actions";
+import { StoreState, store } from "@/model/store";
+import { createPersistenceModel } from "@/project/persistence-model";
+import { sharedUrlSupport } from "@/project/shared-url-support";
 
 type ProjectsModel = {
   prepareProject(load: boolean): void; //called before first render
@@ -10,17 +9,28 @@ type ProjectsModel = {
 };
 
 export function createProjectsModel(): ProjectsModel {
-  let loadedFromUrl = false;
+  const persistenceModel = createPersistenceModel();
+  let autosaveEnabled = false;
   return {
     prepareProject(load: boolean): void {
+      const loadedStoreAttrs: Partial<StoreState> = {};
       if (load) {
-        preApplyPersistenceState();
+        const persistedState = persistenceModel.loadPersistedState();
+        if (persistedState) {
+          Object.assign(loadedStoreAttrs, persistedState);
+        }
       }
-      loadedFromUrl = loadUrlDataIfExists();
+      const urlProjectData = sharedUrlSupport.loadUrlDataIfExists();
+      if (urlProjectData) {
+        Object.assign(loadedStoreAttrs, urlProjectData);
+      }
+      store.assign(loadedStoreAttrs);
+      actions.reservePushCurrentSceneStateToHost(true);
+      autosaveEnabled = !urlProjectData;
     },
     setupLifecycle() {
-      if (loadedFromUrl) {
-        return setupPersistence();
+      if (autosaveEnabled) {
+        return persistenceModel.setupAutoSave();
       }
     },
   };

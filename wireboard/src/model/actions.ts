@@ -2,10 +2,10 @@ import { dequal } from "dequal";
 import { Point } from "mofur/ax-ui";
 import { ReactUnitTemplateFn } from "wafer-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
-import { getNextUnitId } from "@/model/helpers/unit-id-helper";
 import { hostSystem } from "@/model/host-system-instance";
 import { store } from "@/model/store";
 import { Scene, UnitItem } from "@/model/types";
+import { getNextUnitId } from "@/model/unit-id-helper";
 
 type Vector = { x: number; y: number };
 
