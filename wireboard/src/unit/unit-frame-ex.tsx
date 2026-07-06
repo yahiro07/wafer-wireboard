@@ -1,23 +1,30 @@
 import { ScalerBoxAutoSized } from "mofur/mo-react";
 import { ReactNode } from "react";
-import { ReactUnitFrame, UnitFrame } from "wafer-host/react";
+import { HsUnitInstance } from "wafer-host/core";
+import {
+  ReactUnitFrame,
+  UnitDestinationSpec,
+  UnitFrame,
+} from "wafer-host/react";
 import { CatalogKey, catalog } from "@/base/showcase-entries";
 import {
   InternalUnitKey,
   internalUnitFunctions,
 } from "@/model/internal-unit-definitions";
-import { setupIframeInputHandlers } from "@/presenter/sight-control-handlers";
+import { setupIframeInputHandlers } from "@/periphery/sight-control-handlers";
 
 export const UnitFrameEx = ({
   unitId,
-  destUnitId,
+  destSpec,
   catalogKey,
   internalUnitKey,
+  onUnitInstanceLoaded,
 }: {
   unitId: string;
-  destUnitId?: string;
+  destSpec?: UnitDestinationSpec;
   catalogKey?: CatalogKey;
   internalUnitKey?: InternalUnitKey;
+  onUnitInstanceLoaded?: (unitInstance: HsUnitInstance) => void;
 }) => {
   const content: ReactNode = (() => {
     if (internalUnitKey) {
@@ -25,8 +32,9 @@ export const UnitFrameEx = ({
       return (
         <ReactUnitFrame
           unitId={unitId}
-          destSpec={destUnitId}
+          destSpec={destSpec}
           unitTemplateFn={templateFn}
+          onUnitInstanceLoaded={onUnitInstanceLoaded}
         />
       );
     } else if (catalogKey) {
@@ -35,9 +43,10 @@ export const UnitFrameEx = ({
       return (
         <UnitFrame
           unitId={unitId}
-          destSpec={destUnitId}
+          destSpec={destSpec}
           unitUrl={catalogItem.loaderPageUrl}
           onIframeMounted={setupIframeInputHandlers}
+          onUnitInstanceLoaded={onUnitInstanceLoaded}
         />
       );
     }

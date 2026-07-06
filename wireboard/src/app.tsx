@@ -9,11 +9,11 @@ import { hostSystem, sequencerTickDriver } from "@/model/host-system-instance";
 import { prepareProject } from "@/model/project/project-setup";
 import { store } from "@/model/store";
 import { setupDynamicClockingSupport } from "@/periphery/dynamic-clocking-support";
+import { setupHmrHandler } from "@/periphery/hmr-handler";
 import { setupMidiInputHandling } from "@/periphery/midi-input-handling";
-import { setupHmrHandler } from "@/presenter/hmr-handler";
 import { PageRoot } from "@/views/page-root";
 
-const projectLifecycleFn = prepareProject();
+const projectLifecycleFn = prepareProject(true);
 
 const App = () => {
   const { playing, bpm, masterVolume } = store.useSnapshot();

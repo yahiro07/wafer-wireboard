@@ -2,8 +2,8 @@ import { appConfigs, boardSize } from "@/base/constants";
 import { unitCatalogKeyDragMime } from "@/base/drag-drop-key";
 import { ShowcaseEntry, showcaseEntries } from "@/base/showcase-entries";
 import { actions } from "@/model/actions";
-import { snapUnitCoordToGrid } from "@/model/helpers/snapping";
 import { store } from "@/model/store";
+import { snapUnitCoordToGrid } from "@/unit/snapping";
 
 export const handlePickerItemDragStart = (
   e: React.DragEvent<HTMLDivElement>,

@@ -1,5 +1,5 @@
 import { showcaseEntries } from "@/base/showcase-entries";
-import { handlePickerItemDragStart } from "@/presenter/picker-drag-drop";
+import { handlePickerItemDragStart } from "@/views/picker-drag-drop";
 
 export const PickerColumn = () => {
   return (

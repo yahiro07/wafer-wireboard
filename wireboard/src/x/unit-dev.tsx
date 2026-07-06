@@ -6,7 +6,7 @@ import { HostAppProvider } from "wafer-host/react";
 import { CatalogKey } from "@/base/showcase-entries";
 import { Button } from "@/components/button";
 import { hostSystem } from "@/model/host-system-instance";
-import { UnitFrameEx } from "@/views/editor/unit-frame-ex";
+import { UnitFrameEx } from "@/unit/unit-frame-ex";
 
 export type StoreState = {
   notes: number[];
@@ -70,13 +70,13 @@ const App = () => {
           <div className="flex-v w-[500px] h-[500px]">
             <UnitFrameEx
               unitId="synth"
-              destUnitId="$output"
+              destSpec="$output"
               catalogKey={synthCategoryKey}
               // notes={!feedNotesToSequencer ? notes : undefined}
             />
             <UnitFrameEx
               unitId="sequencer"
-              destUnitId="synth"
+              destSpec="synth"
               catalogKey="mu4Keyboard"
               // templateFn={createRtfrUnit}
               // templateFn={createUnit1}

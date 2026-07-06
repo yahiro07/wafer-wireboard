@@ -2,10 +2,11 @@ import { pickObjectMembers, shallowEqual } from "mofur/ax";
 import { FieldSight } from "@/components/field-sight-plane";
 import { actions } from "@/model/actions";
 import { store } from "@/model/store";
-import { Scene, UnitItem } from "@/model/types";
+import { Scene, UnitItem, WireItem } from "@/model/types";
 
 type PersistState = {
   unitItems: UnitItem[];
+  wireItems: WireItem[];
   sight: FieldSight;
   bpm: number;
   masterVolume: number;
@@ -39,6 +40,7 @@ const core = {
   saveStateToLocalStorageIfChanged() {
     const newState: PersistState = pickObjectMembers(store.state, {
       unitItems: 1,
+      wireItems: 1,
       sight: 1,
       bpm: 1,
       masterVolume: 1,

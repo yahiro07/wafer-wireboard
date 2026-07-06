@@ -29,26 +29,20 @@ const flagsGenerator = {
   },
 };
 
-function getBuiltinKeyboardDestUnitId() {
-  const keyboardUnitId = "builtInKeyboard";
-  const keyboardUnitItem = store.state.unitItems.find(
-    (item) => item.unitId === keyboardUnitId,
-  );
-  return keyboardUnitItem?.destUnitId;
+function getDestUnitIds(originatorUnitId: string): string[] {
+  const resUnitIds = new Set<string>();
+  for (const wire of store.state.wireItems) {
+    const sourceUnitId = wire.sourceUnitId;
+    if (sourceUnitId === originatorUnitId) {
+      resUnitIds.add(wire.destinationUnitId);
+    }
+  }
+  return Array.from(resUnitIds);
 }
 
-function getDestUnitIds(originatorUnitId: string) {
-  const unitItem = store.state.unitItems.find(
-    (item) => item.unitId === originatorUnitId,
-  );
-  const destSpec = unitItem?.destUnitId;
-  if (destSpec) {
-    return destSpec
-      .split("&")
-      .map((id) => id.trim())
-      .filter((id) => id.length > 0);
-  }
-  return [];
+function getBuiltinKeyboardDestUnitId() {
+  const keyboardUnitId = "builtInKeyboard";
+  return getDestUnitIds(keyboardUnitId)?.[0];
 }
 
 function addUnitGraphIdsUntilOutput(
@@ -183,7 +177,6 @@ function createNoteOutputMonitorSimple(): UnitNoteOutputMonitorFn {
 export function setupDynamicClockingSupport() {
   const monitorSimple = createNoteOutputMonitorSimple();
   const monitorChained = createNoteOutputMonitorChained();
-
   hostSystem.setUnitNoteOutputMonitor((args) => {
     if (store.state.liveClockingTarget === "chain") {
       monitorChained(args);

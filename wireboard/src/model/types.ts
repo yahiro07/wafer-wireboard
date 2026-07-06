@@ -3,9 +3,10 @@ import { HsUnitStateData } from "wafer-host/core";
 import { CatalogKey } from "@/base/showcase-entries";
 import { InternalUnitKey } from "@/model/internal-unit-definitions";
 
+export type AppUnitDestinationSpec = Record<string, string[]>;
+
 export type UnitItem = {
   unitId: string | "builtInPreOutput" | "builtInKeyboard";
-  destUnitId?: string;
   catalogKey?: CatalogKey;
   internalUnitKey?: InternalUnitKey;
   position: Point;
@@ -18,3 +19,22 @@ export type Scene = {
 };
 
 export type LiveClockingTarget = "none" | "single" | "chain" | "all";
+
+export type PortDirection = "input" | "output";
+export type PortSubtype = "audio" | "note" | "automation";
+
+export type PortItem = {
+  portKey: string; //${unitId}.${portId}, portIds are "primaryOut", "primaryIn", or arbitrary id for additional ports
+  unitId: string;
+  direction: PortDirection;
+  subtypes: PortSubtype[];
+  position: Point;
+};
+
+export type WireItem = {
+  connectionKey: string; //${sourcePortKey}-${destinationPortKey}
+  sourcePortKey: string;
+  destinationPortKey: string;
+  sourceUnitId: string;
+  destinationUnitId: string;
+};
