@@ -34,7 +34,7 @@ function makePersistedState(storeState: StoreState): PersistedState {
 }
 
 export function createPersistenceModel(): PersistenceModel {
-  const storageKey = "wireboard-persist-state";
+  const storageKey = "wireboard-persisted-state";
 
   let stateLatest: PersistedState | undefined;
 

@@ -6,6 +6,7 @@ import { NumberSliderBox } from "@/components/number-slider-box";
 import { UpperLabel } from "@/components/upper-label";
 import { actions } from "@/model/actions";
 import { store } from "@/model/store";
+import { projectsModel } from "@/project/projects-model";
 
 export const TopControlBar = () => {
   const { playing, bpm, masterVolume, sceneSwitcherVisible } =
@@ -46,8 +47,8 @@ export const TopControlBar = () => {
       <div className="flex-ha gap-1.5">
         <Button text="Init" />
         <Button text="Clear" />
-        <Button text="Import" />
-        <Button text="Export" />
+        <Button text="Import" onClick={projectsModel.importProject} />
+        <Button text="Export" onClick={projectsModel.exportProject} />
       </div>
     </div>
   );

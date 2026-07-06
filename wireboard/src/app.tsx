@@ -10,7 +10,7 @@ import { store } from "@/model/store";
 import { setupDynamicClockingSupport } from "@/periphery/dynamic-clocking-support";
 import { setupHmrHandler } from "@/periphery/hmr-handler";
 import { setupMidiInputHandling } from "@/periphery/midi-input-handling";
-import { projectsModel } from "@/project/project-management-model";
+import { projectsModel } from "@/project/projects-model";
 import { PageRoot } from "@/views/page-root";
 
 projectsModel.prepareProject(true);
