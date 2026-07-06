@@ -6,11 +6,11 @@ import {
   useSequencerTickDriverRunner,
 } from "wafer-host/react";
 import { hostSystem, sequencerTickDriver } from "@/model/host-system-instance";
-import { prepareProject } from "@/model/project/project-setup";
 import { store } from "@/model/store";
 import { setupDynamicClockingSupport } from "@/periphery/dynamic-clocking-support";
 import { setupHmrHandler } from "@/periphery/hmr-handler";
 import { setupMidiInputHandling } from "@/periphery/midi-input-handling";
+import { prepareProject } from "@/project/project-setup";
 import { PageRoot } from "@/views/page-root";
 
 const projectLifecycleFn = prepareProject(true);

@@ -1,8 +1,8 @@
 import {
   preApplyPersistenceState,
   setupPersistence,
-} from "@/model/project/persistence";
-import { loadUrlDataIfExists } from "@/model/project/shared-url-support";
+} from "@/project/persistence";
+import { loadUrlDataIfExists } from "@/project/shared-url-support";
 
 export function prepareProject(load: boolean): () => void {
   if (load) {
