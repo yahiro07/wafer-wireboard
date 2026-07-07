@@ -37,6 +37,7 @@ export type WireItem = {
   destinationPortKey: string;
   sourceUnitId: string;
   destinationUnitId: string;
+  hmrRevision?: number;
 };
 
 export type ModalPanelKind = "share";

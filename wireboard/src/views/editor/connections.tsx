@@ -7,7 +7,7 @@ export const Connections = () => {
     <>
       {wireItems.map((wire) => (
         <Connection
-          key={wire.connectionKey}
+          key={`${wire.connectionKey}__${wire.hmrRevision ?? 0}`}
           source={wire.sourcePortKey}
           destination={wire.destinationPortKey}
         />

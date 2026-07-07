@@ -7,6 +7,7 @@ export type WiringLayerWire = {
   p1: Point;
   p2: Point;
   rightAngled: boolean;
+  hmrRevision: number;
 };
 
 export function useWiringLayerWireItems(): WiringLayerWire[] {
@@ -18,10 +19,11 @@ export function useWiringLayerWireItems(): WiringLayerWire[] {
           const id = wire.connectionKey;
           const p1 = portItems[wire.sourcePortKey]?.position;
           const p2 = portItems[wire.destinationPortKey]?.position;
+          const hmrRevision = wire.hmrRevision ?? 0;
           if (p1 && p2) {
             const rightAngled =
               wire.destinationPortKey === "builtInPreOutput.primaryInput";
-            return { id, p1, p2, rightAngled };
+            return { id, p1, p2, rightAngled, hmrRevision };
           }
           return undefined;
         })

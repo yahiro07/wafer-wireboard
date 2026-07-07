@@ -1,4 +1,31 @@
-import { actions } from "@/model/actions";
+import { CatalogKey } from "@/base/showcase-entries";
+import { store } from "@/model/store";
+
+const hmrActions = {
+  handleUnitSourceUpdate(catalogKey: CatalogKey) {
+    const targetUnitIds: string[] = [];
+    store.produceUnitItems((draft) => {
+      for (const item of draft) {
+        if (item.catalogKey === catalogKey) {
+          item.fileChangeRevision ??= 0;
+          item.fileChangeRevision++;
+          targetUnitIds.push(item.unitId);
+        }
+      }
+    });
+    store.produceWireItems((draft) => {
+      for (const wire of draft) {
+        if (
+          targetUnitIds.includes(wire.sourceUnitId) ||
+          targetUnitIds.includes(wire.destinationUnitId)
+        ) {
+          wire.hmrRevision ??= 0;
+          wire.hmrRevision++;
+        }
+      }
+    });
+  },
+};
 
 export function setupHmrHandler() {
   if (import.meta.hot) {
@@ -6,7 +33,7 @@ export function setupHmrHandler() {
       const { catalogKey } = data;
       if (catalogKey) {
         console.log("unit source changed", catalogKey);
-        actions.handleUnitSourceUpdate(catalogKey);
+        hmrActions.handleUnitSourceUpdate(catalogKey);
       }
     });
   }
