@@ -7,8 +7,8 @@ const hmrActions = {
     store.produceUnitItems((draft) => {
       for (const item of draft) {
         if (item.catalogKey === catalogKey) {
-          item.fileChangeRevision ??= 0;
-          item.fileChangeRevision++;
+          item.hmrRevision ??= 0;
+          item.hmrRevision++;
           targetUnitIds.push(item.unitId);
         }
       }

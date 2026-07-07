@@ -10,7 +10,7 @@ export type UnitItem = {
   catalogKey?: CatalogKey;
   internalUnitKey?: InternalUnitKey;
   position: Point;
-  fileChangeRevision?: number;
+  hmrRevision?: number;
 };
 
 export type Scene = {

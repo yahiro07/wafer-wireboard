@@ -88,7 +88,7 @@ export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
         </div>
         <div className="grow bg-gray-600">
           <UnitFrameEx
-            key={unitItem.fileChangeRevision}
+            key={unitItem.hmrRevision}
             unitId={unitItem.unitId}
             catalogKey={unitItem.catalogKey}
             internalUnitKey={unitItem.internalUnitKey}
