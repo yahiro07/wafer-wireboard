@@ -33,6 +33,8 @@ function getUnitSourceUrls() {
       `file://${wusUnitsLocalDistDir}/sunset-chorus-mini/`,
       `file://${wusUnitsLocalDistDir}/lofi2/`,
       `file://${wusUnitsLocalDistDir}/sepa-mixer/`,
+      `file://${wusUnitsLocalDistDir}/s7/`,
+      `file://${wusUnitsLocalDistDir}/mop2/`,
 
       `file://${wusCustomUnitsLocalDistDir}/webaudio-synth-v2/`,
       `file://${wusCustomUnitsLocalDistDir}/additive/`,
