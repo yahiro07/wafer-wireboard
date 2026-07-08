@@ -1,6 +1,7 @@
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wafer-host/react";
 import { UnitInterface } from "wafer-host/unit-types";
+import { dispatchPartialAttrs } from "@/auxiliaries/object-dispatcher";
 import { mapVolumeCurveCenterUnity } from "@/auxiliaries/volume-curve";
 import { Button } from "@/components/button";
 import { UpperLabel } from "@/components/upper-label";
@@ -47,16 +48,38 @@ function createEngine(unitInterface: UnitInterface) {
   mainGain.connect(mainOutputNode);
   inputNode.connect(auxGain);
   auxGain.connect(auxOutputNode);
+
+  const state = {
+    outputEnabled: true,
+    mainGain: 0.5,
+    auxGain: 0,
+  };
+
+  const internal = {
+    affectGains() {
+      const m = state.outputEnabled ? 1 : 0;
+      mainGain.gain.value = state.mainGain * m;
+      auxGain.gain.value = state.auxGain * m;
+    },
+  };
+
+  const setterFns = {
+    mainVolume(v: number) {
+      state.mainGain = mapVolumeCurveCenterUnity(v);
+      internal.affectGains();
+    },
+    auxVolume(v: number) {
+      state.auxGain = mapVolumeCurveCenterUnity(v);
+      internal.affectGains();
+    },
+    outputEnabled(v: boolean) {
+      state.outputEnabled = v;
+      internal.affectGains();
+    },
+  };
   return {
     applyParameters(attrs: Partial<EffectParameters>) {
-      if (attrs.mainVolume !== undefined) {
-        const gain = mapVolumeCurveCenterUnity(attrs.mainVolume);
-        mainGain.gain.value = gain;
-      }
-      if (attrs.auxVolume !== undefined) {
-        const gain = mapVolumeCurveCenterUnity(attrs.auxVolume);
-        auxGain.gain.value = gain;
-      }
+      dispatchPartialAttrs(attrs, setterFns);
     },
     cleanup() {
       inputNode.disconnect(mainGain);
