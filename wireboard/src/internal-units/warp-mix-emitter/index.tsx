@@ -11,7 +11,9 @@ import {
 import { FdKnob } from "@/internal-units/warp-mix-emitter/knob";
 import { ParameterGauge } from "@/internal-units/warp-mix-emitter/parameter-gauge";
 
-type ChannelStripState = ChannelStripEffectParameters & {};
+type ChannelStripState = ChannelStripEffectParameters & {
+  localPlaying: boolean;
+};
 
 function createChannelStripState(): ChannelStripState {
   return {
@@ -24,19 +26,16 @@ function createChannelStripState(): ChannelStripState {
     eqHigh: 0.5,
     stereoSpread: 0,
     outputEnabled: true,
+    localPlaying: false,
   };
 }
 
 type StoreState = {
   strips: Record<string, ChannelStripState>;
-  soloStripId: string | null;
-  localPlayingStripId: string | null;
 };
 
 const moduleStore = createStore<StoreState>({
   strips: {},
-  soloStripId: null,
-  localPlayingStripId: null,
 });
 
 let instanceIdCounter = 0;
@@ -62,29 +61,22 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
   moduleStore.patchStrips({ [stripId]: initialState });
 
   const actions = {
+    patchStripState(attrs: Partial<ChannelStripState>) {
+      moduleStore.setStrips((prev) => ({
+        ...prev,
+        [stripId]: { ...prev[stripId], ...attrs },
+      }));
+    },
     setParameter<K extends keyof ChannelStripEffectParameters>(
       key: K,
       value: ChannelStripEffectParameters[K],
     ) {
       engine.applyParameters({ [key]: value });
-      moduleStore.setStrips((prev) => ({
-        ...prev,
-        [stripId]: { ...prev[stripId], [key]: value },
-      }));
+      actions.patchStripState({ [key]: value });
     },
     toggleLocalPlaying() {
-      if (moduleStore.state.localPlayingStripId === stripId) {
-        moduleStore.setLocalPlayingStripId(null);
-      } else {
-        moduleStore.setLocalPlayingStripId(stripId);
-      }
-    },
-    toggleOutputSolo() {
-      if (moduleStore.state.soloStripId === stripId) {
-        moduleStore.setSoloStripId(null);
-      } else {
-        moduleStore.setSoloStripId(stripId);
-      }
+      const nextLocalPlaying = !moduleStore.state.strips[stripId].localPlaying;
+      actions.patchStripState({ localPlaying: nextLocalPlaying });
     },
   };
 
@@ -96,9 +88,9 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
         });
       };
     },
-    useAffectLocalPlaybackStateToHost(localPlayingStripId: string | null) {
+    useAffectLocalPlaybackStateToHost(localPlaying: boolean) {
       useEffect(() => {
-        if (localPlayingStripId === stripId) {
+        if (localPlaying) {
           unitInterface.sendMessageToHost({
             type: "partialPlaybackRequest",
             playing: true,
@@ -110,17 +102,17 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
             });
           };
         }
-      }, [localPlayingStripId, stripId, unitInterface]);
+      }, [localPlaying, unitInterface]);
     },
   };
 
   return {
     RenderUi() {
-      const { strips, localPlayingStripId } = moduleStore.useSnapshot();
+      const { strips } = moduleStore.useSnapshot();
       const st = strips[stripId];
       useEffect(internal.setupSynchronization, []);
-      internal.useAffectLocalPlaybackStateToHost(localPlayingStripId);
-      const localPlaying = localPlayingStripId === stripId;
+      const localPlaying = st.localPlaying;
+      internal.useAffectLocalPlaybackStateToHost(localPlaying);
 
       const panelMainContent = (
         <div className="flex-v h-full">
