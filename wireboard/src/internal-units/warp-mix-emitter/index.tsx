@@ -4,7 +4,10 @@ import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wafer-host/react";
 import { UnitInterface } from "wafer-host/unit-types";
 import { dispatchPartialAttrs } from "@/auxiliaries/object-dispatcher";
-import { mapVolumeCurveCenterUnity } from "@/auxiliaries/volume-curve";
+import {
+  mapVolumeCurve,
+  mapVolumeCurveCenterUnity,
+} from "@/auxiliaries/volume-curve";
 import { Button } from "@/components/button";
 import { UpperLabel } from "@/components/upper-label";
 import { FdKnob } from "@/internal-units/warp-mix-emitter/knob";
@@ -24,11 +27,15 @@ type EffectParameters = {
   localPlaying: boolean;
 };
 
+const configs = {
+  faderPivot: 0.7,
+};
+
 function createDefaultEffectParameters(): EffectParameters {
   return {
     mainVolume: 0.5,
     auxVolume: 0,
-    faderVolume: 0.5,
+    faderVolume: configs.faderPivot,
     pan: 0,
     eqLow: 0.5,
     eqMid: 0.5,
@@ -88,7 +95,11 @@ function createEngine(unitInterface: UnitInterface) {
       internal.affectGains();
     },
     faderVolume(v: number) {
-      state.faderGain = v * v;
+      state.faderGain = mapVolumeCurve(v, {
+        pivot: configs.faderPivot,
+        topGain: 2,
+        lowerCurveExponent: 2,
+      });
       internal.affectGains();
     },
     outputEnabled(v: boolean) {
