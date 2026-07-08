@@ -124,10 +124,16 @@ function createEngine(unitInterface: UnitInterface) {
   };
 }
 
-const sharedEventPort = createEventPort<{
-  type: "soloChanged";
-  activeSoloInstanceId: number | null;
-}>();
+const sharedEventPort = createEventPort<
+  | {
+      type: "soloChanged";
+      activeSoloInstanceId: number | null;
+    }
+  | {
+      type: "localPlayingChanged";
+      activeLocalPlayingInstanceId: number | null;
+    }
+>();
 let instanceIdCounter = 0;
 
 export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
@@ -157,12 +163,6 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
     ) {
       engine.applyParameters({ [key]: value });
       store.assign({ [key]: value });
-      if (key === "localPlaying") {
-        unitInterface.sendMessageToHost({
-          type: "partialPlaybackRequest",
-          playing: value,
-        });
-      }
     },
   };
 
@@ -178,6 +178,23 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
         store.setOutputSolo(soloOwnership === "own");
         engine.setSoloOwnership(soloOwnership);
       }
+      if (event.type === "localPlayingChanged") {
+        store.setLocalPlaying(
+          event.activeLocalPlayingInstanceId === selfInstanceId,
+        );
+      }
+    });
+  }
+
+  function wrapToggleLocalPlaying() {
+    const nextLocalPlaying = !store.state.localPlaying;
+    unitInterface.sendMessageToHost({
+      type: "partialPlaybackRequest",
+      playing: nextLocalPlaying,
+    });
+    sharedEventPort.emit({
+      type: "localPlayingChanged",
+      activeLocalPlayingInstanceId: nextLocalPlaying ? selfInstanceId : null,
     });
   }
 
@@ -242,9 +259,7 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
                     asr={1.2}
                     text="play"
                     active={st.localPlaying}
-                    onClick={() =>
-                      actions.setParameter("localPlaying", !st.localPlaying)
-                    }
+                    onClick={wrapToggleLocalPlaying}
                   />
                   <div className="flex-ha gap-4">
                     <UpperLabel label="stereo">
