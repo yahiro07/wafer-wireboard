@@ -1,149 +1,50 @@
-import { createEventPort } from "mofur/mo";
 import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wafer-host/react";
-import { UnitInterface } from "wafer-host/unit-types";
-import { dispatchPartialAttrs } from "@/auxiliaries/object-dispatcher";
-import {
-  mapVolumeCurve,
-  mapVolumeCurveCenterUnity,
-} from "@/auxiliaries/volume-curve";
 import { Button } from "@/components/button";
 import { UpperLabel } from "@/components/upper-label";
+import {
+  ChannelStripEffectParameters,
+  channelStripEffectConfigs,
+  createChannelStripEffectEngine,
+} from "@/internal-units/warp-mix-emitter/channel-strip-effect";
 import { FdKnob } from "@/internal-units/warp-mix-emitter/knob";
 import { ParameterGauge } from "@/internal-units/warp-mix-emitter/parameter-gauge";
 
-type EffectParameters = {
-  mainVolume: number;
-  auxVolume: number;
-  faderVolume: number;
-  pan: number;
-  eqLow: number;
-  eqMid: number;
-  eqHigh: number;
-  stereoSpread: number;
-  outputEnabled: boolean;
-};
-
-type ChannelStripState = EffectParameters & {
-  outputSolo: boolean;
-  localPlaying: boolean;
-};
+type ChannelStripState = ChannelStripEffectParameters & {};
 
 function createChannelStripState(): ChannelStripState {
   return {
     mainVolume: 0.5,
     auxVolume: 0,
-    faderVolume: configs.faderPivot,
+    faderVolume: channelStripEffectConfigs.faderPivot,
     pan: 0,
     eqLow: 0.5,
     eqMid: 0.5,
     eqHigh: 0.5,
     stereoSpread: 0,
     outputEnabled: true,
-    //
-    outputSolo: false,
-    localPlaying: false,
   };
 }
 
-const configs = {
-  faderPivot: 0.7,
+type StoreState = {
+  strips: Record<string, ChannelStripState>;
+  soloStripId: string | null;
+  localPlayingStripId: string | null;
 };
 
-type SoloOwnership = "own" | "other" | "none";
+const moduleStore = createStore<StoreState>({
+  strips: {},
+  soloStripId: null,
+  localPlayingStripId: null,
+});
 
-function createEngine(unitInterface: UnitInterface) {
-  const { audioContext } = unitInterface;
-  const mainOutputNode = unitInterface.audioOutputNode;
-  const auxOutputNode = unitInterface.createAdditionalAudioOutputNode(
-    "auxOutput",
-    "aux out",
-  );
-  const mainGain = audioContext.createGain();
-  const auxGain = audioContext.createGain();
-  const inputNode = unitInterface.audioInputNode;
-
-  inputNode.connect(mainGain);
-  mainGain.connect(mainOutputNode);
-  inputNode.connect(auxGain);
-  auxGain.connect(auxOutputNode);
-
-  const state = {
-    outputEnabled: true,
-    mainGain: 1,
-    auxGain: 0,
-    faderGain: 1,
-    soloOwnership: "none",
-  };
-
-  const internal = {
-    affectGains() {
-      const m =
-        state.soloOwnership === "own" ||
-        (state.outputEnabled && state.soloOwnership !== "other")
-          ? 1
-          : 0;
-      mainGain.gain.value = state.faderGain * state.mainGain * m;
-      auxGain.gain.value = state.faderGain * state.auxGain * m;
-    },
-  };
-
-  const setterFns = {
-    mainVolume(v: number) {
-      state.mainGain = mapVolumeCurveCenterUnity(v);
-      internal.affectGains();
-    },
-    auxVolume(v: number) {
-      state.auxGain = mapVolumeCurveCenterUnity(v);
-      internal.affectGains();
-    },
-    faderVolume(v: number) {
-      state.faderGain = mapVolumeCurve(v, {
-        pivot: configs.faderPivot,
-        topGain: 2,
-        lowerCurveExponent: 2,
-      });
-      internal.affectGains();
-    },
-    outputEnabled(v: boolean) {
-      state.outputEnabled = v;
-      internal.affectGains();
-    },
-  };
-  return {
-    applyParameters(attrs: Partial<EffectParameters>) {
-      dispatchPartialAttrs(attrs, setterFns);
-    },
-    setSoloOwnership(v: SoloOwnership) {
-      state.soloOwnership = v;
-      internal.affectGains();
-    },
-    cleanup() {
-      inputNode.disconnect(mainGain);
-      mainGain.disconnect(mainOutputNode);
-      inputNode.disconnect(auxGain);
-      auxGain.disconnect(auxOutputNode);
-    },
-  };
-}
-
-const sharedEventPort = createEventPort<
-  | {
-      type: "soloChanged";
-      activeSoloInstanceId: number | null;
-    }
-  | {
-      type: "localPlayingChanged";
-      activeLocalPlayingInstanceId: number | null;
-    }
->();
 let instanceIdCounter = 0;
 
 export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
   unitInterface,
 ) => {
-  const engine = createEngine(unitInterface);
+  const engine = createChannelStripEffectEngine(unitInterface);
 
   unitInterface.completeSetup({
     unitAspects: {
@@ -157,64 +58,84 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
   const initialState = createChannelStripState();
   engine.applyParameters(initialState);
 
-  const selfInstanceId = instanceIdCounter++;
+  const stripId = `cs${instanceIdCounter++}`;
+  moduleStore.patchStrips({ [stripId]: initialState });
 
-  const store = createStore<ChannelStripState>(initialState);
   const actions = {
-    setParameter<K extends keyof EffectParameters>(
+    setParameter<K extends keyof ChannelStripEffectParameters>(
       key: K,
-      value: EffectParameters[K],
+      value: ChannelStripEffectParameters[K],
     ) {
       engine.applyParameters({ [key]: value });
-      store.assign({ [key]: value });
+      moduleStore.setStrips((prev) => ({
+        ...prev,
+        [stripId]: { ...prev[stripId], [key]: value },
+      }));
+    },
+    toggleLocalPlaying() {
+      if (moduleStore.state.localPlayingStripId === stripId) {
+        moduleStore.setLocalPlayingStripId(null);
+      } else {
+        moduleStore.setLocalPlayingStripId(stripId);
+      }
+    },
+    toggleOutputSolo() {
+      if (moduleStore.state.soloStripId === stripId) {
+        moduleStore.setSoloStripId(null);
+      } else {
+        moduleStore.setSoloStripId(stripId);
+      }
     },
   };
 
-  function setupSoloExclusion() {
-    return sharedEventPort.subscribe((event) => {
-      if (event.type === "soloChanged") {
+  const internal = {
+    setupSynchronization() {
+      return () => {
+        moduleStore.produceStrips((draft) => {
+          delete draft[stripId];
+        });
+      };
+    },
+    useAffectSoloOwnerShipToEngine(soloStripId: string | null) {
+      useEffect(() => {
         const soloOwnership =
-          event.activeSoloInstanceId === selfInstanceId
+          soloStripId === stripId
             ? "own"
-            : event.activeSoloInstanceId !== null
+            : soloStripId !== null
               ? "other"
               : "none";
-        store.setOutputSolo(soloOwnership === "own");
         engine.setSoloOwnership(soloOwnership);
-      }
-      if (event.type === "localPlayingChanged") {
-        store.setLocalPlaying(
-          event.activeLocalPlayingInstanceId === selfInstanceId,
-        );
-      }
-    });
-  }
-
-  function wrapToggleLocalPlaying() {
-    const nextLocalPlaying = !store.state.localPlaying;
-    unitInterface.sendMessageToHost({
-      type: "partialPlaybackRequest",
-      playing: nextLocalPlaying,
-    });
-    sharedEventPort.emit({
-      type: "localPlayingChanged",
-      activeLocalPlayingInstanceId: nextLocalPlaying ? selfInstanceId : null,
-    });
-  }
-
-  function wrapToggleOutputSolo() {
-    const nextSelfSolo = !store.state.outputSolo;
-    sharedEventPort.emit({
-      type: "soloChanged",
-      activeSoloInstanceId: nextSelfSolo ? selfInstanceId : null,
-    });
-  }
+      }, [soloStripId, stripId, engine]);
+    },
+    useAffectLocalPlaybackStateToHost(localPlayingStripId: string | null) {
+      useEffect(() => {
+        if (localPlayingStripId === stripId) {
+          unitInterface.sendMessageToHost({
+            type: "partialPlaybackRequest",
+            playing: true,
+          });
+          return () => {
+            unitInterface.sendMessageToHost({
+              type: "partialPlaybackRequest",
+              playing: false,
+            });
+          };
+        }
+      }, [localPlayingStripId, stripId, unitInterface]);
+    },
+  };
 
   return {
     RenderUi() {
-      const st = store.useSnapshot();
-      // biome-ignore lint/correctness/useExhaustiveDependencies: manual management
-      useEffect(setupSoloExclusion, []);
+      const { strips, soloStripId, localPlayingStripId } =
+        moduleStore.useSnapshot();
+      const st = strips[stripId];
+      useEffect(internal.setupSynchronization, []);
+      internal.useAffectSoloOwnerShipToEngine(soloStripId);
+      internal.useAffectLocalPlaybackStateToHost(localPlayingStripId);
+
+      const outputSolo = soloStripId === stripId;
+      const localPlaying = localPlayingStripId === stripId;
 
       const panelMainContent = (
         <div className="flex-v h-full">
@@ -234,8 +155,8 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
                   <Button
                     asr={1.2}
                     text="solo"
-                    active={st.outputSolo}
-                    onClick={wrapToggleOutputSolo}
+                    active={outputSolo}
+                    onClick={actions.toggleOutputSolo}
                   />
                   <UpperLabel label="aux">
                     <FdKnob
@@ -262,8 +183,8 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
                   <Button
                     asr={1.2}
                     text="play"
-                    active={st.localPlaying}
-                    onClick={wrapToggleLocalPlaying}
+                    active={localPlaying}
+                    onClick={actions.toggleLocalPlaying}
                   />
                   <div className="flex-ha gap-4">
                     <UpperLabel label="stereo">
