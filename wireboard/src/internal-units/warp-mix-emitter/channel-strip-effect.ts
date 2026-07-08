@@ -21,8 +21,6 @@ export type ChannelStripEffectParameters = {
   outputEnabled: boolean;
 };
 
-export type SoloOwnership = "own" | "other" | "none";
-
 export function createChannelStripEffectEngine(unitInterface: UnitInterface) {
   const { audioContext } = unitInterface;
   const mainOutputNode = unitInterface.audioOutputNode;
@@ -44,16 +42,11 @@ export function createChannelStripEffectEngine(unitInterface: UnitInterface) {
     mainGain: 1,
     auxGain: 0,
     faderGain: 1,
-    soloOwnership: "none",
   };
 
   const internal = {
     affectGains() {
-      const m =
-        state.soloOwnership === "own" ||
-        (state.outputEnabled && state.soloOwnership !== "other")
-          ? 1
-          : 0;
+      const m = state.outputEnabled ? 1 : 0;
       mainGain.gain.value = state.faderGain * state.mainGain * m;
       auxGain.gain.value = state.faderGain * state.auxGain * m;
     },
@@ -84,10 +77,6 @@ export function createChannelStripEffectEngine(unitInterface: UnitInterface) {
   return {
     applyParameters(attrs: Partial<ChannelStripEffectParameters>) {
       dispatchPartialAttrs(attrs, setterFns);
-    },
-    setSoloOwnership(v: SoloOwnership) {
-      state.soloOwnership = v;
-      internal.affectGains();
     },
     cleanup() {
       inputNode.disconnect(mainGain);

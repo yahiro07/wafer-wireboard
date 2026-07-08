@@ -96,17 +96,6 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
         });
       };
     },
-    useAffectSoloOwnerShipToEngine(soloStripId: string | null) {
-      useEffect(() => {
-        const soloOwnership =
-          soloStripId === stripId
-            ? "own"
-            : soloStripId !== null
-              ? "other"
-              : "none";
-        engine.setSoloOwnership(soloOwnership);
-      }, [soloStripId, stripId, engine]);
-    },
     useAffectLocalPlaybackStateToHost(localPlayingStripId: string | null) {
       useEffect(() => {
         if (localPlayingStripId === stripId) {
@@ -127,14 +116,10 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
 
   return {
     RenderUi() {
-      const { strips, soloStripId, localPlayingStripId } =
-        moduleStore.useSnapshot();
+      const { strips, localPlayingStripId } = moduleStore.useSnapshot();
       const st = strips[stripId];
       useEffect(internal.setupSynchronization, []);
-      internal.useAffectSoloOwnerShipToEngine(soloStripId);
       internal.useAffectLocalPlaybackStateToHost(localPlayingStripId);
-
-      const outputSolo = soloStripId === stripId;
       const localPlaying = localPlayingStripId === stripId;
 
       const panelMainContent = (
@@ -152,16 +137,16 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
                       actions.setParameter("outputEnabled", !st.outputEnabled)
                     }
                   />
-                  <Button
-                    asr={1.2}
-                    text="solo"
-                    active={outputSolo}
-                    onClick={actions.toggleOutputSolo}
-                  />
                   <UpperLabel label="aux">
                     <FdKnob
                       value={st.auxVolume}
                       onChange={(v) => actions.setParameter("auxVolume", v)}
+                    />
+                  </UpperLabel>
+                  <UpperLabel label="stereo">
+                    <FdKnob
+                      value={st.stereoSpread}
+                      onChange={(v) => actions.setParameter("stereoSpread", v)}
                     />
                   </UpperLabel>
                   <UpperLabel label="pan">
@@ -187,14 +172,6 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
                     onClick={actions.toggleLocalPlaying}
                   />
                   <div className="flex-ha gap-4">
-                    <UpperLabel label="stereo">
-                      <FdKnob
-                        value={st.stereoSpread}
-                        onChange={(v) =>
-                          actions.setParameter("stereoSpread", v)
-                        }
-                      />
-                    </UpperLabel>
                     <UpperLabel label="low">
                       <FdKnob
                         value={st.eqLow}
