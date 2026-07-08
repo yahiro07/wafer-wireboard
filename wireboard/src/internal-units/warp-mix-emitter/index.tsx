@@ -32,12 +32,16 @@ type StoreState = {
   strips: Record<string, ChannelStripState>;
   localPlaybackFlags: Record<string, boolean>;
   localPlaybackBackupFlags: Record<string, boolean> | null;
+  isLocalPlaybackMultiple: boolean;
+  lastOperatedStripId: string | null;
 };
 
 const moduleStore = createStore<StoreState>({
   strips: {},
   localPlaybackFlags: {},
   localPlaybackBackupFlags: null,
+  isLocalPlaybackMultiple: false,
+  lastOperatedStripId: null,
 });
 
 let instanceIdCounter = 0;
@@ -83,14 +87,24 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
       actions.patchStripState({ [key]: value });
     },
     toggleLocalPlaying() {
-      const currentPlaying =
-        Object.values(moduleStore.state.localPlaybackFlags).filter(Boolean)
-          .length > 0;
-      if (!currentPlaying && moduleStore.state.localPlaybackBackupFlags) {
+      const st = moduleStore.state;
+      const currentPlayingAny =
+        Object.values(st.localPlaybackFlags).filter(Boolean).length > 0;
+      if (!currentPlayingAny && st.localPlaybackBackupFlags) {
         moduleStore.setLocalPlaybackBackupFlags(null);
+        moduleStore.assign({
+          localPlaybackBackupFlags: null,
+          isLocalPlaybackMultiple: false,
+        });
       }
-      const nextLocalPlaying = !moduleStore.state.localPlaybackFlags[stripId];
-      actions.patchLocalPlaybackFlags(nextLocalPlaying);
+      const nextLocalPlaying = !st.localPlaybackFlags[stripId];
+
+      if (nextLocalPlaying && !st.isLocalPlaybackMultiple) {
+        moduleStore.setLocalPlaybackFlags({ [stripId]: true });
+      } else {
+        actions.patchLocalPlaybackFlags(nextLocalPlaying);
+      }
+      moduleStore.setLastOperatedStripId(stripId);
     },
     stopLocalPlaybacksAll() {
       const flags = moduleStore.state.localPlaybackFlags;
@@ -107,6 +121,9 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
           localPlaybackBackupFlags: null,
         });
       }
+    },
+    toggleMultipleMode() {
+      moduleStore.toggleIsLocalPlaybackMultiple();
     },
   };
 
@@ -138,14 +155,22 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
 
   return {
     RenderUi() {
-      const { strips, localPlaybackFlags, localPlaybackBackupFlags } =
-        moduleStore.useSnapshot();
+      const {
+        strips,
+        localPlaybackFlags,
+        localPlaybackBackupFlags,
+        isLocalPlaybackMultiple,
+        lastOperatedStripId,
+      } = moduleStore.useSnapshot();
       const st = strips[stripId];
       useEffect(internal.setupSynchronization, []);
       const localPlaying = localPlaybackFlags[stripId];
       internal.useAffectLocalPlaybackStateToHost(localPlaying);
-      const isPlayingMoreThanOne =
-        Object.values(localPlaybackFlags).filter(Boolean).length > 1;
+      const numPlayings =
+        Object.values(localPlaybackFlags).filter(Boolean).length;
+      const isPlayingOne = numPlayings === 1;
+      const isPlayingMoreThanOne = numPlayings > 1;
+      const isLastOperated = lastOperatedStripId === stripId;
 
       const panelMainContent = (
         <div className="flex-v h-full">
@@ -205,6 +230,14 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
                     {localPlaybackBackupFlags && (
                       <div onClick={actions.restartLocalPlaybacksAll}>
                         <Icons.Restart />
+                      </div>
+                    )}
+                    {isPlayingOne && (
+                      <div
+                        onClick={actions.toggleMultipleMode}
+                        style={{ opacity: isLocalPlaybackMultiple ? 1 : 0.35 }}
+                      >
+                        <Icons.ServerStack size={13} />
                       </div>
                     )}
                   </div>

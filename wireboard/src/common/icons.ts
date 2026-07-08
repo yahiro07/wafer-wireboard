@@ -9,6 +9,7 @@ import { FaGithub } from "react-icons/fa";
 import { HiQueueList } from "react-icons/hi2";
 import { IoIosPause } from "react-icons/io";
 import { IoCloseSharp, IoShareSocial } from "react-icons/io5";
+import { LuServer } from "react-icons/lu";
 import { MdRestartAlt } from "react-icons/md";
 import { PiPianoKeysFill } from "react-icons/pi";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -30,6 +31,7 @@ export const Icons = {
   Settings: TbSettings,
   Pause: IoIosPause,
   Restart: MdRestartAlt,
+  ServerStack: LuServer,
 };
 
 export const IconsEx = {
