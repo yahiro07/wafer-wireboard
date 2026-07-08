@@ -1,6 +1,6 @@
 import { DragHandlerEvent, Point, startDragSession } from "mofur/ax-ui";
 import { findItemMappedMinimum } from "@/auxiliaries/general-utils";
-import { domEditAreaId } from "@/base/constants";
+import { domEditAreaId } from "@/main-definitions/constants";
 import { getUnitIdFromPortKey } from "@/model/factory";
 import { store } from "@/model/store";
 import { PortItem, PortSubtype } from "@/model/types";

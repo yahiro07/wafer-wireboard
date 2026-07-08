@@ -1,4 +1,4 @@
-import { CatalogKey } from "@/base/showcase-entries";
+import { CatalogKey } from "@/main-definitions/showcase-entries";
 import { store } from "@/model/store";
 
 const hmrActions = {

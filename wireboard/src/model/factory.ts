@@ -1,4 +1,4 @@
-import { CatalogKey } from "@/base/showcase-entries";
+import { CatalogKey } from "@/main-definitions/showcase-entries";
 import { UnitItem, WireItem } from "@/model/types";
 
 export function getNextUnitId(

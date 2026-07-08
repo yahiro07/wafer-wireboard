@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Icons } from "@/base/icons";
+import { Icons } from "@/common/icons";
 import { GithubBadge } from "@/components/github-badge";
 import { IconButton } from "@/components/icon-button";
 import { store } from "@/model/store";

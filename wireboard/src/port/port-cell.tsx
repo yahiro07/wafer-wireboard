@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import { Point } from "mofur/ax-ui";
 import { useEffect, useRef } from "react";
-import { domEditAreaId } from "@/base/constants";
-import { IconsEx } from "@/base/icons";
+import { IconsEx } from "@/common/icons";
+import { domEditAreaId } from "@/main-definitions/constants";
 import { getUnitIdFromPortKey } from "@/model/factory";
 import { connectionActions } from "@/port/connection-actions";
 import {

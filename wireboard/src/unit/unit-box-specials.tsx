@@ -1,6 +1,6 @@
 import { npx } from "mofur/ax-ui";
 import { ReactNode } from "react";
-import { Icons } from "@/base/icons";
+import { Icons } from "@/common/icons";
 import { UnitItem } from "@/model/types";
 import { KeyboardPortCell, SpeakerPortCell } from "@/port/port-cell";
 import { handleGripPointerDown } from "@/unit/unit-box-drag-handler";

@@ -1,9 +1,9 @@
-import { appConfig } from "@/base/app-config";
-import { Icons, IconsEx } from "@/base/icons";
+import { Icons, IconsEx } from "@/common/icons";
 import { Button } from "@/components/button";
 import { Knob } from "@/components/knob";
 import { NumberSliderBox } from "@/components/number-slider-box";
 import { UpperLabel } from "@/components/upper-label";
+import { appConfig } from "@/main-definitions/app-config";
 import { actions } from "@/model/actions";
 import { store } from "@/model/store";
 import { projectsModel } from "@/project/projects-model";

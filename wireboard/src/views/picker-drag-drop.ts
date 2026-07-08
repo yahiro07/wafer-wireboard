@@ -1,9 +1,14 @@
-import { appConfigs, boardSize } from "@/base/constants";
-import { unitCatalogKeyDragMime } from "@/base/drag-drop-key";
-import { ShowcaseEntry, showcaseEntries } from "@/base/showcase-entries";
+import { appConfig } from "@/main-definitions/app-config";
+import { boardSize } from "@/main-definitions/constants";
+import {
+  ShowcaseEntry,
+  showcaseEntries,
+} from "@/main-definitions/showcase-entries";
 import { actions } from "@/model/actions";
 import { store } from "@/model/store";
 import { snapUnitCoordToGrid } from "@/unit/snapping";
+
+const unitCatalogKeyDragMime = "application/x-wireboard-unit-catalog-key";
 
 export const handlePickerItemDragStart = (
   e: React.DragEvent<HTMLDivElement>,
@@ -42,7 +47,7 @@ export function useMainAreaDropHandlers() {
           (e.clientY - rect.top - rect.height / 2 - sight.eyeOffset.y) / scale +
           boardSize.height / 2,
       };
-      if (appConfigs.snapUnitCoordToGrid) {
+      if (appConfig.snapUnitCoordToGrid) {
         position = snapUnitCoordToGrid(position);
       }
       actions.addUnit(

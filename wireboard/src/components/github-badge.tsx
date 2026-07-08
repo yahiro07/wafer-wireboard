@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Icons } from "@/base/icons";
+import { Icons } from "@/common/icons";
 
 type Props = {
   url: string;

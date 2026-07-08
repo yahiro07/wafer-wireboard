@@ -1,4 +1,4 @@
-import { Icons } from "@/base/icons";
+import { Icons } from "@/common/icons";
 import { IconButton } from "@/components/icon-button";
 import { actions } from "@/model/actions";
 import { store } from "@/model/store";

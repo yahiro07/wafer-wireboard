@@ -1,5 +1,5 @@
 import { startDragSession } from "mofur/ax-ui";
-import { appConfigs } from "@/base/constants";
+import { appConfig } from "@/main-definitions/app-config";
 import { actions } from "@/model/actions";
 import { store } from "@/model/store";
 import { UnitItem } from "@/model/types";
@@ -23,7 +23,7 @@ export const handleGripPointerDown = (
           x: originalPosition.x + delta.x / sc,
           y: originalPosition.y + delta.y / sc,
         };
-        if (appConfigs.snapUnitCoordToGrid) {
+        if (appConfig.snapUnitCoordToGrid) {
           newPosition = snapUnitCoordToGrid(newPosition);
         }
         actions.setUnitPosition(unit.unitId, newPosition);

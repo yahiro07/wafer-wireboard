@@ -1,7 +1,7 @@
 import { dequal } from "dequal";
 import { Point } from "mofur/ax-ui";
 import { ReactUnitTemplateFn } from "wafer-host/react";
-import { CatalogKey } from "@/base/showcase-entries";
+import { CatalogKey } from "@/main-definitions/showcase-entries";
 import { getNextUnitId } from "@/model/factory";
 import { hostSystem } from "@/model/host-system-instance";
 import { store } from "@/model/store";

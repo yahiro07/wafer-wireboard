@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Icons } from "@/base/icons";
-import { catalog } from "@/base/showcase-entries";
+import { Icons } from "@/common/icons";
+import { catalog } from "@/main-definitions/showcase-entries";
 
 type CreditInfo = {
   appName: string;

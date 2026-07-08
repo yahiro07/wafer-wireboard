@@ -1,5 +1,5 @@
-import { boardSize, domEditAreaId } from "@/base/constants";
 import { FieldSightPlane } from "@/components/field-sight-plane";
+import { boardSize, domEditAreaId } from "@/main-definitions/constants";
 import { store } from "@/model/store";
 import { SlotCardBox } from "@/unit/unit-box";
 import {

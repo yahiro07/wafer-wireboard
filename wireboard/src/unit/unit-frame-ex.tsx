@@ -6,7 +6,7 @@ import {
   UnitDestinationSpec,
   UnitFrame,
 } from "wafer-host/react";
-import { CatalogKey, catalog } from "@/base/showcase-entries";
+import { CatalogKey, catalog } from "@/main-definitions/showcase-entries";
 import {
   InternalUnitKey,
   internalUnitFunctions,

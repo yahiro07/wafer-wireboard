@@ -3,8 +3,8 @@ import { setupMidiKeyboardInput } from "mofur/mx-audio";
 import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { HostAppProvider } from "wafer-host/react";
-import { CatalogKey } from "@/base/showcase-entries";
 import { Button } from "@/components/button";
+import { CatalogKey } from "@/main-definitions/showcase-entries";
 import { hostSystem } from "@/model/host-system-instance";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
 

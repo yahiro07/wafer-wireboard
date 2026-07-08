@@ -1,5 +1,5 @@
 import { iife } from "mofur/ax";
-import { appConfig } from "@/base/app-config";
+import { appConfig } from "@/main-definitions/app-config";
 import { actions } from "@/model/actions";
 import { hostSystem } from "@/model/host-system-instance";
 import { StoreState, store } from "@/model/store";

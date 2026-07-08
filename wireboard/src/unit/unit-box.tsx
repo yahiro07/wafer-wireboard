@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { npx, Point } from "mofur/ax-ui";
 import { useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
-import { Icons } from "@/base/icons";
+import { Icons } from "@/common/icons";
 import { actions } from "@/model/actions";
 import { UnitItem } from "@/model/types";
 import { PortCell } from "@/port/port-cell";
