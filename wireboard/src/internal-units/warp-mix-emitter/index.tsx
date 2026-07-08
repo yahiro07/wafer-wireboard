@@ -1,3 +1,5 @@
+import { createEventPort } from "mofur/mo";
+import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wafer-host/react";
 import { UnitInterface } from "wafer-host/unit-types";
@@ -20,18 +22,22 @@ type EffectParameters = {
   localPlaying: boolean;
 };
 
-const defaultEffectParameters: EffectParameters = {
-  mainVolume: 0.5,
-  auxVolume: 0,
-  pan: 0,
-  eqLow: 0.5,
-  eqMid: 0.5,
-  eqHigh: 0.5,
-  stereoSpread: 0,
-  outputEnabled: true,
-  outputSolo: false,
-  localPlaying: false,
-};
+function createDefaultEffectParameters(): EffectParameters {
+  return {
+    mainVolume: 0.5,
+    auxVolume: 0,
+    pan: 0,
+    eqLow: 0.5,
+    eqMid: 0.5,
+    eqHigh: 0.5,
+    stereoSpread: 0,
+    outputEnabled: true,
+    outputSolo: false,
+    localPlaying: false,
+  };
+}
+
+type SoloOwnership = "own" | "other" | "none";
 
 function createEngine(unitInterface: UnitInterface) {
   const { audioContext } = unitInterface;
@@ -53,11 +59,16 @@ function createEngine(unitInterface: UnitInterface) {
     outputEnabled: true,
     mainGain: 0.5,
     auxGain: 0,
+    soloOwnership: "none",
   };
 
   const internal = {
     affectGains() {
-      const m = state.outputEnabled ? 1 : 0;
+      const m =
+        state.soloOwnership === "own" ||
+        (state.outputEnabled && state.soloOwnership !== "other")
+          ? 1
+          : 0;
       mainGain.gain.value = state.mainGain * m;
       auxGain.gain.value = state.auxGain * m;
     },
@@ -81,6 +92,10 @@ function createEngine(unitInterface: UnitInterface) {
     applyParameters(attrs: Partial<EffectParameters>) {
       dispatchPartialAttrs(attrs, setterFns);
     },
+    setSoloOwnership(v: SoloOwnership) {
+      state.soloOwnership = v;
+      internal.affectGains();
+    },
     cleanup() {
       inputNode.disconnect(mainGain);
       mainGain.disconnect(mainOutputNode);
@@ -89,6 +104,12 @@ function createEngine(unitInterface: UnitInterface) {
     },
   };
 }
+
+const sharedEventPort = createEventPort<{
+  type: "soloChanged";
+  activeSoloInstanceId: number | null;
+}>();
+let instanceIdCounter = 0;
 
 export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
   unitInterface,
@@ -104,9 +125,12 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
     cleanup: engine.cleanup,
   });
 
-  engine.applyParameters(defaultEffectParameters);
+  const initialParams = createDefaultEffectParameters();
+  engine.applyParameters(initialParams);
 
-  const store = createStore<EffectParameters>(defaultEffectParameters);
+  const selfInstanceId = instanceIdCounter++;
+
+  const store = createStore<EffectParameters>(initialParams);
   const actions = {
     setParameter<K extends keyof EffectParameters>(
       key: K,
@@ -117,9 +141,34 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
     },
   };
 
+  function setupSoloExclusion() {
+    return sharedEventPort.subscribe((event) => {
+      if (event.type === "soloChanged") {
+        const soloOwnership =
+          event.activeSoloInstanceId === selfInstanceId
+            ? "own"
+            : event.activeSoloInstanceId !== null
+              ? "other"
+              : "none";
+        store.setOutputSolo(soloOwnership === "own");
+        engine.setSoloOwnership(soloOwnership);
+      }
+    });
+  }
+
+  function wrapToggleOutputSolo() {
+    const nextSelfSolo = !store.state.outputSolo;
+    sharedEventPort.emit({
+      type: "soloChanged",
+      activeSoloInstanceId: nextSelfSolo ? selfInstanceId : null,
+    });
+  }
+
   return {
     RenderUi() {
       const st = store.useSnapshot();
+      // biome-ignore lint/correctness/useExhaustiveDependencies: manual management
+      useEffect(setupSoloExclusion, []);
       return (
         <div className="w-[300px] h-[160px] bg-indigo-200 p-1">
           <div className="flex-v h-full">
@@ -140,9 +189,7 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
                       asr={1.2}
                       text="solo"
                       active={st.outputSolo}
-                      onClick={() =>
-                        actions.setParameter("outputSolo", !st.outputSolo)
-                      }
+                      onClick={wrapToggleOutputSolo}
                     />
                     <UpperLabel label="aux">
                       <FdKnob
