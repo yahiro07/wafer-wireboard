@@ -2,8 +2,8 @@ import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wafer-host/react";
 import { UnitInterface } from "wafer-host/unit-types";
 import { mapVolumeCurveCenterUnity } from "@/auxiliaries/volume-curve";
-import { Knob } from "@/components/knob";
 import { UpperLabel } from "@/components/upper-label";
+import { FdKnob } from "@/internal-units/warp-mix-emitter/knob";
 
 type EffectParameters = {
   mainVolume: number;
@@ -84,22 +84,24 @@ export const createWarpMixReceiverUnit: ReactUnitTemplateFn = (
     RenderUi() {
       const st = store.useSnapshot();
       return (
-        <div className="w-[300px] h-[160px] bg-white p-1">
-          <div className="flex-v h-full">
-            <div>warp mix receiver</div>
-            <div className="grow flex-c gap-8">
-              <UpperLabel label="aux" textColor="#444">
-                <Knob
-                  value={st.auxVolume}
-                  onChange={(v) => actions.setParameter("auxVolume", v)}
-                />
-              </UpperLabel>
-              <UpperLabel label="main" textColor="#444">
-                <Knob
-                  value={st.mainVolume}
-                  onChange={(v) => actions.setParameter("mainVolume", v)}
-                />
-              </UpperLabel>
+        <div className="w-[300px] h-[160px] bg-indigo-200 p-1">
+          <div className="flex-v h-full flex-c">
+            <div className="flex-vc gap-4">
+              <div>warp mix receiver</div>
+              <div className="flex-ha gap-8 text-[#444]">
+                <UpperLabel label="aux">
+                  <FdKnob
+                    value={st.auxVolume}
+                    onChange={(v) => actions.setParameter("auxVolume", v)}
+                  />
+                </UpperLabel>
+                <UpperLabel label="main">
+                  <FdKnob
+                    value={st.mainVolume}
+                    onChange={(v) => actions.setParameter("mainVolume", v)}
+                  />
+                </UpperLabel>
+              </div>
             </div>
           </div>
         </div>

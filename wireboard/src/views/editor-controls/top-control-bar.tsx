@@ -13,7 +13,7 @@ export const TopControlBar = () => {
     store.useSnapshot();
   return (
     <div className="flex-c px-4 gap-8 pt-3.5 pb-1 pointer-events-auto">
-      <div className="flex-ha gap-2">
+      <div className="flex-ha gap-2 text-white">
         <Button asr={1.5} active={playing} onClick={actions.togglePlayState}>
           <Icons.Play size={20} />
         </Button>
