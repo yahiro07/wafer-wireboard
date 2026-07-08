@@ -50,11 +50,7 @@ export function useMainAreaDropHandlers() {
       if (appConfig.snapUnitCoordToGrid) {
         position = snapUnitCoordToGrid(position);
       }
-      actions.addUnit(
-        showcaseEntry.catalogKey,
-        position,
-        showcaseEntry.templateFn,
-      );
+      actions.addUnit(showcaseEntry, position);
     },
   };
 }

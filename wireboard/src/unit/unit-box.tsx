@@ -91,7 +91,6 @@ export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
             key={unitItem.hmrRevision}
             unitId={unitItem.unitId}
             catalogKey={unitItem.catalogKey}
-            internalUnitKey={unitItem.internalUnitKey}
             onUnitInstanceLoaded={setUnitInstance}
           />
         </div>

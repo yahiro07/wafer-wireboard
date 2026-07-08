@@ -1,7 +1,6 @@
 import { dequal } from "dequal";
 import { Point } from "mofur/ax-ui";
-import { ReactUnitTemplateFn } from "wafer-host/react";
-import { CatalogKey } from "@/main-definitions/showcase-entries";
+import { ShowcaseEntry } from "@/main-definitions/showcase-entries";
 import { getNextUnitId } from "@/model/factory";
 import { hostSystem } from "@/model/host-system-instance";
 import { store } from "@/model/store";
@@ -29,20 +28,14 @@ export const actions = {
   setUnitPosition(unitId: string, position: Point) {
     actionsInternal.patchUnitItem(unitId, { position });
   },
-  addUnit(
-    catalogKey: CatalogKey,
-    position: Point,
-    templateFn?: ReactUnitTemplateFn,
-  ) {
-    const unitId = getNextUnitId(catalogKey, store.state.unitItems);
+  addUnit(showcaseEntry: ShowcaseEntry, position: Point) {
+    const unitId = getNextUnitId(
+      showcaseEntry.catalogKey,
+      store.state.unitItems,
+    );
     store.setUnitItems((prev) => [
       ...prev,
-      {
-        unitId,
-        catalogKey,
-        templateFn,
-        position,
-      },
+      { unitId, catalogKey: showcaseEntry.catalogKey, position },
     ]);
   },
   removeUnit(unitId: string) {

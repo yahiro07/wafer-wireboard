@@ -6,50 +6,46 @@ import {
   UnitDestinationSpec,
   UnitFrame,
 } from "wafer-host/react";
-import { CatalogKey, catalog } from "@/main-definitions/showcase-entries";
 import {
-  InternalUnitKey,
-  internalUnitFunctions,
-} from "@/model/internal-unit-definitions";
+  CatalogKey,
+  getCatalogTarget,
+} from "@/main-definitions/showcase-entries";
 import { setupIframeInputHandlers } from "@/periphery/sight-control-handlers";
 
 export const UnitFrameEx = ({
   unitId,
   destSpec,
   catalogKey,
-  internalUnitKey,
   onUnitInstanceLoaded,
 }: {
   unitId: string;
   destSpec?: UnitDestinationSpec;
-  catalogKey?: CatalogKey;
-  internalUnitKey?: InternalUnitKey;
+  catalogKey: CatalogKey;
   onUnitInstanceLoaded?: (unitInstance: HsUnitInstance) => void;
 }) => {
   const content: ReactNode = (() => {
-    if (internalUnitKey) {
-      const templateFn = internalUnitFunctions[internalUnitKey];
+    const catalogTarget = getCatalogTarget(catalogKey);
+    if (catalogTarget?.type === "internal") {
       return (
         <ReactUnitFrame
           unitId={unitId}
           destSpec={destSpec}
-          unitTemplateFn={templateFn}
+          unitTemplateFn={catalogTarget.internalUnitFunction}
           onUnitInstanceLoaded={onUnitInstanceLoaded}
         />
       );
-    } else if (catalogKey) {
-      const catalogItem = catalog[catalogKey];
-      if (!catalogItem) return null;
+    } else if (catalogTarget?.type === "catalog") {
       return (
         <UnitFrame
           unitId={unitId}
           destSpec={destSpec}
-          unitUrl={catalogItem.loaderPageUrl}
+          unitUrl={catalogTarget.UnitInventorySpec.loaderPageUrl}
           onIframeMounted={setupIframeInputHandlers}
           onUnitInstanceLoaded={onUnitInstanceLoaded}
         />
       );
     }
+    return null;
   })();
   return <ScalerBoxAutoSized>{content}</ScalerBoxAutoSized>;
 };
