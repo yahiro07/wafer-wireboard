@@ -53,7 +53,6 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
   unitInterface.completeSetup({
     unitAspects: {
       unitType: "effect",
-      categoryHint: "visualizer",
       outputs: ["audio"],
       inputs: ["audio"],
     },
