@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wafer-host/react";
+import { Icons } from "@/common/icons";
 import { Button } from "@/components/button";
 import { UpperLabel } from "@/components/upper-label";
 import {
@@ -11,9 +12,7 @@ import {
 import { FdKnob } from "@/internal-units/warp-mix-emitter/knob";
 import { ParameterGauge } from "@/internal-units/warp-mix-emitter/parameter-gauge";
 
-type ChannelStripState = ChannelStripEffectParameters & {
-  localPlaying: boolean;
-};
+type ChannelStripState = ChannelStripEffectParameters & {};
 
 function createChannelStripState(): ChannelStripState {
   return {
@@ -26,16 +25,19 @@ function createChannelStripState(): ChannelStripState {
     eqHigh: 0.5,
     stereoSpread: 0,
     outputEnabled: true,
-    localPlaying: false,
   };
 }
 
 type StoreState = {
   strips: Record<string, ChannelStripState>;
+  localPlaybackFlags: Record<string, boolean>;
+  localPlaybackBackupFlags: Record<string, boolean> | null;
 };
 
 const moduleStore = createStore<StoreState>({
   strips: {},
+  localPlaybackFlags: {},
+  localPlaybackBackupFlags: null,
 });
 
 let instanceIdCounter = 0;
@@ -67,6 +69,12 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
         [stripId]: { ...prev[stripId], ...attrs },
       }));
     },
+    patchLocalPlaybackFlags(active: boolean) {
+      moduleStore.setLocalPlaybackFlags((prev) => ({
+        ...prev,
+        [stripId]: active,
+      }));
+    },
     setParameter<K extends keyof ChannelStripEffectParameters>(
       key: K,
       value: ChannelStripEffectParameters[K],
@@ -75,8 +83,30 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
       actions.patchStripState({ [key]: value });
     },
     toggleLocalPlaying() {
-      const nextLocalPlaying = !moduleStore.state.strips[stripId].localPlaying;
-      actions.patchStripState({ localPlaying: nextLocalPlaying });
+      const currentPlaying =
+        Object.values(moduleStore.state.localPlaybackFlags).filter(Boolean)
+          .length > 0;
+      if (!currentPlaying && moduleStore.state.localPlaybackBackupFlags) {
+        moduleStore.setLocalPlaybackBackupFlags(null);
+      }
+      const nextLocalPlaying = !moduleStore.state.localPlaybackFlags[stripId];
+      actions.patchLocalPlaybackFlags(nextLocalPlaying);
+    },
+    stopLocalPlaybacksAll() {
+      const flags = moduleStore.state.localPlaybackFlags;
+      moduleStore.assign({
+        localPlaybackBackupFlags: flags,
+        localPlaybackFlags: {},
+      });
+    },
+    restartLocalPlaybacksAll() {
+      const flags = moduleStore.state.localPlaybackBackupFlags;
+      if (flags) {
+        moduleStore.assign({
+          localPlaybackFlags: flags,
+          localPlaybackBackupFlags: null,
+        });
+      }
     },
   };
 
@@ -108,11 +138,14 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
 
   return {
     RenderUi() {
-      const { strips } = moduleStore.useSnapshot();
+      const { strips, localPlaybackFlags, localPlaybackBackupFlags } =
+        moduleStore.useSnapshot();
       const st = strips[stripId];
       useEffect(internal.setupSynchronization, []);
-      const localPlaying = st.localPlaying;
+      const localPlaying = localPlaybackFlags[stripId];
       internal.useAffectLocalPlaybackStateToHost(localPlaying);
+      const isPlayingMoreThanOne =
+        Object.values(localPlaybackFlags).filter(Boolean).length > 1;
 
       const panelMainContent = (
         <div className="flex-v h-full">
@@ -157,12 +190,24 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
                   </UpperLabel>
                 </div>
                 <div className="flex-ha justify-between">
-                  <Button
-                    asr={1.2}
-                    text="play"
-                    active={localPlaying}
-                    onClick={actions.toggleLocalPlaying}
-                  />
+                  <div className="flex-ha gap-3">
+                    <Button
+                      asr={1.2}
+                      text="play"
+                      active={localPlaying}
+                      onClick={actions.toggleLocalPlaying}
+                    />
+                    {isPlayingMoreThanOne && (
+                      <div onClick={actions.stopLocalPlaybacksAll}>
+                        <Icons.Pause />
+                      </div>
+                    )}
+                    {localPlaybackBackupFlags && (
+                      <div onClick={actions.restartLocalPlaybacksAll}>
+                        <Icons.Restart />
+                      </div>
+                    )}
+                  </div>
                   <div className="flex-ha gap-4">
                     <UpperLabel label="low">
                       <FdKnob
