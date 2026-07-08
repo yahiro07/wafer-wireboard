@@ -1,5 +1,4 @@
 import { ScalerBoxAutoSized } from "mofur/mo-react";
-import { ReactNode } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import {
   ReactUnitFrame,
@@ -23,19 +22,21 @@ export const UnitFrameEx = ({
   catalogKey: CatalogKey;
   onUnitInstanceLoaded?: (unitInstance: HsUnitInstance) => void;
 }) => {
-  const content: ReactNode = (() => {
-    const catalogTarget = getCatalogTarget(catalogKey);
-    if (catalogTarget?.type === "internal") {
-      return (
+  const catalogTarget = getCatalogTarget(catalogKey);
+  if (catalogTarget?.type === "internal") {
+    return (
+      <ScalerBoxAutoSized overflow="visible">
         <ReactUnitFrame
           unitId={unitId}
           destSpec={destSpec}
           unitTemplateFn={catalogTarget.internalUnitFunction}
           onUnitInstanceLoaded={onUnitInstanceLoaded}
         />
-      );
-    } else if (catalogTarget?.type === "catalog") {
-      return (
+      </ScalerBoxAutoSized>
+    );
+  } else if (catalogTarget?.type === "catalog") {
+    return (
+      <ScalerBoxAutoSized>
         <UnitFrame
           unitId={unitId}
           destSpec={destSpec}
@@ -43,9 +44,8 @@ export const UnitFrameEx = ({
           onIframeMounted={setupIframeInputHandlers}
           onUnitInstanceLoaded={onUnitInstanceLoaded}
         />
-      );
-    }
-    return null;
-  })();
-  return <ScalerBoxAutoSized>{content}</ScalerBoxAutoSized>;
+      </ScalerBoxAutoSized>
+    );
+  }
+  return null;
 };

@@ -8,10 +8,12 @@ import { mapVolumeCurveCenterUnity } from "@/auxiliaries/volume-curve";
 import { Button } from "@/components/button";
 import { UpperLabel } from "@/components/upper-label";
 import { FdKnob } from "@/internal-units/warp-mix-emitter/knob";
+import { ParameterGauge } from "@/internal-units/warp-mix-emitter/parameter-gauge";
 
 type EffectParameters = {
   mainVolume: number;
   auxVolume: number;
+  faderVolume: number;
   pan: number;
   eqLow: number;
   eqMid: number;
@@ -26,6 +28,7 @@ function createDefaultEffectParameters(): EffectParameters {
   return {
     mainVolume: 0.5,
     auxVolume: 0,
+    faderVolume: 0.5,
     pan: 0,
     eqLow: 0.5,
     eqMid: 0.5,
@@ -57,8 +60,9 @@ function createEngine(unitInterface: UnitInterface) {
 
   const state = {
     outputEnabled: true,
-    mainGain: 0.5,
+    mainGain: 1,
     auxGain: 0,
+    faderGain: 1,
     soloOwnership: "none",
   };
 
@@ -69,8 +73,8 @@ function createEngine(unitInterface: UnitInterface) {
         (state.outputEnabled && state.soloOwnership !== "other")
           ? 1
           : 0;
-      mainGain.gain.value = state.mainGain * m;
-      auxGain.gain.value = state.auxGain * m;
+      mainGain.gain.value = state.faderGain * state.mainGain * m;
+      auxGain.gain.value = state.faderGain * state.auxGain * m;
     },
   };
 
@@ -81,6 +85,10 @@ function createEngine(unitInterface: UnitInterface) {
     },
     auxVolume(v: number) {
       state.auxGain = mapVolumeCurveCenterUnity(v);
+      internal.affectGains();
+    },
+    faderVolume(v: number) {
+      state.faderGain = v * v;
       internal.affectGains();
     },
     outputEnabled(v: boolean) {
@@ -169,91 +177,104 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
       const st = store.useSnapshot();
       // biome-ignore lint/correctness/useExhaustiveDependencies: manual management
       useEffect(setupSoloExclusion, []);
-      return (
-        <div className="w-[300px] h-[160px] bg-indigo-200 p-1">
-          <div className="flex-v h-full">
-            <div className="grow flex-c text-[#444]">
-              <div className="flex-v gap-3">
-                <div>warp mix emitter</div>
-                <div className="flex-v gap-6">
+
+      const panelMainContent = (
+        <div className="flex-v h-full">
+          <div className="grow flex-c text-[#444]">
+            <div className="flex-v gap-3">
+              <div>warp mix emitter</div>
+              <div className="flex-v gap-6">
+                <div className="flex-ha gap-4">
+                  <Button
+                    asr={1.2}
+                    text="on"
+                    active={st.outputEnabled}
+                    onClick={() =>
+                      actions.setParameter("outputEnabled", !st.outputEnabled)
+                    }
+                  />
+                  <Button
+                    asr={1.2}
+                    text="solo"
+                    active={st.outputSolo}
+                    onClick={wrapToggleOutputSolo}
+                  />
+                  <UpperLabel label="aux">
+                    <FdKnob
+                      value={st.auxVolume}
+                      onChange={(v) => actions.setParameter("auxVolume", v)}
+                    />
+                  </UpperLabel>
+                  <UpperLabel label="pan">
+                    <FdKnob
+                      value={st.pan}
+                      min={-1}
+                      max={1}
+                      onChange={(v) => actions.setParameter("pan", v)}
+                    />
+                  </UpperLabel>
+                  <UpperLabel label="main">
+                    <FdKnob
+                      value={st.mainVolume}
+                      onChange={(v) => actions.setParameter("mainVolume", v)}
+                    />
+                  </UpperLabel>
+                </div>
+                <div className="flex-ha justify-between">
+                  <Button
+                    asr={1.2}
+                    text="play"
+                    active={st.localPlaying}
+                    onClick={() =>
+                      actions.setParameter("localPlaying", !st.localPlaying)
+                    }
+                  />
                   <div className="flex-ha gap-4">
-                    <Button
-                      asr={1.2}
-                      text="on"
-                      active={st.outputEnabled}
-                      onClick={() =>
-                        actions.setParameter("outputEnabled", !st.outputEnabled)
-                      }
-                    />
-                    <Button
-                      asr={1.2}
-                      text="solo"
-                      active={st.outputSolo}
-                      onClick={wrapToggleOutputSolo}
-                    />
-                    <UpperLabel label="aux">
+                    <UpperLabel label="stereo">
                       <FdKnob
-                        value={st.auxVolume}
-                        onChange={(v) => actions.setParameter("auxVolume", v)}
+                        value={st.stereoSpread}
+                        onChange={(v) =>
+                          actions.setParameter("stereoSpread", v)
+                        }
                       />
                     </UpperLabel>
-                    <UpperLabel label="pan">
+                    <UpperLabel label="low">
                       <FdKnob
-                        value={st.pan}
-                        min={-1}
-                        max={1}
-                        onChange={(v) => actions.setParameter("pan", v)}
+                        value={st.eqLow}
+                        onChange={(v) => actions.setParameter("eqLow", v)}
                       />
                     </UpperLabel>
-                    <UpperLabel label="vol">
+                    <UpperLabel label="mid">
                       <FdKnob
-                        value={st.mainVolume}
-                        onChange={(v) => actions.setParameter("mainVolume", v)}
+                        value={st.eqMid}
+                        onChange={(v) => actions.setParameter("eqMid", v)}
                       />
                     </UpperLabel>
-                  </div>
-                  <div className="flex-ha justify-between">
-                    <Button
-                      asr={1.2}
-                      text="play"
-                      active={st.localPlaying}
-                      onClick={() =>
-                        actions.setParameter("localPlaying", !st.localPlaying)
-                      }
-                    />
-                    <div className="flex-ha gap-4">
-                      <UpperLabel label="stereo">
-                        <FdKnob
-                          value={st.stereoSpread}
-                          onChange={(v) =>
-                            actions.setParameter("stereoSpread", v)
-                          }
-                        />
-                      </UpperLabel>
-                      <UpperLabel label="low">
-                        <FdKnob
-                          value={st.eqLow}
-                          onChange={(v) => actions.setParameter("eqLow", v)}
-                        />
-                      </UpperLabel>
-                      <UpperLabel label="mid">
-                        <FdKnob
-                          value={st.eqMid}
-                          onChange={(v) => actions.setParameter("eqMid", v)}
-                        />
-                      </UpperLabel>
-                      <UpperLabel label="high">
-                        <FdKnob
-                          value={st.eqHigh}
-                          onChange={(v) => actions.setParameter("eqHigh", v)}
-                        />
-                      </UpperLabel>
-                    </div>
+                    <UpperLabel label="high">
+                      <FdKnob
+                        value={st.eqHigh}
+                        onChange={(v) => actions.setParameter("eqHigh", v)}
+                      />
+                    </UpperLabel>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      );
+      const extraFaderPart = (
+        <div className="absolute top-0 right-[-92px] z-100">
+          <ParameterGauge
+            value={st.faderVolume}
+            onChange={(v) => actions.setParameter("faderVolume", v)}
+          />
+        </div>
+      );
+      return (
+        <div className="relative w-[300px] h-[160px] bg-indigo-200 p-1">
+          {panelMainContent}
+          {extraFaderPart}
         </div>
       );
     },
