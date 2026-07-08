@@ -157,6 +157,12 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
     ) {
       engine.applyParameters({ [key]: value });
       store.assign({ [key]: value });
+      if (key === "localPlaying") {
+        unitInterface.sendMessageToHost({
+          type: "partialPlaybackRequest",
+          playing: value,
+        });
+      }
     },
   };
 
