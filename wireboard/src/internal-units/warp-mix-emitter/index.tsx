@@ -23,15 +23,14 @@ type EffectParameters = {
   eqHigh: number;
   stereoSpread: number;
   outputEnabled: boolean;
+};
+
+type ChannelStripState = EffectParameters & {
   outputSolo: boolean;
   localPlaying: boolean;
 };
 
-const configs = {
-  faderPivot: 0.7,
-};
-
-function createDefaultEffectParameters(): EffectParameters {
+function createChannelStripState(): ChannelStripState {
   return {
     mainVolume: 0.5,
     auxVolume: 0,
@@ -42,10 +41,15 @@ function createDefaultEffectParameters(): EffectParameters {
     eqHigh: 0.5,
     stereoSpread: 0,
     outputEnabled: true,
+    //
     outputSolo: false,
     localPlaying: false,
   };
 }
+
+const configs = {
+  faderPivot: 0.7,
+};
 
 type SoloOwnership = "own" | "other" | "none";
 
@@ -150,12 +154,12 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
     cleanup: engine.cleanup,
   });
 
-  const initialParams = createDefaultEffectParameters();
-  engine.applyParameters(initialParams);
+  const initialState = createChannelStripState();
+  engine.applyParameters(initialState);
 
   const selfInstanceId = instanceIdCounter++;
 
-  const store = createStore<EffectParameters>(initialParams);
+  const store = createStore<ChannelStripState>(initialState);
   const actions = {
     setParameter<K extends keyof EffectParameters>(
       key: K,
