@@ -1,6 +1,6 @@
 import { ReactUnitTemplateFn } from "wafer-host/react";
 
-export const createWarpMixReceiverUnit: ReactUnitTemplateFn = (
+export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
   unitInterface,
 ) => {
   const mainOutputNode = unitInterface.audioOutputNode;
@@ -8,13 +8,10 @@ export const createWarpMixReceiverUnit: ReactUnitTemplateFn = (
     "auxOutput",
     "aux out",
   );
-  const mainInputNode = unitInterface.audioInputNode;
-  const auxInputNode = unitInterface.createAdditionalAudioInputNode(
-    "auxInput",
-    "aux in",
-  );
-  mainInputNode.connect(mainOutputNode);
-  auxInputNode.connect(auxOutputNode);
+  const inputNode = unitInterface.audioInputNode;
+
+  inputNode.connect(mainOutputNode);
+  inputNode.connect(auxOutputNode);
 
   unitInterface.completeSetup({
     unitAspects: {
@@ -24,15 +21,15 @@ export const createWarpMixReceiverUnit: ReactUnitTemplateFn = (
       inputs: ["audio"],
     },
     cleanup() {
-      mainInputNode.disconnect(mainOutputNode);
-      auxInputNode.disconnect(auxOutputNode);
+      inputNode.disconnect(mainOutputNode);
+      inputNode.disconnect(auxOutputNode);
     },
   });
   return {
     RenderUi() {
       return (
         <div className="w-[300px] h-[160px] bg-white p-1">
-          <div>warp mix receiver</div>
+          <div>warp mix emitter</div>
         </div>
       );
     },

@@ -2,18 +2,21 @@ import { ReactUnitTemplateFn } from "wafer-host/react";
 import { UnitInventorySpec } from "wafer-host/vite-plugin";
 import { createBuiltinKeyboardUnit } from "@/internal-units/keyboard/keyboard";
 import { createBuiltinVisualizerUnit } from "@/internal-units/visualizer/visualizer";
+import { createWarpMixEmitterUnit } from "@/internal-units/warp-mix-emitter";
 import { createWarpMixReceiverUnit } from "@/internal-units/warp-mix-receiver";
 import _catalog from "../unit-inventories.json";
 
 const internalUnitFunctions = {
   builtInKeyboard: createBuiltinKeyboardUnit,
   builtInVisualizer: createBuiltinVisualizerUnit,
+  warpMixEmitter: createWarpMixEmitterUnit,
   warpMixReceiver: createWarpMixReceiverUnit,
 };
 
 const internalUnitKeys = {
   builtInKeyboard: "builtInKeyboard",
   builtInVisualizer: "builtInVisualizer",
+  warpMixEmitter: "warpMixEmitter",
   warpMixReceiver: "warpMixReceiver",
 } as const;
 
@@ -36,6 +39,7 @@ export const showcaseEntries: ShowcaseEntry[] = [
     thumbnailUrl: item.thumbnailUrl,
   })),
   //builtInKeyboard and builtInVisualizer are omit from showcase entries
+  { name: "warp mix emitter", catalogKey: internalUnitKeys.warpMixEmitter },
   { name: "warp mix receiver", catalogKey: internalUnitKeys.warpMixReceiver },
 ];
 
