@@ -1,3 +1,4 @@
+import { uniqueArrayItems } from "mofur/ax";
 import { hostSystem, sequencerTickDriver } from "@/model/host-system-instance";
 import { store } from "@/model/store";
 
@@ -42,15 +43,29 @@ const flagsGenerator = {
   },
 };
 
-export function startPartialPlayback(targetUnitId: string) {
-  const unitIds = collectUnitIdsToTreeTreeEnd(targetUnitId);
-  const flags = flagsGenerator.inclusive(unitIds);
-  sequencerTickDriver.setUnitClockingFlags(flags);
-  sequencerTickDriver.start();
+export function createPartialPlaybackSupportCore() {
+  let partialPlaying = false;
+  return {
+    updatePartialPlayback(originatorUnitIds: string[] | null) {
+      if (originatorUnitIds) {
+        const unitIds = uniqueArrayItems(
+          originatorUnitIds.flatMap(collectUnitIdsToTreeTreeEnd),
+        );
+        const flags = flagsGenerator.inclusive(unitIds);
+        sequencerTickDriver.setUnitClockingFlags(flags);
+      } else {
+        const flags = flagsGenerator.allActive();
+        sequencerTickDriver.setUnitClockingFlags(flags);
+      }
 
-  return () => {
-    sequencerTickDriver.stop();
-    const flags = flagsGenerator.allActive();
-    sequencerTickDriver.setUnitClockingFlags(flags);
+      const nextPlaying =
+        (originatorUnitIds && originatorUnitIds.length > 0) ?? false;
+      if (!partialPlaying && nextPlaying) {
+        sequencerTickDriver.start();
+      } else if (partialPlaying && !nextPlaying) {
+        sequencerTickDriver.stop();
+      }
+      partialPlaying = nextPlaying;
+    },
   };
 }

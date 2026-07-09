@@ -30,7 +30,7 @@ export type StoreState = {
   modalPanelKind: ModalPanelKind | null;
   unitsLoading: boolean;
   projectLoadedIndex: number;
-  partialPlayTargetUnitId: string | null;
+  partialPlayTargetUnitIds: string[];
 };
 
 export const store = createStore<StoreState>({
@@ -56,5 +56,5 @@ export const store = createStore<StoreState>({
   modalPanelKind: null,
   unitsLoading: false,
   projectLoadedIndex: 0,
-  partialPlayTargetUnitId: null,
+  partialPlayTargetUnitIds: [],
 });
