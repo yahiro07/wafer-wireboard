@@ -11,10 +11,10 @@ import { IoIosPause } from "react-icons/io";
 import { IoCloseSharp, IoShareSocial } from "react-icons/io5";
 import { LuServer } from "react-icons/lu";
 import { MdRestartAlt } from "react-icons/md";
-import { PiPianoKeysFill } from "react-icons/pi";
+import { PiLightningDuotone, PiPianoKeysFill } from "react-icons/pi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { TbAntenna, TbNavigationFilled, TbSettings } from "react-icons/tb";
-import { VscGripper } from "react-icons/vsc";
+import { VscGripper, VscRadioTower } from "react-icons/vsc";
 
 export const Icons = {
   Play: BsPlayFill,
@@ -33,6 +33,8 @@ export const Icons = {
   Restart: MdRestartAlt,
   ServerStack: LuServer,
   Antenna: TbAntenna,
+  Lightning: PiLightningDuotone,
+  RadioTower: VscRadioTower,
 };
 
 export const IconsEx = {

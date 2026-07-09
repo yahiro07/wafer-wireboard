@@ -14,7 +14,7 @@ const InnerAntennaButton = ({
   return (
     <div
       className="w-[30px] h-[30px] bg-gray-400 flex-c text-white"
-      style={{ color: active ? "#6cf" : "#ccc" }}
+      style={{ color: active ? "#6ce" : "#ccc" }}
       onClick={onClick}
     >
       <Icons.Antenna size={20} />
@@ -48,6 +48,7 @@ export const WrapMixReceiverSlotCardBox = ({
       }
       excludingPortIds={excludingPortIds}
       altSidePortIds={["auxOutput"]}
+      hiddenPortIds={hideWarpedWires ? ["primaryInput"] : undefined}
     />
   );
 };
@@ -64,6 +65,10 @@ export const WrapMixEmitterSlotCardBox = ({
     [hideWarpedWires],
   );
   return (
-    <SlotCardBox unitItem={unitItem} excludingPortIds={excludingPortIds} />
+    <SlotCardBox
+      unitItem={unitItem}
+      excludingPortIds={excludingPortIds}
+      hiddenPortIds={hideWarpedWires ? ["primaryOutput"] : undefined}
+    />
   );
 };

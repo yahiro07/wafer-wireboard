@@ -122,11 +122,13 @@ export const SlotCardBox = ({
   innerContent,
   excludingPortIds,
   altSidePortIds,
+  hiddenPortIds,
 }: {
   unitItem: UnitItem;
   innerContent?: ReactNode;
   excludingPortIds?: string[];
   altSidePortIds?: string[];
+  hiddenPortIds?: string[];
 }) => {
   const sd = { width: 400, height: 180 };
   const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
@@ -135,6 +137,14 @@ export const SlotCardBox = ({
       unitInstance ? buildUnitTemporalPortsModel(unitInstance) : undefined,
     [unitInstance],
   );
+  const primaryOutPort =
+    unitPortsModel?.primaryOut &&
+    !hiddenPortIds?.includes(unitPortsModel.primaryOut.id) &&
+    unitPortsModel.primaryOut;
+  const primaryInPort =
+    unitPortsModel?.primaryIn &&
+    !hiddenPortIds?.includes(unitPortsModel.primaryIn.id) &&
+    unitPortsModel.primaryIn;
   return (
     <div
       className="absolute"
@@ -147,21 +157,22 @@ export const SlotCardBox = ({
         className="relative flex-h"
         style={{ width: npx(sd.width), height: npx(sd.height) }}
       >
-        <div
-          className="w-[40px] bg-gray-500 flex-v justify-between items-center p-2 cursor-pointer"
-          onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
-        >
-          {unitPortsModel?.primaryOut && (
-            <PortCell
-              port={unitPortsModel.primaryOut}
-              unitPosition={unitItem.position}
-            />
+        <div className="w-[40px] bg-gray-500 flex-v items-center py-2">
+          {primaryOutPort ? (
+            <PortCell port={primaryOutPort} unitPosition={unitItem.position} />
+          ) : (
+            <div className="flex-c text-[24px] text-[#6ce] pointer-events-none">
+              <Icons.RadioTower />
+            </div>
           )}
-          {unitPortsModel?.primaryIn && (
-            <PortCell
-              port={unitPortsModel.primaryIn}
-              unitPosition={unitItem.position}
-            />
+          <div
+            className="w-full grow cursor-pointer"
+            onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
+          />
+          {primaryInPort ? (
+            <PortCell port={primaryInPort} unitPosition={unitItem.position} />
+          ) : (
+            <div />
           )}
         </div>
         <div className="grow bg-gray-600 relative">
