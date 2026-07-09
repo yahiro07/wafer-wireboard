@@ -2,13 +2,31 @@ import { Point } from "mofur/ax-ui";
 import { useMemo } from "react";
 import { store } from "@/model/store";
 
+type WireRouteType = "normal" | "diagonal" | "diagonal2";
+
 export type WiringLayerWire = {
   id: string;
   p1: Point;
   p2: Point;
-  rightAngled: boolean;
+  routeType: WireRouteType;
   hmrRevision: number;
 };
+
+function getRouteType(
+  sourcePortKey: string,
+  destinationPortKey: string,
+): WireRouteType {
+  if (
+    sourcePortKey.includes("warpMixEmitter") ||
+    destinationPortKey.includes("warpMixReceiver")
+  ) {
+    return "diagonal";
+  }
+  if (destinationPortKey === "builtInPreOutput.primaryInput") {
+    return "diagonal2";
+  }
+  return "normal";
+}
 
 export function useWiringLayerWireItems(): WiringLayerWire[] {
   const { wireItems, portItems, hideWarpedWires } = store.useSnapshot();
@@ -31,9 +49,11 @@ export function useWiringLayerWireItems(): WiringLayerWire[] {
             }
           }
           if (p1 && p2) {
-            const rightAngled =
-              wire.destinationPortKey === "builtInPreOutput.primaryInput";
-            return { id, p1, p2, rightAngled, hmrRevision };
+            const routeType = getRouteType(
+              wire.sourcePortKey,
+              wire.destinationPortKey,
+            );
+            return { id, p1, p2, routeType, hmrRevision };
           }
           return undefined;
         })
