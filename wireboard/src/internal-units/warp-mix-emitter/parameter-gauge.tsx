@@ -4,11 +4,9 @@ import { KnobFrame } from "mofur/mo-react";
 export const ParameterGauge = ({
   value,
   onChange,
-  altColor = false,
 }: {
   value: number;
   onChange: (value: number) => void;
-  altColor?: boolean;
 }) => {
   return (
     <KnobFrame value={value} min={0} max={1} step={0.01} onChange={onChange}>
@@ -19,11 +17,7 @@ export const ParameterGauge = ({
         )}
       >
         <div
-          className={clsx(
-            "w-full h-[50px]",
-            altColor ? "bg-[#46a]" : "bg-[#48c]",
-            "items-center",
-          )}
+          className={clsx("w-full h-[50px]", "bg-[#49d]", "items-center")}
           style={{ height: `${value * 100}%` }}
         />
       </div>

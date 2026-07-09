@@ -10,7 +10,7 @@ const bgSpecsB = {
   unitCardFrame: "bg-[#8ad]",
   unitCardInner: "bg-[#ccc]",
   pageRoot: "bg-[#e8ecff]",
-  wireColor: "#48c6",
+  wireColor: "#4696",
   portCell: "bg-[#c0c8d0]",
 };
 

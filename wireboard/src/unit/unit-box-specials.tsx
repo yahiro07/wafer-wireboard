@@ -27,7 +27,7 @@ const SystemPortBox = ({
         top: npx(unit.position.y - sd.height / 2),
       }}
     >
-      <div className="relative">
+      <div className="relative shadow-md">
         <div
           className={clsx(
             "flex-c w-[80px] h-[120px] text-gray-300",

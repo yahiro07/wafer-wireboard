@@ -156,7 +156,7 @@ export const SlotCardBox = ({
       }}
     >
       <div
-        className="relative flex-h"
+        className="relative flex-h shadow-md"
         style={{ width: npx(sd.width), height: npx(sd.height) }}
       >
         <div
