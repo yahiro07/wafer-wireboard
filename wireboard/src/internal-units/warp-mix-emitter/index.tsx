@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wafer-host/react";
-import { Icons } from "@/common/icons";
 import { Button } from "@/components/button";
 import { UpperLabel } from "@/components/upper-label";
 import {
@@ -32,7 +31,8 @@ type StoreState = {
   strips: Record<string, ChannelStripState>;
   localPlaybackFlags: Record<string, boolean>;
   localPlaybackBackupFlags: Record<string, boolean> | null;
-  isLocalPlaybackMultiple: boolean;
+  // isLocalPlaybackMultiple: boolean;
+  soloStripId: string | null;
   firstOperatedStripId: string | null;
 };
 
@@ -40,7 +40,8 @@ const moduleStore = createStore<StoreState>({
   strips: {},
   localPlaybackFlags: {},
   localPlaybackBackupFlags: null,
-  isLocalPlaybackMultiple: false,
+  // isLocalPlaybackMultiple: true,
+  soloStripId: null,
   firstOperatedStripId: null,
 });
 
@@ -86,51 +87,91 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
       engine.applyParameters({ [key]: value });
       actions.patchStripState({ [key]: value });
     },
-    toggleLocalPlaying() {
+    // stopLocalPlaybacksAll() {
+    //   const flags = moduleStore.state.localPlaybackFlags;
+    //   moduleStore.assign({
+    //     localPlaybackBackupFlags: flags,
+    //     localPlaybackFlags: {},
+    //   });
+    // },
+    // restartLocalPlaybacksAll() {
+    //   const flags = moduleStore.state.localPlaybackBackupFlags;
+    //   if (flags) {
+    //     moduleStore.assign({
+    //       localPlaybackFlags: flags,
+    //       localPlaybackBackupFlags: null,
+    //     });
+    //   }
+    // },
+    // toggleMultipleMode() {
+    //   const numPlayings = Object.values(
+    //     moduleStore.state.localPlaybackFlags,
+    //   ).filter(Boolean).length;
+    //   if (numPlayings >= 2) {
+    //     // moduleStore.setLocalPlaybackFlags({ [stripId]: true });
+    //     moduleStore.assign({ localPlaybackFlags: {} });
+    //   } else {
+    //     moduleStore.toggleIsLocalPlaybackMultiple();
+    //   }
+    // },
+    handlePlayButton() {
       const st = moduleStore.state;
       const currentPlayingAny =
         Object.values(st.localPlaybackFlags).filter(Boolean).length > 0;
-      if (!currentPlayingAny && st.localPlaybackBackupFlags) {
-        moduleStore.setLocalPlaybackBackupFlags(null);
+      // if (!currentPlayingAny && st.localPlaybackBackupFlags) {
+      //   moduleStore.setLocalPlaybackBackupFlags(null);
+      //   moduleStore.assign({
+      //     localPlaybackBackupFlags: null,
+      //     // isLocalPlaybackMultiple: false,
+      //   });
+      // }
+      // if (!currentPlayingAny) {
+      //   moduleStore.setFirstOperatedStripId(stripId);
+      // }
+      if (
+        currentPlayingAny &&
+        st.soloStripId !== null &&
+        st.soloStripId !== stripId
+      ) {
         moduleStore.assign({
-          localPlaybackBackupFlags: null,
-          isLocalPlaybackMultiple: false,
+          soloStripId: null,
         });
-      }
-      if (!currentPlayingAny) {
-        moduleStore.setFirstOperatedStripId(stripId);
       }
       const nextLocalPlaying = !st.localPlaybackFlags[stripId];
 
-      if (nextLocalPlaying && !st.isLocalPlaybackMultiple) {
-        moduleStore.setLocalPlaybackFlags({ [stripId]: true });
-      } else {
-        actions.patchLocalPlaybackFlags(nextLocalPlaying);
-      }
+      // if (nextLocalPlaying && !st.isLocalPlaybackMultiple) {
+      //   moduleStore.setLocalPlaybackFlags({ [stripId]: true });
+      // } else {
+      //   actions.patchLocalPlaybackFlags(nextLocalPlaying);
+      // }
+      actions.patchLocalPlaybackFlags(nextLocalPlaying);
     },
-    stopLocalPlaybacksAll() {
-      const flags = moduleStore.state.localPlaybackFlags;
-      moduleStore.assign({
-        localPlaybackBackupFlags: flags,
-        localPlaybackFlags: {},
-      });
-    },
-    restartLocalPlaybacksAll() {
-      const flags = moduleStore.state.localPlaybackBackupFlags;
-      if (flags) {
-        moduleStore.assign({
-          localPlaybackFlags: flags,
-          localPlaybackBackupFlags: null,
-        });
-      }
-    },
-    toggleMultipleMode() {
-      moduleStore.toggleIsLocalPlaybackMultiple();
+    handleSoloButton() {
+      const isSoloTarget = moduleStore.state.soloStripId === stripId;
+      const anySoloTarget = moduleStore.state.soloStripId !== null;
       const numPlayings = Object.values(
         moduleStore.state.localPlaybackFlags,
       ).filter(Boolean).length;
-      if (numPlayings >= 2) {
-        moduleStore.setLocalPlaybackFlags({ [stripId]: true });
+      const anyPlaying = numPlayings > 0;
+      if (anyPlaying && !anySoloTarget && numPlayings > 1) {
+        moduleStore.assign({
+          localPlaybackBackupFlags: moduleStore.state.localPlaybackFlags,
+        });
+      }
+
+      if (!isSoloTarget) {
+        moduleStore.assign({
+          localPlaybackFlags: { [stripId]: true },
+          soloStripId: stripId,
+        });
+        // moduleStore.setLocalPlaybackFlags({ [stripId]: true });
+        // moduleStore.setSoloStripId(stripId);
+      } else {
+        moduleStore.assign({
+          localPlaybackFlags: moduleStore.state.localPlaybackBackupFlags ?? {},
+          // localPlaybackBackupFlags: null,
+          soloStripId: null,
+        });
       }
     },
   };
@@ -167,7 +208,8 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
         strips,
         localPlaybackFlags,
         localPlaybackBackupFlags,
-        isLocalPlaybackMultiple,
+        soloStripId,
+        // isLocalPlaybackMultiple,
         firstOperatedStripId,
       } = moduleStore.useSnapshot();
       const st = strips[stripId];
@@ -180,6 +222,7 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
       const isPlayingMoreThanOne = numPlayings > 1;
       const isPlayingAny = numPlayings > 0;
       const isFirstOperated = firstOperatedStripId === stripId;
+      const isSoloTarget = soloStripId === stripId;
 
       const panelMainContent = (
         <div className="flex-v h-full">
@@ -229,9 +272,9 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
                       asr={1.2}
                       text="play"
                       active={localPlaying}
-                      onClick={actions.toggleLocalPlaying}
+                      onClick={actions.handlePlayButton}
                     />
-                    {false && (
+                    {/* {false && (
                       <>
                         {isPlayingMoreThanOne && isFirstOperated && (
                           <div onClick={actions.stopLocalPlaybacksAll}>
@@ -255,7 +298,7 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
                         s
                       </div>
                     )}
-                    {true && isPlayingAny && isFirstOperated && (
+                    {false && isPlayingAny && isFirstOperated && (
                       <div
                         onClick={actions.toggleMultipleMode}
                         style={{
@@ -263,6 +306,30 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
                         }}
                       >
                         <Icons.ServerStack size={13} />
+                      </div>
+                    )}
+                    {false && isPlayingAny && isFirstOperated && (
+                      <div
+                        onClick={actions.toggleMultipleMode}
+                        // style={{
+                        //   opacity: isLocalPlaybackMultiple ? 1 : 0.35,
+                        // }}
+                      >
+                        {isLocalPlaybackMultiple ? (
+                          <Icons.ServerStack size={13} />
+                        ) : (
+                          <div>s</div>
+                        )}
+                      </div>
+                    )} */}
+                    {true && (isPlayingAny || isSoloTarget) && localPlaying && (
+                      <div
+                        onClick={actions.handleSoloButton}
+                        style={{
+                          opacity: isSoloTarget ? 1 : 0.35,
+                        }}
+                      >
+                        s
                       </div>
                     )}
                   </div>
