@@ -47,6 +47,7 @@ export const WrapMixReceiverSlotCardBox = ({
         </div>
       }
       excludingPortIds={excludingPortIds}
+      altSidePortIds={["auxOutput"]}
     />
   );
 };

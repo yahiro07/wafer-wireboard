@@ -49,24 +49,24 @@ const AdditionalPortColumn = ({
   );
 };
 
-const AdditionalPorts = ({
+const AdditionalPortsPart = ({
   ports,
-  excludingPortIds,
   unitItem,
+  side,
 }: {
   ports: UnitTemporalPort[];
-  excludingPortIds?: string[];
   unitItem: UnitItem;
+  side: "left" | "right";
 }) => {
-  const filteredPorts = ports.filter(
-    (port) => !excludingPortIds?.includes(port.id),
-  );
   return (
     <div
-      className="absolute top-0 right-full h-full flex-h gap-1 mx-1 cursor-pointer"
+      className={clsx(
+        "absolute top-0 h-full flex-h gap-1 mx-1 cursor-pointer",
+        side === "left" ? "right-full" : "left-full",
+      )}
       onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
     >
-      {filteredPorts.map((port) => (
+      {ports.map((port) => (
         <AdditionalPortColumn
           key={port.id}
           port={port}
@@ -77,14 +77,56 @@ const AdditionalPorts = ({
   );
 };
 
+const AdditionalPorts = ({
+  ports,
+  excludingPortIds,
+  unitItem,
+  altSidePortIds,
+}: {
+  ports: UnitTemporalPort[];
+  excludingPortIds?: string[];
+  unitItem: UnitItem;
+  altSidePortIds?: string[];
+}) => {
+  const filteredPorts = ports.filter(
+    (port) => !excludingPortIds?.includes(port.id),
+  );
+  const leftSidePorts = filteredPorts.filter(
+    (port) => !altSidePortIds?.includes(port.id),
+  );
+  const rightSidePorts = filteredPorts.filter((port) =>
+    altSidePortIds?.includes(port.id),
+  );
+  return (
+    <>
+      {leftSidePorts.length > 0 && (
+        <AdditionalPortsPart
+          ports={leftSidePorts}
+          unitItem={unitItem}
+          side="left"
+        />
+      )}
+      {rightSidePorts.length > 0 && (
+        <AdditionalPortsPart
+          ports={rightSidePorts}
+          unitItem={unitItem}
+          side="right"
+        />
+      )}
+    </>
+  );
+};
+
 export const SlotCardBox = ({
   unitItem,
   innerContent,
   excludingPortIds,
+  altSidePortIds,
 }: {
   unitItem: UnitItem;
   innerContent?: ReactNode;
   excludingPortIds?: string[];
+  altSidePortIds?: string[];
 }) => {
   const sd = { width: 400, height: 180 };
   const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
@@ -150,6 +192,7 @@ export const SlotCardBox = ({
             ports={unitPortsModel.additional}
             unitItem={unitItem}
             excludingPortIds={excludingPortIds}
+            altSidePortIds={altSidePortIds}
           />
         )}
       </div>
