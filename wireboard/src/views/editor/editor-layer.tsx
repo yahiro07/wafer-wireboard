@@ -6,7 +6,10 @@ import {
   KeyboardSystemPortBox,
   SpeakerSystemPortBox,
 } from "@/unit/unit-box-specials";
-import { WrapMixReceiverSlotCardBox } from "@/unit/unit-box-warp-mix";
+import {
+  WrapMixEmitterSlotCardBox,
+  WrapMixReceiverSlotCardBox,
+} from "@/unit/unit-box-warp-mix";
 import { Connections } from "@/views/editor/connections";
 import { DebugPortsLayer } from "@/views/editor/debug-ports-layer";
 import { WiringLayer } from "@/views/editor/wiring-layer";
@@ -33,6 +36,10 @@ const EditAreaContainer = () => {
         } else if (item.catalogKey === "warpMixReceiver") {
           return (
             <WrapMixReceiverSlotCardBox key={item.unitId} unitItem={item} />
+          );
+        } else if (item.catalogKey === "warpMixEmitter") {
+          return (
+            <WrapMixEmitterSlotCardBox key={item.unitId} unitItem={item} />
           );
         } else {
           return <SlotCardBox key={item.unitId} unitItem={item} />;

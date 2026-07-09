@@ -24,6 +24,8 @@ export function useWiringLayerWireItems(): WiringLayerWire[] {
             if (
               wire.sourcePortKey.includes("warpMixEmitter") ||
               wire.destinationPortKey.includes("warpMixReceiver")
+              // (wire.sourcePortKey.includes("aux") ||
+              //   wire.destinationPortKey.includes("aux"))
             ) {
               return undefined;
             }

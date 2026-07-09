@@ -49,12 +49,42 @@ const AdditionalPortColumn = ({
   );
 };
 
+const AdditionalPorts = ({
+  ports,
+  excludingPortIds,
+  unitItem,
+}: {
+  ports: UnitTemporalPort[];
+  excludingPortIds?: string[];
+  unitItem: UnitItem;
+}) => {
+  const filteredPorts = ports.filter(
+    (port) => !excludingPortIds?.includes(port.id),
+  );
+  return (
+    <div
+      className="absolute top-0 right-full h-full flex-h gap-1 mx-1 cursor-pointer"
+      onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
+    >
+      {filteredPorts.map((port) => (
+        <AdditionalPortColumn
+          key={port.id}
+          port={port}
+          unitPosition={unitItem.position}
+        />
+      ))}
+    </div>
+  );
+};
+
 export const SlotCardBox = ({
   unitItem,
   innerContent,
+  excludingPortIds,
 }: {
   unitItem: UnitItem;
   innerContent?: ReactNode;
+  excludingPortIds?: string[];
 }) => {
   const sd = { width: 400, height: 180 };
   const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
@@ -116,18 +146,11 @@ export const SlotCardBox = ({
           </div>
         </div>
         {unitPortsModel?.additional && (
-          <div
-            className="absolute top-0 right-full h-full flex-h gap-1 mx-1 cursor-pointer"
-            onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
-          >
-            {unitPortsModel.additional.map((port) => (
-              <AdditionalPortColumn
-                key={port.id}
-                port={port}
-                unitPosition={unitItem.position}
-              />
-            ))}
-          </div>
+          <AdditionalPorts
+            ports={unitPortsModel.additional}
+            unitItem={unitItem}
+            excludingPortIds={excludingPortIds}
+          />
         )}
       </div>
     </div>
