@@ -1,0 +1,72 @@
+import clsx from "clsx";
+import { npx } from "mofur/ax-ui";
+import { useMemo, useState } from "react";
+import { HsUnitInstance } from "wafer-host/core";
+import { bgSpecs } from "@/common/theme";
+import { UnitItem } from "@/model/types";
+import { PortCell } from "@/port/port-cell";
+import { UnitDeleteButton, UnitDragGrip } from "@/unit/unit-box";
+import { UnitFrameEx } from "@/unit/unit-frame-ex";
+import { buildUnitTemporalPortsModel } from "@/unit/unit-temporal-ports-model";
+
+export const PivotUnitBox = ({ unitItem }: { unitItem: UnitItem }) => {
+  const sd = { width: 200, height: 120 };
+  const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
+  const unitPortsModel = useMemo(
+    () =>
+      unitInstance ? buildUnitTemporalPortsModel(unitInstance) : undefined,
+    [unitInstance],
+  );
+  return (
+    <div
+      className="absolute"
+      style={{
+        left: npx(unitItem.position.x - sd.width / 2),
+        top: npx(unitItem.position.y - sd.height / 2),
+      }}
+    >
+      <div
+        className="relative flex-h shadow-md"
+        style={{ width: npx(sd.width), height: npx(sd.height) }}
+      >
+        <div
+          className={clsx(
+            "w-[40px] flex-v items-center py-2",
+            bgSpecs.unitCardFrame,
+          )}
+        >
+          {unitPortsModel?.primaryOut && (
+            <PortCell
+              port={unitPortsModel.primaryOut}
+              unitPosition={unitItem.position}
+            />
+          )}
+          <UnitDragGrip unitItem={unitItem} />
+          {unitPortsModel?.primaryIn && (
+            <PortCell
+              port={unitPortsModel.primaryIn}
+              unitPosition={unitItem.position}
+            />
+          )}
+        </div>
+        <div className={clsx("grow relative", bgSpecs.unitCardInner)}>
+          <UnitFrameEx
+            key={unitItem.hmrRevision}
+            unitId={unitItem.unitId}
+            catalogKey={unitItem.catalogKey}
+            onUnitInstanceLoaded={setUnitInstance}
+          />
+        </div>
+        <div
+          className={clsx(
+            "w-[40px] flex-v text-white py-1",
+            bgSpecs.unitCardFrame,
+          )}
+        >
+          <UnitDeleteButton unitItem={unitItem} />
+          <UnitDragGrip unitItem={unitItem} showIcon />
+        </div>
+      </div>
+    </div>
+  );
+};

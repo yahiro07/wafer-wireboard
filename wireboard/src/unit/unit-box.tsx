@@ -119,6 +119,34 @@ const AdditionalPorts = ({
   );
 };
 
+export const UnitDeleteButton = ({ unitItem }: { unitItem: UnitItem }) => {
+  return (
+    <div
+      className="h-[40px] flex-c text-[22px] cursor-pointer"
+      onClick={() => actions.removeUnit(unitItem.unitId)}
+    >
+      <Icons.DeleteBin />
+    </div>
+  );
+};
+
+export const UnitDragGrip = ({
+  unitItem,
+  showIcon,
+}: {
+  unitItem: UnitItem;
+  showIcon?: boolean;
+}) => {
+  return (
+    <div
+      className="w-full grow flex-c cursor-pointer pb-[40px]"
+      onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
+    >
+      {showIcon && <Icons.Grip size={28} />}
+    </div>
+  );
+};
+
 export const SlotCardBox = ({
   unitItem,
   innerContent,
@@ -172,10 +200,7 @@ export const SlotCardBox = ({
               <Icons.RadioTower />
             </div>
           )}
-          <div
-            className="w-full grow cursor-pointer"
-            onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
-          />
+          <UnitDragGrip unitItem={unitItem} />
           {primaryInPort ? (
             <PortCell port={primaryInPort} unitPosition={unitItem.position} />
           ) : (
@@ -197,18 +222,8 @@ export const SlotCardBox = ({
             bgSpecs.unitCardFrame,
           )}
         >
-          <div
-            className="h-[40px] flex-c text-[22px] cursor-pointer"
-            onClick={() => actions.removeUnit(unitItem.unitId)}
-          >
-            <Icons.DeleteBin />
-          </div>
-          <div
-            className="grow flex-c text-[28px] cursor-pointer pb-[40px]"
-            onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
-          >
-            <Icons.Grip />
-          </div>
+          <UnitDeleteButton unitItem={unitItem} />
+          <UnitDragGrip unitItem={unitItem} showIcon />
         </div>
         {unitPortsModel?.additional && (
           <AdditionalPorts
