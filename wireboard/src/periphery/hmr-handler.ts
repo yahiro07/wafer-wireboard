@@ -1,7 +1,7 @@
 import { CatalogKey } from "@/main-definitions/showcase-entries";
 import { store } from "@/model/store";
 
-const hmrActions = {
+export const hmrActions = {
   handleUnitSourceUpdate(catalogKey: CatalogKey) {
     const targetUnitIds: string[] = [];
     store.produceUnitItems((draft) => {

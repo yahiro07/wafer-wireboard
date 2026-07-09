@@ -4,6 +4,7 @@ import { UnitInterface } from "wafer-host/unit-types";
 import { mapVolumeCurveCenterUnity } from "@/auxiliaries/volume-curve";
 import { UpperLabel } from "@/components/upper-label";
 import { FdKnob } from "@/internal-units/warp-mix-emitter/knob";
+import { hmrActions } from "@/periphery/hmr-handler";
 
 type EffectParameters = {
   mainVolume: number;
@@ -109,3 +110,7 @@ export const createWarpMixReceiverUnit: ReactUnitTemplateFn = (
     },
   };
 };
+
+import.meta.hot?.on("vite:afterUpdate", () => {
+  hmrActions.handleUnitSourceUpdate("warpMixReceiver");
+});

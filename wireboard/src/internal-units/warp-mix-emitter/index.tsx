@@ -10,6 +10,7 @@ import {
 } from "@/internal-units/warp-mix-emitter/channel-strip-effect";
 import { FdKnob } from "@/internal-units/warp-mix-emitter/knob";
 import { ParameterGauge } from "@/internal-units/warp-mix-emitter/parameter-gauge";
+import { hmrActions } from "@/periphery/hmr-handler";
 
 type ChannelStripState = ChannelStripEffectParameters & {};
 
@@ -376,3 +377,7 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
     },
   };
 };
+
+import.meta.hot?.on("vite:afterUpdate", () => {
+  hmrActions.handleUnitSourceUpdate("warpMixEmitter");
+});
