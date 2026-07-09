@@ -1,6 +1,7 @@
 import { ReactUnitTemplateFn } from "wafer-host/react";
 import { UnitInventorySpec } from "wafer-host/vite-plugin";
 import { createBuiltinKeyboardUnit } from "@/internal-units/keyboard/keyboard";
+import { createNoteHubUnit } from "@/internal-units/note-hub";
 import { createBuiltinVisualizerUnit } from "@/internal-units/visualizer/visualizer";
 import { createVolumeUnit } from "@/internal-units/volume";
 import { createWarpMixEmitterUnit } from "@/internal-units/warp-mix-emitter";
@@ -13,6 +14,7 @@ const internalUnitFunctions = {
   warpMixEmitter: createWarpMixEmitterUnit,
   warpMixReceiver: createWarpMixReceiverUnit,
   builtInVolume: createVolumeUnit,
+  builtInNoteHub: createNoteHubUnit,
 };
 
 const internalUnitKeys = {
@@ -21,6 +23,7 @@ const internalUnitKeys = {
   warpMixEmitter: "warpMixEmitter",
   warpMixReceiver: "warpMixReceiver",
   builtInVolume: "builtInVolume",
+  builtInNoteHub: "builtInNoteHub",
 } as const;
 
 export type CatalogKey =
@@ -45,6 +48,7 @@ export const showcaseEntries: ShowcaseEntry[] = [
   { name: "warp mix emitter", catalogKey: internalUnitKeys.warpMixEmitter },
   { name: "warp mix receiver", catalogKey: internalUnitKeys.warpMixReceiver },
   { name: "volume", catalogKey: internalUnitKeys.builtInVolume },
+  { name: "note hub", catalogKey: internalUnitKeys.builtInNoteHub },
 ];
 
 export function getCatalogItem(

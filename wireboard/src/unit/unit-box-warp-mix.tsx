@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Icons } from "@/common/icons";
 import { store } from "@/model/store";
 import { UnitItem } from "@/model/types";
-import { SlotCardBox } from "@/unit/unit-box";
+import { SlotCardBox } from "@/unit/unit-box-base";
 
 const InnerAntennaButton = ({
   active,

@@ -1,17 +1,7 @@
 import { FieldSightPlane } from "@/components/field-sight-plane";
 import { boardSize, domEditAreaId } from "@/main-definitions/constants";
 import { store } from "@/model/store";
-import { UnitItem } from "@/model/types";
-import { SlotCardBox } from "@/unit/unit-box";
-import { PivotUnitBox } from "@/unit/unit-box-pivots";
-import {
-  KeyboardSystemPortBox,
-  SpeakerSystemPortBox,
-} from "@/unit/unit-box-system-ports";
-import {
-  WrapMixEmitterSlotCardBox,
-  WrapMixReceiverSlotCardBox,
-} from "@/unit/unit-box-warp-mix";
+import { UnitBoxRoot } from "@/unit/unit-box";
 import { Connections } from "@/views/editor/connections";
 import { DebugPortsLayer } from "@/views/editor/debug-ports-layer";
 import { BoardBackgroundLayer } from "@/views/editor/editor-background";
@@ -21,22 +11,6 @@ import { useWiringLayerWireItems } from "@/views/editor/wiring-layer-wire-items"
 const WiringLayerContainer = () => {
   const wires = useWiringLayerWireItems();
   return <WiringLayer boardSize={boardSize} wires={wires} />;
-};
-
-const UnitBoxRoot = ({ item }: { item: UnitItem }) => {
-  if (item.unitId === "builtInKeyboard") {
-    return <KeyboardSystemPortBox key={item.unitId} unit={item} />;
-  } else if (item.unitId === "builtInPreOutput") {
-    return <SpeakerSystemPortBox key={item.unitId} unit={item} />;
-  } else if (item.catalogKey === "warpMixReceiver") {
-    return <WrapMixReceiverSlotCardBox key={item.unitId} unitItem={item} />;
-  } else if (item.catalogKey === "warpMixEmitter") {
-    return <WrapMixEmitterSlotCardBox key={item.unitId} unitItem={item} />;
-  } else if (item.catalogKey === "builtInVolume") {
-    return <PivotUnitBox key={item.unitId} unitItem={item} />;
-  } else {
-    return <SlotCardBox key={item.unitId} unitItem={item} />;
-  }
 };
 
 const EditAreaContainer = () => {
