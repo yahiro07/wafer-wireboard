@@ -60,5 +60,3 @@ export const store = createStore<StoreState>({
   partialPlayTargetUnitIds: [],
   hideWarpedWires: false,
 });
-
-store.setHideWarpedWires(true);
