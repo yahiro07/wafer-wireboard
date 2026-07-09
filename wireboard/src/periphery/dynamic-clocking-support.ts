@@ -113,7 +113,12 @@ function createNoteOutputMonitorChained(): UnitNoteOutputMonitorFn {
   const chainFlagsAffecter = createChainFlagsAffecter();
 
   return (args) => {
-    if (store.state.playing) return;
+    if (
+      store.state.playing ||
+      store.state.partialPlayTargetUnitIds.length > 0
+    ) {
+      return;
+    }
     if (args.isOn) {
       if (numNotes === 0 && !localPlaying) {
         queueMicrotask(sequencerTickDriver.start);

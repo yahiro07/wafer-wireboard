@@ -1,55 +1,51 @@
 import { ScalerBoxAutoSized } from "mofur/mo-react";
-import { ReactNode } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import {
   ReactUnitFrame,
   UnitDestinationSpec,
   UnitFrame,
 } from "wafer-host/react";
-import { CatalogKey, catalog } from "@/main-definitions/showcase-entries";
 import {
-  InternalUnitKey,
-  internalUnitFunctions,
-} from "@/model/internal-unit-definitions";
+  CatalogKey,
+  getCatalogTarget,
+} from "@/main-definitions/showcase-entries";
 import { setupIframeInputHandlers } from "@/periphery/sight-control-handlers";
 
 export const UnitFrameEx = ({
   unitId,
   destSpec,
   catalogKey,
-  internalUnitKey,
   onUnitInstanceLoaded,
 }: {
   unitId: string;
   destSpec?: UnitDestinationSpec;
-  catalogKey?: CatalogKey;
-  internalUnitKey?: InternalUnitKey;
+  catalogKey: CatalogKey;
   onUnitInstanceLoaded?: (unitInstance: HsUnitInstance) => void;
 }) => {
-  const content: ReactNode = (() => {
-    if (internalUnitKey) {
-      const templateFn = internalUnitFunctions[internalUnitKey];
-      return (
+  const catalogTarget = getCatalogTarget(catalogKey);
+  if (catalogTarget?.type === "internal") {
+    return (
+      <ScalerBoxAutoSized overflow="visible">
         <ReactUnitFrame
           unitId={unitId}
           destSpec={destSpec}
-          unitTemplateFn={templateFn}
+          unitTemplateFn={catalogTarget.internalUnitFunction}
           onUnitInstanceLoaded={onUnitInstanceLoaded}
         />
-      );
-    } else if (catalogKey) {
-      const catalogItem = catalog[catalogKey];
-      if (!catalogItem) return null;
-      return (
+      </ScalerBoxAutoSized>
+    );
+  } else if (catalogTarget?.type === "catalog") {
+    return (
+      <ScalerBoxAutoSized>
         <UnitFrame
           unitId={unitId}
           destSpec={destSpec}
-          unitUrl={catalogItem.loaderPageUrl}
+          unitUrl={catalogTarget.UnitInventorySpec.loaderPageUrl}
           onIframeMounted={setupIframeInputHandlers}
           onUnitInstanceLoaded={onUnitInstanceLoaded}
         />
-      );
-    }
-  })();
-  return <ScalerBoxAutoSized>{content}</ScalerBoxAutoSized>;
+      </ScalerBoxAutoSized>
+    );
+  }
+  return null;
 };

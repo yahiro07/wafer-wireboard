@@ -1,19 +1,15 @@
-import { CatalogKey } from "@/main-definitions/showcase-entries";
 import { UnitItem, WireItem } from "@/model/types";
 
-export function getNextUnitId(
-  catalogKey: CatalogKey,
-  existingItems: UnitItem[],
-) {
+export function getNextUnitId(baseName: string, existingItems: UnitItem[]) {
   const existingUnitNumbers = existingItems
     .map((item) => {
-      const match = item.unitId.match(new RegExp(`^${catalogKey}_(\\d+)$`));
+      const match = item.unitId.match(new RegExp(`^${baseName}_(\\d+)$`));
       if (!match) return NaN;
       return parseInt(match[1], 10);
     })
     .filter(Number.isFinite);
   const maxNumber = Math.max(...[0, ...existingUnitNumbers]);
-  return `${catalogKey}_${maxNumber + 1}`;
+  return `${baseName}_${maxNumber + 1}`;
 }
 
 export function getUnitIdFromPortKey(portKey: string): string {

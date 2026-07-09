@@ -69,11 +69,11 @@ export function buildUnitTemporalPortsModel(
     }
   }
   const additional: UnitTemporalPort[] = [
-    ...(additionalAudioOutputs
-      ? Object.values(additionalAudioOutputs).map(
+    ...(additionalAudioInputs
+      ? Object.values(additionalAudioInputs).map(
           (p): UnitTemporalPort => ({
-            portType: "additionalOutput",
-            direction: "output",
+            portType: "additionalInput",
+            direction: "input",
             subtypes: ["audio"],
             id: p.id,
             portKey: `${unitId}.${p.id}`,
@@ -81,11 +81,11 @@ export function buildUnitTemporalPortsModel(
           }),
         )
       : []),
-    ...(additionalAudioInputs
-      ? Object.values(additionalAudioInputs).map(
+    ...(additionalAudioOutputs
+      ? Object.values(additionalAudioOutputs).map(
           (p): UnitTemporalPort => ({
-            portType: "additionalInput",
-            direction: "input",
+            portType: "additionalOutput",
+            direction: "output",
             subtypes: ["audio"],
             id: p.id,
             portKey: `${unitId}.${p.id}`,

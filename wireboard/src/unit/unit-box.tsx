@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { npx, Point } from "mofur/ax-ui";
-import { useMemo, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { Icons } from "@/common/icons";
 import { actions } from "@/model/actions";
@@ -49,7 +49,43 @@ const AdditionalPortColumn = ({
   );
 };
 
-export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
+const AdditionalPorts = ({
+  ports,
+  excludingPortIds,
+  unitItem,
+}: {
+  ports: UnitTemporalPort[];
+  excludingPortIds?: string[];
+  unitItem: UnitItem;
+}) => {
+  const filteredPorts = ports.filter(
+    (port) => !excludingPortIds?.includes(port.id),
+  );
+  return (
+    <div
+      className="absolute top-0 right-full h-full flex-h gap-1 mx-1 cursor-pointer"
+      onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
+    >
+      {filteredPorts.map((port) => (
+        <AdditionalPortColumn
+          key={port.id}
+          port={port}
+          unitPosition={unitItem.position}
+        />
+      ))}
+    </div>
+  );
+};
+
+export const SlotCardBox = ({
+  unitItem,
+  innerContent,
+  excludingPortIds,
+}: {
+  unitItem: UnitItem;
+  innerContent?: ReactNode;
+  excludingPortIds?: string[];
+}) => {
   const sd = { width: 400, height: 180 };
   const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
   const unitPortsModel = useMemo(
@@ -86,14 +122,14 @@ export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
             />
           )}
         </div>
-        <div className="grow bg-gray-600">
+        <div className="grow bg-gray-600 relative">
           <UnitFrameEx
             key={unitItem.hmrRevision}
             unitId={unitItem.unitId}
             catalogKey={unitItem.catalogKey}
-            internalUnitKey={unitItem.internalUnitKey}
             onUnitInstanceLoaded={setUnitInstance}
           />
+          {innerContent}
         </div>
         <div className="w-[40px] bg-gray-500 flex-v text-white py-1">
           <div
@@ -110,18 +146,11 @@ export const SlotCardBox = ({ unitItem }: { unitItem: UnitItem }) => {
           </div>
         </div>
         {unitPortsModel?.additional && (
-          <div
-            className="absolute top-0 right-full h-full flex-h gap-1 mx-1 cursor-pointer"
-            onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
-          >
-            {unitPortsModel.additional.map((port) => (
-              <AdditionalPortColumn
-                key={port.id}
-                port={port}
-                unitPosition={unitItem.position}
-              />
-            ))}
-          </div>
+          <AdditionalPorts
+            ports={unitPortsModel.additional}
+            unitItem={unitItem}
+            excludingPortIds={excludingPortIds}
+          />
         )}
       </div>
     </div>

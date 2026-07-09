@@ -11,7 +11,6 @@ function extractPresetUnitItems(
   const unitItems = source.map((item) => ({
     unitId: item.unitId,
     catalogKey: item.catalogKey,
-    internalUnitKey: item.internalUnitKey,
     position: item.position,
   }));
   const wireItems = source
@@ -33,7 +32,7 @@ export function createPresetProjectsModel() {
         {
           destUnitId: "$output",
           unitId: "builtInPreOutput",
-          internalUnitKey: "builtInVisualizer",
+          catalogKey: "builtInVisualizer",
           position: { x: baseX, y: baseY + 50 },
         },
         {
@@ -45,7 +44,7 @@ export function createPresetProjectsModel() {
         {
           destUnitId: "unit1",
           unitId: "builtInKeyboard",
-          internalUnitKey: "builtInKeyboard",
+          catalogKey: "builtInKeyboard",
           position: { x: baseX, y: baseY + 650 },
         },
       ]);
@@ -62,12 +61,12 @@ export function createPresetProjectsModel() {
         {
           destUnitId: "$output",
           unitId: "builtInPreOutput",
-          internalUnitKey: "builtInVisualizer",
+          catalogKey: "builtInVisualizer",
           position: { x: baseX, y: baseY + 50 },
         },
         {
           unitId: "builtInKeyboard",
-          internalUnitKey: "builtInKeyboard",
+          catalogKey: "builtInKeyboard",
           position: { x: baseX, y: baseY + 650 },
         },
       ]);
@@ -84,7 +83,7 @@ export function createPresetProjectsModel() {
         {
           destUnitId: "$output",
           unitId: "builtInPreOutput",
-          internalUnitKey: "builtInVisualizer",
+          catalogKey: "builtInVisualizer",
           position: { x: baseX, y: baseY - 100 },
         },
         {
@@ -108,7 +107,7 @@ export function createPresetProjectsModel() {
         {
           destUnitId: "unit2",
           unitId: "builtInKeyboard",
-          internalUnitKey: "builtInKeyboard",
+          catalogKey: "builtInKeyboard",
           position: { x: baseX + 250, y: baseY + 650 },
         },
       ]);

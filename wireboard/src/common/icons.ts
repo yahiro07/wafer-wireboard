@@ -7,10 +7,13 @@ import { BsFillSpeakerFill, BsPlayFill } from "react-icons/bs";
 import { CgChevronDown, CgSpinnerTwoAlt } from "react-icons/cg";
 import { FaGithub } from "react-icons/fa";
 import { HiQueueList } from "react-icons/hi2";
+import { IoIosPause } from "react-icons/io";
 import { IoCloseSharp, IoShareSocial } from "react-icons/io5";
+import { LuServer } from "react-icons/lu";
+import { MdRestartAlt } from "react-icons/md";
 import { PiPianoKeysFill } from "react-icons/pi";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { TbNavigationFilled, TbSettings } from "react-icons/tb";
+import { TbAntenna, TbNavigationFilled, TbSettings } from "react-icons/tb";
 import { VscGripper } from "react-icons/vsc";
 
 export const Icons = {
@@ -26,6 +29,10 @@ export const Icons = {
   Share: IoShareSocial,
   Spinner: CgSpinnerTwoAlt,
   Settings: TbSettings,
+  Pause: IoIosPause,
+  Restart: MdRestartAlt,
+  ServerStack: LuServer,
+  Antenna: TbAntenna,
 };
 
 export const IconsEx = {

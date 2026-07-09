@@ -30,6 +30,8 @@ export type StoreState = {
   modalPanelKind: ModalPanelKind | null;
   unitsLoading: boolean;
   projectLoadedIndex: number;
+  partialPlayTargetUnitIds: string[];
+  hideWarpedWires: boolean;
 };
 
 export const store = createStore<StoreState>({
@@ -55,4 +57,6 @@ export const store = createStore<StoreState>({
   modalPanelKind: null,
   unitsLoading: false,
   projectLoadedIndex: 0,
+  partialPlayTargetUnitIds: [],
+  hideWarpedWires: false,
 });
