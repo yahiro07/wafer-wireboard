@@ -13,7 +13,7 @@ import { LuServer } from "react-icons/lu";
 import { MdRestartAlt } from "react-icons/md";
 import { PiPianoKeysFill } from "react-icons/pi";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { TbNavigationFilled, TbSettings } from "react-icons/tb";
+import { TbAntenna, TbNavigationFilled, TbSettings } from "react-icons/tb";
 import { VscGripper } from "react-icons/vsc";
 
 export const Icons = {
@@ -32,6 +32,7 @@ export const Icons = {
   Pause: IoIosPause,
   Restart: MdRestartAlt,
   ServerStack: LuServer,
+  Antenna: TbAntenna,
 };
 
 export const IconsEx = {

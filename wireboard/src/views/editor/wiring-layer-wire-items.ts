@@ -11,7 +11,7 @@ export type WiringLayerWire = {
 };
 
 export function useWiringLayerWireItems(): WiringLayerWire[] {
-  const { wireItems, portItems } = store.useSnapshot();
+  const { wireItems, portItems, hideWarpedWires } = store.useSnapshot();
   return useMemo(
     () =>
       wireItems
@@ -20,6 +20,14 @@ export function useWiringLayerWireItems(): WiringLayerWire[] {
           const p1 = portItems[wire.sourcePortKey]?.position;
           const p2 = portItems[wire.destinationPortKey]?.position;
           const hmrRevision = wire.hmrRevision ?? 0;
+          if (hideWarpedWires) {
+            if (
+              wire.sourcePortKey.includes("warpMixEmitter") ||
+              wire.destinationPortKey.includes("warpMixReceiver")
+            ) {
+              return undefined;
+            }
+          }
           if (p1 && p2) {
             const rightAngled =
               wire.destinationPortKey === "builtInPreOutput.primaryInput";
@@ -28,6 +36,6 @@ export function useWiringLayerWireItems(): WiringLayerWire[] {
           return undefined;
         })
         .filter(Boolean) as WiringLayerWire[],
-    [wireItems, portItems],
+    [wireItems, portItems, hideWarpedWires],
   );
 }

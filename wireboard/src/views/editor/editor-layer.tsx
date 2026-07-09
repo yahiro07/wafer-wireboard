@@ -6,6 +6,7 @@ import {
   KeyboardSystemPortBox,
   SpeakerSystemPortBox,
 } from "@/unit/unit-box-specials";
+import { WrapMixReceiverSlotCardBox } from "@/unit/unit-box-warp-mix";
 import { Connections } from "@/views/editor/connections";
 import { DebugPortsLayer } from "@/views/editor/debug-ports-layer";
 import { WiringLayer } from "@/views/editor/wiring-layer";
@@ -29,6 +30,10 @@ const EditAreaContainer = () => {
           return <KeyboardSystemPortBox key={item.unitId} unit={item} />;
         } else if (item.unitId === "builtInPreOutput") {
           return <SpeakerSystemPortBox key={item.unitId} unit={item} />;
+        } else if (item.catalogKey === "warpMixReceiver") {
+          return (
+            <WrapMixReceiverSlotCardBox key={item.unitId} unitItem={item} />
+          );
         } else {
           return <SlotCardBox key={item.unitId} unitItem={item} />;
         }

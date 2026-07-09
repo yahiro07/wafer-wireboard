@@ -31,6 +31,7 @@ export type StoreState = {
   unitsLoading: boolean;
   projectLoadedIndex: number;
   partialPlayTargetUnitIds: string[];
+  hideWarpedWires: boolean;
 };
 
 export const store = createStore<StoreState>({
@@ -57,4 +58,7 @@ export const store = createStore<StoreState>({
   unitsLoading: false,
   projectLoadedIndex: 0,
   partialPlayTargetUnitIds: [],
+  hideWarpedWires: false,
 });
+
+store.setHideWarpedWires(true);
