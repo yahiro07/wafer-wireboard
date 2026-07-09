@@ -37,6 +37,7 @@ export const actions = {
       ...prev,
       { unitId, catalogKey: showcaseEntry.catalogKey, position },
     ]);
+    return unitId;
   },
   removeUnit(unitId: string) {
     store.setUnitItems((prev) => prev.filter((item) => item.unitId !== unitId));

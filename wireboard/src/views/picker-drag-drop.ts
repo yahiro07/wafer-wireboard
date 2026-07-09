@@ -6,6 +6,7 @@ import {
 } from "@/main-definitions/showcase-entries";
 import { actions } from "@/model/actions";
 import { store } from "@/model/store";
+import { applyWarpMixInitialWiring_onUnitAdded } from "@/periphery/warp-mix-initial-wiring";
 import { snapUnitCoordToGrid } from "@/unit/snapping";
 
 const unitCatalogKeyDragMime = "application/x-wireboard-unit-catalog-key";
@@ -50,7 +51,8 @@ export function useMainAreaDropHandlers() {
       if (appConfig.snapUnitCoordToGrid) {
         position = snapUnitCoordToGrid(position);
       }
-      actions.addUnit(showcaseEntry, position);
+      const unitId = actions.addUnit(showcaseEntry, position);
+      applyWarpMixInitialWiring_onUnitAdded(unitId);
     },
   };
 }
