@@ -33,7 +33,7 @@ type StoreState = {
   localPlaybackFlags: Record<string, boolean>;
   localPlaybackBackupFlags: Record<string, boolean> | null;
   isLocalPlaybackMultiple: boolean;
-  lastOperatedStripId: string | null;
+  firstOperatedStripId: string | null;
 };
 
 const moduleStore = createStore<StoreState>({
@@ -41,7 +41,7 @@ const moduleStore = createStore<StoreState>({
   localPlaybackFlags: {},
   localPlaybackBackupFlags: null,
   isLocalPlaybackMultiple: false,
-  lastOperatedStripId: null,
+  firstOperatedStripId: null,
 });
 
 let instanceIdCounter = 0;
@@ -97,6 +97,9 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
           isLocalPlaybackMultiple: false,
         });
       }
+      if (!currentPlayingAny) {
+        moduleStore.setFirstOperatedStripId(stripId);
+      }
       const nextLocalPlaying = !st.localPlaybackFlags[stripId];
 
       if (nextLocalPlaying && !st.isLocalPlaybackMultiple) {
@@ -104,7 +107,6 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
       } else {
         actions.patchLocalPlaybackFlags(nextLocalPlaying);
       }
-      moduleStore.setLastOperatedStripId(stripId);
     },
     stopLocalPlaybacksAll() {
       const flags = moduleStore.state.localPlaybackFlags;
@@ -124,6 +126,12 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
     },
     toggleMultipleMode() {
       moduleStore.toggleIsLocalPlaybackMultiple();
+      const numPlayings = Object.values(
+        moduleStore.state.localPlaybackFlags,
+      ).filter(Boolean).length;
+      if (numPlayings >= 2) {
+        moduleStore.setLocalPlaybackFlags({ [stripId]: true });
+      }
     },
   };
 
@@ -160,7 +168,7 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
         localPlaybackFlags,
         localPlaybackBackupFlags,
         isLocalPlaybackMultiple,
-        lastOperatedStripId,
+        firstOperatedStripId,
       } = moduleStore.useSnapshot();
       const st = strips[stripId];
       useEffect(internal.setupSynchronization, []);
@@ -170,7 +178,8 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
         Object.values(localPlaybackFlags).filter(Boolean).length;
       const isPlayingOne = numPlayings === 1;
       const isPlayingMoreThanOne = numPlayings > 1;
-      const isLastOperated = lastOperatedStripId === stripId;
+      const isPlayingAny = numPlayings > 0;
+      const isFirstOperated = firstOperatedStripId === stripId;
 
       const panelMainContent = (
         <div className="flex-v h-full">
@@ -222,20 +231,36 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
                       active={localPlaying}
                       onClick={actions.toggleLocalPlaying}
                     />
-                    {isPlayingMoreThanOne && (
-                      <div onClick={actions.stopLocalPlaybacksAll}>
-                        <Icons.Pause />
-                      </div>
+                    {false && (
+                      <>
+                        {isPlayingMoreThanOne && isFirstOperated && (
+                          <div onClick={actions.stopLocalPlaybacksAll}>
+                            <Icons.Pause />
+                          </div>
+                        )}
+                        {localPlaybackBackupFlags && isFirstOperated && (
+                          <div onClick={actions.restartLocalPlaybacksAll}>
+                            <Icons.Restart />
+                          </div>
+                        )}
+                      </>
                     )}
-                    {localPlaybackBackupFlags && (
-                      <div onClick={actions.restartLocalPlaybacksAll}>
-                        <Icons.Restart />
-                      </div>
-                    )}
-                    {isPlayingOne && (
+                    {false && isPlayingOne && localPlaying && (
                       <div
                         onClick={actions.toggleMultipleMode}
-                        style={{ opacity: isLocalPlaybackMultiple ? 1 : 0.35 }}
+                        style={{
+                          opacity: isLocalPlaybackMultiple === false ? 1 : 0.35,
+                        }}
+                      >
+                        s
+                      </div>
+                    )}
+                    {true && isPlayingAny && isFirstOperated && (
+                      <div
+                        onClick={actions.toggleMultipleMode}
+                        style={{
+                          opacity: isLocalPlaybackMultiple ? 1 : 0.35,
+                        }}
                       >
                         <Icons.ServerStack size={13} />
                       </div>
