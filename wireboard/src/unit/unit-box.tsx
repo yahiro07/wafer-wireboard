@@ -3,6 +3,7 @@ import { npx, Point } from "mofur/ax-ui";
 import { ReactNode, useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { Icons } from "@/common/icons";
+import { bgSpecs } from "@/common/theme";
 import { actions } from "@/model/actions";
 import { UnitItem } from "@/model/types";
 import { PortCell } from "@/port/port-cell";
@@ -25,7 +26,8 @@ const AdditionalPortColumn = ({
     <div
       key={port.id}
       className={clsx(
-        "w-[40px] h-full bg-gray-500 p-2 flex-v items-center gap-1.5",
+        "w-[40px] h-full p-2 flex-v items-center gap-1.5",
+        bgSpecs.unitCardFrame,
         isOutput ? "justify-start" : "justify-end",
       )}
     >
@@ -157,7 +159,12 @@ export const SlotCardBox = ({
         className="relative flex-h"
         style={{ width: npx(sd.width), height: npx(sd.height) }}
       >
-        <div className="w-[40px] bg-gray-500 flex-v items-center py-2">
+        <div
+          className={clsx(
+            "w-[40px] flex-v items-center py-2",
+            bgSpecs.unitCardFrame,
+          )}
+        >
           {primaryOutPort ? (
             <PortCell port={primaryOutPort} unitPosition={unitItem.position} />
           ) : (
@@ -175,7 +182,7 @@ export const SlotCardBox = ({
             <div />
           )}
         </div>
-        <div className="grow bg-gray-600 relative">
+        <div className={clsx("grow relative", bgSpecs.unitCardInner)}>
           <UnitFrameEx
             key={unitItem.hmrRevision}
             unitId={unitItem.unitId}
@@ -184,7 +191,12 @@ export const SlotCardBox = ({
           />
           {innerContent}
         </div>
-        <div className="w-[40px] bg-gray-500 flex-v text-white py-1">
+        <div
+          className={clsx(
+            "w-[40px] flex-v text-white py-1",
+            bgSpecs.unitCardFrame,
+          )}
+        >
           <div
             className="h-[40px] flex-c text-[22px] cursor-pointer"
             onClick={() => actions.removeUnit(unitItem.unitId)}

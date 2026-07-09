@@ -1,5 +1,6 @@
 import { Point, Size } from "mofur/ax-ui";
 import { WiringLayerWire } from "@/views/editor/wiring-layer-wire-items";
+import { bgSpecs } from "@/common/theme";
 
 type Props = {
   boardSize: Size;
@@ -46,7 +47,7 @@ const WireLine = ({ wire }: { wire: WiringLayerWire }) => {
   return (
     <polyline
       points={points.map((p) => `${p.x},${p.y}`).join(" ")}
-      stroke="#888"
+      stroke={bgSpecs.wireColor}
       strokeWidth={10}
       fill="none"
     />

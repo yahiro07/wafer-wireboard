@@ -14,6 +14,7 @@ import {
   usePortCellHighlightingModel,
 } from "@/port/port-cell-highlighting-model";
 import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
+import { bgSpecs } from "@/common/theme";
 
 const PortCellView = ({
   highlightingState,
@@ -29,7 +30,7 @@ const PortCellView = ({
       className={clsx(
         "w-[30px] h-[30px] flex-c text-gray-100",
         isOutput && "cursor-pointer",
-        !noBg && "bg-gray-400",
+        !noBg && bgSpecs.portCell,
       )}
       style={{
         background: highlightingState === "truthy" ? "orange" : undefined,

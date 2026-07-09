@@ -1,6 +1,8 @@
+import clsx from "clsx";
 import { npx } from "mofur/ax-ui";
 import { ReactNode } from "react";
 import { Icons } from "@/common/icons";
+import { bgSpecs } from "@/common/theme";
 import { UnitItem } from "@/model/types";
 import { KeyboardPortCell, SpeakerPortCell } from "@/port/port-cell";
 import { handleGripPointerDown } from "@/unit/unit-box-drag-handler";
@@ -26,13 +28,18 @@ const SystemPortBox = ({
       }}
     >
       <div className="relative">
-        <div className="flex-c w-[80px] h-[120px] bg-gray-500 text-gray-300">
+        <div
+          className={clsx(
+            "flex-c w-[80px] h-[120px] text-gray-300",
+            bgSpecs.unitCardFrame,
+          )}
+        >
           {iconContent}
         </div>
         <div className="absolute left-[80px] top-0">
           <div className="flex-h w-[400px] h-[120px]">
             <div className="grow">{sideContent}</div>
-            <div className="w-[80px] bg-gray-500">
+            <div className={clsx("w-[80px]", bgSpecs.unitCardFrame)}>
               <div
                 className="flex-c text-[40px] cursor-pointer text-white h-full"
                 onPointerDown={(e) => handleGripPointerDown(e, unit)}
