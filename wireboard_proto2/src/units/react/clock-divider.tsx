@@ -41,6 +41,7 @@ export const createClockDividerUnit: ReactUnitTemplateFn = (unitInterface) => {
           }
           clockOutput.processStep?.(
             stepIndex / division,
+            0,
             unitDurationSec * division,
           );
         },

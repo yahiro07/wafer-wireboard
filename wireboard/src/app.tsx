@@ -1,40 +1,34 @@
 import { mountAppRoot } from "mofur/ax-react";
 import { mapKnobGainDb } from "mofur/mo-audio";
-import { setupMidiKeyboardInput } from "mofur/mx-audio";
 import { useEffect, useMemo } from "react";
-import { HostAppProvider } from "wus-host/react";
-import { PickerColumn } from "@/features/picker/picker-column";
-import { hostSystem } from "@/store/host-system-instance";
-import { store } from "@/store/store";
-import { InformationPanel } from "./features/information-panel";
-import { MainEditArea } from "./features/main-edit-area/main-edit-area";
-import { actions } from "./store/actions";
+import {
+  HostAppProvider,
+  useSequencerTickDriverRunner,
+} from "wafer-host/react";
+import { hostSystem, sequencerTickDriver } from "@/model/host-system-instance";
+import { store } from "@/model/store";
+import { setupDynamicClockingSupport } from "@/periphery/dynamic-clocking-support";
+import { setupHmrHandler } from "@/periphery/hmr-handler";
+import { setupMidiInputHandling } from "@/periphery/midi-input-handling";
+import { createPartialPlaybackSupport } from "@/periphery/partial-playback-support";
+import { projectsModel } from "@/project/projects-model";
+import { PageRoot } from "@/views/page-root";
 
-const PageRoot = () => {
-  const { infoPanelVisible } = store.useSnapshot();
-  return (
-    <div className="w-dvw h-dvh bg-[hsl(216,22%,18%)] flex-h">
-      <MainEditArea />
-      <PickerColumn />
-      {infoPanelVisible && <InformationPanel />}
-    </div>
-  );
-};
+projectsModel.prepareProject(true);
+
+const partialPlaybackSupport = createPartialPlaybackSupport();
 
 const App = () => {
-  const { playing, bpm, masterVolume } = store.useSnapshot();
+  const { bpm, playing, masterVolume } = store.useSnapshot();
   const masterGain = useMemo(
     () => mapKnobGainDb(masterVolume, 0.5),
     [masterVolume],
   );
-  useEffect(
-    () =>
-      setupMidiKeyboardInput({
-        noteOn: actions.midiInNoteOn,
-        noteOff: actions.midiInNoteOff,
-      }),
-    [],
-  );
+  useEffect(setupMidiInputHandling, []);
+  useEffect(projectsModel.setupLifecycle, []);
+  useSequencerTickDriverRunner({ sequencerTickDriver, playing, bpm });
+  useEffect(setupDynamicClockingSupport, []);
+  partialPlaybackSupport.useSetup();
   return (
     <HostAppProvider
       hostSystem={hostSystem}
@@ -49,12 +43,4 @@ const App = () => {
 
 mountAppRoot(<App />);
 
-if (import.meta.hot) {
-  import.meta.hot.on("custom:unit-source-changed", (data) => {
-    const { catalogKey } = data;
-    if (catalogKey) {
-      console.log("unit source changed", catalogKey);
-      actions.handleUnitSourceUpdate(catalogKey);
-    }
-  });
-}
+setupHmrHandler();

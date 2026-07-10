@@ -23,7 +23,7 @@ export const createStateSwitcherUnit: ReactUnitTemplateFn = (unitInterface) => {
   const actions = {
     loadState() {
       const state = outputPort.stateOutput.emitState?.();
-      store.setState({
+      store.assign({
         connected: true,
         activeSlotId: 1,
         slots: {
@@ -33,7 +33,7 @@ export const createStateSwitcherUnit: ReactUnitTemplateFn = (unitInterface) => {
       });
     },
     clearState() {
-      store.setState({
+      store.assign({
         connected: false,
         activeSlotId: 1,
         slots: {
@@ -50,7 +50,7 @@ export const createStateSwitcherUnit: ReactUnitTemplateFn = (unitInterface) => {
       const currentState = outputPort.stateOutput.emitState?.();
       const nextState = store.state.slots[nextSlotId];
 
-      store.setState({
+      store.assign({
         activeSlotId: nextSlotId,
         slots: {
           ...store.state.slots,

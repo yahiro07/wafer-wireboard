@@ -67,7 +67,7 @@ export const actions = {
     store.setPreviewDestPortKey(portKey);
   },
   setTappingPortKey(portKey: string | null) {
-    store.setState({ tappingPortKey: portKey });
+    store.setTappingPortKey(portKey);
   },
   updateConnection(sourcePortKey: string, targetPortKey: string) {
     const { unitId: sourceUnitId, portIndex: sourcePortIndex } =
