@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { Point } from "mofur/ax-ui";
 import { useEffect, useRef } from "react";
-import { IconsEx } from "@/common/icons";
+import { bgSpecs } from "@/common/theme";
 import { domEditAreaId } from "@/main-definitions/constants";
 import { getUnitIdFromPortKey } from "@/model/factory";
 import { connectionActions } from "@/port/connection-actions";
@@ -14,7 +14,6 @@ import {
   usePortCellHighlightingModel,
 } from "@/port/port-cell-highlighting-model";
 import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
-import { bgSpecs } from "@/common/theme";
 
 const PortCellView = ({
   highlightingState,
@@ -28,9 +27,9 @@ const PortCellView = ({
   return (
     <div
       className={clsx(
-        "w-[30px] h-[30px] flex-c text-gray-100",
+        "w-[40px] h-[40px] flex-c",
         isOutput && "cursor-pointer",
-        !noBg && bgSpecs.portCell,
+        // !noBg && bgSpecs.portCell,
       )}
       style={{
         background: highlightingState === "truthy" ? "orange" : undefined,
@@ -40,7 +39,12 @@ const PortCellView = ({
             : undefined,
       }}
     >
-      {isOutput && <IconsEx.ConnectorPortUp />}
+      <div
+        className={clsx(bgSpecs.portCell, "w-[24px] h-[24px] rounded-full")}
+      ></div>
+      {/* {isOutput && (
+        <IconsEx.ConnectorPortUp style={{ transform: `rotate(90deg)` }} />
+      )} */}
     </div>
   );
 };

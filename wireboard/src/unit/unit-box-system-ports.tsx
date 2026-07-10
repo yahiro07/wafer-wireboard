@@ -12,11 +12,13 @@ import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
 const SystemPortBox = ({
   unit,
   iconContent,
-  sideContent,
+  sideContentL,
+  sideContentR,
 }: {
   unit: UnitItem;
   iconContent: ReactNode;
-  sideContent?: ReactNode;
+  sideContentL?: ReactNode;
+  sideContentR?: ReactNode;
 }) => {
   const sd = { width: 560, height: 120 };
   return (
@@ -27,7 +29,8 @@ const SystemPortBox = ({
         top: npx(unit.position.y - sd.height / 2),
       }}
     >
-      <div className="relative shadow-md">
+      <div className="relative shadow-md flex-ha">
+        {sideContentL}
         <div
           className={clsx(
             "flex-c w-[80px] h-[120px] text-gray-300",
@@ -36,19 +39,7 @@ const SystemPortBox = ({
         >
           {iconContent}
         </div>
-        <div className="absolute left-[80px] top-0">
-          <div className="flex-h w-[400px] h-[120px]">
-            <div className="grow">{sideContent}</div>
-            <div className={clsx("w-[80px]", bgSpecs.unitCardFrame)}>
-              <div
-                className="flex-c text-[40px] cursor-pointer text-white h-full"
-                onPointerDown={(e) => handleGripPointerDown(e, unit)}
-              >
-                <Icons.Grip />
-              </div>
-            </div>
-          </div>
-        </div>
+        {sideContentR}
       </div>
     </div>
   );
@@ -71,9 +62,11 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
           </div>
         </SpeakerPortCell>
       }
-      sideContent={
-        <div className="h-full bg-black text-white">
-          <UnitFrameEx unitId={unit.unitId} catalogKey={unit.catalogKey} />
+      sideContentR={
+        <div className="flex-h w-[120px] h-[120px]">
+          <div className="w-full h-full bg-black text-white">
+            <UnitFrameEx unitId={unit.unitId} catalogKey={unit.catalogKey} />
+          </div>
         </div>
       }
     />
@@ -115,9 +108,11 @@ export const KeyboardSystemPortBox = ({ unit }: { unit: UnitItem }) => {
           </div>
         </div>
       }
-      sideContent={
-        <div className="h-full bg-white text-black">
-          <UnitFrameEx unitId={unit.unitId} catalogKey={unit.catalogKey} />
+      sideContentL={
+        <div className="flex-h w-[340px] h-[120px]">
+          <div className="w-full h-full bg-white text-black">
+            <UnitFrameEx unitId={unit.unitId} catalogKey={unit.catalogKey} />
+          </div>
         </div>
       }
     />

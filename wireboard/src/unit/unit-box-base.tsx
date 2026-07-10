@@ -160,7 +160,7 @@ export const SlotCardBox = ({
   altSidePortIds?: string[];
   hiddenPortIds?: string[];
 }) => {
-  const sd = { width: 400, height: 180 };
+  const sd = { width: 400, height: 240 };
   const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
   const unitPortsModel = useMemo(
     () =>
@@ -183,16 +183,51 @@ export const SlotCardBox = ({
         top: npx(unitItem.position.y - sd.height / 2),
       }}
     >
-      <div
-        className="relative flex-h shadow-md"
-        style={{ width: npx(sd.width), height: npx(sd.height) }}
-      >
-        <div
-          className={clsx(
-            "w-[40px] flex-v items-center py-2",
-            bgSpecs.unitCardFrame,
+      <div className="flex-h">
+        <div className="w-[40px] flex-vc">
+          {primaryInPort ? (
+            <PortCell port={primaryInPort} unitPosition={unitItem.position} />
+          ) : (
+            <div />
           )}
+        </div>
+        <div
+          className="relative flex-v shadow-md"
+          style={{ width: npx(sd.width), height: npx(sd.height) }}
         >
+          <div
+            className={clsx(
+              "h-[40px] flex-ha relative text-white px-1",
+              bgSpecs.unitCardFrame,
+            )}
+          >
+            <UnitDragGrip unitItem={unitItem} />
+            <UnitDeleteButton unitItem={unitItem} />
+            <div className="absolute-full flex-c pointer-events-none">
+              {unitItem.catalogKey}
+            </div>
+          </div>
+          <div className="grow flex-h">
+            <div className={clsx("grow relative", bgSpecs.unitCardInner)}>
+              <UnitFrameEx
+                key={unitItem.hmrRevision}
+                unitId={unitItem.unitId}
+                catalogKey={unitItem.catalogKey}
+                onUnitInstanceLoaded={setUnitInstance}
+              />
+              {innerContent}
+            </div>
+            {unitPortsModel?.additional && (
+              <AdditionalPorts
+                ports={unitPortsModel.additional}
+                unitItem={unitItem}
+                excludingPortIds={excludingPortIds}
+                altSidePortIds={altSidePortIds}
+              />
+            )}
+          </div>
+        </div>
+        <div className="w-[40px] flex-vc">
           {primaryOutPort ? (
             <PortCell port={primaryOutPort} unitPosition={unitItem.position} />
           ) : (
@@ -200,39 +235,7 @@ export const SlotCardBox = ({
               <Icons.RadioTower />
             </div>
           )}
-          <UnitDragGrip unitItem={unitItem} />
-          {primaryInPort ? (
-            <PortCell port={primaryInPort} unitPosition={unitItem.position} />
-          ) : (
-            <div />
-          )}
         </div>
-        <div className={clsx("grow relative", bgSpecs.unitCardInner)}>
-          <UnitFrameEx
-            key={unitItem.hmrRevision}
-            unitId={unitItem.unitId}
-            catalogKey={unitItem.catalogKey}
-            onUnitInstanceLoaded={setUnitInstance}
-          />
-          {innerContent}
-        </div>
-        <div
-          className={clsx(
-            "w-[40px] flex-v text-white py-1",
-            bgSpecs.unitCardFrame,
-          )}
-        >
-          <UnitDeleteButton unitItem={unitItem} />
-          <UnitDragGrip unitItem={unitItem} showIcon />
-        </div>
-        {unitPortsModel?.additional && (
-          <AdditionalPorts
-            ports={unitPortsModel.additional}
-            unitItem={unitItem}
-            excludingPortIds={excludingPortIds}
-            altSidePortIds={altSidePortIds}
-          />
-        )}
       </div>
     </div>
   );
