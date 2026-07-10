@@ -37,6 +37,7 @@ function getUnitSourceUrls() {
       `file://${wusUnitsLocalDistDir}/mop2/`,
       `file://${wusUnitsLocalDistDir}/bs03/`,
       `file://${wusUnitsLocalDistDir}/mpd1/`,
+      `file://${wusUnitsLocalDistDir}/root-prog/`,
 
       `file://${wusCustomUnitsLocalDistDir}/webaudio-synth-v2/`,
       `file://${wusCustomUnitsLocalDistDir}/additive/`,
