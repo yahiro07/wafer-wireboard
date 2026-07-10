@@ -1,54 +1,53 @@
-import { Point, Size } from "mofur/ax-ui";
-import { WiringLayerWire } from "@/views/editor/wiring-layer-wire-items";
+import { Size } from "mofur/ax-ui";
+import { useMemo } from "react";
 import { bgSpecs } from "@/common/theme";
+import { WiringLayerWire } from "@/views/editor/wiring-layer-wire-items";
 
 type Props = {
   boardSize: Size;
   wires: WiringLayerWire[];
 };
 
-const middle = (a: number, b: number) => (a + b) / 2;
-
-function getAngledPoints(p1: Point, p2: Point): Point[] {
-  const dx = p2.x - p1.x;
-  const dy = p2.y - p1.y;
-  if (Math.abs(dx) < Math.abs(dy)) {
-    return [p1, p2];
-  }
-  const mps = [
-    { x: p1.x + (Math.sign(dx) * Math.abs(dy)) / 2, y: middle(p1.y, p2.y) },
-    { x: p2.x - (Math.sign(dx) * Math.abs(dy)) / 2, y: middle(p1.y, p2.y) },
-  ];
-  return [p1, ...mps, p2];
+function clamp(value: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, value));
 }
 
-function getAngledPoints2(p1: Point, p2: Point): Point[] {
-  const dx = p2.x - p1.x;
-  const dy = p2.y - p1.y;
-  if (Math.abs(dx) < Math.abs(dy)) {
-    return [p1, p2];
+function getCurvature(wire: WiringLayerWire) {
+  switch (wire.routeType) {
+    case "diagonal":
+      return 0.32;
+    case "diagonal2":
+      return 0.24;
+    default:
+      return 0.42;
   }
-  const mps = [{ x: p1.x + Math.sign(dx) * Math.abs(dy), y: p2.y }];
-  return [p1, ...mps, p2];
 }
 
-function getWirePoints(wire: WiringLayerWire): Point[] {
-  if (wire.routeType === "diagonal") {
-    return getAngledPoints(wire.p1, wire.p2);
-  } else if (wire.routeType === "diagonal2") {
-    return getAngledPoints2(wire.p1, wire.p2);
-  } else {
-    return [wire.p1, wire.p2];
-  }
+function pointsToCurvePath(wire: WiringLayerWire): string {
+  const { p1, p2 } = wire;
+  const dx = p2.x - p1.x;
+  const dy = p2.y - p1.y;
+  const distance = Math.hypot(dx, dy);
+  const curvature = getCurvature(wire);
+  const handleLength = clamp(distance * curvature, 40, 180);
+  const tangent = clamp(Math.abs(dx) * 0.5, 24, handleLength);
+  const c1x = p1.x + Math.sign(dx || 1) * tangent;
+  const c2x = p2.x - Math.sign(dx || 1) * tangent;
+  const c1y = p1.y;
+  const c2y = p2.y;
+
+  return `M ${p1.x},${p1.y} C ${c1x},${c1y} ${c2x},${c2y} ${p2.x},${p2.y}`;
 }
 
 const WireLine = ({ wire }: { wire: WiringLayerWire }) => {
-  const points = getWirePoints(wire);
+  const path = useMemo(() => pointsToCurvePath(wire), [wire]);
   return (
-    <polyline
-      points={points.map((p) => `${p.x},${p.y}`).join(" ")}
+    <path
+      d={path}
       stroke={bgSpecs.wireColor}
-      strokeWidth={10}
+      strokeWidth={8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
       fill="none"
     />
   );
