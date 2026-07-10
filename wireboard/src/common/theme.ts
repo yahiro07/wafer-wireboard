@@ -14,4 +14,4 @@ const bgSpecsB = {
   portCell: "bg-[#c0c8d0]",
 };
 
-export const bgSpecs = bgSpecsB;
+export const bgSpecs = bgSpecsA;
