@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { npx } from "mofur/ax-ui";
+import { npx, Point } from "mofur/ax-ui";
 import { ReactNode, useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { Icons } from "@/common/icons";
@@ -8,7 +8,10 @@ import { actions } from "@/model/actions";
 import { UnitItem } from "@/model/types";
 import { PortCell } from "@/port/port-cell";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
-import { buildUnitTemporalPortsModel } from "@/unit/unit-temporal-ports-model";
+import {
+  buildUnitTemporalPortsModel,
+  UnitTemporalPort,
+} from "@/unit/unit-temporal-ports-model";
 import { handleGripPointerDown } from "./unit-box-drag-handler";
 
 export const UnitDeleteButton = ({ unitItem }: { unitItem: UnitItem }) => {
@@ -39,6 +42,22 @@ export const UnitDragGrip = ({
   );
 };
 
+export const PortsColumn = ({
+  ports,
+  unitPosition,
+}: {
+  ports: UnitTemporalPort[] | undefined;
+  unitPosition: Point;
+}) => {
+  return (
+    <div className="w-[40px] flex-vc">
+      {ports?.map((port) => (
+        <PortCell key={port.portKey} port={port} unitPosition={unitPosition} />
+      ))}
+    </div>
+  );
+};
+
 export const SlotCardBox = ({
   unitItem,
   innerContent,
@@ -65,15 +84,10 @@ export const SlotCardBox = ({
       }}
     >
       <div className="flex-h">
-        <div className="w-[40px] flex-vc">
-          {unitPortsModel?.inputs.map((port) => (
-            <PortCell
-              key={port.portKey}
-              port={port}
-              unitPosition={unitItem.position}
-            />
-          ))}
-        </div>
+        <PortsColumn
+          ports={unitPortsModel?.inputs}
+          unitPosition={unitItem.position}
+        />
         <div
           className="relative flex-v shadow-md"
           style={{ width: npx(sd.width), height: npx(sd.height) }}
@@ -102,15 +116,10 @@ export const SlotCardBox = ({
             </div>
           </div>
         </div>
-        <div className="w-[40px] flex-vc">
-          {unitPortsModel?.outputs.map((port) => (
-            <PortCell
-              key={port.portKey}
-              port={port}
-              unitPosition={unitItem.position}
-            />
-          ))}
-        </div>
+        <PortsColumn
+          ports={unitPortsModel?.outputs}
+          unitPosition={unitItem.position}
+        />
       </div>
     </div>
   );
