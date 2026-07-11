@@ -53,7 +53,10 @@ export const PortsColumn = ({
   weaken?: boolean;
 }) => {
   return (
-    <div className="w-[40px] relative" style={{ opacity: weaken ? 0.5 : 1 }}>
+    <div
+      className="w-[40px] relative"
+      style={weaken ? { opacity: 0.1, pointerEvents: "none" } : {}}
+    >
       <div className="absolute left-0" style={{ top: "calc(50% - 30px)" }}>
         {ports?.map((port) => (
           <PortCell
