@@ -19,7 +19,7 @@ type UnitTemporalPortsModel = {
   outputs: UnitTemporalPort[];
 };
 
-const subtypeOrder = ["audio", "note", "clock", "automation"];
+const subtypeOrder = ["audio", "note", "automation"];
 
 export function buildUnitTemporalPortsModel(
   unitInstance: HsUnitInstance,
