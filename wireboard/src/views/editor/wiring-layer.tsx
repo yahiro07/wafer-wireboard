@@ -12,23 +12,12 @@ function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value));
 }
 
-function getCurvature(wire: WiringLayerWire) {
-  switch (wire.routeType) {
-    case "diagonal":
-      return 0.32;
-    case "diagonal2":
-      return 0.24;
-    default:
-      return 0.42;
-  }
-}
-
 function pointsToCurvePath(wire: WiringLayerWire): string {
   const { p1, p2 } = wire;
   const dx = p2.x - p1.x;
   const dy = p2.y - p1.y;
   const distance = Math.hypot(dx, dy);
-  const curvature = getCurvature(wire);
+  const curvature = 0.42;
   const handleLength = clamp(distance * curvature, 40, 180);
   const tangent = clamp(Math.abs(dx) * 0.5, 24, handleLength);
   const c1x = p1.x + Math.sign(dx || 1) * tangent;
