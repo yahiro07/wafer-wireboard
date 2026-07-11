@@ -361,7 +361,7 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
         </div>
       );
       const extraFaderPart = (
-        <div className="absolute top-0 right-[-92px] z-100">
+        <div className="absolute top-0 right-[-72px] z-100">
           <ParameterGauge
             value={st.faderVolume}
             onChange={(v) => actions.setParameter("faderVolume", v)}

@@ -61,12 +61,13 @@ export const PortsColumn = ({
 export const SlotCardBox = ({
   unitItem,
   innerContent,
+  hideInputPorts,
+  hideOutputPorts,
 }: {
   unitItem: UnitItem;
   innerContent?: ReactNode;
-  excludingPortIds?: string[];
-  altSidePortIds?: string[];
-  hiddenPortIds?: string[];
+  hideInputPorts?: boolean;
+  hideOutputPorts?: boolean;
 }) => {
   const sd = { width: 400, height: 240 };
   const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
@@ -85,7 +86,7 @@ export const SlotCardBox = ({
     >
       <div className="flex-h">
         <PortsColumn
-          ports={unitPortsModel?.inputs}
+          ports={hideInputPorts ? undefined : unitPortsModel?.inputs}
           unitPosition={unitItem.position}
         />
         <div
@@ -117,7 +118,7 @@ export const SlotCardBox = ({
           </div>
         </div>
         <PortsColumn
-          ports={unitPortsModel?.outputs}
+          ports={hideOutputPorts ? undefined : unitPortsModel?.outputs}
           unitPosition={unitItem.position}
         />
       </div>
