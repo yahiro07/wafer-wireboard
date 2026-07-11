@@ -33,10 +33,10 @@ export function filterCandidatePorts(
 export function findNearestPort(
   portItems: PortItem[],
   position: Point,
-  filterYAbove: boolean,
+  filterXRight: boolean,
 ): PortItem | undefined {
-  const filteredPorts = filterYAbove
-    ? portItems.filter((port) => port.position.y < position.y - 30)
+  const filteredPorts = filterXRight
+    ? portItems.filter((port) => port.position.x > position.x + 30)
     : portItems;
   return findItemMappedMinimum(filteredPorts, (port) => {
     const dx = port.position.x - position.x;

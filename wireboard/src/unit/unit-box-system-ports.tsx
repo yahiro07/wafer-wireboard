@@ -78,7 +78,7 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
         </SpeakerPortCell>
       }
       sideContentR={
-        <div className="flex-h w-[120px] h-[120px]">
+        <div className="flex-h w-[340px] h-[120px]">
           <div className="w-full h-full bg-black text-white">
             <UnitFrameEx unitId={unit.unitId} catalogKey={unit.catalogKey} />
           </div>
