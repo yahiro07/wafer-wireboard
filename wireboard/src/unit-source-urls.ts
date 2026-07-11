@@ -15,33 +15,36 @@ function getUnitSourceUrls() {
     );
     return [
       `file://${wusUnitsLocalDistDir}/graphite-drum-machine/`,
-      `file://${homeDir}/wus-units/my-drum-machine/`,
+      // `file://${homeDir}/wus-units/my-drum-machine/`,
 
       `file://${wusUnitsLocalDistDir}/wavicle/`,
-
       `file://${wusCustomUnitsLocalDistDir}/wasyn-1/`,
       `file://${wusCustomUnitsLocalDistDir}/webaudio-tinysynth-simple/`,
+      `file://${wusCustomUnitsLocalDistDir}/webaudio-synth-v2/`,
+      `file://${wusCustomUnitsLocalDistDir}/additive/`,
+      `file://${wusUnitsLocalDistDir}/bseq2/`,
+      `file://${wusUnitsLocalDistDir}/toner-sequencer/`,
+      `file://${wusUnitsLocalDistDir}/bseq1/`,
+      `file://${wusUnitsLocalDistDir}/lseq1/`,
+      `file://${wusUnitsLocalDistDir}/partex/`,
+      `file://${wusUnitsLocalDistDir}/root-prog/`,
+
+      `file://${wusUnitsLocalDistDir}/sunset-delay/`,
+      `file://${wusUnitsLocalDistDir}/sunset-chorus-mini/`,
 
       `file://${wusUnitsLocalDistDir}/multi-lfo/`,
       `file://${wusUnitsLocalDistDir}/step-automator/`,
-      `file://${wusUnitsLocalDistDir}/sunset-delay/`,
-      `file://${wusUnitsLocalDistDir}/toner-sequencer/`,
-      `file://${wusUnitsLocalDistDir}/bseq2/`,
+
       `file://${wusUnitsLocalDistDir}/crusher/`,
       `file://${wusUnitsLocalDistDir}/channel-strip/`,
       `file://${wusUnitsLocalDistDir}/noise-mix/`,
-      `file://${wusUnitsLocalDistDir}/sunset-chorus-mini/`,
       `file://${wusUnitsLocalDistDir}/lofi2/`,
-      `file://${wusUnitsLocalDistDir}/sepa-mixer/`,
+      // `file://${wusUnitsLocalDistDir}/sepa-mixer/`,
+      `file://${wusUnitsLocalDistDir}/bs03/`,
       `file://${wusUnitsLocalDistDir}/s7/`,
       `file://${wusUnitsLocalDistDir}/mop2/`,
-      `file://${wusUnitsLocalDistDir}/bs03/`,
       `file://${wusUnitsLocalDistDir}/mpd1/`,
-      `file://${wusUnitsLocalDistDir}/root-prog/`,
-      `file://${wusUnitsLocalDistDir}/s2/`,
-
-      `file://${wusCustomUnitsLocalDistDir}/webaudio-synth-v2/`,
-      `file://${wusCustomUnitsLocalDistDir}/additive/`,
+      // `file://${wusUnitsLocalDistDir}/s2/`,
 
       `file://${unitsDevDistDir}/mu4-keyboard/`,
       `file://${homeDir}/wus-units/twsq1/`,
@@ -53,15 +56,12 @@ function getUnitSourceUrls() {
 
       // `file://${unitsDevDistDir}/mu5-visualizer/`,
 
-      `file://${wusUnitsLocalDistDir}/bseq1/`,
-      `file://${wusUnitsLocalDistDir}/lseq1/`,
       // `file://${wusUnitsLocalDistDir}/chord-caster/`,
       // `file://${wusUnitsLocalDistDir}/rtfr/`,
       // `file://${wusUnitsLocalDistDir}/rtfs1/`,
       // `file://${wusUnitsLocalDistDir}/rtfs2/`,
       // `file://${wusUnitsLocalDistDir}/perseq/`,
       `file://${wusUnitsLocalDistDir}/piano-roll/`,
-      `file://${wusUnitsLocalDistDir}/partex/`,
 
       // `file://${wusUnitsLocalDistDir}/specbar/`,
       `file://${wusUnitsLocalDistDir}/proto-engine-ptm-osc/`,
