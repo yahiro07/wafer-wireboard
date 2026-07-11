@@ -1,16 +1,17 @@
 import { DragHandlerEvent, Point, startDragSession } from "mofur/ax-ui";
+import { HsPortSubtype } from "wafer-host/core";
 import { findItemMappedMinimum } from "@/auxiliaries/general-utils";
 import { domEditAreaId } from "@/main-definitions/constants";
 import { getUnitIdFromPortKey } from "@/model/factory";
 import { store } from "@/model/store";
-import { PortItem, PortSubtype } from "@/model/types";
+import { PortItem } from "@/model/types";
 import { connectionActions } from "@/port/connection-actions";
 import { checkSubtypeOverlap, connectionLogic } from "@/port/connection-logic";
 
 export function filterCandidatePorts(
   portItems: PortItem[],
   sourcePortKey: string,
-  portSubtypes: PortSubtype[],
+  portSubtypes: HsPortSubtype[],
   includeSourcePort = false,
 ) {
   const sourceUnitId = getUnitIdFromPortKey(sourcePortKey);

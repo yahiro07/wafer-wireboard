@@ -1,10 +1,10 @@
+import { HsPortSubtype } from "wafer-host/core";
 import { createWireItem } from "@/model/factory";
 import { store } from "@/model/store";
-import { PortSubtype } from "@/model/types";
 
 export function checkSubtypeOverlap(
-  subtypes1: PortSubtype[],
-  subtypes2: PortSubtype[],
+  subtypes1: HsPortSubtype[],
+  subtypes2: HsPortSubtype[],
 ): boolean {
   return subtypes1.some((st) => subtypes2.includes(st));
 }

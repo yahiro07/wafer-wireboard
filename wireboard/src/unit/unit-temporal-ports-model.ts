@@ -1,5 +1,10 @@
-import { HsUnitInstance } from "wafer-host/core";
-import { PortDirection, PortSubtype } from "@/model/types";
+import {
+  HsPortDirection,
+  HsPortInfoAdditional,
+  HsPortInfoPrimary,
+  HsPortSubtype,
+  HsUnitInstance,
+} from "wafer-host/core";
 
 type UnitTemporalPortType =
   | "primaryOutput"
@@ -9,8 +14,8 @@ type UnitTemporalPortType =
 
 export type UnitTemporalPort = {
   portType: UnitTemporalPortType;
-  direction: PortDirection;
-  subtypes: PortSubtype[];
+  direction: HsPortDirection;
+  subtypes: HsPortSubtype[];
   portKey: string;
   id: string;
   label?: string;
@@ -25,99 +30,63 @@ type UnitTemporalPortsModel = {
 export function buildUnitTemporalPortsModel(
   unitInstance: HsUnitInstance,
 ): UnitTemporalPortsModel {
-  const model: UnitTemporalPortsModel = {};
+  const { unitId, portInfos } = unitInstance;
 
-  const {
-    unitId,
-    outputPorts,
-    inputPorts,
-    additionalAudioInputs,
-    additionalAudioOutputs,
-  } = unitInstance;
+  const primOut = portInfos.find(
+    (p) => p.type === "primary" && p.direction === "output",
+  ) as HsPortInfoPrimary | undefined;
+  const primIn = portInfos.find(
+    (p) => p.type === "primary" && p.direction === "input",
+  ) as HsPortInfoPrimary;
+  const additionalOuts = portInfos.filter(
+    (p) =>
+      p.type === "additional" &&
+      p.direction === "output" &&
+      p.subtype === "audio",
+  ) as HsPortInfoAdditional[];
+  const additionalIns = portInfos.filter(
+    (p) =>
+      p.type === "additional" &&
+      p.direction === "input" &&
+      p.subtype === "audio",
+  ) as HsPortInfoAdditional[];
 
-  if (outputPorts) {
-    const subtypes = [
-      outputPorts.audioOutput && "audio",
-      outputPorts.noteOutput && "note",
-      outputPorts.automationOutput && "automation",
-    ].filter(Boolean) as PortSubtype[];
-    if (subtypes.length > 0) {
-      model.primaryOut = {
-        portType: "primaryOutput",
-        direction: "output",
-        id: "primaryOutput",
-        portKey: `${unitId}.primaryOutput`,
-        subtypes,
-      };
-    }
-  }
-  if (inputPorts) {
-    const ports = inputPorts;
-    const subtypes = [
-      ports.audioInput && "audio",
-      ports.noteInput && "note",
-      ports.automationInput && "automation",
-    ].filter(Boolean) as PortSubtype[];
-    if (subtypes.length > 0) {
-      model.primaryIn = {
-        portType: "primaryInput",
-        direction: "input",
-        id: "primaryInput",
-        portKey: `${unitId}.primaryInput`,
-        subtypes,
-      };
-    }
-  }
-  const additional: UnitTemporalPort[] = [
-    ...(additionalAudioInputs
-      ? Object.values(additionalAudioInputs).map(
-          (p): UnitTemporalPort => ({
-            portType: "additionalInput",
-            direction: "input",
-            subtypes: ["audio"],
-            id: p.id,
-            portKey: `${unitId}.${p.id}`,
-            label: p.label,
-          }),
-        )
-      : []),
-    ...(additionalAudioOutputs
-      ? Object.values(additionalAudioOutputs).map(
-          (p): UnitTemporalPort => ({
-            portType: "additionalOutput",
-            direction: "output",
-            subtypes: ["audio"],
-            id: p.id,
-            portKey: `${unitId}.${p.id}`,
-            label: p.label,
-          }),
-        )
-      : []),
-  ];
-  if (additional.length > 0) {
-    model.additional = additional;
-  }
-
-  if (0) {
-    //debug
-    model.additional = [
-      {
-        portType: "additionalOutput",
-        direction: "output",
-        subtypes: ["audio"],
-        id: "kick",
-        portKey: `${unitId}.kick`,
-        label: "kick",
-      },
-      {
-        portType: "additionalInput",
-        direction: "input",
-        subtypes: ["audio"],
-        id: "detector",
-        portKey: `${unitId}.detector`,
-        label: "detector",
-      },
-    ];
-  }
-  return model;
+  return {
+    primaryOut: primOut
+      ? {
+          portType: "primaryOutput",
+          direction: "output",
+          id: "primaryOutput",
+          portKey: `${unitId}.primaryOutput`,
+          subtypes: primOut.subtypes,
+        }
+      : undefined,
+    primaryIn: primIn
+      ? {
+          portType: "primaryInput",
+          direction: "input",
+          id: "primaryInput",
+          portKey: `${unitId}.primaryInput`,
+          subtypes: primIn.subtypes,
+        }
+      : undefined,
+    additional: [
+      ...additionalIns.map((p) => ({
+        portType: "additionalInput" as const,
+        direction: p.direction,
+        id: p.portId,
+        portKey: `${unitId}.${p.portId}`,
+        subtypes: [p.subtype],
+        label: p.label,
+      })),
+      ...additionalOuts.map((p) => ({
+        portType: "additionalOutput" as const,
+        direction: p.direction,
+        id: p.portId,
+        portKey: `${unitId}.${p.portId}`,
+        subtypes: [p.subtype],
+        label: p.label,
+      })),
+    ],
+  };
 }
