@@ -1,5 +1,4 @@
 import { store } from "@/model/store";
-import { checkSubtypeOverlap } from "@/port/connection-logic";
 
 export type PortCellHighlightingState =
   | "normal"
@@ -35,7 +34,7 @@ export function usePortCellHighlightingModel(
   if (
     draggingPort.direction !== selfPort.direction &&
     draggingPort.unitId !== selfPort.unitId &&
-    checkSubtypeOverlap(draggingPort.subtypes, selfPort.subtypes)
+    draggingPort.subtype === selfPort.subtype
   ) {
     return "truthyOutlined";
   }

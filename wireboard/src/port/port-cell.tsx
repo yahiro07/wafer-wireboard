@@ -1,36 +1,34 @@
 import clsx from "clsx";
 import { Point } from "mofur/ax-ui";
 import { useEffect, useRef } from "react";
-import { IconsEx } from "@/common/icons";
-import { domEditAreaId } from "@/main-definitions/constants";
+import { HsPortSubtype } from "wafer-host/core";
+import { domEditAreaId, signalColors } from "@/main-definitions/constants";
 import { getUnitIdFromPortKey } from "@/model/factory";
 import { connectionActions } from "@/port/connection-actions";
-import {
-  handleKeyboardPortCellClick,
-  handlePortCellDragging,
-} from "@/port/port-cell-drag-handler";
+import { handlePortCellDragging } from "@/port/port-cell-drag-handler";
 import {
   PortCellHighlightingState,
   usePortCellHighlightingModel,
 } from "@/port/port-cell-highlighting-model";
 import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
-import { bgSpecs } from "@/common/theme";
 
 const PortCellView = ({
   highlightingState,
-  noBg,
   isOutput,
+  subtype,
+  label,
 }: {
   isOutput?: boolean;
   highlightingState: PortCellHighlightingState;
-  noBg?: boolean;
+  subtype: HsPortSubtype;
+  label?: string;
 }) => {
+  const color = signalColors[subtype];
   return (
     <div
       className={clsx(
-        "w-[30px] h-[30px] flex-c text-gray-100",
+        "w-[40px] h-[40px] flex-c relative",
         isOutput && "cursor-pointer",
-        !noBg && bgSpecs.portCell,
       )}
       style={{
         background: highlightingState === "truthy" ? "orange" : undefined,
@@ -40,7 +38,13 @@ const PortCellView = ({
             : undefined,
       }}
     >
-      {isOutput && <IconsEx.ConnectorPortUp />}
+      <div
+        className={clsx("w-[18px] h-[18px]", "rounded-[10px]")}
+        style={{ background: color }}
+      />
+      {label && (
+        <div className="absolute-full flex-c text-white mt-8">{label}</div>
+      )}
     </div>
   );
 };
@@ -78,9 +82,9 @@ function useAffectPortPositionToStore(
       if (yOffset !== undefined) {
         position.y += yOffset;
       }
-      const { portKey, subtypes, direction } = port;
+      const { portKey, subtype, direction } = port;
       const unitId = getUnitIdFromPortKey(portKey);
-      const portItem = { portKey, unitId, direction, subtypes, position };
+      const portItem = { portKey, unitId, direction, subtype, position };
       connectionActions.addPortItem(portItem);
       return () => {
         connectionActions.removePortItem(portKey);
@@ -121,61 +125,12 @@ export const PortCell = ({
   };
   return (
     <div ref={portDivRef} onPointerDown={handlePointerDown}>
-      <PortCellView isOutput={isOutput} highlightingState={highlightingState} />
-    </div>
-  );
-};
-
-export const KeyboardPortCell = ({
-  port,
-  unitPosition,
-}: {
-  port: UnitTemporalPort;
-  unitPosition: Point;
-}) => {
-  const highlightingState = usePortCellHighlightingModel(port.portKey);
-  const portDivRef = useRef<HTMLDivElement>(null);
-  useAffectPortPositionToStore(portDivRef, port, unitPosition);
-  const handlePointerDown = (e: React.PointerEvent) => {
-    handleKeyboardPortCellClick(e, port.portKey);
-    e.stopPropagation();
-  };
-  return (
-    <div ref={portDivRef} onPointerDown={handlePointerDown}>
       <PortCellView
-        isOutput={true}
+        isOutput={isOutput}
         highlightingState={highlightingState}
-        noBg
+        subtype={port.subtype}
+        label={port.label}
       />
-    </div>
-  );
-};
-
-export const SpeakerPortCell = ({
-  port,
-  children,
-  unitPosition,
-}: {
-  port: UnitTemporalPort;
-  children: React.ReactNode;
-  unitPosition: Point;
-}) => {
-  const highlightingState = usePortCellHighlightingModel(port.portKey);
-  const portDivRef = useRef<HTMLDivElement>(null);
-  useAffectPortPositionToStore(portDivRef, port, unitPosition, 40);
-  return (
-    <div
-      ref={portDivRef}
-      style={{
-        background: highlightingState === "truthy" ? "orange" : undefined,
-        border:
-          highlightingState === "truthyOutlined"
-            ? "1.5px solid orange"
-            : undefined,
-        color: highlightingState === "truthy" ? "white" : undefined,
-      }}
-    >
-      {children}
     </div>
   );
 };

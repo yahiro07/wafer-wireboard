@@ -1,13 +1,5 @@
 import { createWireItem } from "@/model/factory";
 import { store } from "@/model/store";
-import { PortSubtype } from "@/model/types";
-
-export function checkSubtypeOverlap(
-  subtypes1: PortSubtype[],
-  subtypes2: PortSubtype[],
-): boolean {
-  return subtypes1.some((st) => subtypes2.includes(st));
-}
 
 export const connectionLogic = {
   setConnectionSingle(sourcePortKey: string, destinationPortKey: string) {

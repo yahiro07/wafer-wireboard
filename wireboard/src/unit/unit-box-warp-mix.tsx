@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { Icons } from "@/common/icons";
 import { store } from "@/model/store";
 import { UnitItem } from "@/model/types";
@@ -31,10 +30,6 @@ export const WrapMixReceiverSlotCardBox = ({
   const handleAntennaClick = () => {
     store.toggleHideWarpedWires();
   };
-  const excludingPortIds = useMemo(
-    () => (hideWarpedWires ? ["auxInput"] : []),
-    [hideWarpedWires],
-  );
   return (
     <SlotCardBox
       unitItem={unitItem}
@@ -46,9 +41,7 @@ export const WrapMixReceiverSlotCardBox = ({
           />
         </div>
       }
-      excludingPortIds={excludingPortIds}
-      altSidePortIds={["auxOutput"]}
-      hiddenPortIds={hideWarpedWires ? ["primaryInput"] : undefined}
+      hideInputPorts={hideWarpedWires}
     />
   );
 };
@@ -59,16 +52,5 @@ export const WrapMixEmitterSlotCardBox = ({
   unitItem: UnitItem;
 }) => {
   const { hideWarpedWires } = store.useSnapshot();
-
-  const excludingPortIds = useMemo(
-    () => (hideWarpedWires ? ["auxOutput"] : []),
-    [hideWarpedWires],
-  );
-  return (
-    <SlotCardBox
-      unitItem={unitItem}
-      excludingPortIds={excludingPortIds}
-      hiddenPortIds={hideWarpedWires ? ["primaryOutput"] : undefined}
-    />
-  );
+  return <SlotCardBox unitItem={unitItem} hideOutputPorts={hideWarpedWires} />;
 };

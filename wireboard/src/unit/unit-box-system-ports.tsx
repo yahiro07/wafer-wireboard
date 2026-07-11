@@ -1,22 +1,35 @@
 import clsx from "clsx";
 import { npx } from "mofur/ax-ui";
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { Icons } from "@/common/icons";
 import { bgSpecs } from "@/common/theme";
 import { UnitItem } from "@/model/types";
-import { KeyboardPortCell, SpeakerPortCell } from "@/port/port-cell";
+import { PortsColumn } from "@/unit/unit-box-base";
 import { handleGripPointerDown } from "@/unit/unit-box-drag-handler";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
 import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
 
+const systemPortUnitTemporalPorts = {
+  speakerInput: {
+    direction: "input",
+    subtype: "audio",
+    portKey: "builtInPreOutput.primaryInput",
+    id: "builtInPreOutput.primaryInput",
+  },
+  keyboardOutput: {
+    direction: "output",
+    subtype: "note",
+    portKey: "builtInKeyboard.primaryOutput",
+    id: "builtInKeyboard.primaryOutput",
+  },
+} satisfies Record<string, UnitTemporalPort>;
+
 const SystemPortBox = ({
   unit,
-  iconContent,
-  sideContent,
+  children,
 }: {
   unit: UnitItem;
-  iconContent: ReactNode;
-  sideContent?: ReactNode;
+  children: ReactNode;
 }) => {
   const sd = { width: 560, height: 120 };
   return (
@@ -27,99 +40,65 @@ const SystemPortBox = ({
         top: npx(unit.position.y - sd.height / 2),
       }}
     >
-      <div className="relative shadow-md">
-        <div
-          className={clsx(
-            "flex-c w-[80px] h-[120px] text-gray-300",
-            bgSpecs.unitCardFrame,
-          )}
-        >
-          {iconContent}
-        </div>
-        <div className="absolute left-[80px] top-0">
-          <div className="flex-h w-[400px] h-[120px]">
-            <div className="grow">{sideContent}</div>
-            <div className={clsx("w-[80px]", bgSpecs.unitCardFrame)}>
-              <div
-                className="flex-c text-[40px] cursor-pointer text-white h-full"
-                onPointerDown={(e) => handleGripPointerDown(e, unit)}
-              >
-                <Icons.Grip />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div className="relative shadow-md flex-ha">{children}</div>
+    </div>
+  );
+};
+
+const SideGrip = ({
+  unit,
+  children,
+}: {
+  unit: UnitItem;
+  children?: ReactNode;
+}) => {
+  return (
+    <div
+      className={clsx(
+        "relative w-[80px] h-[120px] flex-c pt-2 cursor-pointer text-gray-300",
+        bgSpecs.unitCardFrame,
+      )}
+      onPointerDown={(e) => handleGripPointerDown(e, unit)}
+    >
+      {children}
     </div>
   );
 };
 
 export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
+  const ports = useMemo(() => [systemPortUnitTemporalPorts.speakerInput], []);
   return (
-    <SystemPortBox
-      unit={unit}
-      iconContent={
-        <SpeakerPortCell
-          port={systemPortUnitTemporalPorts.speakerInput}
-          unitPosition={unit.position}
-        >
-          <div
-            className="relative w-full h-full flex-c pt-2 cursor-pointer"
-            onPointerDown={(e) => handleGripPointerDown(e, unit)}
-          >
-            <Icons.Speaker size={65} />
+    <SystemPortBox unit={unit}>
+      <div className="flex-ha">
+        <PortsColumn ports={ports} unitPosition={unit.position} />
+        <SideGrip unit={unit}>
+          <Icons.Speaker size={65} />
+        </SideGrip>
+        <div className="flex-h w-[320px] h-[120px]">
+          <div className="w-full h-full bg-black text-white">
+            <UnitFrameEx unitId={unit.unitId} catalogKey={unit.catalogKey} />
           </div>
-        </SpeakerPortCell>
-      }
-      sideContent={
-        <div className="h-full bg-black text-white">
-          <UnitFrameEx unitId={unit.unitId} catalogKey={unit.catalogKey} />
         </div>
-      }
-    />
+      </div>
+    </SystemPortBox>
   );
 };
 
-const systemPortUnitTemporalPorts = {
-  speakerInput: {
-    portType: "primaryInput",
-    direction: "input",
-    subtypes: ["audio"],
-    portKey: "builtInPreOutput.primaryInput",
-    id: "builtInPreOutput.primaryInput",
-  },
-  keyboardOutput: {
-    portType: "primaryOutput",
-    direction: "output",
-    subtypes: ["note"],
-    portKey: "builtInKeyboard.primaryOutput",
-    id: "builtInKeyboard.primaryOutput",
-  },
-} satisfies Record<string, UnitTemporalPort>;
-
 export const KeyboardSystemPortBox = ({ unit }: { unit: UnitItem }) => {
+  const ports = useMemo(() => [systemPortUnitTemporalPorts.keyboardOutput], []);
   return (
-    <SystemPortBox
-      unit={unit}
-      iconContent={
-        <div
-          className="relative w-full h-full flex-c pt-2"
-          onPointerDown={(e) => handleGripPointerDown(e, unit)}
-        >
+    <SystemPortBox unit={unit}>
+      <div className="flex-ha">
+        <SideGrip unit={unit}>
           <Icons.Piano size={65} />
-          <div className="absolute-full flex-v items-center cursor-pointer pt-0.5">
-            <KeyboardPortCell
-              port={systemPortUnitTemporalPorts.keyboardOutput}
-              unitPosition={unit.position}
-            />
+        </SideGrip>
+        <div className="flex-h w-[320px] h-[120px]">
+          <div className="w-full h-full bg-white text-black">
+            <UnitFrameEx unitId={unit.unitId} catalogKey={unit.catalogKey} />
           </div>
         </div>
-      }
-      sideContent={
-        <div className="h-full bg-white text-black">
-          <UnitFrameEx unitId={unit.unitId} catalogKey={unit.catalogKey} />
-        </div>
-      }
-    />
+        <PortsColumn ports={ports} unitPosition={unit.position} />
+      </div>
+    </SystemPortBox>
   );
 };
