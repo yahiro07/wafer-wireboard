@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { bgSpecs } from "@/common/theme";
 import { UnitItem } from "@/model/types";
-import { PortCell } from "@/port/port-cell";
 import { UnitDeleteButton, UnitDragGrip } from "@/unit/unit-box-base";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
 import { buildUnitTemporalPortsModel } from "@/unit/unit-temporal-ports-model";
@@ -35,7 +34,7 @@ export const PivotUnitBox = ({ unitItem }: { unitItem: UnitItem }) => {
             bgSpecs.unitCardFrame,
           )}
         >
-          {unitPortsModel?.primaryOut && (
+          {/* {unitPortsModel?.primaryOut && (
             <PortCell
               port={unitPortsModel.primaryOut}
               unitPosition={unitItem.position}
@@ -47,7 +46,7 @@ export const PivotUnitBox = ({ unitItem }: { unitItem: UnitItem }) => {
               port={unitPortsModel.primaryIn}
               unitPosition={unitItem.position}
             />
-          )}
+          )} */}
         </div>
         <div className={clsx("grow relative", bgSpecs.unitCardInner)}>
           <UnitFrameEx

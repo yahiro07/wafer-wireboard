@@ -1,13 +1,5 @@
-import { HsPortSubtype } from "wafer-host/core";
 import { createWireItem } from "@/model/factory";
 import { store } from "@/model/store";
-
-export function checkSubtypeOverlap(
-  subtypes1: HsPortSubtype[],
-  subtypes2: HsPortSubtype[],
-): boolean {
-  return subtypes1.some((st) => subtypes2.includes(st));
-}
 
 export const connectionLogic = {
   setConnectionSingle(sourcePortKey: string, destinationPortKey: string) {

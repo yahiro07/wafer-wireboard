@@ -23,10 +23,10 @@ export type Scene = {
 export type LiveClockingTarget = "none" | "single" | "chain" | "all";
 
 export type PortItem = {
-  portKey: string; //${unitId}.${portId}, portIds are "primaryOut", "primaryIn", or arbitrary id for additional ports
+  portKey: string; //${unitId}.${portId}
   unitId: string;
   direction: HsPortDirection;
-  subtypes: HsPortSubtype[];
+  subtype: HsPortSubtype;
   position: Point;
 };
 

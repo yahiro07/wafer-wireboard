@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { npx, Point } from "mofur/ax-ui";
+import { npx } from "mofur/ax-ui";
 import { ReactNode, useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { Icons } from "@/common/icons";
@@ -8,116 +8,8 @@ import { actions } from "@/model/actions";
 import { UnitItem } from "@/model/types";
 import { PortCell } from "@/port/port-cell";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
-import {
-  buildUnitTemporalPortsModel,
-  UnitTemporalPort,
-} from "@/unit/unit-temporal-ports-model";
+import { buildUnitTemporalPortsModel } from "@/unit/unit-temporal-ports-model";
 import { handleGripPointerDown } from "./unit-box-drag-handler";
-
-const AdditionalPortColumn = ({
-  port,
-  unitPosition,
-}: {
-  port: UnitTemporalPort;
-  unitPosition: Point;
-}) => {
-  const isOutput = port.portType === "additionalOutput";
-  return (
-    <div
-      key={port.id}
-      className={clsx(
-        "w-[40px] h-full p-2 flex-v items-center gap-1.5",
-        bgSpecs.unitCardFrame,
-        isOutput ? "justify-start" : "justify-end",
-      )}
-    >
-      {isOutput && <PortCell port={port} unitPosition={unitPosition} />}
-      <div
-        className={clsx(
-          "text-white text-[14px] leading-none whitespace-nowrap",
-        )}
-        style={{
-          writingMode: "vertical-rl",
-          textOrientation: "sideways",
-          transform: "rotate(180deg)",
-        }}
-      >
-        {port.label ?? port.id}
-      </div>
-      {port.portType === "additionalInput" && (
-        <PortCell port={port} unitPosition={unitPosition} />
-      )}
-    </div>
-  );
-};
-
-const AdditionalPortsPart = ({
-  ports,
-  unitItem,
-  side,
-}: {
-  ports: UnitTemporalPort[];
-  unitItem: UnitItem;
-  side: "left" | "right";
-}) => {
-  return (
-    <div
-      className={clsx(
-        "absolute top-0 h-full flex-h gap-1 mx-1 cursor-pointer",
-        side === "left" ? "right-full" : "left-full",
-      )}
-      onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
-    >
-      {ports.map((port) => (
-        <AdditionalPortColumn
-          key={port.id}
-          port={port}
-          unitPosition={unitItem.position}
-        />
-      ))}
-    </div>
-  );
-};
-
-const AdditionalPorts = ({
-  ports,
-  excludingPortIds,
-  unitItem,
-  altSidePortIds,
-}: {
-  ports: UnitTemporalPort[];
-  excludingPortIds?: string[];
-  unitItem: UnitItem;
-  altSidePortIds?: string[];
-}) => {
-  const filteredPorts = ports.filter(
-    (port) => !excludingPortIds?.includes(port.id),
-  );
-  const leftSidePorts = filteredPorts.filter(
-    (port) => !altSidePortIds?.includes(port.id),
-  );
-  const rightSidePorts = filteredPorts.filter((port) =>
-    altSidePortIds?.includes(port.id),
-  );
-  return (
-    <>
-      {leftSidePorts.length > 0 && (
-        <AdditionalPortsPart
-          ports={leftSidePorts}
-          unitItem={unitItem}
-          side="left"
-        />
-      )}
-      {rightSidePorts.length > 0 && (
-        <AdditionalPortsPart
-          ports={rightSidePorts}
-          unitItem={unitItem}
-          side="right"
-        />
-      )}
-    </>
-  );
-};
 
 export const UnitDeleteButton = ({ unitItem }: { unitItem: UnitItem }) => {
   return (
@@ -150,9 +42,6 @@ export const UnitDragGrip = ({
 export const SlotCardBox = ({
   unitItem,
   innerContent,
-  excludingPortIds,
-  altSidePortIds,
-  hiddenPortIds,
 }: {
   unitItem: UnitItem;
   innerContent?: ReactNode;
@@ -167,14 +56,6 @@ export const SlotCardBox = ({
       unitInstance ? buildUnitTemporalPortsModel(unitInstance) : undefined,
     [unitInstance],
   );
-  const primaryOutPort =
-    unitPortsModel?.primaryOut &&
-    !hiddenPortIds?.includes(unitPortsModel.primaryOut.id) &&
-    unitPortsModel.primaryOut;
-  const primaryInPort =
-    unitPortsModel?.primaryIn &&
-    !hiddenPortIds?.includes(unitPortsModel.primaryIn.id) &&
-    unitPortsModel.primaryIn;
   return (
     <div
       className="absolute"
@@ -185,11 +66,13 @@ export const SlotCardBox = ({
     >
       <div className="flex-h">
         <div className="w-[40px] flex-vc">
-          {primaryInPort ? (
-            <PortCell port={primaryInPort} unitPosition={unitItem.position} />
-          ) : (
-            <div />
-          )}
+          {unitPortsModel?.inputs.map((port) => (
+            <PortCell
+              key={port.portKey}
+              port={port}
+              unitPosition={unitItem.position}
+            />
+          ))}
         </div>
         <div
           className="relative flex-v shadow-md"
@@ -217,24 +100,16 @@ export const SlotCardBox = ({
               />
               {innerContent}
             </div>
-            {unitPortsModel?.additional && (
-              <AdditionalPorts
-                ports={unitPortsModel.additional}
-                unitItem={unitItem}
-                excludingPortIds={excludingPortIds}
-                altSidePortIds={altSidePortIds}
-              />
-            )}
           </div>
         </div>
         <div className="w-[40px] flex-vc">
-          {primaryOutPort ? (
-            <PortCell port={primaryOutPort} unitPosition={unitItem.position} />
-          ) : (
-            <div className="flex-c text-[24px] text-[#6ce] pointer-events-none">
-              <Icons.RadioTower />
-            </div>
-          )}
+          {unitPortsModel?.outputs.map((port) => (
+            <PortCell
+              key={port.portKey}
+              port={port}
+              unitPosition={unitItem.position}
+            />
+          ))}
         </div>
       </div>
     </div>

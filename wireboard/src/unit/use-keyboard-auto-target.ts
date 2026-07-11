@@ -17,7 +17,7 @@ function updateKeyboardAutoTarget() {
   const sourcePort = store.state.portItems[keyboardPrimaryOutputPortKey];
   if (!sourcePort) return;
   const portItems = Object.values(store.state.portItems);
-  const ports = filterCandidatePorts(portItems, keyboardUnitId, ["note"]);
+  const ports = filterCandidatePorts(portItems, keyboardUnitId, "note");
   const nearestPort = findNearestPort(ports, sourcePort.position, true);
   if (nearestPort && nearestPort.portKey !== existingWire.destinationPortKey) {
     connectionLogic.setConnectionSingle(

@@ -9,6 +9,21 @@ import { handleGripPointerDown } from "@/unit/unit-box-drag-handler";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
 import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
 
+const systemPortUnitTemporalPorts = {
+  speakerInput: {
+    direction: "input",
+    subtype: "audio",
+    portKey: "builtInPreOutput.primaryInput",
+    id: "builtInPreOutput.primaryInput",
+  },
+  keyboardOutput: {
+    direction: "output",
+    subtype: "note",
+    portKey: "builtInKeyboard.primaryOutput",
+    id: "builtInKeyboard.primaryOutput",
+  },
+} satisfies Record<string, UnitTemporalPort>;
+
 const SystemPortBox = ({
   unit,
   iconContent,
@@ -72,23 +87,6 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
     />
   );
 };
-
-const systemPortUnitTemporalPorts = {
-  speakerInput: {
-    portType: "primaryInput",
-    direction: "input",
-    subtypes: ["audio"],
-    portKey: "builtInPreOutput.primaryInput",
-    id: "builtInPreOutput.primaryInput",
-  },
-  keyboardOutput: {
-    portType: "primaryOutput",
-    direction: "output",
-    subtypes: ["note"],
-    portKey: "builtInKeyboard.primaryOutput",
-    id: "builtInKeyboard.primaryOutput",
-  },
-} satisfies Record<string, UnitTemporalPort>;
 
 export const KeyboardSystemPortBox = ({ unit }: { unit: UnitItem }) => {
   return (

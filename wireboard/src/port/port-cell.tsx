@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { Point } from "mofur/ax-ui";
 import { useEffect, useRef } from "react";
-import { bgSpecs } from "@/common/theme";
+import { HsPortSubtype } from "wafer-host/core";
 import { domEditAreaId } from "@/main-definitions/constants";
 import { getUnitIdFromPortKey } from "@/model/factory";
 import { connectionActions } from "@/port/connection-actions";
@@ -19,11 +19,19 @@ const PortCellView = ({
   highlightingState,
   noBg,
   isOutput,
+  subtype,
 }: {
   isOutput?: boolean;
   highlightingState: PortCellHighlightingState;
   noBg?: boolean;
+  subtype: HsPortSubtype;
 }) => {
+  const color = {
+    audio: "#e48",
+    note: "#48e",
+    clock: "#ec4",
+    automation: "#4a4",
+  }[subtype];
   return (
     <div
       className={clsx(
@@ -40,7 +48,8 @@ const PortCellView = ({
       }}
     >
       <div
-        className={clsx(bgSpecs.portCell, "w-[24px] h-[24px] rounded-full")}
+        className={clsx("w-[18px] h-[18px]", "rounded-[10px]")}
+        style={{ background: color }}
       ></div>
       {/* {isOutput && (
         <IconsEx.ConnectorPortUp style={{ transform: `rotate(90deg)` }} />
@@ -82,9 +91,9 @@ function useAffectPortPositionToStore(
       if (yOffset !== undefined) {
         position.y += yOffset;
       }
-      const { portKey, subtypes, direction } = port;
+      const { portKey, subtype, direction } = port;
       const unitId = getUnitIdFromPortKey(portKey);
-      const portItem = { portKey, unitId, direction, subtypes, position };
+      const portItem = { portKey, unitId, direction, subtype, position };
       connectionActions.addPortItem(portItem);
       return () => {
         connectionActions.removePortItem(portKey);
@@ -125,7 +134,11 @@ export const PortCell = ({
   };
   return (
     <div ref={portDivRef} onPointerDown={handlePointerDown}>
-      <PortCellView isOutput={isOutput} highlightingState={highlightingState} />
+      <PortCellView
+        isOutput={isOutput}
+        highlightingState={highlightingState}
+        subtype={port.subtype}
+      />
     </div>
   );
 };
@@ -150,6 +163,7 @@ export const KeyboardPortCell = ({
         isOutput={true}
         highlightingState={highlightingState}
         noBg
+        subtype={port.subtype}
       />
     </div>
   );

@@ -6,12 +6,12 @@ import { getUnitIdFromPortKey } from "@/model/factory";
 import { store } from "@/model/store";
 import { PortItem } from "@/model/types";
 import { connectionActions } from "@/port/connection-actions";
-import { checkSubtypeOverlap, connectionLogic } from "@/port/connection-logic";
+import { connectionLogic } from "@/port/connection-logic";
 
 export function filterCandidatePorts(
   portItems: PortItem[],
   sourcePortKey: string,
-  portSubtypes: HsPortSubtype[],
+  portSubtype: HsPortSubtype,
   includeSourcePort = false,
 ) {
   const sourceUnitId = getUnitIdFromPortKey(sourcePortKey);
@@ -19,7 +19,7 @@ export function filterCandidatePorts(
     (it) =>
       it.direction === "input" &&
       it.unitId !== sourceUnitId &&
-      checkSubtypeOverlap(it.subtypes, portSubtypes),
+      it.subtype === portSubtype,
   );
   if (includeSourcePort) {
     const sourcePort = portItems.find((it) => it.portKey === sourcePortKey);
@@ -73,7 +73,7 @@ export function handlePortCellDragging(
       const candidatePorts = filterCandidatePorts(
         portItems,
         portKey,
-        sourcePort.subtypes,
+        sourcePort.subtype,
         true,
       );
       const targetPort = findNearestPort(candidatePorts, pos, false);
@@ -100,7 +100,7 @@ export function handlePortCellDragging(
       const candidatePorts = filterCandidatePorts(
         portItems,
         portKey,
-        sourcePort.subtypes,
+        sourcePort.subtype,
       );
       const targetPort = findNearestPort(candidatePorts, pos, true);
       if (targetPort) {
@@ -185,7 +185,7 @@ export function handleKeyboardPortCellClick(
       const candidatePorts = filterCandidatePorts(
         portItems,
         portKey,
-        sourcePort.subtypes,
+        sourcePort.subtype,
       );
       const targetPort = findNearestPort(candidatePorts, pos, true);
       if (targetPort) {
