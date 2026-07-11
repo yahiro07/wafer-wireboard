@@ -4,6 +4,7 @@ import { ReactNode, useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { Icons } from "@/common/icons";
 import { bgSpecs } from "@/common/theme";
+import { catalog } from "@/main-definitions/showcase-entries";
 import { actions } from "@/model/actions";
 import { UnitItem } from "@/model/types";
 import { PortCell } from "@/port/port-cell";
@@ -58,6 +59,24 @@ export const PortsColumn = ({
   );
 };
 
+export const UnitTitleRow = ({ unitItem }: { unitItem: UnitItem }) => {
+  const unitTitle = catalog[unitItem.catalogKey]?.name ?? unitItem.catalogKey;
+  return (
+    <div
+      className={clsx(
+        "h-[40px] flex-ha relative text-white px-1",
+        bgSpecs.unitCardFrame,
+      )}
+    >
+      <UnitDragGrip unitItem={unitItem} />
+      <UnitDeleteButton unitItem={unitItem} />
+      <div className="absolute-full flex-c pointer-events-none">
+        {unitTitle}
+      </div>
+    </div>
+  );
+};
+
 export const SlotCardBox = ({
   unitItem,
   innerContent,
@@ -93,18 +112,7 @@ export const SlotCardBox = ({
           className="relative flex-v shadow-md"
           style={{ width: npx(sd.width), height: npx(sd.height) }}
         >
-          <div
-            className={clsx(
-              "h-[40px] flex-ha relative text-white px-1",
-              bgSpecs.unitCardFrame,
-            )}
-          >
-            <UnitDragGrip unitItem={unitItem} />
-            <UnitDeleteButton unitItem={unitItem} />
-            <div className="absolute-full flex-c pointer-events-none">
-              {unitItem.catalogKey}
-            </div>
-          </div>
+          <UnitTitleRow unitItem={unitItem} />
           <div className="grow flex-h">
             <div className={clsx("grow relative", bgSpecs.unitCardInner)}>
               <UnitFrameEx
