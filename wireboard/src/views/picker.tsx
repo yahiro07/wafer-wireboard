@@ -3,7 +3,10 @@ import { handlePickerItemDragStart } from "@/views/picker-drag-drop";
 
 export const PickerColumn = () => {
   return (
-    <div className="flex-v gap-2 p-2 w-[160px] h-full overflow-y-auto bg-gray-800">
+    <div
+      className="flex-v gap-2 p-2 w-[160px] h-full overflow-y-auto bg-gray-800"
+      style={{ direction: "rtl" }}
+    >
       {showcaseEntries.map((entry) => (
         <div
           key={entry.catalogKey}

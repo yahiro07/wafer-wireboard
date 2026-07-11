@@ -10,11 +10,13 @@ export const PageRoot = () => {
   const { infoPanelVisible } = store.useSnapshot();
   return (
     <div className={clsx("w-dvw h-dvh flex-h", bgSpecs.pageRoot)}>
-      <div className="grow flex-v">
+      <div className="flex-v w-full">
         <TopBar />
-        <MainEditArea />
+        <div className="grow flex-h overflow-hidden">
+          <PickerColumn />
+          <MainEditArea />
+        </div>
       </div>
-      <PickerColumn />
       {infoPanelVisible && <InformationPanel />}
     </div>
   );
