@@ -17,9 +17,15 @@ function pointsToCurvePath(wire: WiringLayerWire): string {
   const dx = p2.x - p1.x;
   const dy = p2.y - p1.y;
   const distance = Math.hypot(dx, dy);
-  const curvature = 0.42;
-  const handleLength = clamp(distance * curvature, 40, 180);
-  const tangent = clamp(Math.abs(dx) * 0.5, 24, handleLength);
+  const isBacktracking = dx < 0;
+  const curvature = isBacktracking ? 0.58 : 0.42;
+  const maxHandleLength = isBacktracking ? 260 : 180;
+  const handleLength = clamp(distance * curvature, 40, maxHandleLength);
+  const baseTangent = isBacktracking
+    ? Math.max(Math.abs(dx) * 0.5, Math.abs(dy) * 0.45)
+    : Math.abs(dx) * 0.5;
+  const minTangent = isBacktracking ? 72 : 24;
+  const tangent = clamp(baseTangent, minTangent, handleLength);
   const c1x = p1.x + tangent;
   const c2x = p2.x - tangent;
   const c1y = p1.y;
