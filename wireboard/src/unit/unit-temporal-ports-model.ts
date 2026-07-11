@@ -19,6 +19,8 @@ type UnitTemporalPortsModel = {
   outputs: UnitTemporalPort[];
 };
 
+const subtypeOrder = ["audio", "note", "clock", "automation"];
+
 export function buildUnitTemporalPortsModel(
   unitInstance: HsUnitInstance,
 ): UnitTemporalPortsModel {
@@ -35,6 +37,11 @@ export function buildUnitTemporalPortsModel(
         subtype: p.subtype,
         label: "label" in p ? p.label : undefined,
       };
+    })
+    .sort((a, b) => {
+      const aIndex = subtypeOrder.indexOf(a.subtype);
+      const bIndex = subtypeOrder.indexOf(b.subtype);
+      return aIndex - bIndex;
     });
   const inputs = portsIncluded.filter((p) => p.direction === "input");
   const outputs = portsIncluded.filter((p) => p.direction === "output");

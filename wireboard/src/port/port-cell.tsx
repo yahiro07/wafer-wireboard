@@ -28,9 +28,9 @@ const PortCellView = ({
 }) => {
   const color = {
     audio: "#e48",
-    note: "#48e",
+    note: "#4ae",
     clock: "#ec4",
-    automation: "#4a4",
+    automation: "#95d",
   }[subtype];
   return (
     <div
