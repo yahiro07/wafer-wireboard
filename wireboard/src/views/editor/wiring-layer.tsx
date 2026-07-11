@@ -20,8 +20,8 @@ function pointsToCurvePath(wire: WiringLayerWire): string {
   const curvature = 0.42;
   const handleLength = clamp(distance * curvature, 40, 180);
   const tangent = clamp(Math.abs(dx) * 0.5, 24, handleLength);
-  const c1x = p1.x + Math.sign(dx || 1) * tangent;
-  const c2x = p2.x - Math.sign(dx || 1) * tangent;
+  const c1x = p1.x + tangent;
+  const c2x = p2.x - tangent;
   const c1y = p1.y;
   const c2y = p2.y;
 
