@@ -51,10 +51,16 @@ export const PortsColumn = ({
   unitPosition: Point;
 }) => {
   return (
-    <div className="w-[40px] flex-vc">
-      {ports?.map((port) => (
-        <PortCell key={port.portKey} port={port} unitPosition={unitPosition} />
-      ))}
+    <div className="w-[40px] relative">
+      <div className="absolute left-0" style={{ top: "calc(50% - 30px)" }}>
+        {ports?.map((port) => (
+          <PortCell
+            key={port.portKey}
+            port={port}
+            unitPosition={unitPosition}
+          />
+        ))}
+      </div>
     </div>
   );
 };
