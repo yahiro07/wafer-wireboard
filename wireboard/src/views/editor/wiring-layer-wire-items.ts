@@ -9,6 +9,7 @@ export type WiringLayerWire = {
   p2: Point;
   hmrRevision: number;
   signalType: HsPortSubtype;
+  weaken: boolean;
 };
 
 export function useWiringLayerWireItems(): WiringLayerWire[] {
@@ -20,20 +21,15 @@ export function useWiringLayerWireItems(): WiringLayerWire[] {
           const id = wire.connectionKey;
           const p1 = portItems[wire.sourcePortKey]?.position;
           const p2 = portItems[wire.destinationPortKey]?.position;
-          const hmrRevision = wire.hmrRevision ?? 0;
-          if (hideWarpedWires) {
-            if (
-              wire.sourcePortKey.includes("warpMixEmitter") ||
-              wire.destinationPortKey.includes("warpMixReceiver")
-              // (wire.sourcePortKey.includes("aux") ||
-              //   wire.destinationPortKey.includes("aux"))
-            ) {
-              return undefined;
-            }
-          }
+
           if (p1 && p2) {
+            const hmrRevision = wire.hmrRevision ?? 0;
             const signalType = portItems[wire.sourcePortKey]?.subtype;
-            return { id, p1, p2, hmrRevision, signalType };
+            const weaken =
+              hideWarpedWires &&
+              (wire.sourcePortKey.includes("warpMixEmitter") ||
+                wire.destinationPortKey.includes("warpMixReceiver"));
+            return { id, p1, p2, hmrRevision, signalType, weaken };
           }
           return undefined;
         })

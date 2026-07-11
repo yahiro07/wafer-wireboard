@@ -46,12 +46,14 @@ export const UnitDragGrip = ({
 export const PortsColumn = ({
   ports,
   unitPosition,
+  weaken,
 }: {
   ports: UnitTemporalPort[] | undefined;
   unitPosition: Point;
+  weaken?: boolean;
 }) => {
   return (
-    <div className="w-[40px] relative">
+    <div className="w-[40px] relative" style={{ opacity: weaken ? 0.5 : 1 }}>
       <div className="absolute left-0" style={{ top: "calc(50% - 30px)" }}>
         {ports?.map((port) => (
           <PortCell
@@ -111,8 +113,9 @@ export const SlotCardBox = ({
     >
       <div className="flex-h">
         <PortsColumn
-          ports={hideInputPorts ? undefined : unitPortsModel?.inputs}
+          ports={unitPortsModel?.inputs}
           unitPosition={unitItem.position}
+          weaken={hideInputPorts}
         />
         <div
           className="relative flex-v shadow-md"
@@ -132,8 +135,9 @@ export const SlotCardBox = ({
           </div>
         </div>
         <PortsColumn
-          ports={hideOutputPorts ? undefined : unitPortsModel?.outputs}
+          ports={unitPortsModel?.outputs}
           unitPosition={unitItem.position}
+          weaken={hideOutputPorts}
         />
       </div>
     </div>

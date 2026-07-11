@@ -45,7 +45,7 @@ const WireLine = ({ wire }: { wire: WiringLayerWire }) => {
       strokeLinecap="round"
       strokeLinejoin="round"
       fill="none"
-      opacity={0.7}
+      opacity={wire.weaken ? 0.1 : 0.8}
     />
   );
 };
