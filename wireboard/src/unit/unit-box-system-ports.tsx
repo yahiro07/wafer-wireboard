@@ -74,7 +74,7 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
         <SideGrip unit={unit}>
           <Icons.Speaker size={65} />
         </SideGrip>
-        <div className="flex-h w-[340px] h-[120px]">
+        <div className="flex-h w-[320px] h-[120px]">
           <div className="w-full h-full bg-black text-white">
             <UnitFrameEx unitId={unit.unitId} catalogKey={unit.catalogKey} />
           </div>
@@ -92,7 +92,7 @@ export const KeyboardSystemPortBox = ({ unit }: { unit: UnitItem }) => {
         <SideGrip unit={unit}>
           <Icons.Piano size={65} />
         </SideGrip>
-        <div className="flex-h w-[340px] h-[120px]">
+        <div className="flex-h w-[320px] h-[120px]">
           <div className="w-full h-full bg-white text-black">
             <UnitFrameEx unitId={unit.unitId} catalogKey={unit.catalogKey} />
           </div>
