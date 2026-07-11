@@ -4,12 +4,12 @@ import { useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { bgSpecs } from "@/common/theme";
 import { UnitItem } from "@/model/types";
-import { UnitDeleteButton, UnitDragGrip } from "@/unit/unit-box-base";
+import { PortsColumn, UnitTitleRow } from "@/unit/unit-box-base";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
 import { buildUnitTemporalPortsModel } from "@/unit/unit-temporal-ports-model";
 
 export const PivotUnitBox = ({ unitItem }: { unitItem: UnitItem }) => {
-  const sd = { width: 200, height: 120 };
+  const sd = { width: 220, height: 140 };
   const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
   const unitPortsModel = useMemo(
     () =>
@@ -28,27 +28,12 @@ export const PivotUnitBox = ({ unitItem }: { unitItem: UnitItem }) => {
         className="relative flex-h shadow-md"
         style={{ width: npx(sd.width), height: npx(sd.height) }}
       >
-        <div
-          className={clsx(
-            "w-[40px] flex-v items-center py-2",
-            bgSpecs.unitCardFrame,
-          )}
-        >
-          {/* {unitPortsModel?.primaryOut && (
-            <PortCell
-              port={unitPortsModel.primaryOut}
-              unitPosition={unitItem.position}
-            />
-          )}
-          <UnitDragGrip unitItem={unitItem} />
-          {unitPortsModel?.primaryIn && (
-            <PortCell
-              port={unitPortsModel.primaryIn}
-              unitPosition={unitItem.position}
-            />
-          )} */}
-        </div>
-        <div className={clsx("grow relative", bgSpecs.unitCardInner)}>
+        <PortsColumn
+          ports={unitPortsModel?.inputs}
+          unitPosition={unitItem.position}
+        />
+        <div className={clsx("grow flex-v", bgSpecs.unitCardInner)}>
+          <UnitTitleRow unitItem={unitItem} />
           <UnitFrameEx
             key={unitItem.hmrRevision}
             unitId={unitItem.unitId}
@@ -56,15 +41,10 @@ export const PivotUnitBox = ({ unitItem }: { unitItem: UnitItem }) => {
             onUnitInstanceLoaded={setUnitInstance}
           />
         </div>
-        <div
-          className={clsx(
-            "w-[40px] flex-v text-white py-1",
-            bgSpecs.unitCardFrame,
-          )}
-        >
-          <UnitDeleteButton unitItem={unitItem} />
-          <UnitDragGrip unitItem={unitItem} showIcon />
-        </div>
+        <PortsColumn
+          ports={unitPortsModel?.outputs}
+          unitPosition={unitItem.position}
+        />
       </div>
     </div>
   );

@@ -51,6 +51,10 @@ export const showcaseEntries: ShowcaseEntry[] = [
   { name: "note hub", catalogKey: internalUnitKeys.builtInNoteHub },
 ];
 
+export const unitNamesMap = Object.fromEntries(
+  showcaseEntries.map((item) => [item.catalogKey, item.name]),
+);
+
 export function getCatalogItem(
   catalogKey: CatalogKey,
 ): UnitInventorySpec | undefined {

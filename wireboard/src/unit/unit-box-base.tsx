@@ -4,7 +4,7 @@ import { ReactNode, useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { Icons } from "@/common/icons";
 import { bgSpecs } from "@/common/theme";
-import { catalog } from "@/main-definitions/showcase-entries";
+import { unitNamesMap } from "@/main-definitions/showcase-entries";
 import { actions } from "@/model/actions";
 import { UnitItem } from "@/model/types";
 import { PortCell } from "@/port/port-cell";
@@ -57,7 +57,7 @@ export const PortsColumn = ({
       className="w-[40px] relative"
       style={weaken ? { opacity: 0.1, pointerEvents: "none" } : {}}
     >
-      <div className="absolute left-0" style={{ top: "calc(50% - 30px)" }}>
+      <div className="absolute left-0" style={{ top: "calc(50% - 20px)" }}>
         {ports?.map((port) => (
           <PortCell
             key={port.portKey}
@@ -71,7 +71,7 @@ export const PortsColumn = ({
 };
 
 export const UnitTitleRow = ({ unitItem }: { unitItem: UnitItem }) => {
-  const unitTitle = catalog[unitItem.catalogKey]?.name ?? unitItem.catalogKey;
+  const unitTitle = unitNamesMap[unitItem.catalogKey] ?? unitItem.catalogKey;
   return (
     <div
       className={clsx(
