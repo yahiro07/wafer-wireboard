@@ -1,6 +1,6 @@
 import { Size } from "mofur/ax-ui";
 import { useMemo } from "react";
-import { bgSpecs } from "@/common/theme";
+import { signalColors } from "@/main-definitions/constants";
 import { WiringLayerWire } from "@/views/editor/wiring-layer-wire-items";
 
 type Props = {
@@ -36,14 +36,16 @@ function pointsToCurvePath(wire: WiringLayerWire): string {
 
 const WireLine = ({ wire }: { wire: WiringLayerWire }) => {
   const path = useMemo(() => pointsToCurvePath(wire), [wire]);
+  const color = signalColors[wire.signalType];
   return (
     <path
       d={path}
-      stroke={bgSpecs.wireColor}
-      strokeWidth={8}
+      stroke={color}
+      strokeWidth={6}
       strokeLinecap="round"
       strokeLinejoin="round"
       fill="none"
+      opacity={0.7}
     />
   );
 };

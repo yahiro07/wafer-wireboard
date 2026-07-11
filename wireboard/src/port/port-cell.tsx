@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { Point } from "mofur/ax-ui";
 import { useEffect, useRef } from "react";
 import { HsPortSubtype } from "wafer-host/core";
-import { domEditAreaId } from "@/main-definitions/constants";
+import { domEditAreaId, signalColors } from "@/main-definitions/constants";
 import { getUnitIdFromPortKey } from "@/model/factory";
 import { connectionActions } from "@/port/connection-actions";
 import {
@@ -26,12 +26,7 @@ const PortCellView = ({
   noBg?: boolean;
   subtype: HsPortSubtype;
 }) => {
-  const color = {
-    audio: "#e48",
-    note: "#4ae",
-    clock: "#ec4",
-    automation: "#95d",
-  }[subtype];
+  const color = signalColors[subtype];
   return (
     <div
       className={clsx(

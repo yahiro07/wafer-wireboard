@@ -1,5 +1,6 @@
 import { Point } from "mofur/ax-ui";
 import { useMemo } from "react";
+import { HsPortSubtype } from "wafer-host/core";
 import { store } from "@/model/store";
 
 export type WiringLayerWire = {
@@ -7,6 +8,7 @@ export type WiringLayerWire = {
   p1: Point;
   p2: Point;
   hmrRevision: number;
+  signalType: HsPortSubtype;
 };
 
 export function useWiringLayerWireItems(): WiringLayerWire[] {
@@ -30,7 +32,8 @@ export function useWiringLayerWireItems(): WiringLayerWire[] {
             }
           }
           if (p1 && p2) {
-            return { id, p1, p2, hmrRevision };
+            const signalType = portItems[wire.sourcePortKey]?.subtype;
+            return { id, p1, p2, hmrRevision, signalType };
           }
           return undefined;
         })
