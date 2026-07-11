@@ -13,8 +13,8 @@ const unitInitialWiringRules = [
     destinationCatalogKey: "warpMixReceiver",
     connectionRules: [
       {
-        sourcePortId: "primaryOutput",
-        destinationPortId: "primaryInput",
+        sourcePortId: "audioOutput",
+        destinationPortId: "audioInput",
       },
       {
         sourcePortId: "auxOutput",

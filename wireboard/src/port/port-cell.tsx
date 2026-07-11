@@ -5,10 +5,7 @@ import { HsPortSubtype } from "wafer-host/core";
 import { domEditAreaId, signalColors } from "@/main-definitions/constants";
 import { getUnitIdFromPortKey } from "@/model/factory";
 import { connectionActions } from "@/port/connection-actions";
-import {
-  handleKeyboardPortCellClick,
-  handlePortCellDragging,
-} from "@/port/port-cell-drag-handler";
+import { handlePortCellDragging } from "@/port/port-cell-drag-handler";
 import {
   PortCellHighlightingState,
   usePortCellHighlightingModel,
@@ -17,22 +14,21 @@ import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
 
 const PortCellView = ({
   highlightingState,
-  noBg,
   isOutput,
   subtype,
+  label,
 }: {
   isOutput?: boolean;
   highlightingState: PortCellHighlightingState;
-  noBg?: boolean;
   subtype: HsPortSubtype;
+  label?: string;
 }) => {
   const color = signalColors[subtype];
   return (
     <div
       className={clsx(
-        "w-[40px] h-[40px] flex-c",
+        "w-[40px] h-[40px] flex-c relative",
         isOutput && "cursor-pointer",
-        // !noBg && bgSpecs.portCell,
       )}
       style={{
         background: highlightingState === "truthy" ? "orange" : undefined,
@@ -45,10 +41,10 @@ const PortCellView = ({
       <div
         className={clsx("w-[18px] h-[18px]", "rounded-[10px]")}
         style={{ background: color }}
-      ></div>
-      {/* {isOutput && (
-        <IconsEx.ConnectorPortUp style={{ transform: `rotate(90deg)` }} />
-      )} */}
+      />
+      {label && (
+        <div className="absolute-full flex-c text-white mt-8">{label}</div>
+      )}
     </div>
   );
 };
@@ -133,62 +129,8 @@ export const PortCell = ({
         isOutput={isOutput}
         highlightingState={highlightingState}
         subtype={port.subtype}
+        label={port.label}
       />
-    </div>
-  );
-};
-
-export const KeyboardPortCell = ({
-  port,
-  unitPosition,
-}: {
-  port: UnitTemporalPort;
-  unitPosition: Point;
-}) => {
-  const highlightingState = usePortCellHighlightingModel(port.portKey);
-  const portDivRef = useRef<HTMLDivElement>(null);
-  useAffectPortPositionToStore(portDivRef, port, unitPosition);
-  const handlePointerDown = (e: React.PointerEvent) => {
-    handleKeyboardPortCellClick(e, port.portKey);
-    e.stopPropagation();
-  };
-  return (
-    <div ref={portDivRef} onPointerDown={handlePointerDown}>
-      <PortCellView
-        isOutput={true}
-        highlightingState={highlightingState}
-        noBg
-        subtype={port.subtype}
-      />
-    </div>
-  );
-};
-
-export const SpeakerPortCell = ({
-  port,
-  children,
-  unitPosition,
-}: {
-  port: UnitTemporalPort;
-  children: React.ReactNode;
-  unitPosition: Point;
-}) => {
-  const highlightingState = usePortCellHighlightingModel(port.portKey);
-  const portDivRef = useRef<HTMLDivElement>(null);
-  useAffectPortPositionToStore(portDivRef, port, unitPosition, 40);
-  return (
-    <div
-      ref={portDivRef}
-      style={{
-        background: highlightingState === "truthy" ? "orange" : undefined,
-        border:
-          highlightingState === "truthyOutlined"
-            ? "1.5px solid orange"
-            : undefined,
-        color: highlightingState === "truthy" ? "white" : undefined,
-      }}
-    >
-      {children}
     </div>
   );
 };

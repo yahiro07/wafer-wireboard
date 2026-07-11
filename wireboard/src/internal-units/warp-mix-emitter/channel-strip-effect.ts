@@ -47,7 +47,7 @@ export function createChannelStripEffectEngine(unitInterface: UnitInterface) {
   const mainOutputNode = unitInterface.audioOutputNode;
   const auxOutputNode = unitInterface.createAdditionalAudioOutputNode(
     "auxOutput",
-    "aux out",
+    "aux",
   );
   const mainGain = audioContext.createGain();
   const auxGain = audioContext.createGain();

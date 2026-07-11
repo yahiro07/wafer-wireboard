@@ -16,14 +16,14 @@ function createEngine(unitInterface: UnitInterface) {
   const mainOutputNode = unitInterface.audioOutputNode;
   const auxOutputNode = unitInterface.createAdditionalAudioOutputNode(
     "auxOutput",
-    "aux out",
+    "aux",
   );
   const mainGain = audioContext.createGain();
   const auxGain = audioContext.createGain();
   const mainInputNode = unitInterface.audioInputNode;
   const auxInputNode = unitInterface.createAdditionalAudioInputNode(
     "auxInput",
-    "aux in",
+    "aux",
   );
 
   mainInputNode.connect(mainGain);
