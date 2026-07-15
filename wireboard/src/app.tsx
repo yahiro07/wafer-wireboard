@@ -27,7 +27,11 @@ const App = () => {
   useEffect(setupMidiInputHandling, []);
   useEffect(projectsModel.setupLifecycle, []);
   useSequencerTickDriverRunner({ sequencerTickDriver, playing, bpm });
-  useEffect(setupDynamicClockingSupport, []);
+  useEffect(() => {
+    if (0) {
+      return setupDynamicClockingSupport(); //unstable so far
+    }
+  }, []);
   partialPlaybackSupport.useSetup();
   return (
     <HostAppProvider
