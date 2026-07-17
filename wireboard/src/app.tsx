@@ -2,7 +2,7 @@ import { mountAppRoot } from "mofur/ax-react";
 import { mapKnobGainDb } from "mofur/mo-audio";
 import { useEffect, useMemo } from "react";
 import {
-  HostAppPlainProvider,
+  HostAppProvider,
   useSequencerTickDriverRunner,
 } from "wafer-host/react";
 import { hostSystem, sequencerTickDriver } from "@/model/host-system-instance";
@@ -34,14 +34,15 @@ const App = () => {
   }, []);
   partialPlaybackSupport.useSetup();
   return (
-    <HostAppPlainProvider
+    <HostAppProvider
       hostSystem={hostSystem}
       playing={playing}
       bpm={bpm}
       masterGain={masterGain}
+      manualClocking
     >
       <PageRoot />
-    </HostAppPlainProvider>
+    </HostAppProvider>
   );
 };
 

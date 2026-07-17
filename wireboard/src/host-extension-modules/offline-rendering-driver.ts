@@ -88,10 +88,11 @@ export function createOfflineRenderingDriver_SimulateRealtimeTickDriver(
   const lookaheadSec = config.lookaheadMs / 1000;
   const renderEndEpsilonSec = 1 / offlineAudioContext.sampleRate;
 
-  const offlineHost = createHostSystem(offlineAudioContext);
   const offlineActionScheduler =
     createOfflineActionScheduler(offlineAudioContext);
-  offlineHost.setCustomActionScheduler(offlineActionScheduler);
+  const offlineHost = createHostSystem(offlineAudioContext, {
+    customActionScheduler: offlineActionScheduler,
+  });
 
   const run = async () => {
     await sceneSetupFn(offlineHost);
