@@ -1,6 +1,7 @@
 import {
   createSequencerTickDriverCore,
   HostSystem,
+  oxLogger,
   sequencerTickDriverHelper,
 } from "wafer-host/core";
 
@@ -28,13 +29,16 @@ export function createCustomSequencerTickDriver(
     start() {
       if (!running) {
         tickFrameIndex = 0;
+        oxLogger.clockingStart();
         processUnitsStartStop(hostSystem.getAllUnits(), "start");
         core.start({
           processScheduling(timeFrom, barFrom, barTo, bpm) {
+            oxLogger.clockingFrameStart(tickFrameIndex);
             const units = hostSystem
               .getAllUnits()
               .filter((unit) => unitClockingFlags[unit.unitId] !== false);
             processUnitsScheduling(units, timeFrom, barFrom, barTo, bpm);
+            oxLogger.clockingFrameEnd(tickFrameIndex);
             tickFrameIndex++;
           },
         });
@@ -45,6 +49,7 @@ export function createCustomSequencerTickDriver(
       if (running) {
         core.stop();
         processUnitsStartStop(hostSystem.getAllUnits(), "stop");
+        oxLogger.clockingStop();
         running = false;
       }
     },
