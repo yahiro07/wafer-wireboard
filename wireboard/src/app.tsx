@@ -11,6 +11,7 @@ import { setupDynamicClockingSupport } from "@/periphery/dynamic-clocking-suppor
 import { setupHmrHandler } from "@/periphery/hmr-handler";
 import { setupMidiInputHandling } from "@/periphery/midi-input-handling";
 import { createPartialPlaybackSupport } from "@/periphery/partial-playback-support";
+import { useSetupSongKeySupport } from "@/periphery/song-key-support";
 import { projectsModel } from "@/project/projects-model";
 import { PageRoot } from "@/views/page-root";
 
@@ -33,6 +34,7 @@ const App = () => {
     }
   }, []);
   partialPlaybackSupport.useSetup();
+  useSetupSongKeySupport();
   return (
     <HostAppProvider
       hostSystem={hostSystem}

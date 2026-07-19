@@ -16,6 +16,7 @@ export type StoreState = {
   wireItems: WireItem[];
   sight: FieldSight;
   bpm: number;
+  songKey: string;
   playing: boolean;
   masterVolume: number;
   infoPanelVisible: boolean;
@@ -40,6 +41,7 @@ export const store = createStore<StoreState>({
   wireItems: [],
   sight: { eyeScaling: 0.5, eyeOffset: { x: 0, y: 0 } },
   bpm: 120,
+  songKey: "Am",
   playing: false,
   masterVolume: 0.5,
   infoPanelVisible: false,
