@@ -16,7 +16,7 @@ export const createVolumeUnit: ReactUnitTemplateFn = (unitInterface) => {
   };
 
   unitInterface.completeSetup({
-    unitAspects: { unitType: "effect", outputs: ["audio"], inputs: ["audio"] },
+    unitAspects: { unitType: "effect" },
   });
 
   const store = createStore({

@@ -7,7 +7,7 @@ import { OctaveShifter } from "./octave-shifter";
 export const createBuiltinKeyboardUnit: ReactUnitTemplateFn = (
   unitInterface,
 ) => {
-  const noteOutput = unitInterface.noteOutputPort;
+  const noteOutputPort = unitInterface.createNoteOutputPort();
 
   const notesMap = new Map<number, number>(); // key: noteKey, value: noteNumber
 
@@ -26,14 +26,14 @@ export const createBuiltinKeyboardUnit: ReactUnitTemplateFn = (
     async noteOn(noteKey: number) {
       const noteNumber = noteKey + store.state.octave * 12;
       store.setNotes((prev) => [...prev, noteNumber]);
-      noteOutput.noteOn(noteNumber);
+      noteOutputPort.noteOn(noteNumber);
       notesMap.set(noteKey, noteNumber);
     },
     noteOff(noteKey: number) {
       const noteNumber = notesMap.get(noteKey);
       if (noteNumber) {
         store.setNotes((prev) => prev.filter((n) => n !== noteNumber));
-        noteOutput.noteOff(noteNumber);
+        noteOutputPort.noteOff(noteNumber);
         notesMap.delete(noteKey);
       }
     },
@@ -46,8 +46,6 @@ export const createBuiltinKeyboardUnit: ReactUnitTemplateFn = (
     unitAspects: {
       unitType: "sequencer",
       categoryHint: "keyboard",
-      outputs: ["note"],
-      inputs: ["note"],
     },
     noteInput: {
       noteOn: actions.noteOn,
