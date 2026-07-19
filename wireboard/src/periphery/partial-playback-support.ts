@@ -10,9 +10,10 @@ type MessageFromUnits = {
 
 export function createPartialPlaybackSupport() {
   function setupUnitMessageReceiver() {
-    return hostSystem.subscribeMessageFromUnits(
-      (_message: any, senderUnitId) => {
-        const message = _message as MessageFromUnits;
+    return hostSystem.eventPort.subscribe((ev) => {
+      if (ev.type === "messageFromUnit") {
+        const message = ev.message as MessageFromUnits;
+        const senderUnitId = ev.senderUnitId;
         if (message.type === "partialPlaybackRequest") {
           const { playing } = message;
           if (playing) {
@@ -26,8 +27,8 @@ export function createPartialPlaybackSupport() {
             );
           }
         }
-      },
-    );
+      }
+    });
   }
 
   function usePartialPlaybackDriver() {
