@@ -1,5 +1,6 @@
 import { ReactUnitTemplateFn } from "wafer-host/react";
 import { UnitInventorySpec } from "wafer-host/vite-plugin";
+import { createAdvancedControlUnit } from "@/internal-units/advanced-control";
 import { createBuiltinKeyboardUnit } from "@/internal-units/keyboard/keyboard";
 import { createNoteHubUnit } from "@/internal-units/note-hub";
 import { createBuiltinVisualizerUnit } from "@/internal-units/visualizer/visualizer";
@@ -15,6 +16,7 @@ const internalUnitFunctions = {
   warpMixReceiver: createWarpMixReceiverUnit,
   builtInVolume: createVolumeUnit,
   builtInNoteHub: createNoteHubUnit,
+  advancedControl: createAdvancedControlUnit,
 };
 
 const internalUnitKeys = {
@@ -24,6 +26,7 @@ const internalUnitKeys = {
   warpMixReceiver: "warpMixReceiver",
   builtInVolume: "builtInVolume",
   builtInNoteHub: "builtInNoteHub",
+  advancedControl: "advancedControl",
 } as const;
 
 export type CatalogKey =
@@ -49,6 +52,7 @@ export const showcaseEntries: ShowcaseEntry[] = [
   { name: "warp mix receiver", catalogKey: internalUnitKeys.warpMixReceiver },
   { name: "volume", catalogKey: internalUnitKeys.builtInVolume },
   { name: "note hub", catalogKey: internalUnitKeys.builtInNoteHub },
+  { name: "advanced control", catalogKey: internalUnitKeys.advancedControl },
 ];
 
 export const unitNamesMap = Object.fromEntries(
