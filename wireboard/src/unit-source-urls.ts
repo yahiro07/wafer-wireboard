@@ -10,18 +10,16 @@ function getUnitSourceUrls() {
       "../../../webaudio-unit-system/unit-examples/dist",
     );
     const wusUnitsLocalDistDir = toAbsolutePath("../../../wus-units/dist");
-    const wusCustomUnitsLocalDistDir = toAbsolutePath(
-      "../../../wus-custom-units/dist",
-    );
+    const wusCustomUnitsLocalDir = toAbsolutePath("../../../wus-custom-units");
     return [
       `file://${wusUnitsLocalDistDir}/graphite-drum-machine/`,
       // `file://${homeDir}/wus-units/my-drum-machine/`,
 
       `file://${wusUnitsLocalDistDir}/wavicle/`,
-      `file://${wusCustomUnitsLocalDistDir}/wasyn-1/`,
-      `file://${wusCustomUnitsLocalDistDir}/webaudio-tinysynth-simple/`,
-      `file://${wusCustomUnitsLocalDistDir}/webaudio-synth-v2/`,
-      `file://${wusCustomUnitsLocalDistDir}/additive/`,
+      `file://${wusCustomUnitsLocalDir}/vanilla/wasyn-1/`,
+      `file://${wusCustomUnitsLocalDir}/vanilla/webaudio-tinysynth-simple/`,
+      `file://${wusCustomUnitsLocalDir}/vanilla/webaudio-synth-v2/`,
+      `file://${wusCustomUnitsLocalDir}/vanilla/additive/`,
       `file://${wusUnitsLocalDistDir}/bseq2/`,
       `file://${wusUnitsLocalDistDir}/toner-sequencer/`,
       `file://${wusUnitsLocalDistDir}/bseq1/`,
@@ -72,8 +70,8 @@ function getUnitSourceUrls() {
 
       //
 
-      `file://${wusCustomUnitsLocalDistDir}/vissonance/`,
-      `file://${wusCustomUnitsLocalDistDir}/threejs-audio-reactive-visual/`,
+      `file://${wusCustomUnitsLocalDir}/vanilla/vissonance/`,
+      `file://${wusCustomUnitsLocalDir}/ts/dist/threejs-audio-reactive-visual/`,
       //
     ];
   } else {
