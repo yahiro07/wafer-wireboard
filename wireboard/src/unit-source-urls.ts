@@ -21,7 +21,7 @@ function getUnitSourceUrls() {
       `file://${wusCustomUnitsLocalDir}/vanilla/webaudio-synth-v2/`,
       `file://${wusCustomUnitsLocalDir}/vanilla/additive/`,
       `file://${wusUnitsLocalDistDir}/bseq2/`,
-      `file://${wusUnitsLocalDistDir}/toner-sequencer/`,
+      `file://${wusUnitsLocalDistDir}/tonerio-sequencer/`,
       `file://${wusUnitsLocalDistDir}/bseq1/`,
       `file://${wusUnitsLocalDistDir}/lseq1/`,
       `file://${wusUnitsLocalDistDir}/partex/`,
