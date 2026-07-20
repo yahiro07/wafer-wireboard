@@ -110,8 +110,9 @@ export const SlotCardBox = ({
     <div
       className="absolute"
       style={{
-        left: npx(unitItem.position.x - sd.width / 2),
-        top: npx(unitItem.position.y - sd.height / 2),
+        left: npx(unitItem.position.x - sd.width / 2 - 40),
+        top: npx(unitItem.position.y - sd.height / 2 - 10),
+        // border: "solid 1px red",
       }}
     >
       <div className="flex-h">
@@ -122,7 +123,11 @@ export const SlotCardBox = ({
         />
         <div
           className="relative flex-v shadow-md"
-          style={{ width: npx(sd.width), height: npx(sd.height) }}
+          style={{
+            width: npx(sd.width),
+            height: npx(sd.height),
+            // border: "solid 1px blue",
+          }}
         >
           <UnitTitleRow unitItem={unitItem} />
           <div className="grow flex-h">

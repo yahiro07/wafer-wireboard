@@ -27,17 +27,20 @@ const systemPortUnitTemporalPorts = {
 const SystemPortBox = ({
   unit,
   children,
+  xOffset,
 }: {
   unit: UnitItem;
   children: ReactNode;
+  xOffset: number;
 }) => {
   const sd = { width: 560, height: 120 };
   return (
     <div
       className="absolute"
       style={{
-        left: npx(unit.position.x - sd.width / 2),
+        left: npx(unit.position.x - sd.width / 2 + xOffset),
         top: npx(unit.position.y - sd.height / 2),
+        // border: "solid 1px red",
       }}
     >
       <div className="relative shadow-md flex-ha">{children}</div>
@@ -68,7 +71,7 @@ const SideGrip = ({
 export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
   const ports = useMemo(() => [systemPortUnitTemporalPorts.speakerInput], []);
   return (
-    <SystemPortBox unit={unit}>
+    <SystemPortBox unit={unit} xOffset={0 + 40}>
       <div className="flex-ha">
         <PortsColumn ports={ports} unitPosition={unit.position} />
         <SideGrip unit={unit}>
@@ -87,7 +90,7 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
 export const KeyboardSystemPortBox = ({ unit }: { unit: UnitItem }) => {
   const ports = useMemo(() => [systemPortUnitTemporalPorts.keyboardOutput], []);
   return (
-    <SystemPortBox unit={unit}>
+    <SystemPortBox unit={unit} xOffset={40 + 40}>
       <div className="flex-ha">
         <SideGrip unit={unit}>
           <Icons.Piano size={65} />

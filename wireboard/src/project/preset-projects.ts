@@ -26,7 +26,7 @@ function extractPresetUnitItems(source: (UnitItem & { destSpec?: string })[]): {
 export function createPresetProjectsModel() {
   return {
     buildDefaultProjectStates(): Partial<StoreState> {
-      const baseX = 4600;
+      const baseX = 4500;
       const baseY = 2650;
       const { unitItems, wireItems } = extractPresetUnitItems([
         {
@@ -55,7 +55,7 @@ export function createPresetProjectsModel() {
       };
     },
     buildBlankProjectStates(): Partial<StoreState> {
-      const baseX = 4600;
+      const baseX = 4500;
       const baseY = 2650;
       const { unitItems, wireItems } = extractPresetUnitItems([
         {
@@ -77,7 +77,7 @@ export function createPresetProjectsModel() {
       };
     },
     buildDemoProjectStates(): Partial<StoreState> {
-      const baseX = 4600;
+      const baseX = 4500;
       const baseY = 2650;
       const { unitItems, wireItems } = extractPresetUnitItems([
         {
