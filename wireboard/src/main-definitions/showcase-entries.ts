@@ -1,5 +1,6 @@
 import { ReactUnitTemplateFn } from "wafer-host/react";
 import { UnitInventorySpec } from "wafer-host/vite-plugin";
+import { internalUnitThumbnails } from "@/internal-units/_thumbnails";
 import { createAdvancedControlUnit } from "@/internal-units/advanced-control";
 import { createBuiltinKeyboardUnit } from "@/internal-units/keyboard/keyboard";
 import { createNoteHubUnit } from "@/internal-units/note-hub";
@@ -52,11 +53,31 @@ export const showcaseEntries: ShowcaseEntry[] = [
     isBeta: betaUnitKeys.includes(item.catalogKey as CatalogKey),
   })),
   //builtInKeyboard and builtInVisualizer are omit from showcase entries
-  { name: "warp mix emitter", catalogKey: internalUnitKeys.warpMixEmitter },
-  { name: "warp mix receiver", catalogKey: internalUnitKeys.warpMixReceiver },
-  { name: "volume", catalogKey: internalUnitKeys.builtInVolume },
-  { name: "note hub", catalogKey: internalUnitKeys.builtInNoteHub },
-  { name: "advanced control", catalogKey: internalUnitKeys.advancedControl },
+  {
+    name: "warp mix emitter",
+    catalogKey: internalUnitKeys.warpMixEmitter,
+    thumbnailUrl: internalUnitThumbnails.warpMixEmitter,
+  },
+  {
+    name: "warp mix receiver",
+    catalogKey: internalUnitKeys.warpMixReceiver,
+    thumbnailUrl: internalUnitThumbnails.warpMixReceiver,
+  },
+  {
+    name: "volume",
+    catalogKey: internalUnitKeys.builtInVolume,
+    thumbnailUrl: internalUnitThumbnails.volume,
+  },
+  {
+    name: "note hub",
+    catalogKey: internalUnitKeys.builtInNoteHub,
+    thumbnailUrl: internalUnitThumbnails.noteHub,
+  },
+  {
+    name: "advanced control",
+    catalogKey: internalUnitKeys.advancedControl,
+    thumbnailUrl: internalUnitThumbnails.advancedControl,
+  },
 ];
 
 export const unitNamesMap = Object.fromEntries(
