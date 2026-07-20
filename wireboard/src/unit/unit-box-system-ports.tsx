@@ -13,14 +13,14 @@ const systemPortUnitTemporalPorts = {
   speakerInput: {
     direction: "input",
     subtype: "audio",
-    portKey: "builtInPreOutput.primaryInput",
-    id: "builtInPreOutput.primaryInput",
+    portKey: "builtInPreOutput.audioInput",
+    id: "builtInPreOutput.audioInput",
   },
   keyboardOutput: {
     direction: "output",
     subtype: "note",
-    portKey: "builtInKeyboard.primaryOutput",
-    id: "builtInKeyboard.primaryOutput",
+    portKey: "builtInKeyboard.noteOutput",
+    id: "builtInKeyboard.noteOutput",
   },
 } satisfies Record<string, UnitTemporalPort>;
 
