@@ -53,18 +53,27 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
 ) => {
   const engine = createChannelStripEffectEngine(unitInterface);
 
-  unitInterface.completeSetup({
-    unitAspects: {
-      unitType: "effect",
-    },
-    cleanup: engine.cleanup,
-  });
-
   const initialState = createChannelStripState();
   engine.applyParameters(initialState);
 
   const stripId = `cs${instanceIdCounter++}`;
   moduleStore.patchStrips({ [stripId]: initialState });
+
+  unitInterface.completeSetup({
+    unitAspects: {
+      unitType: "effect",
+    },
+    cleanup: engine.cleanup,
+    persistence: {
+      emitState() {
+        return moduleStore.state.strips[stripId];
+      },
+      applyState(state: ChannelStripState) {
+        engine.applyParameters(state);
+        actions.patchStripState(state);
+      },
+    },
+  });
 
   const actions = {
     patchStripState(attrs: Partial<ChannelStripState>) {

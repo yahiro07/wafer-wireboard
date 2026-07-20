@@ -1,3 +1,4 @@
+import { clampValue } from "mofur/ax";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wafer-host/react";
 import { UnitInterface } from "wafer-host/unit-types";
@@ -55,13 +56,6 @@ export const createWarpMixReceiverUnit: ReactUnitTemplateFn = (
 ) => {
   const engine = createEngine(unitInterface);
 
-  unitInterface.completeSetup({
-    unitAspects: {
-      unitType: "effect",
-    },
-    cleanup: engine.cleanup,
-  });
-
   const defaultParameters: EffectParameters = {
     mainVolume: 0.5,
     auxVolume: 0.5,
@@ -78,6 +72,29 @@ export const createWarpMixReceiverUnit: ReactUnitTemplateFn = (
       store.assign({ [key]: value });
     },
   };
+
+  unitInterface.completeSetup({
+    unitAspects: {
+      unitType: "effect",
+    },
+    cleanup: engine.cleanup,
+    persistence: {
+      emitStateBytes() {
+        const st = store.state;
+        return new Uint8Array([
+          Math.round(st.mainVolume * 255),
+          Math.round(st.auxVolume * 255),
+        ]);
+      },
+      applyStateBytes(bytes) {
+        if (bytes.length !== 2) return;
+        const mainVolume = clampValue(bytes[0] / 255, 0, 1);
+        const auxVolume = clampValue(bytes[1] / 255, 0, 1);
+        engine.applyParameters({ mainVolume, auxVolume });
+        store.assign({ mainVolume, auxVolume });
+      },
+    },
+  });
 
   return {
     RenderUi() {

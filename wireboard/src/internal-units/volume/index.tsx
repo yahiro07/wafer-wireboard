@@ -1,3 +1,4 @@
+import { clampValue } from "mofur/ax";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wafer-host/react";
 import { mapVolumeCurveCenterUnity } from "@/auxiliaries/volume-curve";
@@ -15,10 +16,6 @@ export const createVolumeUnit: ReactUnitTemplateFn = (unitInterface) => {
     gainNode.gain.value = mapVolumeCurveCenterUnity(volume);
   };
 
-  unitInterface.completeSetup({
-    unitAspects: { unitType: "effect" },
-  });
-
   const store = createStore({
     volume: 0.5,
   });
@@ -30,6 +27,20 @@ export const createVolumeUnit: ReactUnitTemplateFn = (unitInterface) => {
       applyVolumeToNode(volume);
     },
   };
+
+  unitInterface.completeSetup({
+    unitAspects: { unitType: "effect" },
+    persistence: {
+      emitStateBytes() {
+        return new Uint8Array([Math.round(store.state.volume * 255)]);
+      },
+      applyStateBytes(stateBytes: Uint8Array) {
+        if (stateBytes.length !== 1) return;
+        const volume = clampValue(stateBytes[0] / 255, 0, 1);
+        actions.setVolume(volume);
+      },
+    },
+  });
 
   return {
     RenderUi() {

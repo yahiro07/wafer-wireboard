@@ -1,3 +1,4 @@
+import { clampValue } from "mofur/ax";
 import { useMemo } from "react";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wafer-host/react";
@@ -50,6 +51,16 @@ export const createBuiltinKeyboardUnit: ReactUnitTemplateFn = (
     noteInput: {
       noteOn: actions.noteOn,
       noteOff: actions.noteOff,
+    },
+    persistence: {
+      emitStateBytes() {
+        return new Uint8Array([store.state.octave + 100]);
+      },
+      applyStateBytes(bytes) {
+        if (bytes.length === 0) return;
+        const octave = clampValue(bytes[0] - 100, -2, 2);
+        actions.setOctave(octave);
+      },
     },
   });
 
