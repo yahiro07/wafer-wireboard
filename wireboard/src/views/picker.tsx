@@ -13,7 +13,7 @@ export const PickerColumn = () => {
             key={entry.catalogKey}
             draggable
             onDragStart={(e) => handlePickerItemDragStart(e, entry)}
-            className="flex-vc bg-gray-700/50 text-gray-300 py-1 cursor-pointer"
+            className="flex-vc bg-gray-700/50 text-gray-300 py-1 cursor-pointer relative"
           >
             <div className="h-[67px] aspect-[1.5]">
               {entry.thumbnailUrl ? (
@@ -29,6 +29,11 @@ export const PickerColumn = () => {
               )}
             </div>
             <div className="text-[11px]">{entry.name}</div>
+            {entry.isBeta && (
+              <div className="absolute top-[26px] left-0 text-[#ccc] text-[10px] m-[3px]">
+                β
+              </div>
+            )}
           </div>
         ))}
       </div>

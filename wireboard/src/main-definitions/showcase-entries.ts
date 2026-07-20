@@ -39,13 +39,28 @@ export type ShowcaseEntry = {
   name: string;
   catalogKey: CatalogKey;
   thumbnailUrl?: string;
+  isBeta?: boolean;
 };
+
+const betaUnitKeys: CatalogKey[] = [
+  "lofi2",
+  "noiseMix",
+  "sunsetChorusMini",
+  "multiLfo",
+  "stepAutomator",
+  "rootProg",
+  "bs03",
+  "mop2",
+  "mpd1",
+  "s7",
+];
 
 export const showcaseEntries: ShowcaseEntry[] = [
   ...Object.values(catalog).map((item) => ({
     name: item.name,
     catalogKey: item.catalogKey as CatalogKey,
     thumbnailUrl: item.thumbnailUrl,
+    isBeta: betaUnitKeys.includes(item.catalogKey as CatalogKey),
   })),
   //builtInKeyboard and builtInVisualizer are omit from showcase entries
   { name: "warp mix emitter", catalogKey: internalUnitKeys.warpMixEmitter },
