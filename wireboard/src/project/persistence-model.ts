@@ -18,6 +18,7 @@ type PersistedState = {
   scenes: Scene[];
   currentSceneId: string;
   sceneSwitcherVisible: boolean;
+  songKey: string;
 };
 
 function makePersistedState(storeState: StoreState): PersistedState {
@@ -30,6 +31,7 @@ function makePersistedState(storeState: StoreState): PersistedState {
     scenes: 1,
     currentSceneId: 1,
     sceneSwitcherVisible: 1,
+    songKey: 1,
   });
 }
 
