@@ -42,18 +42,7 @@ export type ShowcaseEntry = {
   isBeta?: boolean;
 };
 
-const betaUnitKeys: CatalogKey[] = [
-  "lofi2",
-  "noiseMix",
-  "sunsetChorusMini",
-  "multiLfo",
-  "stepAutomator",
-  "rootProg",
-  "bs03",
-  "mop2",
-  "mpd1",
-  "s7",
-];
+const betaUnitKeys: CatalogKey[] = [];
 
 export const showcaseEntries: ShowcaseEntry[] = [
   ...Object.values(catalog).map((item) => ({
