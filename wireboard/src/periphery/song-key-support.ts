@@ -48,11 +48,12 @@ export function useSetupSongKeySupport() {
   useEffect(() => {
     return hostSystem.eventPort.subscribe((ev) => {
       if (ev.type === "unitAdded") {
-        const { songKey } = store.state;
+        const { songKey, bpm } = store.state;
         const unit = ev.unitInstance;
         const keyTranspose = getKeyTranspose(songKey);
         unit.hostCallbacks?.setKey?.(songKey);
         unit.hostCallbacks?.setKeyTranspose?.(keyTranspose);
+        unit.hostCallbacks?.setBpm?.(bpm);
       }
     });
   }, []);
