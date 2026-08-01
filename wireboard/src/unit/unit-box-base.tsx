@@ -52,12 +52,20 @@ export const PortsColumn = ({
   unitPosition: Point;
   weaken?: boolean;
 }) => {
+  const hasManyPorts = ports && ports?.length >= 4;
   return (
     <div
       className="w-[40px] relative"
       style={weaken ? { opacity: 0.1, pointerEvents: "none" } : {}}
     >
-      <div className="absolute left-0" style={{ top: "calc(50% - 20px)" }}>
+      <div
+        className="absolute left-0"
+        style={
+          hasManyPorts
+            ? { top: "50%", transform: "translateY(-50%)" }
+            : { top: "calc(50% - 20px)" }
+        }
+      >
         {ports?.map((port) => (
           <PortCell
             key={port.portKey}
