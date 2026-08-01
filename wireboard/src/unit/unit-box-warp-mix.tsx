@@ -23,8 +23,10 @@ const InnerAntennaButton = ({
 
 export const WrapMixReceiverSlotCardBox = ({
   unitItem,
+  wireVertical,
 }: {
   unitItem: UnitItem;
+  wireVertical: boolean;
 }) => {
   const { hideWarpedWires } = store.useSnapshot();
   const handleAntennaClick = () => {
@@ -42,15 +44,24 @@ export const WrapMixReceiverSlotCardBox = ({
         </div>
       }
       hideInputPorts={hideWarpedWires}
+      wireVertical={wireVertical}
     />
   );
 };
 
 export const WrapMixEmitterSlotCardBox = ({
   unitItem,
+  wireVertical,
 }: {
   unitItem: UnitItem;
+  wireVertical: boolean;
 }) => {
   const { hideWarpedWires } = store.useSnapshot();
-  return <SlotCardBox unitItem={unitItem} hideOutputPorts={hideWarpedWires} />;
+  return (
+    <SlotCardBox
+      unitItem={unitItem}
+      hideOutputPorts={hideWarpedWires}
+      wireVertical={wireVertical}
+    />
+  );
 };

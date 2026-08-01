@@ -106,7 +106,11 @@ const SidePortsRow = ({
 }) => {
   const sortedPorts = useMemo(() => {
     return ports?.sort(
-      getSortOrder((p) => ["automation", "note", "audio"].indexOf(p.subtype)),
+      getSortOrder(
+        (p) =>
+          ["automation", "note", "audio"].indexOf(p.subtype) +
+          (p.label === "aux" ? -0.1 : 0),
+      ),
     );
   }, [ports]);
   return (

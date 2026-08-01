@@ -28,9 +28,21 @@ export const UnitBoxRoot = ({
   } else if (item.unitId === "builtInPreOutput") {
     return <SpeakerSystemPortBox key={item.unitId} unit={item} />;
   } else if (item.catalogKey === "warpMixReceiver") {
-    return <WrapMixReceiverSlotCardBox key={item.unitId} unitItem={item} />;
+    return (
+      <WrapMixReceiverSlotCardBox
+        key={item.unitId}
+        unitItem={item}
+        wireVertical={wireVertical}
+      />
+    );
   } else if (item.catalogKey === "warpMixEmitter") {
-    return <WrapMixEmitterSlotCardBox key={item.unitId} unitItem={item} />;
+    return (
+      <WrapMixEmitterSlotCardBox
+        key={item.unitId}
+        unitItem={item}
+        wireVertical={wireVertical}
+      />
+    );
   } else if (
     item.catalogKey === "builtInVolume" ||
     item.catalogKey === "builtInNoteHub"
