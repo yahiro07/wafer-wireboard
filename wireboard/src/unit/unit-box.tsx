@@ -35,7 +35,13 @@ export const UnitBoxRoot = ({
     item.catalogKey === "builtInVolume" ||
     item.catalogKey === "builtInNoteHub"
   ) {
-    return <PivotUnitBox key={item.unitId} unitItem={item} />;
+    return (
+      <PivotUnitBox
+        key={item.unitId}
+        unitItem={item}
+        wireVertical={wireVertical}
+      />
+    );
   } else {
     return (
       <SlotCardBox

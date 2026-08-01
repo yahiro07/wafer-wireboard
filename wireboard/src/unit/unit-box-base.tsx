@@ -96,7 +96,7 @@ export const UnitTitleRow = ({ unitItem }: { unitItem: UnitItem }) => {
   );
 };
 
-const SidePortsBox = ({
+export const SidePortsBox = ({
   outputPorts,
   inputPorts,
   unitPosition,
