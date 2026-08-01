@@ -87,11 +87,20 @@ export const SpeakerSystemPortBox = ({ unit }: { unit: UnitItem }) => {
   );
 };
 
-export const KeyboardSystemPortBox = ({ unit }: { unit: UnitItem }) => {
+export const KeyboardSystemPortBox = ({
+  unit,
+  wireVertical,
+}: {
+  unit: UnitItem;
+  wireVertical: boolean;
+}) => {
   const ports = useMemo(() => [systemPortUnitTemporalPorts.keyboardOutput], []);
   return (
     <SystemPortBox unit={unit} xOffset={40 + 40}>
       <div className="flex-ha">
+        {wireVertical && (
+          <PortsColumn ports={ports} unitPosition={unit.position} />
+        )}
         <SideGrip unit={unit}>
           <Icons.Piano size={65} />
         </SideGrip>
@@ -100,7 +109,9 @@ export const KeyboardSystemPortBox = ({ unit }: { unit: UnitItem }) => {
             <UnitFrameEx unitId={unit.unitId} catalogKey={unit.catalogKey} />
           </div>
         </div>
-        <PortsColumn ports={ports} unitPosition={unit.position} />
+        {!wireVertical && (
+          <PortsColumn ports={ports} unitPosition={unit.position} />
+        )}
       </div>
     </SystemPortBox>
   );

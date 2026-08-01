@@ -18,7 +18,13 @@ export const UnitBoxRoot = ({
   wireVertical: boolean;
 }) => {
   if (item.unitId === "builtInKeyboard") {
-    return <KeyboardSystemPortBox key={item.unitId} unit={item} />;
+    return (
+      <KeyboardSystemPortBox
+        key={item.unitId}
+        unit={item}
+        wireVertical={wireVertical}
+      />
+    );
   } else if (item.unitId === "builtInPreOutput") {
     return <SpeakerSystemPortBox key={item.unitId} unit={item} />;
   } else if (item.catalogKey === "warpMixReceiver") {
