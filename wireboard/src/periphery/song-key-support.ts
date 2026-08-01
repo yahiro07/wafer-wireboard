@@ -26,7 +26,8 @@ const rootMap = {
 function getSongKeySpec(songKey: string): SongKeySpec {
   const mode = songKey.includes("m") ? "minor" : "major";
   const root = rootMap[songKey.replace("m", "") as keyof typeof rootMap] ?? 0;
-  return { root, mode };
+  const keyTranspose = root + (mode === "minor" ? 3 : 0);
+  return { root, mode, keyTranspose };
 }
 
 export function useSetupSongKeySupport() {
