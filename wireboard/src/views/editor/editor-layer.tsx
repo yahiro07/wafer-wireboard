@@ -17,7 +17,7 @@ const WiringLayerContainer = () => {
 };
 
 const EditAreaContainer = () => {
-  const { unitItems } = store.useSnapshot();
+  const { unitItems, wireVertical } = store.useSnapshot();
   return (
     <div
       id={domEditAreaId}
@@ -25,7 +25,11 @@ const EditAreaContainer = () => {
       style={{ border: "solid 2px #ccc8" }}
     >
       {unitItems.map((item) => (
-        <UnitBoxRoot key={item.unitId} item={item} />
+        <UnitBoxRoot
+          key={item.unitId}
+          item={item}
+          wireVertical={wireVertical}
+        />
       ))}
     </div>
   );
