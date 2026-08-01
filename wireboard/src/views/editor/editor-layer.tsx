@@ -12,8 +12,15 @@ import { WiringLayer } from "@/views/editor/wiring-layer";
 import { useWiringLayerWireItems } from "@/views/editor/wiring-layer-wire-items";
 
 const WiringLayerContainer = () => {
+  const { wireVertical } = store.useSnapshot();
   const wires = useWiringLayerWireItems();
-  return <WiringLayer boardSize={boardSize} wires={wires} />;
+  return (
+    <WiringLayer
+      boardSize={boardSize}
+      wires={wires}
+      wireVertical={wireVertical}
+    />
+  );
 };
 
 const EditAreaContainer = () => {
