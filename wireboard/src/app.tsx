@@ -19,17 +19,17 @@ projectsModel.prepareProject(true);
 
 const partialPlaybackSupport = createPartialPlaybackSupport();
 
-function useShowDebugLoadingTiming() {
-  useEffect(() => {
-    hostSystem.eventPort.subscribe((ev) => {
-      if (ev.type === "loadStarted") {
-        console.log("⭐️loadStarted");
-      } else if (ev.type === "loadCompleted") {
-        console.log("⭐️loadCompleted");
-      }
-    });
-  }, []);
-}
+// function useShowDebugLoadingTiming() {
+//   useEffect(() => {
+//     hostSystem.eventPort.subscribe((ev) => {
+//       if (ev.type === "loadStarted") {
+//         console.log("⭐️loadStarted");
+//       } else if (ev.type === "loadCompleted") {
+//         console.log("⭐️loadCompleted");
+//       }
+//     });
+//   }, []);
+// }
 
 const App = () => {
   const { bpm, playing, masterVolume } = store.useSnapshot();
@@ -47,7 +47,7 @@ const App = () => {
   }, []);
   partialPlaybackSupport.useSetup();
   useSetupSongKeySupport();
-  useShowDebugLoadingTiming();
+  // useShowDebugLoadingTiming();
   return (
     <HostAppProvider
       hostSystem={hostSystem}
