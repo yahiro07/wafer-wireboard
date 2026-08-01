@@ -2,9 +2,7 @@ import { createWireItem } from "@/model/factory";
 import { StoreState } from "@/model/store";
 import { UnitItem, WireItem } from "@/model/types";
 
-function extractPresetUnitItems(
-  source: (UnitItem & { destUnitId?: string })[],
-): {
+function extractPresetUnitItems(source: (UnitItem & { destSpec?: string })[]): {
   unitItems: UnitItem[];
   wireItems: WireItem[];
 } {
@@ -14,11 +12,13 @@ function extractPresetUnitItems(
     position: item.position,
   }));
   const wireItems = source
-    .filter((item) => item.destUnitId)
+    .filter((item) => item.destSpec)
     .map((item) => {
-      const sourcePortKey = `${item.unitId}.primaryOutput`;
-      const destinationPortKey = `${item.destUnitId}.primaryInput`;
-      return createWireItem(sourcePortKey, destinationPortKey);
+      const sourcePortId = item
+        .destSpec!.split(".")[1]
+        .replace("Input", "Output");
+      const sourcePortKey = `${item.unitId}.${sourcePortId}`;
+      return createWireItem(sourcePortKey, item.destSpec!);
     });
   return { unitItems, wireItems };
 }
@@ -26,23 +26,23 @@ function extractPresetUnitItems(
 export function createPresetProjectsModel() {
   return {
     buildDefaultProjectStates(): Partial<StoreState> {
-      const baseX = 4600;
+      const baseX = 4500;
       const baseY = 2650;
       const { unitItems, wireItems } = extractPresetUnitItems([
         {
-          destUnitId: "$output",
+          destSpec: "$output.audioInput",
           unitId: "builtInPreOutput",
           catalogKey: "builtInVisualizer",
           position: { x: baseX, y: baseY + 50 },
         },
         {
-          destUnitId: "builtInPreOutput",
-          unitId: "unit1",
+          destSpec: "builtInPreOutput.audioInput",
+          unitId: "synth1",
           catalogKey: "miniSynthGe",
           position: { x: baseX, y: baseY + 350 },
         },
         {
-          destUnitId: "unit1",
+          destSpec: "synth1.noteInput",
           unitId: "builtInKeyboard",
           catalogKey: "builtInKeyboard",
           position: { x: baseX, y: baseY + 650 },
@@ -55,11 +55,11 @@ export function createPresetProjectsModel() {
       };
     },
     buildBlankProjectStates(): Partial<StoreState> {
-      const baseX = 4600;
+      const baseX = 4500;
       const baseY = 2650;
       const { unitItems, wireItems } = extractPresetUnitItems([
         {
-          destUnitId: "$output",
+          destSpec: "$output.audioInput",
           unitId: "builtInPreOutput",
           catalogKey: "builtInVisualizer",
           position: { x: baseX, y: baseY + 50 },
@@ -77,35 +77,35 @@ export function createPresetProjectsModel() {
       };
     },
     buildDemoProjectStates(): Partial<StoreState> {
-      const baseX = 4600;
+      const baseX = 4500;
       const baseY = 2650;
       const { unitItems, wireItems } = extractPresetUnitItems([
         {
-          destUnitId: "$output",
+          destSpec: "$output.audioInput",
           unitId: "builtInPreOutput",
           catalogKey: "builtInVisualizer",
           position: { x: baseX, y: baseY - 100 },
         },
         {
-          destUnitId: "builtInPreOutput",
-          unitId: "unit1",
+          destSpec: "builtInPreOutput.audioInput",
+          unitId: "effect1",
           catalogKey: "sunsetDelay",
           position: { x: baseX + 250, y: baseY + 120 },
         },
         {
-          destUnitId: "unit1",
-          unitId: "unit2",
+          destSpec: "effect1.audioInput",
+          unitId: "synth1",
           catalogKey: "protoEnginePdFm",
           position: { x: baseX + 250, y: baseY + 400 },
         },
         {
-          destUnitId: "builtInPreOutput",
-          unitId: "unit3",
-          catalogKey: "myDrumMachine",
+          destSpec: "builtInPreOutput.audioInput",
+          unitId: "drum1",
+          catalogKey: "graphiteDrumMachine",
           position: { x: baseX - 250, y: baseY + 250 },
         },
         {
-          destUnitId: "unit2",
+          destSpec: "synth1.noteInput",
           unitId: "builtInKeyboard",
           catalogKey: "builtInKeyboard",
           position: { x: baseX + 250, y: baseY + 650 },

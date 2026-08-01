@@ -2,8 +2,8 @@ import { ReactUnitTemplateFn } from "wafer-host/react";
 import { store } from "@/model/store";
 import { hmrActions } from "@/periphery/hmr-handler";
 
-const keysFirstRow = ["Eb", "Bb", "F", "C", "G", "D", "A"];
-const keysSecondRow = ["Cm", "Gm", "Dm", "Am", "Em", "Bm", "F#m"];
+const keysFirstRow = ["A", "A#", "B", "C", "C#", "D", "D#"];
+const keysSecondRow = ["F#m", "Gm", "G#m", "Am", "A#m", "Bm", "Cm"];
 
 const KeysRow = ({
   keys,
