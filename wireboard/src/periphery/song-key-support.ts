@@ -6,16 +6,21 @@ import { store } from "@/model/store";
 const rootMap = {
   G: -5,
   "G#": -4,
+  Ab: -4,
   A: -3,
   "A#": -2,
+  Bb: -2,
   B: -1,
   C: 0,
   "C#": 1,
+  Db: 1,
   D: 2,
   "D#": 3,
+  Eb: 3,
   E: 4,
   F: 5,
   "F#": 6,
+  Gb: 6,
 };
 
 function getSongKeySpec(songKey: string): SongKeySpec {
