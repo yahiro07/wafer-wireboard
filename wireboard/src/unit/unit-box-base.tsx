@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { getSortOrder } from "mofur/ax";
 import { npx, Point } from "mofur/ax-ui";
 import { ReactNode, useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
@@ -96,6 +97,27 @@ export const UnitTitleRow = ({ unitItem }: { unitItem: UnitItem }) => {
   );
 };
 
+const SidePortsRow = ({
+  ports,
+  unitPosition,
+}: {
+  ports: UnitTemporalPort[] | undefined;
+  unitPosition: Point;
+}) => {
+  const sortedPorts = useMemo(() => {
+    return ports?.sort(
+      getSortOrder((p) => ["automation", "note", "audio"].indexOf(p.subtype)),
+    );
+  }, [ports]);
+  return (
+    <div className="flex-h justify-end">
+      {sortedPorts?.map((port) => (
+        <PortCell key={port.portKey} port={port} unitPosition={unitPosition} />
+      ))}
+    </div>
+  );
+};
+
 export const SidePortsBox = ({
   outputPorts,
   inputPorts,
@@ -108,24 +130,8 @@ export const SidePortsBox = ({
   return (
     <div className="absolute right-full h-full">
       <div className="h-full flex-v justify-between">
-        <div className="flex-h flex-row-reverse">
-          {outputPorts?.map((port) => (
-            <PortCell
-              key={port.portKey}
-              port={port}
-              unitPosition={unitPosition}
-            />
-          ))}
-        </div>
-        <div className="flex-h flex-row-reverse">
-          {inputPorts?.map((port) => (
-            <PortCell
-              key={port.portKey}
-              port={port}
-              unitPosition={unitPosition}
-            />
-          ))}
-        </div>
+        <SidePortsRow ports={outputPorts} unitPosition={unitPosition} />
+        <SidePortsRow ports={inputPorts} unitPosition={unitPosition} />
       </div>
     </div>
   );
