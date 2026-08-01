@@ -46,7 +46,7 @@ export const PivotUnitBox = ({
         )}
         <div
           className={clsx(
-            "grow flex-v w-[140px] h-[140px]",
+            "grow flex-v w-[160px] h-[140px]",
             bgSpecs.unitCardInner,
           )}
         >
