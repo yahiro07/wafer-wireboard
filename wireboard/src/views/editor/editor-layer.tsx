@@ -12,12 +12,19 @@ import { WiringLayer } from "@/views/editor/wiring-layer";
 import { useWiringLayerWireItems } from "@/views/editor/wiring-layer-wire-items";
 
 const WiringLayerContainer = () => {
+  const { wireVertical } = store.useSnapshot();
   const wires = useWiringLayerWireItems();
-  return <WiringLayer boardSize={boardSize} wires={wires} />;
+  return (
+    <WiringLayer
+      boardSize={boardSize}
+      wires={wires}
+      wireVertical={wireVertical}
+    />
+  );
 };
 
 const EditAreaContainer = () => {
-  const { unitItems } = store.useSnapshot();
+  const { unitItems, wireVertical } = store.useSnapshot();
   return (
     <div
       id={domEditAreaId}
@@ -25,7 +32,11 @@ const EditAreaContainer = () => {
       style={{ border: "solid 2px #ccc8" }}
     >
       {unitItems.map((item) => (
-        <UnitBoxRoot key={item.unitId} item={item} />
+        <UnitBoxRoot
+          key={item.unitId}
+          item={item}
+          wireVertical={wireVertical}
+        />
       ))}
     </div>
   );

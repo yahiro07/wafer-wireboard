@@ -36,7 +36,12 @@ export function findNearestPort(
   filterXRight: boolean,
 ): PortItem | undefined {
   const filteredPorts = filterXRight
-    ? portItems.filter((port) => port.position.x > position.x + 30)
+    ? portItems.filter((port) => {
+        if (store.state.wireVertical) {
+          return port.position.y < position.y - 30;
+        }
+        return port.position.x > position.x + 30;
+      })
     : portItems;
   return findItemMappedMinimum(filteredPorts, (port) => {
     const dx = port.position.x - position.x;

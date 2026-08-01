@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { getSortOrder } from "mofur/ax";
 import { npx, Point } from "mofur/ax-ui";
 import { ReactNode, useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
@@ -96,16 +97,62 @@ export const UnitTitleRow = ({ unitItem }: { unitItem: UnitItem }) => {
   );
 };
 
+const SidePortsRow = ({
+  ports,
+  unitPosition,
+}: {
+  ports: UnitTemporalPort[] | undefined;
+  unitPosition: Point;
+}) => {
+  const sortedPorts = useMemo(() => {
+    return ports?.sort(
+      getSortOrder(
+        (p) =>
+          ["automation", "note", "audio"].indexOf(p.subtype) +
+          (p.label === "aux" ? -0.1 : 0),
+      ),
+    );
+  }, [ports]);
+  return (
+    <div className="flex-h justify-end">
+      {sortedPorts?.map((port) => (
+        <PortCell key={port.portKey} port={port} unitPosition={unitPosition} />
+      ))}
+    </div>
+  );
+};
+
+export const SidePortsBox = ({
+  outputPorts,
+  inputPorts,
+  unitPosition,
+}: {
+  outputPorts?: UnitTemporalPort[];
+  inputPorts?: UnitTemporalPort[];
+  unitPosition: Point;
+}) => {
+  return (
+    <div className="absolute right-full h-full">
+      <div className="h-full flex-v justify-between">
+        <SidePortsRow ports={outputPorts} unitPosition={unitPosition} />
+        <SidePortsRow ports={inputPorts} unitPosition={unitPosition} />
+      </div>
+    </div>
+  );
+};
+
 export const SlotCardBox = ({
   unitItem,
   innerContent,
   hideInputPorts,
   hideOutputPorts,
+  wireVertical,
 }: {
   unitItem: UnitItem;
   innerContent?: ReactNode;
   hideInputPorts?: boolean;
   hideOutputPorts?: boolean;
+  wireVertical: boolean;
 }) => {
   const sd = { width: 400, height: 240 };
   const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
@@ -118,17 +165,20 @@ export const SlotCardBox = ({
     <div
       className="absolute"
       style={{
-        left: npx(unitItem.position.x - sd.width / 2 - 40),
-        top: npx(unitItem.position.y - sd.height / 2 - 10),
+        left: npx(unitItem.position.x),
+        top: npx(unitItem.position.y),
+        transform: "translate(-50%, -50%)",
         // border: "solid 1px red",
       }}
     >
       <div className="flex-h">
-        <PortsColumn
-          ports={unitPortsModel?.inputs}
-          unitPosition={unitItem.position}
-          weaken={hideInputPorts}
-        />
+        {!wireVertical && (
+          <PortsColumn
+            ports={unitPortsModel?.inputs}
+            unitPosition={unitItem.position}
+            weaken={hideInputPorts}
+          />
+        )}
         <div
           className="relative flex-v shadow-md"
           style={{
@@ -137,6 +187,13 @@ export const SlotCardBox = ({
             // border: "solid 1px blue",
           }}
         >
+          {wireVertical && (
+            <SidePortsBox
+              outputPorts={unitPortsModel?.outputs}
+              inputPorts={unitPortsModel?.inputs}
+              unitPosition={unitItem.position}
+            />
+          )}
           <UnitTitleRow unitItem={unitItem} />
           <div className="grow flex-h">
             <div className={clsx("grow relative", bgSpecs.unitCardInner)}>
@@ -150,11 +207,13 @@ export const SlotCardBox = ({
             </div>
           </div>
         </div>
-        <PortsColumn
-          ports={unitPortsModel?.outputs}
-          unitPosition={unitItem.position}
-          weaken={hideOutputPorts}
-        />
+        {!wireVertical && (
+          <PortsColumn
+            ports={unitPortsModel?.outputs}
+            unitPosition={unitItem.position}
+            weaken={hideOutputPorts}
+          />
+        )}
       </div>
     </div>
   );

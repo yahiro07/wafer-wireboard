@@ -53,6 +53,7 @@ export const TopControlBar = () => {
         <Button text="Demo" onClick={projectsModel.loadDemoProject} />
         <Button text="Import" onClick={projectsModel.importProject} />
         <Button text="Export" onClick={projectsModel.exportProject} />
+        <Button text="wire-dir" onClick={() => store.toggleWireVertical()} />
       </div>
     </div>
   );
