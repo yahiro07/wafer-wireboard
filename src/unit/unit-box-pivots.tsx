@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { bgSpecs } from "@/common/theme";
 import { UnitItem } from "@/model/types";
-import { PortsColumn, SidePortsBox, UnitTitleRow } from "@/unit/unit-box-base";
+import { PortsColumn, PortsRow, UnitTitleRow } from "@/unit/unit-box-base";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
 import { buildUnitTemporalPortsModel } from "@/unit/unit-temporal-ports-model";
 
@@ -30,11 +30,15 @@ export const PivotUnitBox = ({
         transform: "translate(-50%, -50%)",
       }}
     >
-      <div className="relative flex-h shadow-md">
+      <div
+        className={clsx(
+          "relative shadow-md",
+          wireVertical ? "flex-v" : "flex-h",
+        )}
+      >
         {wireVertical && (
-          <SidePortsBox
-            outputPorts={unitPortsModel?.outputs}
-            inputPorts={unitPortsModel?.inputs}
+          <PortsRow
+            ports={unitPortsModel?.outputs}
             unitPosition={unitItem.position}
           />
         )}
@@ -58,6 +62,12 @@ export const PivotUnitBox = ({
             onUnitInstanceLoaded={setUnitInstance}
           />
         </div>
+        {wireVertical && (
+          <PortsRow
+            ports={unitPortsModel?.inputs}
+            unitPosition={unitItem.position}
+          />
+        )}
         {!wireVertical && (
           <PortsColumn
             ports={unitPortsModel?.outputs}
