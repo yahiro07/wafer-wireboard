@@ -9,7 +9,7 @@ import { CatalogKey } from "@/main-definitions/showcase-entries";
 export type AppUnitDestinationSpec = Record<string, string[]>;
 
 export type UnitItem = {
-  unitId: string | "builtInPreOutput" | "builtInKeyboard";
+  unitId: string;
   catalogKey: CatalogKey;
   position: Point;
   hmrRevision?: number;

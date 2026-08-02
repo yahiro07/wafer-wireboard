@@ -33,7 +33,7 @@ export function createProjectsModel(): ProjectsModel {
       store.assign(states);
       store.setProjectLoadedIndex((prev) => prev + 1);
       actions.reservePushCurrentSceneStateToHost(true);
-      iife(async () => {
+      void iife(async () => {
         store.setUnitsLoading(true);
         await hostSystem.waitUnitsLoaded();
         store.setUnitsLoading(false);
