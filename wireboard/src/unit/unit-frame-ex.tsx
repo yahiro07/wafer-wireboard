@@ -16,13 +16,13 @@ export const UnitFrameEx = ({
   destSpec,
   catalogKey,
   onUnitInstanceLoaded,
-  baseAspectRatio,
+  frameAspectRatio,
 }: {
   unitId: string;
   destSpec?: UnitDestinationSpec;
   catalogKey: CatalogKey;
   onUnitInstanceLoaded?: (unitInstance: HsUnitInstance) => void;
-  baseAspectRatio?: number;
+  frameAspectRatio?: number;
 }) => {
   const catalogTarget = getCatalogTarget(catalogKey);
   if (catalogTarget?.type === "internal") {
@@ -45,7 +45,7 @@ export const UnitFrameEx = ({
           unitUrl={catalogTarget.UnitInventorySpec.loaderPageUrl}
           onIframeMounted={setupIframeInputHandlers}
           onUnitInstanceLoaded={onUnitInstanceLoaded}
-          baseAspectRatio={baseAspectRatio}
+          frameAspectRatio={frameAspectRatio}
         />
       </ScalerBoxAutoSized>
     );
