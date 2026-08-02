@@ -6,7 +6,8 @@
     "dev": "vite dev --force",
     "typecheck": "tsc",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "oxlint --type-aware"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -25,6 +26,9 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
     "mofur": "file:../../beam/mofur",
+    "oxfmt": "^0.61.0",
+    "oxlint": "^1.76.0",
+    "oxlint-tsgolint": "^7.0.2001",
     "tailwindcss": "^4.3.0",
     "typescript": "~6.0.3",
     "vite": "^8.0.12",
