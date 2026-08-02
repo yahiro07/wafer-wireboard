@@ -26,7 +26,13 @@ export const UnitBoxRoot = ({
       />
     );
   } else if (item.unitId === "builtInPreOutput") {
-    return <SpeakerSystemPortBox key={item.unitId} unit={item} />;
+    return (
+      <SpeakerSystemPortBox
+        key={item.unitId}
+        unit={item}
+        wireVertical={wireVertical}
+      />
+    );
   } else if (item.catalogKey === "warpMixReceiver") {
     return (
       <WrapMixReceiverSlotCardBox
