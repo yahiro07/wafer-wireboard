@@ -6,7 +6,7 @@ const bgSpecsA = {
   portCell: "bg-gray-400",
 };
 
-const bgSpecsB = {
+const _bgSpecsB = {
   unitCardFrame: "bg-[#8ad]",
   unitCardInner: "bg-[#ccc]",
   pageRoot: "bg-[#e8ecff]",

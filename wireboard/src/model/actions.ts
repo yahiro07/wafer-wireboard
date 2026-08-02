@@ -98,7 +98,7 @@ export const actions = {
     );
     if (currentScene) {
       if (awaited) {
-        (async () => {
+        void (async () => {
           await hostSystem.waitUnitsLoaded();
           hostSystem.setAllUnitStates(currentScene.unitStates);
         })();

@@ -215,10 +215,10 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
       const {
         strips,
         localPlaybackFlags,
-        localPlaybackBackupFlags,
+        // localPlaybackBackupFlags,
         soloStripId,
         // isLocalPlaybackMultiple,
-        firstOperatedStripId,
+        // firstOperatedStripId,
       } = moduleStore.useSnapshot();
       const st = strips[stripId];
       useEffect(internal.setupSynchronization, []);
@@ -226,10 +226,10 @@ export const createWarpMixEmitterUnit: ReactUnitTemplateFn = (
       internal.useAffectLocalPlaybackStateToHost(localPlaying);
       const numPlayings =
         Object.values(localPlaybackFlags).filter(Boolean).length;
-      const isPlayingOne = numPlayings === 1;
-      const isPlayingMoreThanOne = numPlayings > 1;
+      // const isPlayingOne = numPlayings === 1;
+      // const isPlayingMoreThanOne = numPlayings > 1;
       const isPlayingAny = numPlayings > 0;
-      const isFirstOperated = firstOperatedStripId === stripId;
+      // const isFirstOperated = firstOperatedStripId === stripId;
       const isSoloTarget = soloStripId === stripId;
 
       const panelMainContent = (

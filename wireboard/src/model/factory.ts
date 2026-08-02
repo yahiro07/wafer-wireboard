@@ -8,7 +8,7 @@ export function getNextUnitId(baseName: string, existingItems: UnitItem[]) {
       return parseInt(match[1], 10);
     })
     .filter(Number.isFinite);
-  const maxNumber = Math.max(...[0, ...existingUnitNumbers]);
+  const maxNumber = Math.max(0, ...existingUnitNumbers);
   return `${baseName}_${maxNumber + 1}`;
 }
 

@@ -6,8 +6,8 @@ import { projectsModel } from "@/project/projects-model";
 export const SharedUrlPanel = () => {
   const url = useMemo(projectsModel.emitSharedUrl, []);
   const closePane = () => actions.hideModalPanel();
-  const handleCopy = () => {
-    navigator.clipboard.writeText(url);
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(url);
     window.alert("Copied to clipboard");
   };
   // const sizeText = `${(url.length / 1024).toFixed(1)} KB`;
