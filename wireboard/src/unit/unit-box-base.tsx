@@ -154,7 +154,6 @@ export const SlotCardBox = ({
   hideOutputPorts?: boolean;
   wireVertical: boolean;
 }) => {
-  const sd = { width: 400, height: 240 };
   const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
   const unitPortsModel = useMemo(
     () =>
@@ -179,14 +178,7 @@ export const SlotCardBox = ({
             weaken={hideInputPorts}
           />
         )}
-        <div
-          className="relative flex-v shadow-md"
-          style={{
-            width: npx(sd.width),
-            height: npx(sd.height),
-            // border: "solid 1px blue",
-          }}
-        >
+        <div className="relative flex-v shadow-md">
           {wireVertical && (
             <SidePortsBox
               outputPorts={unitPortsModel?.outputs}
@@ -195,16 +187,18 @@ export const SlotCardBox = ({
             />
           )}
           <UnitTitleRow unitItem={unitItem} />
-          <div className="grow flex-h">
-            <div className={clsx("grow relative", bgSpecs.unitCardInner)}>
-              <UnitFrameEx
-                key={unitItem.hmrRevision}
-                unitId={unitItem.unitId}
-                catalogKey={unitItem.catalogKey}
-                onUnitInstanceLoaded={setUnitInstance}
-              />
-              {innerContent}
-            </div>
+          <div
+            className={clsx(bgSpecs.unitCardInner)}
+            style={{ width: npx(360), height: npx(200) }}
+          >
+            <UnitFrameEx
+              key={unitItem.hmrRevision}
+              unitId={unitItem.unitId}
+              catalogKey={unitItem.catalogKey}
+              onUnitInstanceLoaded={setUnitInstance}
+              baseAspectRatio={1.8}
+            />
+            {innerContent}
           </div>
         </div>
         {!wireVertical && (
