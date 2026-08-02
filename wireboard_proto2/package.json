@@ -1,0 +1,32 @@
+{
+  "name": "jam-desk-d2",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev --force",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-icons": "^5.6.0",
+    "snap-store": "^0.1.12"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.0",
+    "@types/node": "^25.7.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "mofur": "^0.1.0",
+    "tailwindcss": "^4.3.0",
+    "typescript": "~6.0.3",
+    "vite": "^8.0.12",
+    "vitest": "^4.1.8",
+    "wus-host": "../../webaudio-unit-system/framework/wus-host",
+    "wus-unit-types": "../../webaudio-unit-system/contract/wus-unit-types-v02-beta"
+  }
+}
