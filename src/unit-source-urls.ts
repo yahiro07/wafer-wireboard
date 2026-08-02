@@ -5,12 +5,10 @@ function toAbsolutePath(path: string): string {
 function getUnitSourceUrls() {
   if (1) {
     const unitsDevDistDir = toAbsolutePath(
-      "../../../webaudio-unit-system/unit-examples/dist",
+      "../../webaudio-unit-system/unit-examples/dist",
     );
-    const waferUnitsLocalDistDir = toAbsolutePath("../../../wafer-units/dist");
-    const waferCustomUnitsLocalDir = toAbsolutePath(
-      "../../../wafer-custom-units",
-    );
+    const waferUnitsLocalDistDir = toAbsolutePath("../../wafer-units/dist");
+    const waferCustomUnitsLocalDir = toAbsolutePath("../../wafer-custom-units");
     return [
       `file://${waferUnitsLocalDistDir}/graphite-drum-machine/`,
       `file://${waferCustomUnitsLocalDir}/js/shiny-drum-machine/`,

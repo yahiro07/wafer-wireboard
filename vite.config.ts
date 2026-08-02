@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    unitLoaderPlugin({ unitSourceUrls, cacheFolderPath: "./.wus-cache" }),
+    unitLoaderPlugin({ unitSourceUrls, cacheFolderPath: "./.wafer-cache" }),
   ],
   appType: "mpa",
   resolve: {
