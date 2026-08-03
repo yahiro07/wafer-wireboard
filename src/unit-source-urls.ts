@@ -4,6 +4,80 @@ function toAbsolutePath(path: string): string {
 
 function getUnitSourceUrls() {
   if (1) {
+    //release
+    const waferUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-units@r16`;
+    const waferCustomUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-custom-units@r16`;
+    return [
+      `${waferUnitsBase}/graphite-drum-machine/`,
+
+      `${waferCustomUnitsBase}/shiny-drum-machine/`,
+      `${waferCustomUnitsBase}/webaudio-tinysynth-mini/`,
+      `${waferCustomUnitsBase}/super-oscillator/`,
+      `${waferCustomUnitsBase}/midi-synth/`,
+      `${waferCustomUnitsBase}/webaudio-synth-v2/`,
+      `${waferCustomUnitsBase}/wasyn-1/`,
+      `${waferCustomUnitsBase}/syntho/`,
+      `${waferCustomUnitsBase}/simple-synth/`,
+      `${waferCustomUnitsBase}/model-1/`,
+      `${waferCustomUnitsBase}/react-synth/`,
+      `${waferCustomUnitsBase}/poly-synth/`,
+      `${waferCustomUnitsBase}/sk-synth/`,
+      `${waferCustomUnitsBase}/additive/`,
+      `${waferCustomUnitsBase}/cadence/`,
+      `${waferCustomUnitsBase}/bl-synth-modular/`,
+      `${waferCustomUnitsBase}/beatmaker/`,
+
+      `${waferUnitsBase}/wavicle/`,
+      `${waferUnitsBase}/techno-beat-machine/`,
+
+      `${waferCustomUnitsBase}/web-audio-mixer/`,
+      `${waferCustomUnitsBase}/vue-audio-mixer/`,
+      `${waferCustomUnitsBase}/hm-step-sequencer/`,
+      `${waferCustomUnitsBase}/d3-synth-scale/`,
+      `${waferCustomUnitsBase}/webaudio-spectrum/`,
+      `${waferCustomUnitsBase}/audio-input-effects/`,
+      `${waferCustomUnitsBase}/darkwave/`,
+      `${waferCustomUnitsBase}/circular-audio-wave/`,
+      `${waferCustomUnitsBase}/vissonance/`,
+      `${waferCustomUnitsBase}/threejs-audio-reactive-visual/`,
+
+      `${waferUnitsBase}/bseq1/`,
+      `${waferUnitsBase}/bseq2/`,
+      `${waferUnitsBase}/lseq1/`,
+      `${waferUnitsBase}/tonerio-sequencer/`,
+      `${waferUnitsBase}/fluorite-piano-roll/`,
+      `${waferUnitsBase}/partex/`,
+      `${waferUnitsBase}/root-prog/`,
+      `${waferUnitsBase}/rtfr/`,
+      `${waferUnitsBase}/rtfs1/`,
+      `${waferUnitsBase}/rtfs2/`,
+      `${waferUnitsBase}/rtfs-p/`,
+      // `${waferUnitsBase}/recoru/`,
+      `${waferUnitsBase}/drum-loop-player/`,
+      `${waferUnitsBase}/timing-checker/`,
+      `${waferUnitsBase}/multi-lfo/`,
+      `${waferUnitsBase}/step-automator/`,
+
+      `${waferUnitsBase}/sunset-delay/`,
+      `${waferUnitsBase}/sunset-chorus-mini/`,
+      `${waferUnitsBase}/crusher/`,
+      `${waferUnitsBase}/channel-strip/`,
+      `${waferUnitsBase}/noise-mix/`,
+      `${waferUnitsBase}/lofi2/`,
+
+      `${waferUnitsBase}/bs03/`,
+      `${waferUnitsBase}/s7/`,
+      `${waferUnitsBase}/mop2/`,
+      `${waferUnitsBase}/mpd1/`,
+      `${waferUnitsBase}/tone-wheel/`,
+      `${waferUnitsBase}/proto-engine-ptm-osc/`,
+      `${waferUnitsBase}/proto-engine-pd-fm/`,
+      `${waferUnitsBase}/mini-synth/`,
+      `${waferUnitsBase}/mini-synth-ge/`,
+      `${waferUnitsBase}/mini-synth-gp/`,
+    ];
+  } else {
+    //local debug
     const unitsDevDistDir = toAbsolutePath(
       "../../webaudio-unit-system/unit-examples/dist",
     );
@@ -89,25 +163,6 @@ function getUnitSourceUrls() {
       `file://${waferUnitsLocalDistDir}/mini-synth/`,
       `file://${waferUnitsLocalDistDir}/mini-synth-ge/`,
       `file://${waferUnitsLocalDistDir}/mini-synth-gp/`,
-    ];
-  } else {
-    return [
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/wavicle/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/mini-synth/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/bseq1/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/lseq1/",
-      //
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/specbar/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/proto-engine-ptm-osc/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/proto-engine-pd-fm/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/mini-synth-ge/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-units@r14/mini-synth-gp/",
-
-      //
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/additive/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/wasyn-1/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/webaudio-tinysynth-simple/",
-      "https://cdn.jsdelivr.net/gh/yahiro07/wus-custom-units@r14/webaudio-synth-v2/",
     ];
   }
 }
