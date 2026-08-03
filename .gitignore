@@ -1,5 +1,9 @@
 .local/
 dist/
 node_modules/
-*/.vscode/settings.json
+.vscode/settings.json
 *.code-workspace
+
+.wafer-cache/
+src/unit-inventories.json
+

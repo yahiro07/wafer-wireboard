@@ -1,0 +1,80 @@
+import clsx from "clsx";
+import { npx } from "mofur/ax-ui";
+import { useMemo, useState } from "react";
+import { HsUnitInstance } from "wafer-host/core";
+import { bgSpecs } from "@/common/theme";
+import { UnitItem } from "@/model/types";
+import { PortsColumn, PortsRow, UnitTitleRow } from "@/unit/unit-box-base";
+import { UnitFrameEx } from "@/unit/unit-frame-ex";
+import { buildUnitTemporalPortsModel } from "@/unit/unit-temporal-ports-model";
+
+export const PivotUnitBox = ({
+  unitItem,
+  wireVertical,
+}: {
+  unitItem: UnitItem;
+  wireVertical: boolean;
+}) => {
+  const [unitInstance, setUnitInstance] = useState<HsUnitInstance | null>(null);
+  const unitPortsModel = useMemo(
+    () =>
+      unitInstance ? buildUnitTemporalPortsModel(unitInstance) : undefined,
+    [unitInstance],
+  );
+  return (
+    <div
+      className="absolute"
+      style={{
+        left: npx(unitItem.position.x),
+        top: npx(unitItem.position.y),
+        transform: "translate(-50%, -50%)",
+      }}
+    >
+      <div
+        className={clsx(
+          "relative shadow-md",
+          wireVertical ? "flex-v" : "flex-h",
+        )}
+      >
+        {wireVertical && (
+          <PortsRow
+            ports={unitPortsModel?.outputs}
+            unitPosition={unitItem.position}
+          />
+        )}
+        {!wireVertical && (
+          <PortsColumn
+            ports={unitPortsModel?.inputs}
+            unitPosition={unitItem.position}
+          />
+        )}
+        <div
+          className={clsx(
+            "grow flex-v w-[160px] h-[140px]",
+            bgSpecs.unitCardInner,
+          )}
+        >
+          <UnitTitleRow unitItem={unitItem} />
+          <UnitFrameEx
+            key={unitItem.hmrRevision}
+            unitId={unitItem.unitId}
+            catalogKey={unitItem.catalogKey}
+            onUnitInstanceLoaded={setUnitInstance}
+          />
+        </div>
+        {wireVertical && (
+          <PortsRow
+            ports={unitPortsModel?.inputs}
+            unitPosition={unitItem.position}
+          />
+        )}
+        {!wireVertical && (
+          <PortsColumn
+            ports={unitPortsModel?.outputs}
+            unitPosition={unitItem.position}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
