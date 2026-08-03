@@ -72,7 +72,7 @@ const SystemPortBox = ({
         transform: "translate(-50%, -50%)",
       }}
     >
-      <div className="relative shadow-md flex-ha">
+      <div className="relative flex-ha">
         <div className={wireVertical ? "flex-v" : "flex-h"}>
           {wireVertical && (
             <PortsRow ports={outputPorts} unitPosition={unit.position} />
@@ -80,7 +80,7 @@ const SystemPortBox = ({
           {!wireVertical && (
             <PortsColumn ports={inputPorts} unitPosition={unit.position} />
           )}
-          <div className="flex-h">
+          <div className="flex-h shadow-md">
             <SideGrip unit={unit}>{SideIconContent}</SideGrip>
             <div
               className="flex-h w-[290px] h-[100px]"
