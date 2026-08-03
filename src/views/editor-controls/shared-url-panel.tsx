@@ -1,11 +1,11 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/button";
 import { actions } from "@/model/actions";
 import { projectsModel } from "@/project/projects-model";
-import { iife } from "mofur/ax";
 
 export const SharedUrlPanel = () => {
-  const url = useMemo(projectsModel.emitSharedUrl, []);
+  const [url, setUrl] = useState<string>("");
+
   const closePane = () => actions.hideModalPanel();
   const handleCopy = async () => {
     await navigator.clipboard.writeText(url);
@@ -15,11 +15,7 @@ export const SharedUrlPanel = () => {
   const sizeText = `${url.length} bytes`;
 
   useEffect(() => {
-    void iife(async () => {
-      const res = await fetch("/api/version");
-      const data = await res.json();
-      console.log({ data });
-    });
+    void projectsModel.emitSharedUrl().then(setUrl);
   }, []);
 
   return (

@@ -7,11 +7,11 @@ import {
 } from "./project-data";
 
 export const sharedUrlSupport = {
-  generateSharedUrl(storeState: StoreState): string {
+  generateSharedUrl(baseUrl: string, storeState: StoreState): string {
     const projectData = generateProjectData(storeState);
     const text = JSON.stringify(projectData);
     const compressed = LZString.compressToEncodedURIComponent(text);
-    return `${location.origin}?data=${compressed}`;
+    return `${baseUrl}?data=${compressed}`;
   },
   loadUrlDataIfExists(): Partial<StoreState> | undefined {
     try {
