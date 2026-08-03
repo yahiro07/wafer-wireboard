@@ -1,7 +1,8 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Button } from "@/components/button";
 import { actions } from "@/model/actions";
 import { projectsModel } from "@/project/projects-model";
+import { iife } from "mofur/ax";
 
 export const SharedUrlPanel = () => {
   const url = useMemo(projectsModel.emitSharedUrl, []);
@@ -12,6 +13,15 @@ export const SharedUrlPanel = () => {
   };
   // const sizeText = `${(url.length / 1024).toFixed(1)} KB`;
   const sizeText = `${url.length} bytes`;
+
+  useEffect(() => {
+    void iife(async () => {
+      const res = await fetch("/api/version");
+      const data = await res.json();
+      console.log({ data });
+    });
+  }, []);
+
   return (
     <div className="absolute-full z-10 flex-v items-end" onClick={closePane}>
       <div
