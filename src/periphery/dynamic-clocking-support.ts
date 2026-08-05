@@ -54,7 +54,12 @@ export function setupDynamicClockingSupport() {
   };
 
   hostSystem.setUnitNoteOutputMonitor((args) => {
-    if (!store.state.playing && !originator && args.isOn) {
+    if (
+      !store.state.playing &&
+      !originator &&
+      args.isOn &&
+      args.sourceUnitId === "builtInKeyboard"
+    ) {
       const unitId = args.sourceUnitId;
       originator = { unitId, numNotes: 1 };
       internal.startLocalPlayback(unitId);
