@@ -41,7 +41,7 @@ const App = () => {
   useEffect(projectsModel.setupLifecycle, []);
   useSequencerTickDriverRunner({ sequencerTickDriver, playing, bpm });
   useEffect(() => {
-    if (1) {
+    if (0) {
       return setupDynamicClockingSupport(); //unstable so far
     }
   }, []);
