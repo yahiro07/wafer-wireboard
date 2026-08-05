@@ -5,7 +5,11 @@ import {
   HostAppProvider,
   useSequencerTickDriverRunner,
 } from "wafer-host/react";
-import { hostSystem, sequencerTickDriver } from "@/model/host-system-instance";
+import {
+  hostSystem,
+  partialSequencerTickDriver,
+  sequencerTickDriver,
+} from "@/model/host-system-instance";
 import { store } from "@/model/store";
 import { setupDynamicClockingSupport } from "@/periphery/dynamic-clocking-support";
 import { setupHmrHandler } from "@/periphery/hmr-handler";
@@ -40,14 +44,13 @@ const App = () => {
   useEffect(setupMidiInputHandling, []);
   useEffect(projectsModel.setupLifecycle, []);
   useSequencerTickDriverRunner({ sequencerTickDriver, playing, bpm });
-  useEffect(() => {
-    if (0) {
-      return setupDynamicClockingSupport(); //unstable so far
-    }
-  }, []);
+  useEffect(setupDynamicClockingSupport, []);
   partialPlaybackSupport.useSetup();
   useSetupSongKeySupport();
   // useShowDebugLoadingTiming();
+  useEffect(() => {
+    partialSequencerTickDriver.setBpm(bpm);
+  }, [bpm]);
   return (
     <HostAppProvider
       hostSystem={hostSystem}

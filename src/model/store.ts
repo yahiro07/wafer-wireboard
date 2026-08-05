@@ -64,3 +64,7 @@ export const store = createStore<StoreState>({
   hideWarpedWires: false,
   wireVertical: true,
 });
+
+if (0) {
+  store.setLiveClockingTarget("all");
+}

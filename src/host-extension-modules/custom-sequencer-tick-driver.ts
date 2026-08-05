@@ -1,6 +1,7 @@
 import {
   createSequencerTickDriverCore,
   HostSystem,
+  HsUnitInstance,
   oxLogger,
   sequencerTickDriverHelper,
 } from "wafer-host/core";
@@ -23,6 +24,7 @@ export function createCustomSequencerTickDriver(
   let tickFrameIndex = 0;
   const unitClockingFlags: Record<string, boolean> = {};
   let running = false;
+  const getAllUnits = () => hostSystem.getAllUnits() as HsUnitInstance[];
 
   return {
     setBpm: core.setBpm,
@@ -30,7 +32,7 @@ export function createCustomSequencerTickDriver(
       if (!running) {
         tickFrameIndex = 0;
         oxLogger.clockingStart();
-        processUnitsStartStop(hostSystem.getAllUnits(), "start");
+        processUnitsStartStop(getAllUnits(), "start");
         core.start({
           processScheduling(timeFrom, barFrom, barTo, bpm) {
             oxLogger.clockingFrameStart(tickFrameIndex);
@@ -48,7 +50,7 @@ export function createCustomSequencerTickDriver(
     stop() {
       if (running) {
         core.stop();
-        processUnitsStartStop(hostSystem.getAllUnits(), "stop");
+        processUnitsStartStop(getAllUnits(), "stop");
         oxLogger.clockingStop();
         running = false;
       }

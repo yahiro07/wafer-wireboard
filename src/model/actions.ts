@@ -56,6 +56,9 @@ export const actions = {
       ),
     );
   },
+  setPlayState(playing: boolean) {
+    store.setPlaying(playing);
+  },
   togglePlayState() {
     store.setPlaying((prev) => !prev);
   },
