@@ -1,7 +1,8 @@
+import { sortUnitsForClocking } from "@/host-extension-modules/clocking-helper";
 import {
+  ConnectionRule,
   createSequencerTickDriverCore,
   HostSystem,
-  HsUnitInstance,
   oxLogger,
   sequencerTickDriverHelper,
 } from "wafer-host/core";
@@ -24,7 +25,15 @@ export function createCustomSequencerTickDriver(
   let tickFrameIndex = 0;
   const unitClockingFlags: Record<string, boolean> = {};
   let running = false;
-  const getAllUnits = () => hostSystem.getAllUnits() as HsUnitInstance[];
+
+  const getTargetUnits = () => {
+    const units = hostSystem
+      .getAllUnits()
+      .filter((unit) => unitClockingFlags[unit.unitId] !== false);
+    const connectionRules = hostSystem.getConnectionRules() as ConnectionRule[];
+    sortUnitsForClocking(units, connectionRules);
+    return units;
+  };
 
   return {
     setBpm: core.setBpm,
@@ -32,13 +41,11 @@ export function createCustomSequencerTickDriver(
       if (!running) {
         tickFrameIndex = 0;
         oxLogger.clockingStart();
-        processUnitsStartStop(getAllUnits(), "start");
+        processUnitsStartStop(getTargetUnits(), "start");
         core.start({
           processScheduling(timeFrom, barFrom, barTo, bpm) {
             oxLogger.clockingFrameStart(tickFrameIndex);
-            const units = hostSystem
-              .getAllUnits()
-              .filter((unit) => unitClockingFlags[unit.unitId] !== false);
+            const units = getTargetUnits();
             processUnitsScheduling(units, timeFrom, barFrom, barTo, bpm);
             oxLogger.clockingFrameEnd(tickFrameIndex);
             tickFrameIndex++;
@@ -50,7 +57,7 @@ export function createCustomSequencerTickDriver(
     stop() {
       if (running) {
         core.stop();
-        processUnitsStartStop(getAllUnits(), "stop");
+        processUnitsStartStop(getTargetUnits(), "stop");
         oxLogger.clockingStop();
         running = false;
       }

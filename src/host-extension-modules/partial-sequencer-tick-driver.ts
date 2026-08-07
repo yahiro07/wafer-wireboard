@@ -1,4 +1,6 @@
+import { sortUnitsForClocking } from "@/host-extension-modules/clocking-helper";
 import {
+  ConnectionRule,
   createSequencerTickDriverCore,
   HostSystem,
   oxLogger,
@@ -22,9 +24,12 @@ export function createPartialSequencerTickDriver(
   let targetUnitIds: string[] | undefined;
 
   const getTargetUnits = () => {
-    return hostSystem
+    const units = hostSystem
       .getAllUnits()
       .filter((unit) => targetUnitIds?.includes(unit.unitId));
+    const connectionRules = hostSystem.getConnectionRules() as ConnectionRule[];
+    sortUnitsForClocking(units, connectionRules);
+    return units;
   };
 
   return {
