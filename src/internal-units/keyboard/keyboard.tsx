@@ -27,6 +27,7 @@ export const createBuiltinKeyboardUnit: ReactUnitTemplateFn = (
     async noteOn(noteKey: number) {
       const noteNumber = noteKey + store.state.octave * 12;
       store.setNotes((prev) => [...prev, noteNumber]);
+      noteOutputPort.setProgressionRootNote(noteNumber);
       noteOutputPort.noteOn(noteNumber);
       notesMap.set(noteKey, noteNumber);
     },
