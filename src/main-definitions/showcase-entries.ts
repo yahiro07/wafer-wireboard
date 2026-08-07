@@ -52,17 +52,20 @@ export const showcaseEntries: ShowcaseEntry[] = [
     thumbnailUrl: item.thumbnailUrl,
     isBeta: betaUnitKeys.includes(item.catalogKey as CatalogKey),
   })),
-  //builtInKeyboard and builtInVisualizer are omit from showcase entries
-  {
-    name: "warp mix emitter",
-    catalogKey: internalUnitKeys.warpMixEmitter,
-    thumbnailUrl: internalUnitThumbnails.warpMixEmitter,
-  },
-  {
-    name: "warp mix receiver",
-    catalogKey: internalUnitKeys.warpMixReceiver,
-    thumbnailUrl: internalUnitThumbnails.warpMixReceiver,
-  },
+  ...(0
+    ? [
+        {
+          name: "warp mix emitter",
+          catalogKey: internalUnitKeys.warpMixEmitter,
+          thumbnailUrl: internalUnitThumbnails.warpMixEmitter,
+        },
+        {
+          name: "warp mix receiver",
+          catalogKey: internalUnitKeys.warpMixReceiver,
+          thumbnailUrl: internalUnitThumbnails.warpMixReceiver,
+        },
+      ]
+    : []),
   {
     name: "volume",
     catalogKey: internalUnitKeys.builtInVolume,
