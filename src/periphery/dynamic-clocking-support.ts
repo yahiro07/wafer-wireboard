@@ -39,7 +39,7 @@ export function setupDynamicClockingSupport() {
       if (liveClockingTarget === "chain") {
         const targetUnitIds =
           gatherReachableUnitsWithNoteInput(originatorUnitId);
-        partialSequencerTickDriver.start(targetUnitIds);
+        setTimeout(() => partialSequencerTickDriver.start(targetUnitIds), 1);
       } else if (liveClockingTarget === "all") {
         actions.setPlayState(true);
       }
