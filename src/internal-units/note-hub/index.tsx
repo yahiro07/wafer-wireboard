@@ -24,9 +24,6 @@ export const createNoteHubUnit: ReactUnitTemplateFn = (unitInterface) => {
     noteInput: {
       noteOn: actions.noteOn,
       noteOff: actions.noteOff,
-      setProgressionRootNote(note: number, time: number) {
-        noteOutputPort.setProgressionRootNote(note, time);
-      },
     },
   });
 
