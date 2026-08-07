@@ -136,9 +136,10 @@ function getUnitSourceUrls() {
       `file://${waferUnitsLocalDistDir}/drum-loop-player/`,
       `file://${waferUnitsLocalDistDir}/timing-checker/`,
 
-      // `file://${wusUnitsLocalDistDir}/perseq/`,
-      // `file://${wusUnitsLocalDistDir}/chord-caster/`,
-      // `file://${wusUnitsLocalDistDir}/piano-roll/`,
+      // `file://${waferUnitsLocalDistDir}/perseq/`,
+      // `file://${waferUnitsLocalDistDir}/chord-caster/`,
+      // `file://${waferUnitsLocalDistDir}/piano-roll/`,
+      `file://${waferUnitsLocalDistDir}/specbar/`,
 
       `file://${waferUnitsLocalDistDir}/multi-lfo/`,
       `file://${waferUnitsLocalDistDir}/step-automator/`,
