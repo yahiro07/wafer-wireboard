@@ -1,13 +1,14 @@
 import clsx from "clsx";
 import { npx } from "mofur/ax-ui";
 import { ReactNode, useMemo } from "react";
-import { Icons } from "@/common/icons";
+import { Icons, IconsEx } from "@/common/icons";
 import { bgSpecs } from "@/common/theme";
 import { UnitItem } from "@/model/types";
 import { PortsColumn, PortsRow } from "@/unit/unit-box-base";
 import { handleGripPointerDown } from "@/unit/unit-box-drag-handler";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
 import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
+import { store } from "@/model/store";
 
 const systemPortUnitTemporalPorts = {
   speakerInput: {
@@ -34,7 +35,7 @@ const SideGrip = ({
   return (
     <div
       className={clsx(
-        "relative w-[70px] h-[100px] flex-c pt-2 cursor-pointer text-gray-300",
+        "relative w-[70px] h-[100px] flex-c cursor-pointer text-gray-300",
         bgSpecs.unitCardFrame,
       )}
       onPointerDown={(e) => handleGripPointerDown(e, unit)}
@@ -124,6 +125,26 @@ export const SpeakerSystemPortBox = ({
   );
 };
 
+const AutoTargetButton = () => {
+  const { keyboardAutoTargetEnabled: active, wireVertical } =
+    store.useSnapshot();
+  return (
+    <button
+      onPointerDown={(e) => e.stopPropagation()}
+      onClick={store.toggleKeyboardAutoTargetEnabled}
+    >
+      <IconsEx.KeyboardAutoTarget
+        size={24}
+        className={clsx(
+          "cursor-pointer",
+          active && "text-cyan-500",
+          !wireVertical && "rotate-90",
+        )}
+      />
+    </button>
+  );
+};
+
 export const KeyboardSystemPortBox = ({
   unit,
   wireVertical,
@@ -141,7 +162,14 @@ export const KeyboardSystemPortBox = ({
       outputPorts={outputPorts}
       inputPorts={undefined}
       wireVertical={wireVertical}
-      SideIconContent={<Icons.Piano size={55} />}
+      SideIconContent={
+        <div className="w-full h-full flex-c">
+          <Icons.Piano size={55} />
+          <div className="absolute top-0 left-0">
+            <AutoTargetButton />
+          </div>
+        </div>
+      }
       contentBgColor="white"
     />
   );

@@ -34,6 +34,7 @@ export type StoreState = {
   partialPlayTargetUnitIds: string[];
   hideWarpedWires: boolean;
   wireVertical: boolean;
+  keyboardAutoTargetEnabled: boolean;
 };
 
 export const store = createStore<StoreState>({
@@ -63,6 +64,7 @@ export const store = createStore<StoreState>({
   partialPlayTargetUnitIds: [],
   hideWarpedWires: false,
   wireVertical: true,
+  keyboardAutoTargetEnabled: true,
 });
 
 if (0) {

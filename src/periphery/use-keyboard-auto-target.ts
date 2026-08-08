@@ -33,6 +33,8 @@ export function useKeyboardAutoTarget() {
   // biome-ignore lint/correctness/useExhaustiveDependencies: manual management
   useEffect(() => {
     if (store.state.unitsLoading) return;
-    updateKeyboardAutoTarget();
+    if (store.state.keyboardAutoTargetEnabled) {
+      updateKeyboardAutoTarget();
+    }
   }, [keyboardUnit?.position]);
 }

@@ -13,7 +13,12 @@ import { LuServer } from "react-icons/lu";
 import { MdRestartAlt } from "react-icons/md";
 import { PiLightningDuotone, PiPianoKeysFill } from "react-icons/pi";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { TbAntenna, TbNavigationFilled, TbSettings } from "react-icons/tb";
+import {
+  TbAntenna,
+  TbArrowBadgeUp,
+  TbNavigationFilled,
+  TbSettings,
+} from "react-icons/tb";
 import { VscGripper, VscRadioTower } from "react-icons/vsc";
 
 export const Icons = {
@@ -45,4 +50,5 @@ export const IconsEx = {
   KeyboardOctaveShiftL: BiSolidLeftArrow,
   KeyboardOctaveShiftR: BiSolidRightArrow,
   SceneSwitcher: HiQueueList,
+  KeyboardAutoTarget: TbArrowBadgeUp,
 };
