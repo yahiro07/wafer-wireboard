@@ -9,12 +9,12 @@ import {
 const keyboardUnitId = "builtInKeyboard";
 
 function updateKeyboardAutoTarget() {
-  const keyboardPrimaryOutputPortKey = `${keyboardUnitId}.primaryOutput`;
+  const keyboardNoteOutputPortKey = `${keyboardUnitId}.noteOutput`;
   const existingWire = store.state.wireItems.find(
-    (wire) => wire.sourcePortKey === keyboardPrimaryOutputPortKey,
+    (wire) => wire.sourcePortKey === keyboardNoteOutputPortKey,
   );
   if (!existingWire) return;
-  const sourcePort = store.state.portItems[keyboardPrimaryOutputPortKey];
+  const sourcePort = store.state.portItems[keyboardNoteOutputPortKey];
   if (!sourcePort) return;
   const portItems = Object.values(store.state.portItems);
   const ports = filterCandidatePorts(portItems, keyboardUnitId, "note");
