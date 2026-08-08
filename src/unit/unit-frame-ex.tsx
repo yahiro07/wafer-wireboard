@@ -3,7 +3,7 @@ import { HsUnitInstance } from "wafer-host/core";
 import {
   ReactUnitFrame,
   UnitDestinationSpec,
-  UnitFrame,
+  UnitFrameScaled,
 } from "wafer-host/react";
 import {
   CatalogKey,
@@ -16,13 +16,11 @@ export const UnitFrameEx = ({
   destSpec,
   catalogKey,
   onUnitInstanceLoaded,
-  frameAspectRatio,
 }: {
   unitId: string;
   destSpec?: UnitDestinationSpec;
   catalogKey: CatalogKey;
   onUnitInstanceLoaded?: (unitInstance: HsUnitInstance) => void;
-  frameAspectRatio?: number;
 }) => {
   const catalogTarget = getCatalogTarget(catalogKey);
   if (catalogTarget?.type === "internal") {
@@ -38,16 +36,13 @@ export const UnitFrameEx = ({
     );
   } else if (catalogTarget?.type === "catalog") {
     return (
-      <ScalerBoxAutoSized>
-        <UnitFrame
-          unitId={unitId}
-          destSpec={destSpec}
-          unitUrl={catalogTarget.UnitInventorySpec.loaderPageUrl}
-          onIframeMounted={setupIframeInputHandlers}
-          onUnitInstanceLoaded={onUnitInstanceLoaded}
-          frameAspectRatio={frameAspectRatio}
-        />
-      </ScalerBoxAutoSized>
+      <UnitFrameScaled
+        unitId={unitId}
+        destSpec={destSpec}
+        unitUrl={catalogTarget.UnitInventorySpec.loaderPageUrl}
+        onIframeMounted={setupIframeInputHandlers}
+        onUnitInstanceLoaded={onUnitInstanceLoaded}
+      />
     );
   }
   return null;

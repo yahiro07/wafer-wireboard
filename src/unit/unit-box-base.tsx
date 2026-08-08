@@ -171,7 +171,6 @@ export const SlotCardBox = ({
               unitId={unitItem.unitId}
               catalogKey={unitItem.catalogKey}
               onUnitInstanceLoaded={setUnitInstance}
-              frameAspectRatio={1.8}
             />
             {innerContent}
           </div>
