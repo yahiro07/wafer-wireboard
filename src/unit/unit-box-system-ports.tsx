@@ -65,7 +65,7 @@ const SystemPortBox = ({
 }) => {
   return (
     <div
-      className="absolute"
+      className="absolute z-10"
       style={{
         left: npx(unit.position.x),
         top: npx(unit.position.y),
