@@ -3,78 +3,91 @@ function toAbsolutePath(path: string): string {
 }
 
 function getUnitSourceUrls() {
-  if (0) {
+  if (1) {
     //release
     const waferUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-units@r16`;
     const waferCustomUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-custom-units@r16`;
+
+    const waferUnitsLocalDistDir = toAbsolutePath("../../wafer-units/dist");
+
     return [
       `${waferUnitsBase}/graphite-drum-machine/`,
-
-      `${waferCustomUnitsBase}/shiny-drum-machine/`,
       `${waferCustomUnitsBase}/webaudio-tinysynth-mini/`,
       `${waferCustomUnitsBase}/super-oscillator/`,
-      `${waferCustomUnitsBase}/midi-synth/`,
-      `${waferCustomUnitsBase}/webaudio-synth-v2/`,
-      `${waferCustomUnitsBase}/wasyn-1/`,
-      `${waferCustomUnitsBase}/syntho/`,
-      `${waferCustomUnitsBase}/simple-synth/`,
-      `${waferCustomUnitsBase}/model-1/`,
-      `${waferCustomUnitsBase}/react-synth/`,
-      `${waferCustomUnitsBase}/poly-synth/`,
-      `${waferCustomUnitsBase}/sk-synth/`,
-      `${waferCustomUnitsBase}/additive/`,
-      `${waferCustomUnitsBase}/cadence/`,
-      `${waferCustomUnitsBase}/bl-synth-modular/`,
-      `${waferCustomUnitsBase}/beatmaker/`,
+      `file://${waferUnitsLocalDistDir}/mini-synth-2/`, //temporary
+      `${waferUnitsBase}/proto-engine-pd-fm/`,
 
-      `${waferUnitsBase}/wavicle/`,
       `${waferUnitsBase}/techno-beat-machine/`,
+      `${waferCustomUnitsBase}/shiny-drum-machine/`,
 
+      `${waferUnitsBase}/bseq2/`,
+      `${waferUnitsBase}/tonerio-sequencer/`,
+      `${waferUnitsBase}/fluorite-piano-roll/`,
+      `${waferUnitsBase}/root-prog/`,
+      `${waferUnitsBase}/partex/`,
+
+      `${waferCustomUnitsBase}/webaudio-spectrum/`,
       `${waferCustomUnitsBase}/web-audio-mixer/`,
       `${waferCustomUnitsBase}/vue-audio-mixer/`,
-      `${waferCustomUnitsBase}/hm-step-sequencer/`,
-      `${waferCustomUnitsBase}/d3-synth-scale/`,
-      `${waferCustomUnitsBase}/webaudio-spectrum/`,
-      `${waferCustomUnitsBase}/audio-input-effects/`,
+
+      `${waferCustomUnitsBase}/beatmaker/`,
+
+      `${waferUnitsBase}/sunset-delay/`,
+      `${waferUnitsBase}/sunset-chorus-mini/`,
+      `${waferUnitsBase}/lofi2/`,
       `${waferCustomUnitsBase}/darkwave/`,
+
+      `${waferCustomUnitsBase}/d3-synth-scale/`,
+
+      `${waferCustomUnitsBase}/syntho/`,
+      `${waferCustomUnitsBase}/additive/`,
+      `${waferCustomUnitsBase}/bl-synth-modular/`,
+      `${waferCustomUnitsBase}/cadence/`,
+
+      `${waferCustomUnitsBase}/react-synth/`,
+      `${waferCustomUnitsBase}/poly-synth/`,
+      `${waferCustomUnitsBase}/model-1/`,
+      `${waferCustomUnitsBase}/webaudio-synth-v2/`,
+      `${waferCustomUnitsBase}/midi-synth/`,
+      `${waferCustomUnitsBase}/wasyn-1/`,
+      `${waferCustomUnitsBase}/simple-synth/`,
+      `${waferCustomUnitsBase}/sk-synth/`,
+
+      `${waferUnitsBase}/drum-loop-player/`,
+      `${waferUnitsBase}/lseq1/`,
+      `${waferUnitsBase}/rtfs-p/`,
+      `${waferUnitsBase}/timing-checker/`,
+      `${waferUnitsBase}/multi-lfo/`,
+      `${waferUnitsBase}/step-automator/`,
+      `${waferUnitsBase}/tone-wheel/`,
+
       `${waferCustomUnitsBase}/circular-audio-wave/`,
       `${waferCustomUnitsBase}/vissonance/`,
       `${waferCustomUnitsBase}/threejs-audio-reactive-visual/`,
 
-      `${waferUnitsBase}/bseq1/`,
-      `${waferUnitsBase}/bseq2/`,
-      `${waferUnitsBase}/lseq1/`,
-      `${waferUnitsBase}/tonerio-sequencer/`,
-      `${waferUnitsBase}/fluorite-piano-roll/`,
-      `${waferUnitsBase}/partex/`,
-      `${waferUnitsBase}/root-prog/`,
-      `${waferUnitsBase}/rtfr/`,
-      `${waferUnitsBase}/rtfs1/`,
-      `${waferUnitsBase}/rtfs2/`,
-      `${waferUnitsBase}/rtfs-p/`,
+      // `${waferUnitsBase}/bseq1/`,
+      // `${waferUnitsBase}/wavicle/`,
+      // `${waferCustomUnitsBase}/hm-step-sequencer/`,
+      // `${waferCustomUnitsBase}/audio-input-effects/`,
+
+      // `${waferUnitsBase}/rtfr/`,
+      // `${waferUnitsBase}/rtfs1/`,
+      // `${waferUnitsBase}/rtfs2/`,
       // `${waferUnitsBase}/recoru/`,
-      `${waferUnitsBase}/drum-loop-player/`,
-      `${waferUnitsBase}/timing-checker/`,
-      `${waferUnitsBase}/multi-lfo/`,
-      `${waferUnitsBase}/step-automator/`,
 
-      `${waferUnitsBase}/sunset-delay/`,
-      `${waferUnitsBase}/sunset-chorus-mini/`,
-      `${waferUnitsBase}/crusher/`,
-      `${waferUnitsBase}/channel-strip/`,
-      `${waferUnitsBase}/noise-mix/`,
-      `${waferUnitsBase}/lofi2/`,
+      // `${waferUnitsBase}/crusher/`,
+      // `${waferUnitsBase}/channel-strip/`,
+      // `${waferUnitsBase}/noise-mix/`,
 
-      `${waferUnitsBase}/bs03/`,
-      `${waferUnitsBase}/s7/`,
-      `${waferUnitsBase}/mop2/`,
-      `${waferUnitsBase}/mpd1/`,
-      `${waferUnitsBase}/tone-wheel/`,
-      `${waferUnitsBase}/proto-engine-ptm-osc/`,
-      `${waferUnitsBase}/proto-engine-pd-fm/`,
-      `${waferUnitsBase}/mini-synth/`,
-      `${waferUnitsBase}/mini-synth-ge/`,
-      `${waferUnitsBase}/mini-synth-gp/`,
+      // `${waferUnitsBase}/bs03/`,
+      // `${waferUnitsBase}/s7/`,
+      // `${waferUnitsBase}/mop2/`,
+      // `${waferUnitsBase}/mpd1/`,
+
+      // `${waferUnitsBase}/proto-engine-ptm-osc/`,
+      // `${waferUnitsBase}/mini-synth/`,
+      // `${waferUnitsBase}/mini-synth-ge/`,
+      // `${waferUnitsBase}/mini-synth-gp/`,
     ];
   } else {
     //local debug
