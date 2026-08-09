@@ -7,3 +7,5 @@ node_modules/
 .wafer-cache/
 src/unit-inventories.json
 
+vite.config.debug.ts
+Makefile
