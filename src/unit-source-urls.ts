@@ -90,6 +90,7 @@ function getUnitSourceUrls() {
       `file://${waferCustomUnitsLocalDir}/js/webaudio-tinysynth-mini/`,
       `file://${waferCustomUnitsLocalDir}/ts/dist/super-oscillator/`,
       `file://${waferUnitsLocalDistDir}/wavicle/`,
+      `file://${waferUnitsLocalDistDir}/mini-synth-2/`,
 
       `file://${waferCustomUnitsLocalDir}/js/midi-synth/`,
       `file://${waferCustomUnitsLocalDir}/js/webaudio-synth-v2/`,
