@@ -2,11 +2,11 @@ import { delayMs } from "mofur/ax";
 import {
   createHostSystem,
   HostSystem,
+  NotesDispatcher,
   sequencerTickDriverHelper,
-  WebAudioActionScheduler,
 } from "wafer-host/core";
 
-type OfflineActionScheduler = WebAudioActionScheduler & {
+type OfflineNotesDispatcher = NotesDispatcher & {
   flush(): void;
 };
 
@@ -14,10 +14,10 @@ const calcSongBarDurationSec = (bpm: number): number => {
   return (4 * 60) / bpm;
 };
 
-function createOfflineActionScheduler(
+function createOfflineNotesDispatcher(
   offlineAudioContext: OfflineAudioContext,
   aheadTimeMs = 50,
-): OfflineActionScheduler {
+): OfflineNotesDispatcher {
   type ScheduledAction = {
     action: () => void;
     time: number;
@@ -27,27 +27,25 @@ function createOfflineActionScheduler(
   const aheadTimeSec = aheadTimeMs / 1000;
   const epsilon = 1 / offlineAudioContext.sampleRate;
 
-  function enqueue(scheduledAction: ScheduledAction) {
-    const insertIndex = queue.findIndex(
-      (item) => item.time > scheduledAction.time,
-    );
-    if (insertIndex === -1) {
-      queue.push(scheduledAction);
-    } else {
-      queue.splice(insertIndex, 0, scheduledAction);
-    }
-  }
-
-  function flush() {
-    const thresholdTime =
-      offlineAudioContext.currentTime + aheadTimeSec + epsilon;
-    while (queue.length > 0 && queue[0].time <= thresholdTime) {
-      const scheduledAction = queue.shift();
-      scheduledAction?.action();
-    }
-  }
-
-  return {
+  const internal = {
+    enqueue(scheduledAction: ScheduledAction) {
+      const insertIndex = queue.findIndex(
+        (item) => item.time > scheduledAction.time,
+      );
+      if (insertIndex === -1) {
+        queue.push(scheduledAction);
+      } else {
+        queue.splice(insertIndex, 0, scheduledAction);
+      }
+    },
+    flush() {
+      const thresholdTime =
+        offlineAudioContext.currentTime + aheadTimeSec + epsilon;
+      while (queue.length > 0 && queue[0].time <= thresholdTime) {
+        const scheduledAction = queue.shift();
+        scheduledAction?.action();
+      }
+    },
     pushAction(action: () => void, time?: number) {
       const scheduledTime = time ?? offlineAudioContext.currentTime;
       const thresholdTime =
@@ -57,10 +55,16 @@ function createOfflineActionScheduler(
         action();
         return;
       }
-
-      enqueue({ action, time: scheduledTime });
+      internal.enqueue({ action, time: scheduledTime });
     },
-    flush,
+  };
+
+  return {
+    //TODO: implement handlers
+    pushNoteDeliveryEvent(_noteDeliveryEvent) {},
+    pushAutomationDeliveryEvent(_automationDeliveryEvent) {},
+    setUnitNoteOutputMonitor() {},
+    flush: internal.flush,
   };
 }
 
@@ -88,10 +92,10 @@ export function createOfflineRenderingDriver_SimulateRealtimeTickDriver(
   const lookaheadSec = config.lookaheadMs / 1000;
   const renderEndEpsilonSec = 1 / offlineAudioContext.sampleRate;
 
-  const offlineActionScheduler =
-    createOfflineActionScheduler(offlineAudioContext);
+  const offlineNotesDispatcher =
+    createOfflineNotesDispatcher(offlineAudioContext);
   const offlineHost = createHostSystem(offlineAudioContext, {
-    customActionScheduler: offlineActionScheduler,
+    customNotesDispatcher: offlineNotesDispatcher,
   });
 
   const run = async () => {
@@ -122,7 +126,7 @@ export function createOfflineRenderingDriver_SimulateRealtimeTickDriver(
     };
 
     scheduleUntil(offlineAudioContext.currentTime + lookaheadSec);
-    offlineActionScheduler.flush();
+    offlineNotesDispatcher.flush();
 
     let tickIndex = 1;
     const createSuspendPromiseForNextTick = () => {
@@ -135,9 +139,9 @@ export function createOfflineRenderingDriver_SimulateRealtimeTickDriver(
 
     while (suspendPromise) {
       await suspendPromise;
-      offlineActionScheduler.flush();
+      offlineNotesDispatcher.flush();
       scheduleUntil(offlineAudioContext.currentTime + lookaheadSec);
-      offlineActionScheduler.flush();
+      offlineNotesDispatcher.flush();
 
       tickIndex++;
       suspendPromise = createSuspendPromiseForNextTick();

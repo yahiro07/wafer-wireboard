@@ -45,10 +45,6 @@ const SideGrip = ({
   );
 };
 
-const SideGripDummy = () => {
-  return <div className="w-[80px] h-[120px]" />;
-};
-
 const SystemPortBox = ({
   unit,
   outputPorts,
