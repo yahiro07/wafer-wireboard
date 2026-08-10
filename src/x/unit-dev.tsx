@@ -77,7 +77,8 @@ const App = () => {
             <UnitFrameEx
               unitId="sequencer"
               destSpec="synth"
-              catalogKey="mu4Keyboard"
+              catalogKey="tonerioSequencer"
+              // catalogKey="mu4Keyboard"
               // templateFn={createRtfrUnit}
               // templateFn={createUnit1}
               // notes={feedNotesToSequencer ? notes : undefined}

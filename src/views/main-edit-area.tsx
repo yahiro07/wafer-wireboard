@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { store } from "@/model/store";
 import { setupMainAreaInputHandlers } from "@/periphery/sight-control-handlers";
-import { useKeyboardAutoTarget } from "@/unit/use-keyboard-auto-target";
+import { useKeyboardAutoTarget } from "@/periphery/use-keyboard-auto-target";
 import { DebugOverlay } from "@/views/debug-overlay";
 import { EditorLayer } from "@/views/editor/editor-layer";
 import { CornerGithubBadge } from "@/views/editor-controls/foreground-ui";

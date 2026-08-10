@@ -7,29 +7,26 @@ import {
   sequencerTickDriverHelper,
 } from "wafer-host/core";
 
-export type CustomSequencerTickDriver = {
+export type PartialSequencerTickDriver = {
   setBpm(bpm: number): void;
-  start(): void;
+  start(targetUnitIds: string[]): void;
   stop(): void;
-  setUnitClockingFlag(unitId: string, enabled: boolean): void;
-  setUnitClockingFlags(attrs: Record<string, boolean>): void;
-  getUnitClockingFlags(): Record<string, boolean>;
 };
 
-export function createCustomSequencerTickDriver(
+export function createPartialSequencerTickDriver(
   hostSystem: HostSystem,
-): CustomSequencerTickDriver {
+): PartialSequencerTickDriver {
   const { processUnitsStartStop, processUnitsScheduling } =
     sequencerTickDriverHelper;
   const core = createSequencerTickDriverCore(hostSystem.audioContext, 25, 100);
   let tickFrameIndex = 0;
-  const unitClockingFlags: Record<string, boolean> = {};
-  let running = false;
+  let playing = false;
+  let targetUnitIds: string[] | undefined;
 
   const getTargetUnits = () => {
     const units = hostSystem
       .getAllUnits()
-      .filter((unit) => unitClockingFlags[unit.unitId] !== false);
+      .filter((unit) => targetUnitIds?.includes(unit.unitId));
     const connectionRules = hostSystem.getConnectionRules() as ConnectionRule[];
     sortUnitsForClocking(units, connectionRules);
     return units;
@@ -37,8 +34,9 @@ export function createCustomSequencerTickDriver(
 
   return {
     setBpm: core.setBpm,
-    start() {
-      if (!running) {
+    start(_targetUnitIds) {
+      if (!playing) {
+        targetUnitIds = _targetUnitIds;
         tickFrameIndex = 0;
         oxLogger.clockingStart();
         processUnitsStartStop(getTargetUnits(), "start");
@@ -51,25 +49,17 @@ export function createCustomSequencerTickDriver(
             tickFrameIndex++;
           },
         });
-        running = true;
+        playing = true;
       }
     },
     stop() {
-      if (running) {
+      if (playing) {
         core.stop();
         processUnitsStartStop(getTargetUnits(), "stop");
         oxLogger.clockingStop();
-        running = false;
+        playing = false;
+        targetUnitIds = undefined;
       }
-    },
-    setUnitClockingFlag(unitId: string, enabled: boolean) {
-      unitClockingFlags[unitId] = enabled;
-    },
-    setUnitClockingFlags(attrs: Record<string, boolean>) {
-      Object.assign(unitClockingFlags, attrs);
-    },
-    getUnitClockingFlags() {
-      return unitClockingFlags;
     },
   };
 }

@@ -38,7 +38,7 @@ export function findNearestPort(
   const filteredPorts = filterXRight
     ? portItems.filter((port) => {
         if (store.state.wireVertical) {
-          return port.position.y < position.y - 30;
+          return port.position.y < position.y;
         }
         return port.position.x > position.x + 30;
       })

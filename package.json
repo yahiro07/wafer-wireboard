@@ -32,6 +32,6 @@
     "tailwindcss": "^4.3.0",
     "typescript": "~6.0.3",
     "vite": "^8.0.12",
-    "wafer-host": "^0.0.6"
+    "wafer-host": "^0.1.4"
   }
 }

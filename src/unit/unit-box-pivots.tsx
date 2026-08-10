@@ -30,12 +30,7 @@ export const PivotUnitBox = ({
         transform: "translate(-50%, -50%)",
       }}
     >
-      <div
-        className={clsx(
-          "relative shadow-md",
-          wireVertical ? "flex-v" : "flex-h",
-        )}
-      >
+      <div className={clsx("relative", wireVertical ? "flex-v" : "flex-h")}>
         {wireVertical && (
           <PortsRow
             ports={unitPortsModel?.outputs}
@@ -50,7 +45,7 @@ export const PivotUnitBox = ({
         )}
         <div
           className={clsx(
-            "grow flex-v w-[160px] h-[140px]",
+            "flex-v w-[160px] h-[140px] shadow-md",
             bgSpecs.unitCardInner,
           )}
         >

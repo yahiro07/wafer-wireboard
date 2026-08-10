@@ -45,12 +45,9 @@ export const TopControlBar = () => {
       </div>
 
       <div className="flex-ha gap-1.5">
-        <Button
-          text="Default(debug)"
-          onClick={projectsModel.loadDefaultProject}
-        />
+        <Button text="Default" onClick={projectsModel.loadDefaultProject} />
         <Button text="Clear" onClick={projectsModel.loadBlankProject} />
-        <Button text="Demo" onClick={projectsModel.loadDemoProject} />
+        {/* <Button text="Demo" onClick={projectsModel.loadDemoProject} /> */}
         <Button text="Import" onClick={projectsModel.importProject} />
         <Button text="Export" onClick={projectsModel.exportProject} />
         <Button text="wire-dir" onClick={() => store.toggleWireVertical()} />

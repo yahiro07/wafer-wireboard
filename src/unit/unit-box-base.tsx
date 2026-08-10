@@ -117,6 +117,20 @@ export const UnitTitleRow = ({ unitItem }: { unitItem: UnitItem }) => {
   );
 };
 
+const LoadingOverlay = ({ loading }: { loading: boolean }) => {
+  return (
+    <div
+      className="absolute-full bg-gray-100 flex-c pointer-events-none"
+      style={{
+        opacity: loading ? 1 : 0,
+        transition: "opacity 0.3s ease-in-out",
+      }}
+    >
+      <Icons.Spinner className="animate-spin" size={50} color="gray" />
+    </div>
+  );
+};
+
 export const SlotCardBox = ({
   unitItem,
   innerContent,
@@ -163,7 +177,7 @@ export const SlotCardBox = ({
         <div className="flex-v shadow-md">
           <UnitTitleRow unitItem={unitItem} />
           <div
-            className={clsx(bgSpecs.unitCardInner)}
+            className={clsx("relative", bgSpecs.unitCardInner)}
             style={{ width: npx(360), height: npx(200) }}
           >
             <UnitFrameEx
@@ -171,9 +185,9 @@ export const SlotCardBox = ({
               unitId={unitItem.unitId}
               catalogKey={unitItem.catalogKey}
               onUnitInstanceLoaded={setUnitInstance}
-              frameAspectRatio={1.8}
             />
             {innerContent}
+            <LoadingOverlay loading={!unitInstance} />
           </div>
         </div>
         {wireVertical && (
