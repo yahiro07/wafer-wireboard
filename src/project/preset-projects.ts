@@ -38,7 +38,7 @@ export function createPresetProjectsModel() {
         {
           destSpec: "builtInPreOutput.audioInput",
           unitId: "synth1",
-          catalogKey: "miniSynthGe",
+          catalogKey: "miniSynth2",
           position: { x: baseX, y: baseY + 350 },
         },
         {
