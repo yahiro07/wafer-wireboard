@@ -91,9 +91,9 @@ function getUnitSourceUrls() {
     ];
   } else {
     //local debug
-    const unitsDevDistDir = toAbsolutePath(
-      "../../webaudio-unit-system/unit-examples/dist",
-    );
+    // const unitsDevDistDir = toAbsolutePath(
+    //   "../../webaudio-unit-system/unit-examples/dist",
+    // );
     const waferUnitsLocalDistDir = toAbsolutePath("../../wafer-units/dist");
     const waferCustomUnitsLocalDir = toAbsolutePath("../../wafer-custom-units");
     return [
@@ -176,7 +176,7 @@ function getUnitSourceUrls() {
       `file://${waferUnitsLocalDistDir}/mop2/`,
       `file://${waferUnitsLocalDistDir}/mpd1/`,
 
-      `file://${unitsDevDistDir}/mu4-keyboard/`,
+      // `file://${unitsDevDistDir}/mu4-keyboard/`,
 
       `file://${waferUnitsLocalDistDir}/proto-engine-ptm-osc/`,
       `file://${waferUnitsLocalDistDir}/mini-synth/`,
