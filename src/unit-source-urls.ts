@@ -142,6 +142,7 @@ function getUnitSourceUrls() {
       `file://${waferUnitsLocalDistDir}/lseq1/`,
       `file://${waferUnitsLocalDistDir}/rtfs-p/`,
       `file://${waferUnitsLocalDistDir}/timing-checker/`,
+      `file://${waferUnitsLocalDistDir}/parameters-checker/`,
       `file://${waferUnitsLocalDistDir}/step-automator/`,
       `file://${waferUnitsLocalDistDir}/multi-lfo/`,
       `file://${waferUnitsLocalDistDir}/tone-wheel/`,
