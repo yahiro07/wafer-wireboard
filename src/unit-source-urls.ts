@@ -3,18 +3,16 @@ function toAbsolutePath(path: string): string {
 }
 
 function getUnitSourceUrls() {
-  if (0) {
+  if (1) {
     //release
-    const waferUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-units@r16`;
-    const waferCustomUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-custom-units@r16`;
-
-    const waferUnitsLocalDistDir = toAbsolutePath("../../wafer-units/dist");
+    const waferUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-units@r17`;
+    const waferCustomUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-custom-units@r17`;
 
     return [
       `${waferUnitsBase}/graphite-drum-machine/`,
       `${waferCustomUnitsBase}/webaudio-tinysynth-mini/`,
       `${waferCustomUnitsBase}/super-oscillator/`,
-      `file://${waferUnitsLocalDistDir}/mini-synth-2/`, //temporary
+      `${waferUnitsBase}/mini-synth-2/`,
       `${waferUnitsBase}/proto-engine-pd-fm/`,
 
       `${waferUnitsBase}/techno-beat-machine/`,
