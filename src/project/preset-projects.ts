@@ -95,7 +95,7 @@ export function createPresetProjectsModel() {
         {
           destSpec: "effect1.audioInput",
           unitId: "synth1",
-          catalogKey: "protoEnginePdFm",
+          catalogKey: "orion",
           position: { x: baseX + 250, y: baseY + 400 },
         },
         {
