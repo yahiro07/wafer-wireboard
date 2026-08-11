@@ -30,6 +30,21 @@ export const createVolumeUnit: ReactUnitTemplateFn = (unitInterface) => {
 
   unitInterface.completeSetup({
     unitAspects: { unitType: "effect" },
+    automationInput: {
+      getParameterSpecs() {
+        return [{ id: "volume" }];
+      },
+      getParameter(id) {
+        if (id === "volume") {
+          return store.state.volume;
+        }
+      },
+      setParameter(id, value) {
+        if (id === "volume") {
+          actions.setVolume(value);
+        }
+      },
+    },
     persistence: {
       emitStateBytes() {
         return new Uint8Array([Math.round(store.state.volume * 255)]);
