@@ -109,6 +109,7 @@ function getUnitSourceUrls() {
       `file://${waferUnitsLocalDistDir}/fluorite-piano-roll/`,
       `file://${waferUnitsLocalDistDir}/partex/`,
       `file://${waferUnitsLocalDistDir}/root-prog/`,
+      `file://${waferUnitsLocalDistDir}/drum-fill-machine/`,
 
       `file://${waferCustomUnitsLocalDir}/js/webaudio-spectrum/`,
       `file://${waferCustomUnitsLocalDir}/js/web-audio-mixer/`,
