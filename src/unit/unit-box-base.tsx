@@ -202,7 +202,7 @@ export const SlotCardBox = ({
           />
           <div
             className={clsx("relative", bgSpecs.unitCardInner)}
-            style={{ width: npx(360), height: npx(200) }}
+            style={{ width: npx(360), height: npx(190) }}
           >
             <UnitFrameEx
               key={unitItem.hmrRevision}
