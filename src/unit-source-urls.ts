@@ -3,17 +3,17 @@ function toAbsolutePath(path: string): string {
 }
 
 function getUnitSourceUrls() {
-  if (0) {
+  if (1) {
     //release
-    const waferUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-units@r17`;
-    const waferCustomUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-custom-units@r17`;
+    const waferUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-units@r18`;
+    const waferCustomUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-custom-units@r18`;
 
     return [
       `${waferUnitsBase}/graphite-drum-machine/`,
       `${waferCustomUnitsBase}/webaudio-tinysynth-mini/`,
       `${waferCustomUnitsBase}/super-oscillator/`,
       `${waferUnitsBase}/mini-synth-2/`,
-      `${waferUnitsBase}/proto-engine-pd-fm/`,
+      `${waferUnitsBase}/orion/`,
 
       `${waferUnitsBase}/techno-beat-machine/`,
       `${waferCustomUnitsBase}/shiny-drum-machine/`,
@@ -23,6 +23,7 @@ function getUnitSourceUrls() {
       `${waferUnitsBase}/fluorite-piano-roll/`,
       `${waferUnitsBase}/partex/`,
       `${waferUnitsBase}/root-prog/`,
+      `${waferUnitsBase}/drum-fill-machine/`,
 
       `${waferCustomUnitsBase}/webaudio-spectrum/`,
       `${waferCustomUnitsBase}/web-audio-mixer/`,
@@ -55,6 +56,7 @@ function getUnitSourceUrls() {
       `${waferUnitsBase}/lseq1/`,
       `${waferUnitsBase}/rtfs-p/`,
       `${waferUnitsBase}/timing-checker/`,
+      `${waferUnitsBase}/parameters-checker/`,
       `${waferUnitsBase}/step-automator/`,
       `${waferUnitsBase}/multi-lfo/`,
       `${waferUnitsBase}/tone-wheel/`,
