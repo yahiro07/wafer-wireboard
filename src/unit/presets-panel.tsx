@@ -74,9 +74,9 @@ export const PresetsPanel = ({
 }) => {
   const vm = usePresetsViewModel(presetProvider);
   return (
-    <div className="absolute-full p-2">
-      <div className="h-[75%] flex-vc bg-white/70 gap-3">
-        {vm.presetOptions.length > 0 && (
+    <div className="absolute top-0 left-0 p-2 w-full h-[75%]">
+      <div className="flex-vc bg-white/70 gap-3 w-full h-full">
+        {vm.presetOptions.length > 1 && (
           <div className="flex-ha gap-0.5">
             <button
               className="cursor-pointer bg-gray-500/90 text-white w-[30px] h-[28px] hover:opacity-90"
