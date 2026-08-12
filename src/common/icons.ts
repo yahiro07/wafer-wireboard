@@ -5,7 +5,7 @@ import {
 } from "react-icons/bi";
 import { BsFillSpeakerFill, BsPlayFill } from "react-icons/bs";
 import { CgChevronDown, CgSpinnerTwoAlt } from "react-icons/cg";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaList } from "react-icons/fa";
 import { HiQueueList } from "react-icons/hi2";
 import { IoIosPause } from "react-icons/io";
 import { IoCloseSharp, IoShareSocial } from "react-icons/io5";
@@ -40,6 +40,7 @@ export const Icons = {
   Antenna: TbAntenna,
   Lightning: PiLightningDuotone,
   RadioTower: VscRadioTower,
+  List: FaList,
 };
 
 export const IconsEx = {

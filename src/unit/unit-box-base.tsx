@@ -14,6 +14,7 @@ import {
   UnitTemporalPort,
 } from "@/unit/unit-temporal-ports-model";
 import { handleGripPointerDown } from "./unit-box-drag-handler";
+import { PresetsPanel } from "@/unit/presets-panel";
 
 export const UnitDeleteButton = ({ unitItem }: { unitItem: UnitItem }) => {
   return (
@@ -99,7 +100,13 @@ export const PortsRow = ({
   );
 };
 
-export const UnitTitleRow = ({ unitItem }: { unitItem: UnitItem }) => {
+export const UnitTitleRow = ({
+  unitItem,
+  additionalOperationUi,
+}: {
+  unitItem: UnitItem;
+  additionalOperationUi?: ReactNode;
+}) => {
   const unitTitle = unitNamesMap[unitItem.catalogKey] ?? unitItem.catalogKey;
   return (
     <div
@@ -109,7 +116,10 @@ export const UnitTitleRow = ({ unitItem }: { unitItem: UnitItem }) => {
       )}
     >
       <UnitDragGrip unitItem={unitItem} />
-      <UnitDeleteButton unitItem={unitItem} />
+      <div className="flex-ha gap-4">
+        {additionalOperationUi}
+        <UnitDeleteButton unitItem={unitItem} />
+      </div>
       <div className="absolute-full flex-c pointer-events-none">
         {unitTitle}
       </div>
@@ -150,6 +160,8 @@ export const SlotCardBox = ({
       unitInstance ? buildUnitTemporalPortsModel(unitInstance) : undefined,
     [unitInstance],
   );
+  const [presetsPanelVisible, setPresetsPanelVisible] = useState(false);
+  const presetProvider = unitInstance?.presetProvider;
   return (
     <div
       className="absolute"
@@ -175,7 +187,19 @@ export const SlotCardBox = ({
           />
         )}
         <div className="flex-v shadow-md">
-          <UnitTitleRow unitItem={unitItem} />
+          <UnitTitleRow
+            unitItem={unitItem}
+            additionalOperationUi={
+              presetProvider && (
+                <button
+                  className="cursor-pointer"
+                  onClick={() => setPresetsPanelVisible(!presetsPanelVisible)}
+                >
+                  <Icons.List />
+                </button>
+              )
+            }
+          />
           <div
             className={clsx("relative", bgSpecs.unitCardInner)}
             style={{ width: npx(360), height: npx(200) }}
@@ -187,6 +211,9 @@ export const SlotCardBox = ({
               onUnitInstanceLoaded={setUnitInstance}
             />
             {innerContent}
+            {presetProvider && presetsPanelVisible && (
+              <PresetsPanel presetProvider={presetProvider} />
+            )}
             <LoadingOverlay loading={!unitInstance} />
           </div>
         </div>
