@@ -134,7 +134,7 @@ const handleGripPointerDown = (
   );
 };
 
-const UnitPanel = ({
+const UnitPanelDev = ({
   id,
   posX,
   posY,
@@ -164,7 +164,14 @@ const UnitPanel = ({
         <div className="w-[240px] h-[160px] bg-gray-300 flex-v p-2 text-gray-800 ">
           <div>pitch</div>
           <Knob value={pitch} onChange={setPitch} />
-          <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+          <div className="h-[80px] overflow-y-scroll touch-pan-y">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur.
+          </div>
         </div>
         {operationMode === "view" && (
           <div className="absolute-full bg-black/20" />
@@ -174,7 +181,7 @@ const UnitPanel = ({
   );
 };
 
-const IframeUnitPanel = ({
+const UnitPanel = ({
   id,
   catalogKey,
   posX,
@@ -245,12 +252,23 @@ const MainEditArea = () => {
     >
       <FieldSightPlane sight={sight} boardSize={boardSize}>
         <div className="w-full h-full bg-gray-600 flex-c">
-          <UnitPanel id="unit1" posX={100} posY={100} />
-          <UnitPanel id="unit2" posX={400} posY={100} />
+          <UnitPanelDev id="unit1" posX={100} posY={100} />
           {infoPanelVisible && <InfoPanel posX={100} posY={300} />}
-          <IframeUnitPanel
-            id="unit3"
+          <UnitPanel
+            id="customElementUnit1"
+            catalogKey="sunsetDelay"
+            posX={400}
+            posY={100}
+          />
+          <UnitPanel
+            id="iframeUnit1"
             catalogKey="sunsetChorusMini"
+            posX={100}
+            posY={300}
+          />
+          <UnitPanel
+            id="customElementUnit2"
+            catalogKey="fluoritePianoRoll"
             posX={400}
             posY={300}
           />

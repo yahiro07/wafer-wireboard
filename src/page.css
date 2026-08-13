@@ -16,6 +16,10 @@ body {
   touch-action: none;
 }
 
+iframe {
+  touch-action: none;
+}
+
 body {
   font-family: "Inter", sans-serif;
   user-select: none;
