@@ -6,6 +6,7 @@ import {
 import { Knob } from "@/components/knob";
 import clsx from "clsx";
 import { mountAppRoot } from "mofur/ax-react";
+import { Point, startDragSession } from "mofur/ax-ui";
 import { useState } from "react";
 import { createStore } from "snap-store";
 
@@ -72,6 +73,32 @@ const OperationModeContainer = () => {
   );
 };
 
+const handleGripPointerDown = (
+  e0: React.PointerEvent,
+  position: Point,
+  setPosition: (position: Point) => void,
+) => {
+  const originalPosition = { ...position };
+  startDragSession(
+    e0.nativeEvent,
+    {
+      onMove(e) {
+        const delta = {
+          x: e.position.x - e.originalPosition.x,
+          y: e.position.y - e.originalPosition.y,
+        };
+        const sc = store.state.sight.eyeScaling;
+        let newPosition = {
+          x: originalPosition.x + delta.x / sc,
+          y: originalPosition.y + delta.y / sc,
+        };
+        setPosition(newPosition);
+      },
+    },
+    { coordinate: "screen" },
+  );
+};
+
 const UnitPanel = ({
   id,
   posX,
@@ -83,8 +110,9 @@ const UnitPanel = ({
 }) => {
   const { operationMode } = store.useSnapshot();
   const [pitch, setPitch] = useState(0.5);
+  const [position, setPosition] = useState({ x: posX, y: posY });
   return (
-    <div className="absolute" style={{ top: posY, left: posX }}>
+    <div className="absolute" style={{ top: position.y, left: position.x }}>
       <div
         className={clsx("w-[240px] h-[160px] bg-gray-300 flex-v relative")}
         onClick={(e) => {
@@ -92,7 +120,12 @@ const UnitPanel = ({
           e.stopPropagation();
         }}
       >
-        <div className="bg-gray-500 h-[30px] flex-ha pl-1">{id}</div>
+        <div
+          className="bg-gray-500 h-[30px] flex-ha pl-1"
+          onPointerDown={(e) => handleGripPointerDown(e, position, setPosition)}
+        >
+          {id}
+        </div>
         <div className="p-2 text-gray-800 ">
           <div>pitch</div>
           <Knob value={pitch} onChange={setPitch} />
