@@ -29,6 +29,12 @@ const sightHandlers = createFieldSightHandlers(
   { minScaling: 0.125, maxScaling: 4 },
 );
 
+const actions = {
+  setOperationMode: (mode: OperationMode) => {
+    store.setOperationMode(mode);
+  },
+};
+
 const OperationModeContainer = () => {
   const { operationMode } = store.useSnapshot();
   return (
@@ -37,6 +43,7 @@ const OperationModeContainer = () => {
         "absolute top-0 left-1/2 -translate-x-1/2",
         "flex-ha gap-2 mt-2",
       )}
+      onClick={(e) => e.stopPropagation()}
     >
       <button
         className={clsx(
@@ -74,6 +81,10 @@ const UnitPanel = ({
     <div
       className={clsx("w-[240px] h-[160px] bg-gray-300 flex-v", "absolute")}
       style={{ top: posY, left: posX }}
+      onClick={(e) => {
+        actions.setOperationMode("edit");
+        e.stopPropagation();
+      }}
     >
       <div className="bg-gray-500 h-[30px] flex-ha pl-1">{id}</div>
       <div className="p-2 text-gray-800 ">
@@ -90,6 +101,10 @@ const InfoPanel = ({ posX, posY }: { posX: number; posY: number }) => {
     <div
       className={clsx("w-[240px] h-[160px] bg-gray-300 absolute")}
       style={{ top: posY, left: posX }}
+      onClick={(e) => {
+        actions.setOperationMode("edit");
+        e.stopPropagation();
+      }}
     >
       <div className="p-2 text-gray-800 select-text flex-v gap-2">
         <div>info</div>
@@ -109,6 +124,7 @@ const MainEditArea = () => {
       className="grow relative"
       onPointerDown={(e) => sightHandlers.onPointerDown(e.nativeEvent)}
       onWheel={(e) => sightHandlers.onWheel(e.nativeEvent)}
+      onClick={() => actions.setOperationMode("view")}
     >
       <FieldSightPlane sight={sight} boardSize={boardSize}>
         <div className="w-full h-full bg-gray-600 flex-c">
