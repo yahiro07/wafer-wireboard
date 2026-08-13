@@ -16,11 +16,13 @@ type OperationMode = "edit" | "view";
 type StoreState = {
   sight: FieldSight;
   operationMode: OperationMode;
+  infoPanelVisible: boolean;
 };
 
 const store = createStore<StoreState>({
   sight: { eyeScaling: 1, eyeOffset: { x: 0, y: 0 } },
   operationMode: "edit",
+  infoPanelVisible: false,
 });
 
 const sightHandlers = createFieldSightHandlers(
@@ -30,8 +32,11 @@ const sightHandlers = createFieldSightHandlers(
 );
 
 const actions = {
-  setOperationMode: (mode: OperationMode) => {
+  setOperationMode(mode: OperationMode) {
     store.setOperationMode(mode);
+  },
+  toggleInfoPanel() {
+    store.toggleInfoPanelVisible();
   },
 };
 
@@ -118,7 +123,7 @@ const InfoPanel = ({ posX, posY }: { posX: number; posY: number }) => {
 };
 
 const MainEditArea = () => {
-  const { sight } = store.useSnapshot();
+  const { sight, infoPanelVisible } = store.useSnapshot();
   return (
     <div
       className="grow relative"
@@ -130,7 +135,7 @@ const MainEditArea = () => {
         <div className="w-full h-full bg-gray-600 flex-c">
           <UnitPanel id="unit1" posX={100} posY={100} />
           <UnitPanel id="unit2" posX={400} posY={100} />
-          <InfoPanel posX={100} posY={300} />
+          {infoPanelVisible && <InfoPanel posX={100} posY={300} />}
         </div>
       </FieldSightPlane>
       <OperationModeContainer />
@@ -138,12 +143,19 @@ const MainEditArea = () => {
   );
 };
 
+const TopBar = () => {
+  return (
+    <div className="h-[40px] bg-cyan-600 flex-ha justify-between px-2">
+      <h1 className="text-lg font-bold">Sight Control Dev</h1>
+      <button onClick={actions.toggleInfoPanel}>info</button>
+    </div>
+  );
+};
+
 const App = () => {
   return (
     <div className="bg-gray-800 h-dvh text-white flex-v">
-      <div className="h-[40px] bg-cyan-600 flex-ha text-lg pl-1">
-        Sight Control Dev
-      </div>
+      <TopBar />
       <MainEditArea />
     </div>
   );
