@@ -11,12 +11,16 @@ import { createStore } from "snap-store";
 
 const boardSize = { width: 800, height: 600 };
 
+type OperationMode = "edit" | "view";
+
 type StoreState = {
   sight: FieldSight;
+  operationMode: OperationMode;
 };
 
 const store = createStore<StoreState>({
   sight: { eyeScaling: 1, eyeOffset: { x: 0, y: 0 } },
+  operationMode: "edit",
 });
 
 const sightHandlers = createFieldSightHandlers(
@@ -24,6 +28,37 @@ const sightHandlers = createFieldSightHandlers(
   (attrs) => store.patchSight(attrs),
   { minScaling: 0.125, maxScaling: 4 },
 );
+
+const OperationModeContainer = () => {
+  const { operationMode } = store.useSnapshot();
+  return (
+    <div
+      className={clsx(
+        "absolute top-0 left-1/2 -translate-x-1/2",
+        "flex-ha gap-2 mt-2",
+      )}
+    >
+      <button
+        className={clsx(
+          "cursor-pointer",
+          operationMode === "edit" ? "opacity-100" : "opacity-50",
+        )}
+        onClick={() => store.setOperationMode("edit")}
+      >
+        edit
+      </button>
+      <button
+        className={clsx(
+          "cursor-pointer",
+          operationMode === "view" ? "opacity-100" : "opacity-50",
+        )}
+        onClick={() => store.setOperationMode("view")}
+      >
+        view
+      </button>
+    </div>
+  );
+};
 
 const UnitPanel1 = () => {
   const [pitch, setPitch] = useState(0.5);
@@ -56,6 +91,7 @@ const MainEditArea = () => {
           <UnitPanel1 />
         </div>
       </FieldSightPlane>
+      <OperationModeContainer />
     </div>
   );
 };
