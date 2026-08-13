@@ -19,10 +19,7 @@ import { useSetupSongKeySupport } from "@/periphery/song-key-support";
 import { projectsModel } from "@/project/projects-model";
 import { PageRoot } from "@/views/page-root";
 import { appEnvsInit } from "@/common/app-envs";
-
-appEnvsInit();
-
-projectsModel.prepareProject(true);
+import { productionFix } from "@/periphery/production-fix-wrapper";
 
 const partialPlaybackSupport = createPartialPlaybackSupport();
 
@@ -67,6 +64,19 @@ const App = () => {
   );
 };
 
-mountAppRoot(<App />);
+function start() {
+  appEnvsInit();
+  try {
+    if (productionFix && productionFix.isFullyDisabled) {
+      console.warn("dropped production version, stopping app");
+      return;
+    }
+  } catch {}
+  projectsModel.prepareProject(true);
 
-setupHmrHandler();
+  mountAppRoot(<App />);
+
+  setupHmrHandler();
+}
+
+start();

@@ -54,11 +54,16 @@ export function createProjectsModel(): ProjectsModel {
         Object.assign(storeAttrs, states);
       }
       const urlProjectData = sharedUrlSupport.loadUrlDataIfExists();
-      if (urlProjectData) {
+      if (urlProjectData === "blocked") {
+        alert("the project is blocked to load due to potential crash risk.");
+        autosaveEnabled = false;
+      } else if (urlProjectData) {
         Object.assign(storeAttrs, urlProjectData);
+        autosaveEnabled = false;
+      } else {
+        autosaveEnabled = true;
       }
       internal.loadProjectStates(storeAttrs);
-      autosaveEnabled = !urlProjectData;
     },
     setupLifecycle() {
       if (autosaveEnabled) {
