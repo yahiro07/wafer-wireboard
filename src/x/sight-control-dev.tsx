@@ -4,11 +4,21 @@ import {
   FieldSightPlane,
 } from "@/components/field-sight-plane";
 import { Knob } from "@/components/knob";
+import {
+  CatalogKey,
+  getCatalogTarget,
+} from "@/main-definitions/showcase-entries";
 import clsx from "clsx";
 import { mountAppRoot } from "mofur/ax-react";
 import { Point, startDragSession } from "mofur/ax-ui";
 import { useState } from "react";
 import { createStore } from "snap-store";
+import { createHostSystem, HsUnitInstance } from "wafer-host/core";
+import {
+  HostAppProvider,
+  UnitDestinationSpec,
+  UnitFrameScaled,
+} from "wafer-host/react";
 
 const boardSize = { width: 800, height: 600 };
 
@@ -39,6 +49,31 @@ const actions = {
   toggleInfoPanel() {
     store.toggleInfoPanelVisible();
   },
+};
+
+const UnitFrameEx = ({
+  unitId,
+  destSpec,
+  catalogKey,
+  onUnitInstanceLoaded,
+}: {
+  unitId: string;
+  destSpec?: UnitDestinationSpec;
+  catalogKey: CatalogKey;
+  onUnitInstanceLoaded?: (unitInstance: HsUnitInstance) => void;
+}) => {
+  const catalogTarget = getCatalogTarget(catalogKey);
+  if (catalogTarget?.type === "catalog") {
+    return (
+      <UnitFrameScaled
+        unitId={unitId}
+        destSpec={destSpec}
+        unitUrl={catalogTarget.UnitInventorySpec.loaderPageUrl}
+        onUnitInstanceLoaded={onUnitInstanceLoaded}
+      />
+    );
+  }
+  return null;
 };
 
 const OperationModeContainer = () => {
@@ -114,7 +149,7 @@ const UnitPanel = ({
   return (
     <div className="absolute" style={{ top: position.y, left: position.x }}>
       <div
-        className={clsx("w-[240px] h-[160px] bg-gray-300 flex-v relative")}
+        className="relative"
         onClick={(e) => {
           actions.setOperationMode("edit");
           e.stopPropagation();
@@ -126,10 +161,49 @@ const UnitPanel = ({
         >
           {id}
         </div>
-        <div className="p-2 text-gray-800 ">
+        <div className="w-[240px] h-[160px] bg-gray-300 flex-v p-2 text-gray-800 ">
           <div>pitch</div>
           <Knob value={pitch} onChange={setPitch} />
           <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+        </div>
+        {operationMode === "view" && (
+          <div className="absolute-full bg-black/20" />
+        )}
+      </div>
+    </div>
+  );
+};
+
+const IframeUnitPanel = ({
+  id,
+  catalogKey,
+  posX,
+  posY,
+}: {
+  id: string;
+  catalogKey: CatalogKey;
+  posX: number;
+  posY: number;
+}) => {
+  const { operationMode } = store.useSnapshot();
+  const [position, setPosition] = useState({ x: posX, y: posY });
+  return (
+    <div className="absolute" style={{ top: position.y, left: position.x }}>
+      <div
+        className="relative"
+        onClick={(e) => {
+          actions.setOperationMode("edit");
+          e.stopPropagation();
+        }}
+      >
+        <div
+          className="bg-gray-500 h-[30px] flex-ha pl-1"
+          onPointerDown={(e) => handleGripPointerDown(e, position, setPosition)}
+        >
+          {id}
+        </div>
+        <div className="w-[240px] h-[160px] bg-gray-300">
+          <UnitFrameEx unitId={id} catalogKey={catalogKey} />
         </div>
         {operationMode === "view" && (
           <div className="absolute-full bg-black/20" />
@@ -174,6 +248,12 @@ const MainEditArea = () => {
           <UnitPanel id="unit1" posX={100} posY={100} />
           <UnitPanel id="unit2" posX={400} posY={100} />
           {infoPanelVisible && <InfoPanel posX={100} posY={300} />}
+          <IframeUnitPanel
+            id="unit3"
+            catalogKey="sunsetChorusMini"
+            posX={400}
+            posY={300}
+          />
         </div>
       </FieldSightPlane>
       <OperationModeContainer />
@@ -190,12 +270,16 @@ const TopBar = () => {
   );
 };
 
+const hostSystem = createHostSystem(new AudioContext());
+
 const App = () => {
   return (
-    <div className="bg-gray-800 h-dvh text-white flex-v">
-      <TopBar />
-      <MainEditArea />
-    </div>
+    <HostAppProvider hostSystem={hostSystem}>
+      <div className="bg-gray-800 h-dvh text-white flex-v">
+        <TopBar />
+        <MainEditArea />
+      </div>
+    </HostAppProvider>
   );
 };
 mountAppRoot(<App />);
