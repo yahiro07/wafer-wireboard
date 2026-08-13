@@ -18,21 +18,9 @@ import { createPartialPlaybackSupport } from "@/periphery/partial-playback-suppo
 import { useSetupSongKeySupport } from "@/periphery/song-key-support";
 import { projectsModel } from "@/project/projects-model";
 import { PageRoot } from "@/views/page-root";
+import { appEnvsInit } from "@/common/app-envs";
 
-declare const __CfPagesUrl: string;
-declare const __CfPagesCommitSha: string;
-declare const __CfPagesBranch: string;
-if (1) {
-  const win = window as any;
-  console.log("__CfPagesUrl", __CfPagesUrl);
-  console.log("__CfPagesCommitSha", __CfPagesCommitSha);
-  console.log("__CfPagesBranch", __CfPagesBranch);
-  Object.assign(win, {
-    __CfPagesUrl,
-    __CfPagesCommitSha,
-    __CfPagesBranch,
-  });
-}
+appEnvsInit();
 
 projectsModel.prepareProject(true);
 
