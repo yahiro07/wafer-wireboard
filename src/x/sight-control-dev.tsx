@@ -72,14 +72,17 @@ const UnitPanel = ({
   const [pitch, setPitch] = useState(0.5);
   return (
     <div
-      className={clsx("w-[240px] h-[160px] bg-gray-300 flex-v", "absolute")}
+      className={clsx(
+        "w-[240px] h-[160px] bg-gray-300 flex-v",
+        "absolute select-none",
+      )}
       style={{ top: posY, left: posX }}
     >
       <div className="bg-gray-500 h-[30px] flex-ha pl-1">{id}</div>
-      <div className="p-2 text-gray-800">
+      <div className="p-2 text-gray-800 ">
         <div>pitch</div>
         <Knob value={pitch} onChange={setPitch} />
-        <div>lorem ipsum dolor sit amet</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
       </div>
     </div>
   );
