@@ -11,6 +11,7 @@ import {
   projectFormatKey,
 } from "@/project/project-data";
 import { sharedUrlSupport } from "@/project/shared-url-support";
+import { appEnvs } from "@/common/app-envs";
 
 type ProjectsModel = {
   prepareProject(load: boolean): void; //called before first render
@@ -20,25 +21,8 @@ type ProjectsModel = {
   loadDefaultProject(): void;
   loadBlankProject(): void;
   loadDemoProject(): void;
-  emitSharedUrl(): Promise<string>;
+  emitSharedUrl(): string;
 };
-
-let cfPagesUrl: string | null | undefined;
-async function fetchCfPagesUrl(): Promise<string> {
-  if (appConfig.isDevelopment) {
-    return "";
-  }
-  if (cfPagesUrl === undefined) {
-    try {
-      const res = await fetch("/api/version");
-      const data = await res.json();
-      cfPagesUrl = data.cfPagesUrl;
-    } catch {
-      cfPagesUrl = null;
-    }
-  }
-  return cfPagesUrl ?? "";
-}
 
 export function createProjectsModel(): ProjectsModel {
   const presetProjectsModel = createPresetProjectsModel();
@@ -122,8 +106,8 @@ export function createProjectsModel(): ProjectsModel {
       const states = presetProjectsModel.buildDemoProjectStates();
       internal.loadProjectStates(states);
     },
-    async emitSharedUrl() {
-      const baseUrl = (await fetchCfPagesUrl()) || location.origin;
+    emitSharedUrl() {
+      const baseUrl = appEnvs.cfPagesUrl || location.origin;
       return sharedUrlSupport.generateSharedUrl(baseUrl, store.state);
     },
   };

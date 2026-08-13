@@ -12,11 +12,9 @@ export default defineConfig({
     unitLoaderPlugin({ unitSourceUrls, cacheFolderPath: "./.wafer-cache" }),
   ],
   define: {
-    __CfPagesUrl: JSON.stringify(process.env.CF_PAGES_URL || "local-dev"),
-    __CfPagesCommitSha: JSON.stringify(
-      process.env.CF_PAGES_COMMIT_SHA || "local-dev",
-    ),
-    __CfPagesBranch: JSON.stringify(process.env.CF_PAGES_BRANCH || "local-dev"),
+    __CfPagesUrl: JSON.stringify(process.env.CF_PAGES_URL || ""),
+    __CfPagesCommitSha: JSON.stringify(process.env.CF_PAGES_COMMIT_SHA || ""),
+    __CfPagesBranch: JSON.stringify(process.env.CF_PAGES_BRANCH || ""),
   },
   resolve: {
     preserveSymlinks: true,
