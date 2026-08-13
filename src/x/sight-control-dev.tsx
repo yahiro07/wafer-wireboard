@@ -1,13 +1,21 @@
 import {
   createFieldSightHandlers,
+  FieldSight,
   FieldSightPlane,
 } from "@/components/field-sight-plane";
+import { Knob } from "@/components/knob";
+import clsx from "clsx";
 import { mountAppRoot } from "mofur/ax-react";
+import { useState } from "react";
 import { createStore } from "snap-store";
 
 const boardSize = { width: 800, height: 600 };
 
-const store = createStore({
+type StoreState = {
+  sight: FieldSight;
+};
+
+const store = createStore<StoreState>({
   sight: { eyeScaling: 1, eyeOffset: { x: 0, y: 0 } },
 });
 
@@ -16,6 +24,24 @@ const sightHandlers = createFieldSightHandlers(
   (attrs) => store.patchSight(attrs),
   { minScaling: 0.125, maxScaling: 4 },
 );
+
+const UnitPanel1 = () => {
+  const [pitch, setPitch] = useState(0.5);
+  return (
+    <div
+      className={clsx(
+        "w-[240px] h-[160px] bg-gray-300 flex-v",
+        "absolute top-[100px] left-[100px]",
+      )}
+    >
+      <div className="bg-gray-500 h-[30px] flex-ha pl-1">unit1</div>
+      <div className="p-2 text-gray-800">
+        <div>pitch</div>
+        <Knob value={pitch} onChange={setPitch} />
+      </div>
+    </div>
+  );
+};
 
 const MainEditArea = () => {
   const { sight } = store.useSnapshot();
@@ -26,7 +52,9 @@ const MainEditArea = () => {
       onWheel={(e) => sightHandlers.onWheel(e.nativeEvent)}
     >
       <FieldSightPlane sight={sight} boardSize={boardSize}>
-        <div className="w-full h-full bg-gray-600 flex-c">hello</div>
+        <div className="w-full h-full bg-gray-600 flex-c">
+          <UnitPanel1 />
+        </div>
       </FieldSightPlane>
     </div>
   );
