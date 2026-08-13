@@ -66,16 +66,11 @@ const App = () => {
 
 function start() {
   appEnvsInit();
-  try {
-    if (
-      appEnvs.isProduction &&
-      productionFix &&
-      productionFix.isFullyDisabled
-    ) {
-      alert("this version is disabled dut to a potential crash risk.");
-      return;
-    }
-  } catch {}
+
+  if (appEnvs.isProduction && productionFix?.isFullyDisabled) {
+    alert("this version is disabled dut to a potential crash risk.");
+    return;
+  }
   projectsModel.prepareProject(true);
 
   mountAppRoot(<App />);
