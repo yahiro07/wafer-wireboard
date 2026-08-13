@@ -72,10 +72,7 @@ const UnitPanel = ({
   const [pitch, setPitch] = useState(0.5);
   return (
     <div
-      className={clsx(
-        "w-[240px] h-[160px] bg-gray-300 flex-v",
-        "absolute select-none",
-      )}
+      className={clsx("w-[240px] h-[160px] bg-gray-300 flex-v", "absolute")}
       style={{ top: posY, left: posX }}
     >
       <div className="bg-gray-500 h-[30px] flex-ha pl-1">{id}</div>
@@ -83,6 +80,23 @@ const UnitPanel = ({
         <div>pitch</div>
         <Knob value={pitch} onChange={setPitch} />
         <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+      </div>
+    </div>
+  );
+};
+
+const InfoPanel = ({ posX, posY }: { posX: number; posY: number }) => {
+  return (
+    <div
+      className={clsx("w-[240px] h-[160px] bg-gray-300 absolute")}
+      style={{ top: posY, left: posX }}
+    >
+      <div className="p-2 text-gray-800 select-text flex-v gap-2">
+        <div>info</div>
+        <div>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, this text is
+          selectable
+        </div>
       </div>
     </div>
   );
@@ -100,6 +114,7 @@ const MainEditArea = () => {
         <div className="w-full h-full bg-gray-600 flex-c">
           <UnitPanel id="unit1" posX={100} posY={100} />
           <UnitPanel id="unit2" posX={400} posY={100} />
+          <InfoPanel posX={100} posY={300} />
         </div>
       </FieldSightPlane>
       <OperationModeContainer />
