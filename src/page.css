@@ -9,8 +9,15 @@
   }
 }
 
+html {
+  overscroll-behavior: none;
+  overflow: hidden;
+  touch-action: none;
+}
+
 body {
   font-family: "Inter", sans-serif;
+  overflow: hidden;
   user-select: none;
   -webkit-user-select: none;
   touch-action: none;
