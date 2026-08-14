@@ -1,7 +1,9 @@
 import { actions } from "@/model/actions";
 import { sightHandlers } from "@/model/sight-handlers";
 
-export function setupMainAreaInputHandlers(baseDiv: HTMLDivElement) {
+export function setupMainAreaInputHandlers__deprecated(
+  baseDiv: HTMLDivElement,
+) {
   const keyHandler = (e: KeyboardEvent) => {
     if (e.repeat) return;
     if (e.key === "Meta" || e.key === "Control") {
@@ -67,7 +69,9 @@ function setupIframeInputHandlers_pointerInput(iframe: HTMLIFrameElement) {
   };
 }
 
-export function setupIframeInputHandlers(iframe: HTMLIFrameElement) {
+export function setupIframeInputHandlers__deprecated(
+  iframe: HTMLIFrameElement,
+) {
   const cleanup1 = setupIframeInputHandlers_controlModeKey(iframe);
   const cleanup2 = setupIframeInputHandlers_pointerInput(iframe);
   return () => {

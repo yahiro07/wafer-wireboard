@@ -9,7 +9,6 @@ import {
   CatalogKey,
   getCatalogTarget,
 } from "@/main-definitions/showcase-entries";
-import { setupIframeInputHandlers } from "@/periphery/sight-control-handlers";
 
 export const UnitFrameEx = ({
   unitId,
@@ -40,7 +39,7 @@ export const UnitFrameEx = ({
         unitId={unitId}
         destSpec={destSpec}
         unitUrl={catalogTarget.UnitInventorySpec.loaderPageUrl}
-        onIframeMounted={setupIframeInputHandlers}
+        // onIframeMounted={setupIframeInputHandlers}
         onUnitInstanceLoaded={onUnitInstanceLoaded}
       />
     );

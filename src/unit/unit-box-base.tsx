@@ -37,7 +37,9 @@ export const UnitDragGrip = ({
   return (
     <div
       className="w-full grow flex-c cursor-pointer pb-[40px]"
-      onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
+      onPointerDown={(e) => {
+        handleGripPointerDown(e, unitItem);
+      }}
     >
       {showIcon && <Icons.Grip size={28} />}
     </div>
