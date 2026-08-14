@@ -16,6 +16,7 @@ export const MainEditArea = () => {
   return (
     <div
       className="grow relative"
+      onDragEnter={dropHandlers.onDragEnter}
       onDragOver={dropHandlers.onDragOver}
       onDrop={dropHandlers.onDrop}
       onPointerDown={(e) => {
