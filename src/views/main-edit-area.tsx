@@ -5,13 +5,12 @@ import { useKeyboardAutoTarget } from "@/periphery/use-keyboard-auto-target";
 import { DebugOverlay } from "@/views/debug-overlay";
 import { EditorLayer } from "@/views/editor/editor-layer";
 import { CornerGithubBadge } from "@/views/editor-controls/foreground-ui";
-import { SceneSwitcherBar } from "@/views/editor-controls/scene-switcher-bar";
 import { SharedUrlPanel } from "@/views/editor-controls/shared-url-panel";
 import { SightDraggingCover } from "./editor-controls/sight-dragging-cover";
 import { useMainAreaDropHandlers } from "./picker-drag-drop";
 
 export const MainEditArea = () => {
-  const { sceneSwitcherVisible, modalPanelKind } = store.useSnapshot();
+  const { modalPanelKind } = store.useSnapshot();
   const dropHandlers = useMainAreaDropHandlers();
   const baseDivRef = useRef<HTMLDivElement>(null);
   useKeyboardAutoTarget();
@@ -31,7 +30,6 @@ export const MainEditArea = () => {
       <EditorLayer />
       <CornerGithubBadge side="right" />
       <SightDraggingCover />
-      {sceneSwitcherVisible && <SceneSwitcherBar />}
       {false && <DebugOverlay />}
       {modalPanelKind === "share" && <SharedUrlPanel />}
     </div>

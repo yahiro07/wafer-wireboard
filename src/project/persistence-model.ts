@@ -15,9 +15,7 @@ type PersistedState = {
   sight: FieldSight;
   bpm: number;
   masterVolume: number;
-  scenes: Scene[];
-  currentSceneId: string;
-  sceneSwitcherVisible: boolean;
+  scene: Scene;
   songKey: string;
 };
 
@@ -28,9 +26,7 @@ function makePersistedState(storeState: StoreState): PersistedState {
     sight: 1,
     bpm: 1,
     masterVolume: 1,
-    scenes: 1,
-    currentSceneId: 1,
-    sceneSwitcherVisible: 1,
+    scene: 1,
     songKey: 1,
   });
 }
