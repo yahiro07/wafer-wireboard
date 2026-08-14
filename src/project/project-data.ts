@@ -13,9 +13,7 @@ export type ProjectData = {
     unitItems: UnitItem[];
     wireItems: WireItem[];
     sight: FieldSight;
-    scenes: Scene[];
-    currentSceneId: string;
-    sceneSwitcherVisible: boolean;
+    scene: Scene;
   };
 };
 
@@ -25,9 +23,7 @@ export function generateProjectData(storeState: StoreState): ProjectData {
     unitItems: 1,
     wireItems: 1,
     sight: 1,
-    scenes: 1,
-    currentSceneId: 1,
-    sceneSwitcherVisible: 1,
+    scene: 1,
   });
   return {
     format: projectFormatKey,

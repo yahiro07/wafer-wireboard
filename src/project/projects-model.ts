@@ -1,6 +1,5 @@
 import { iife } from "mofur/ax";
 import { appConfig } from "@/main-definitions/app-config";
-import { actions } from "@/model/actions";
 import { hostSystem } from "@/model/host-system-instance";
 import { StoreState, store } from "@/model/store";
 import { createPersistenceModel } from "@/project/persistence-model";
@@ -12,6 +11,7 @@ import {
 } from "@/project/project-data";
 import { sharedUrlSupport } from "@/project/shared-url-support";
 import { appEnvs } from "@/common/app-envs";
+import { actions } from "@/model/actions";
 
 type ProjectsModel = {
   prepareProject(load: boolean): void; //called before first render
@@ -31,13 +31,20 @@ export function createProjectsModel(): ProjectsModel {
 
   const internal = {
     loadProjectStates(states: Partial<StoreState>): void {
+      console.log(
+        "loading projects",
+        `with ${states.unitItems?.length} unit items`,
+        `and ${states.scene?.unitStates.length} unit states`,
+      );
       store.assign(states);
       store.setProjectLoadedIndex((prev) => prev + 1);
-      actions.reservePushCurrentSceneStateToHost(true);
       void iife(async () => {
+        console.log("🔷start loading units");
         store.setUnitsLoading(true);
         await hostSystem.waitUnitsLoaded();
+        actions.pushSceneStatesToUnits();
         store.setUnitsLoading(false);
+        console.log("🔷end loading units");
       });
     },
   };

@@ -1,4 +1,3 @@
-import { seqNumbers } from "mofur/ax";
 import { createStore } from "snap-store";
 import { FieldSight } from "@/components/field-sight-plane";
 import {
@@ -21,9 +20,7 @@ export type StoreState = {
   masterVolume: number;
   infoPanelVisible: boolean;
   draggingCoverVisible: boolean;
-  scenes: Scene[];
-  currentSceneId: string;
-  sceneSwitcherVisible: boolean;
+  scene: Scene;
   liveClockingTarget: LiveClockingTarget;
   draggingPortKey: string | null;
   previewDestPortKey: string | null;
@@ -48,12 +45,7 @@ export const store = createStore<StoreState>({
   masterVolume: 0.5,
   infoPanelVisible: false,
   draggingCoverVisible: false,
-  scenes: seqNumbers(4).map((i) => ({
-    sceneId: `scene${i}`,
-    unitStates: [],
-  })),
-  currentSceneId: "scene0",
-  sceneSwitcherVisible: false,
+  scene: { sceneId: "scene1", unitStates: [] },
   liveClockingTarget: "chain",
   draggingPortKey: null,
   previewDestPortKey: null,
