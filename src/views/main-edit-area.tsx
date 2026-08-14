@@ -4,10 +4,10 @@ import { DebugOverlay } from "@/views/debug-overlay";
 import { EditorLayer } from "@/views/editor/editor-layer";
 import { CornerGithubBadge } from "@/views/editor-controls/foreground-ui";
 import { SharedUrlPanel } from "@/views/editor-controls/shared-url-panel";
-import { SightDraggingCover } from "./editor-controls/sight-dragging-cover";
 import { useMainAreaDropHandlers } from "./picker-drag-drop";
 import { sightHandlers } from "@/model/sight-handlers";
 import { domEditAreaId } from "@/main-definitions/constants";
+import { ScalingGaugeContainer } from "@/views/editor-controls/scaling-gauge";
 
 export const MainEditArea = () => {
   const { modalPanelKind } = store.useSnapshot();
@@ -33,7 +33,8 @@ export const MainEditArea = () => {
     >
       <EditorLayer />
       <CornerGithubBadge side="right" />
-      <SightDraggingCover />
+      <ScalingGaugeContainer />
+      {/* <SightDraggingCover /> */}
       {false && <DebugOverlay />}
       {modalPanelKind === "share" && <SharedUrlPanel />}
     </div>
