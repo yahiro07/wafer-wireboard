@@ -26,14 +26,14 @@ function extractPresetUnitItems(source: (UnitItem & { destSpec?: string })[]): {
 export function createPresetProjectsModel() {
   return {
     buildDefaultProjectStates(): Partial<StoreState> {
-      const baseX = 4500;
+      const baseX = 4500 - 20;
       const baseY = 2650;
       const { unitItems, wireItems } = extractPresetUnitItems([
         {
           destSpec: "$output.audioInput",
           unitId: "builtInPreOutput",
           catalogKey: "builtInVisualizer",
-          position: { x: baseX, y: baseY + 50 },
+          position: { x: baseX, y: baseY + 50 + 40 },
         },
         {
           destSpec: "builtInPreOutput.audioInput",
@@ -45,35 +45,35 @@ export function createPresetProjectsModel() {
           destSpec: "synth1.noteInput",
           unitId: "builtInKeyboard",
           catalogKey: "builtInKeyboard",
-          position: { x: baseX, y: baseY + 650 },
+          position: { x: baseX, y: baseY + 650 - 40 },
         },
       ]);
       return {
         unitItems,
         wireItems,
-        sight: { eyeScaling: 1.0, eyeOffset: { x: 0, y: 0 } },
+        sight: { eyeScaling: 1, eyeOffset: { x: 0, y: 0 } },
       };
     },
     buildBlankProjectStates(): Partial<StoreState> {
-      const baseX = 4500;
+      const baseX = 4500 - 20;
       const baseY = 2650;
       const { unitItems, wireItems } = extractPresetUnitItems([
         {
           destSpec: "$output.audioInput",
           unitId: "builtInPreOutput",
           catalogKey: "builtInVisualizer",
-          position: { x: baseX, y: baseY + 50 },
+          position: { x: baseX, y: baseY + 50 + 40 },
         },
         {
           unitId: "builtInKeyboard",
           catalogKey: "builtInKeyboard",
-          position: { x: baseX, y: baseY + 650 },
+          position: { x: baseX, y: baseY + 650 - 40 },
         },
       ]);
       return {
         unitItems,
         wireItems,
-        sight: { eyeScaling: 1.0, eyeOffset: { x: 0, y: 0 } },
+        sight: { eyeScaling: 1, eyeOffset: { x: 0, y: 0 } },
       };
     },
     buildDemoProjectStates(): Partial<StoreState> {
