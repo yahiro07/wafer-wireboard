@@ -298,6 +298,8 @@ function useMainEditAreaRootHandlers() {
     onPointerDown(e: React.PointerEvent) {
       // if (store.state.operationMode === "edit") return;
       sightHandlers.onPointerDown(e.nativeEvent);
+      // e.stopPropagation();
+      // e.preventDefault();
     },
     onWheel(e: React.WheelEvent) {
       // if (store.state.operationMode === "edit") return;
