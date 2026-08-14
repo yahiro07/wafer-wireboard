@@ -39,26 +39,24 @@ export function createFieldSightHandlers(
       });
     },
     onPointerDown(e0: PointerEvent) {
-      if (e0.buttons === 4) {
-        const startPos = getSight().eyeOffset;
-        startDragSession(
-          e0,
-          {
-            onMove(e) {
-              const relX = e.position.x - e.originalPosition.x;
-              const relY = e.position.y - e.originalPosition.y;
-              const newPos = {
-                x: startPos.x + relX,
-                y: startPos.y + relY,
-              };
-              setSightAttrs({ eyeOffset: newPos });
-            },
+      const startPos = getSight().eyeOffset;
+      startDragSession(
+        e0,
+        {
+          onMove(e) {
+            const relX = e.position.x - e.originalPosition.x;
+            const relY = e.position.y - e.originalPosition.y;
+            const newPos = {
+              x: startPos.x + relX,
+              y: startPos.y + relY,
+            };
+            setSightAttrs({ eyeOffset: newPos });
           },
-          { coordinate: "screen" },
-        );
-        e0.stopPropagation();
-        e0.preventDefault();
-      }
+        },
+        { coordinate: "screen" },
+      );
+      e0.stopPropagation();
+      e0.preventDefault();
     },
   };
 }

@@ -84,6 +84,7 @@ const OperationModeContainer = () => {
         "absolute top-0 left-1/2 -translate-x-1/2",
         "flex-ha gap-2 mt-2",
       )}
+      onPointerDown={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
     >
       <button
@@ -91,7 +92,7 @@ const OperationModeContainer = () => {
           "cursor-pointer",
           operationMode === "edit" ? "opacity-100" : "opacity-50",
         )}
-        onClick={() => store.setOperationMode("edit")}
+        onPointerDown={() => store.setOperationMode("edit")}
       >
         edit
       </button>
@@ -100,7 +101,7 @@ const OperationModeContainer = () => {
           "cursor-pointer",
           operationMode === "view" ? "opacity-100" : "opacity-50",
         )}
-        onClick={() => store.setOperationMode("view")}
+        onPointerDown={() => store.setOperationMode("view")}
       >
         view
       </button>
@@ -150,7 +151,7 @@ const UnitPanelDev = ({
     <div className="absolute" style={{ top: position.y, left: position.x }}>
       <div
         className="relative"
-        onClick={(e) => {
+        onPointerDown={(e) => {
           actions.setOperationMode("edit");
           e.stopPropagation();
         }}
@@ -198,10 +199,11 @@ const UnitPanel = ({
     <div className="absolute" style={{ top: position.y, left: position.x }}>
       <div
         className="relative"
-        onClick={(e) => {
+        onPointerDown={(e) => {
           actions.setOperationMode("edit");
           e.stopPropagation();
         }}
+        onClick={(e) => e.stopPropagation()}
       >
         <div
           className="bg-gray-500 h-[30px] flex-ha pl-1"
@@ -225,10 +227,11 @@ const InfoPanel = ({ posX, posY }: { posX: number; posY: number }) => {
     <div
       className={clsx("w-[240px] h-[160px] bg-gray-300 absolute")}
       style={{ top: posY, left: posX }}
-      onClick={(e) => {
+      onPointerDown={(e) => {
         actions.setOperationMode("edit");
         e.stopPropagation();
       }}
+      onClick={(e) => e.stopPropagation()}
     >
       <div className="p-2 text-gray-800 select-text flex-v gap-2">
         <div>info</div>
@@ -241,13 +244,28 @@ const InfoPanel = ({ posX, posY }: { posX: number; posY: number }) => {
   );
 };
 
+function useMainEditAreaRootHandlers() {
+  return {
+    onPointerDown(e: React.PointerEvent) {
+      if (store.state.operationMode === "edit") return;
+      sightHandlers.onPointerDown(e.nativeEvent);
+    },
+    onWheel(e: React.WheelEvent) {
+      // if (store.state.operationMode === "edit") return;
+      sightHandlers.onWheel(e.nativeEvent);
+    },
+  };
+}
+
 const MainEditArea = () => {
   const { sight, infoPanelVisible } = store.useSnapshot();
+
+  const rootHandlers = useMainEditAreaRootHandlers();
   return (
     <div
       className="grow relative"
-      onPointerDown={(e) => sightHandlers.onPointerDown(e.nativeEvent)}
-      onWheel={(e) => sightHandlers.onWheel(e.nativeEvent)}
+      onPointerDown={rootHandlers.onPointerDown}
+      onWheel={rootHandlers.onWheel}
       onClick={() => actions.setOperationMode("view")}
     >
       <FieldSightPlane sight={sight} boardSize={boardSize}>
