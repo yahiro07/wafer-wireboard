@@ -78,7 +78,7 @@ const UnitFrameEx = ({
   return null;
 };
 
-const OperationModeContainer = () => {
+const _OperationModeContainer = () => {
   const { operationMode } = store.useSnapshot();
   return (
     <div
@@ -202,9 +202,10 @@ const UnitPanelDev = ({
       <div
         className="relative"
         onPointerDown={(e) => {
-          actions.setOperationMode("edit");
+          // actions.setOperationMode("edit");
           e.stopPropagation();
         }}
+        onWheel={(e) => e.stopPropagation()}
       >
         <div
           className="bg-gray-500 h-[30px] flex-ha pl-1"
@@ -250,10 +251,11 @@ const UnitPanel = ({
       <div
         className="relative"
         onPointerDown={(e) => {
-          actions.setOperationMode("edit");
+          // actions.setOperationMode("edit");
           e.stopPropagation();
         }}
         onClick={(e) => e.stopPropagation()}
+        onWheel={(e) => e.stopPropagation()}
       >
         <div
           className="bg-gray-500 h-[30px] flex-ha pl-1"
@@ -278,7 +280,7 @@ const InfoPanel = ({ posX, posY }: { posX: number; posY: number }) => {
       className={clsx("w-[240px] h-[160px] bg-gray-300 absolute")}
       style={{ top: posY, left: posX }}
       onPointerDown={(e) => {
-        actions.setOperationMode("edit");
+        // actions.setOperationMode("edit");
         e.stopPropagation();
       }}
       onClick={(e) => e.stopPropagation()}
@@ -297,7 +299,7 @@ const InfoPanel = ({ posX, posY }: { posX: number; posY: number }) => {
 function useMainEditAreaRootHandlers() {
   return {
     onPointerDown(e: React.PointerEvent) {
-      if (store.state.operationMode === "edit") return;
+      // if (store.state.operationMode === "edit") return;
       sightHandlers.onPointerDown(e.nativeEvent);
     },
     onWheel(e: React.WheelEvent) {
@@ -316,7 +318,7 @@ const MainEditArea = () => {
       className="grow relative"
       onPointerDown={rootHandlers.onPointerDown}
       onWheel={rootHandlers.onWheel}
-      onClick={() => actions.setOperationMode("view")}
+      // onClick={() => actions.setOperationMode("view")}
     >
       <FieldSightPlane sight={sight} boardSize={boardSize}>
         <div className="w-full h-full bg-gray-600 flex-c">
@@ -342,7 +344,7 @@ const MainEditArea = () => {
           />
         </div>
       </FieldSightPlane>
-      <OperationModeContainer />
+      {/* <OperationModeContainer /> */}
       <ScalingGaugeContainer />
     </div>
   );
