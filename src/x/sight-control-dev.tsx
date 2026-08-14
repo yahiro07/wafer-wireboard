@@ -1,9 +1,6 @@
 import { Icons } from "@/common/icons";
-import {
-  createFieldSightHandlers,
-  FieldSight,
-  FieldSightPlane,
-} from "@/components/field-sight-plane";
+import { createFieldSightHandlers } from "@/components/field-sight-handlers";
+import { FieldSight, FieldSightPlane } from "@/components/field-sight-plane";
 import { Knob } from "@/components/knob";
 import {
   CatalogKey,
