@@ -18,6 +18,7 @@ import {
   TbArrowBadgeUp,
   TbNavigationFilled,
   TbSettings,
+  TbZoom,
 } from "react-icons/tb";
 import { VscGripper, VscRadioTower } from "react-icons/vsc";
 
@@ -41,6 +42,7 @@ export const Icons = {
   Lightning: PiLightningDuotone,
   RadioTower: VscRadioTower,
   List: FaList,
+  Zoom: TbZoom,
 };
 
 export const IconsEx = {
