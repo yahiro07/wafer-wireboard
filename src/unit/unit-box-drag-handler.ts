@@ -31,5 +31,4 @@ export const handleGripPointerDown = (
     },
     { coordinate: "screen" },
   );
-  e0.stopPropagation();
 };
