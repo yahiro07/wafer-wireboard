@@ -56,7 +56,11 @@ export function createPersistenceModel(): PersistenceModel {
       if (!shallowEqual(stateLatest, newState)) {
         core.savePersistedState(newState);
         stateLatest = newState;
-        console.log("states saved");
+        console.log(
+          "states saved",
+          `with ${newState.unitItems.length} unit items`,
+          `and ${newState.scene.unitStates.length} unit states`,
+        );
       }
     },
   };

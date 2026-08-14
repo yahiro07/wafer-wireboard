@@ -31,13 +31,20 @@ export function createProjectsModel(): ProjectsModel {
 
   const internal = {
     loadProjectStates(states: Partial<StoreState>): void {
+      console.log(
+        "loading projects",
+        `with ${states.unitItems?.length} unit items`,
+        `and ${states.scene?.unitStates.length} unit states`,
+      );
       store.assign(states);
       store.setProjectLoadedIndex((prev) => prev + 1);
       void iife(async () => {
+        console.log("🔷start loading units");
         store.setUnitsLoading(true);
         await hostSystem.waitUnitsLoaded();
         actions.pushSceneStatesToUnits();
         store.setUnitsLoading(false);
+        console.log("🔷end loading units");
       });
     },
   };
