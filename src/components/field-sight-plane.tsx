@@ -39,6 +39,11 @@ export function createFieldSightHandlers(
       });
     },
     onPointerDown(e0: PointerEvent) {
+      e0.stopPropagation();
+      e0.preventDefault();
+
+      if (e0.pointerType === "touch" && !e0.isPrimary) return;
+
       const startPos = getSight().eyeOffset;
       startDragSession(
         e0,
@@ -55,8 +60,6 @@ export function createFieldSightHandlers(
         },
         { coordinate: "screen" },
       );
-      e0.stopPropagation();
-      e0.preventDefault();
     },
   };
 }
