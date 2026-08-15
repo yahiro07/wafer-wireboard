@@ -86,6 +86,7 @@ function useAffectPortPositionToStore(
       const unitId = getUnitIdFromPortKey(portKey);
       const portItem = { portKey, unitId, direction, subtype, position };
       connectionActions.addPortItem(portItem);
+      console.log("add port position", portKey, position);
       return () => {
         connectionActions.removePortItem(portKey);
       };
