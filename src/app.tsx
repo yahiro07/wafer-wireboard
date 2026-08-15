@@ -86,7 +86,7 @@ function start() {
   projectsModel.prepareProject(true);
 
   mountAppRoot(<App />);
-  if (0) {
+  if (1) {
     setupHmrHandler();
   }
 }
