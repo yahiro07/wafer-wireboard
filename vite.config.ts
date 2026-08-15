@@ -15,7 +15,7 @@ export default defineConfig({
     __CfPagesBranch: JSON.stringify(process.env.CF_PAGES_BRANCH || ""),
   },
   resolve: {
-    preserveSymlinks: true,
+    preserveSymlinks: false,
     tsconfigPaths: true,
     dedupe: ["react", "react-dom"],
   },
