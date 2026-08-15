@@ -35,17 +35,21 @@ export const TopControlBar = () => {
       <div className="flex-ha gap-2">
         <Button text="Init" onClick={projectsModel.loadDefaultProject} />
         <Button text="Clear" onClick={projectsModel.loadBlankProject} />
-        <IconButton
-          small
-          icon={Icons.BarsArrow}
-          onClick={actions.toggleWireVertical}
-          rotation={wireVertical ? 180 : 270}
-        />
-        <IconButton
-          small
-          icon={Icons.List}
-          onClick={actions.toggleSecondControlBarVisible}
-        />
+        {false && (
+          <IconButton
+            small
+            icon={Icons.BarsArrow}
+            onClick={actions.toggleWireVertical}
+            rotation={wireVertical ? 180 : 270}
+          />
+        )}
+        <div className="ml-1">
+          <IconButton
+            small
+            icon={Icons.List}
+            onClick={actions.toggleSecondControlBarVisible}
+          />
+        </div>
       </div>
     </div>
   );
