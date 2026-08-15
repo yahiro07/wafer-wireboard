@@ -30,25 +30,12 @@ mobileDragDrop.polyfill({
 
 const partialPlaybackSupport = createPartialPlaybackSupport();
 
-// function useShowDebugLoadingTiming() {
-//   useEffect(() => {
-//     hostSystem.eventPort.subscribe((ev) => {
-//       if (ev.type === "loadStarted") {
-//         console.log("⭐️loadStarted");
-//       } else if (ev.type === "loadCompleted") {
-//         console.log("⭐️loadCompleted");
-//       }
-//     });
-//   }, []);
-// }
-
 const GlobalHooks = () => {
   useEffect(setupMidiInputHandling, []);
   useEffect(projectsModel.setupLifecycle, []);
   useEffect(setupDynamicClockingSupport, []);
   partialPlaybackSupport.useSetup();
   useSetupSongKeySupport();
-  // useShowDebugLoadingTiming();
   return null;
 };
 
