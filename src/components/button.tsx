@@ -1,6 +1,6 @@
-import clsx from "clsx";
 import { npx } from "@/auxiliaries/helpers";
 import { ReactNode } from "react";
+import { tx } from "@twind/core";
 
 export const Button = ({
   active,
@@ -24,7 +24,7 @@ export const Button = ({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={clsx(
+      className={tx(
         "flex-c bg-gray-400 text-white border border-gray-600/80 text-sm",
         active && "bg-sky-600",
       )}

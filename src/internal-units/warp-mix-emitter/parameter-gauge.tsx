@@ -1,5 +1,5 @@
-import clsx from "clsx";
 import { KnobFrame } from "@/components/knob-frame";
+import { tx } from "@twind/core";
 
 export const ParameterGauge = ({
   value,
@@ -11,13 +11,13 @@ export const ParameterGauge = ({
   return (
     <KnobFrame value={value} min={0} max={1} step={0.01} onChange={onChange}>
       <div
-        className={clsx(
+        className={tx(
           "w-[36px] h-[160px] flex-v justify-end items-center",
           "bg-[#777]",
         )}
       >
         <div
-          className={clsx("w-full h-[50px]", "bg-[#49d]", "items-center")}
+          className={tx("w-full h-[50px]", "bg-[#49d]", "items-center")}
           style={{ height: `${value * 100}%` }}
         />
       </div>

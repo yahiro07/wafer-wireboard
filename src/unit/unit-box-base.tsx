@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { npx } from "@/auxiliaries/helpers";
 import { Point } from "@/auxiliaries/common-types";
 import { ReactNode, useMemo, useState } from "react";
@@ -16,6 +15,7 @@ import {
 } from "@/unit/unit-temporal-ports-model";
 import { handleGripPointerDown } from "./unit-box-drag-handler";
 import { PresetsPanel } from "@/unit/presets-panel";
+import { tx } from "@twind/core";
 
 export const UnitDeleteButton = ({ unitItem }: { unitItem: UnitItem }) => {
   return (
@@ -113,7 +113,7 @@ export const UnitTitleRow = ({
   const unitTitle = unitNamesMap[unitItem.catalogKey] ?? unitItem.catalogKey;
   return (
     <div
-      className={clsx(
+      className={tx(
         "h-[40px] flex-ha relative text-white px-1",
         bgSpecs.unitCardFrame,
       )}
@@ -175,7 +175,7 @@ export const SlotCardBox = ({
       }}
     >
       <div
-        className={clsx("_unevenness-box", wireVertical ? "flex-vl" : "flex-h")}
+        className={tx("_unevenness-box", wireVertical ? "flex-vl" : "flex-h")}
       >
         {wireVertical && (
           <PortsRow
@@ -205,7 +205,7 @@ export const SlotCardBox = ({
             }
           />
           <div
-            className={clsx("relative", bgSpecs.unitCardInner)}
+            className={tx("relative", bgSpecs.unitCardInner)}
             style={{ width: npx(360), height: npx(190) }}
           >
             <UnitFrameEx

@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { npx } from "@/auxiliaries/helpers";
 import { ReactNode, useMemo } from "react";
 import { Icons, IconsEx } from "@/common/icons";
@@ -9,6 +8,7 @@ import { handleGripPointerDown } from "@/unit/unit-box-drag-handler";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
 import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
 import { store } from "@/model/store";
+import { tx } from "@twind/core";
 
 const systemPortUnitTemporalPorts = {
   speakerInput: {
@@ -34,7 +34,7 @@ const SideGrip = ({
 }) => {
   return (
     <div
-      className={clsx(
+      className={tx(
         "relative w-[70px] h-[100px] flex-c cursor-pointer text-gray-300",
         bgSpecs.unitCardFrame,
       )}
@@ -71,10 +71,7 @@ const SystemPortBox = ({
     >
       <div className="relative flex-ha">
         <div
-          className={clsx(
-            "_unevenness-box",
-            wireVertical ? "flex-vl" : "flex-h",
-          )}
+          className={tx("_unevenness-box", wireVertical ? "flex-vl" : "flex-h")}
         >
           {wireVertical && (
             <PortsRow ports={outputPorts} unitPosition={unit.position} />
@@ -136,7 +133,7 @@ const AutoTargetButton = () => {
     >
       <IconsEx.KeyboardAutoTarget
         size={24}
-        className={clsx(
+        className={tx(
           "cursor-pointer",
           active && "text-cyan-500",
           !wireVertical && "rotate-90",

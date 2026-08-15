@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { Point } from "@/auxiliaries/common-types";
 import { useEffect, useRef } from "react";
 import { HsPortSubtype } from "wafer-host/core";
@@ -11,6 +10,7 @@ import {
   usePortCellHighlightingModel,
 } from "@/port/port-cell-highlighting-model";
 import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
+import { tx } from "@twind/core";
 
 const PortCellView = ({
   highlightingState,
@@ -26,7 +26,7 @@ const PortCellView = ({
   const color = signalColors[subtype];
   return (
     <div
-      className={clsx(
+      className={tx(
         "w-[40px] h-[40px] flex-c relative",
         isOutput && "cursor-pointer",
       )}
@@ -39,7 +39,7 @@ const PortCellView = ({
       }}
     >
       <div
-        className={clsx("w-[18px] h-[18px]", "rounded-[10px]")}
+        className={tx("w-[18px] h-[18px]", "rounded-[10px]")}
         style={{ background: color }}
       />
       {label && (

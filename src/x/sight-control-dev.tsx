@@ -6,7 +6,6 @@ import {
   CatalogKey,
   getCatalogTarget,
 } from "@/main-definitions/showcase-entries";
-import clsx from "clsx";
 import { clampValue } from "@/auxiliaries/helpers";
 import { mountAppRoot } from "@/auxiliaries/mount-app-root";
 import { Point } from "@/auxiliaries/common-types";
@@ -19,6 +18,7 @@ import {
   UnitDestinationSpec,
   UnitFrameScaled,
 } from "wafer-host/react";
+import { tx } from "@twind/core";
 
 const boardSize = { width: 800, height: 600 };
 
@@ -80,7 +80,7 @@ const _OperationModeContainer = () => {
   const { operationMode } = store.useSnapshot();
   return (
     <div
-      className={clsx(
+      className={tx(
         "absolute top-0 left-1/2 -translate-x-1/2",
         "flex-ha gap-2 mt-2",
       )}
@@ -88,7 +88,7 @@ const _OperationModeContainer = () => {
       onClick={(e) => e.stopPropagation()}
     >
       <button
-        className={clsx(
+        className={tx(
           "cursor-pointer",
           operationMode === "edit" ? "opacity-100" : "opacity-50",
         )}
@@ -97,7 +97,7 @@ const _OperationModeContainer = () => {
         edit
       </button>
       <button
-        className={clsx(
+        className={tx(
           "cursor-pointer",
           operationMode === "view" ? "opacity-100" : "opacity-50",
         )}
@@ -139,9 +139,9 @@ const handleScalingGaugePointerDown = (e: React.PointerEvent) => {
 
 const ScalingGaugeContainer = () => {
   return (
-    <div className={clsx("absolute right-0 top-1/2 -translate-y-1/2 mr-2")}>
+    <div className={tx("absolute right-0 top-1/2 -translate-y-1/2 mr-2")}>
       <div
-        className={clsx(
+        className={tx(
           "w-[40px] h-[100px] bg-gray-500 flex-va justify-between cursor-pointer",
         )}
         onPointerDown={handleScalingGaugePointerDown}
@@ -275,7 +275,7 @@ const UnitPanel = ({
 const InfoPanel = ({ posX, posY }: { posX: number; posY: number }) => {
   return (
     <div
-      className={clsx("w-[240px] h-[160px] bg-gray-300 absolute")}
+      className={tx("w-[240px] h-[160px] bg-gray-300 absolute")}
       style={{ top: posY, left: posX }}
       onPointerDown={(e) => {
         // actions.setOperationMode("edit");

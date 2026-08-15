@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { npx } from "@/auxiliaries/helpers";
 import { useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
@@ -7,6 +6,7 @@ import { UnitItem } from "@/model/types";
 import { PortsColumn, PortsRow, UnitTitleRow } from "@/unit/unit-box-base";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
 import { buildUnitTemporalPortsModel } from "@/unit/unit-temporal-ports-model";
+import { tx } from "@twind/core";
 
 export const PivotUnitBox = ({
   unitItem,
@@ -31,7 +31,7 @@ export const PivotUnitBox = ({
       }}
     >
       <div
-        className={clsx(
+        className={tx(
           "relative _unevenness-box",
           wireVertical ? "flex-vl" : "flex-h",
         )}
@@ -49,7 +49,7 @@ export const PivotUnitBox = ({
           />
         )}
         <div
-          className={clsx(
+          className={tx(
             "flex-v w-[160px] h-[140px] shadow-md",
             bgSpecs.unitCardInner,
           )}
