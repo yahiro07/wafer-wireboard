@@ -1,6 +1,7 @@
-import { DragHandlerEvent, Point, startDragSession } from "mofur/ax-ui";
+import { DragHandlerEvent, startDragSession } from "@/auxiliaries/drag-session";
+import { Point } from "@/auxiliaries/common-types";
 import { HsPortSubtype } from "wafer-host/core";
-import { findItemMappedMinimum } from "@/auxiliaries/general-utils";
+import { findItemMappedMinimum } from "@/auxiliaries/helpers";
 import { domEditAreaId } from "@/main-definitions/constants";
 import { getUnitIdFromPortKey } from "@/model/factory";
 import { store } from "@/model/store";

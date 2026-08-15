@@ -1,5 +1,5 @@
-import { mapUnaryTo } from "mofur/ax";
-import { KnobFrame } from "mofur/mo-react";
+import { mapUnaryTo } from "@/auxiliaries/helpers";
+import { KnobFrame } from "@/components/knob-frame";
 
 export function KnobView(props: { value: number; min: number; max: number }) {
   const vm = {

@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { npx } from "mofur/ax-ui";
+import { npx } from "@/auxiliaries/helpers";
 import { useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { bgSpecs } from "@/common/theme";

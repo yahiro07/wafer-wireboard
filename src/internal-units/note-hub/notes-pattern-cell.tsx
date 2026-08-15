@@ -1,4 +1,4 @@
-import { seqNumbers } from "mofur/ax";
+import { seqNumbers } from "@/auxiliaries/helpers";
 
 type Props = {
   notes: number[] | undefined;

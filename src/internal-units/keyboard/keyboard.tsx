@@ -1,4 +1,4 @@
-import { clampValue } from "mofur/ax";
+import { clampValue } from "@/auxiliaries/helpers";
 import { useMemo } from "react";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wafer-host/react";

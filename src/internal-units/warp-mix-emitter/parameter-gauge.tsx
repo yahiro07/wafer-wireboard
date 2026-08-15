@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { KnobFrame } from "mofur/mo-react";
+import { KnobFrame } from "@/components/knob-frame";
 
 export const ParameterGauge = ({
   value,

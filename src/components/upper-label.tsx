@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { npx } from "mofur/ax-ui";
+import { npx } from "@/auxiliaries/helpers";
 import { ReactNode } from "react";
 
 export const UpperLabel = ({

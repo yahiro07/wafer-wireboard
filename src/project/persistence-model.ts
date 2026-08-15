@@ -1,4 +1,4 @@
-import { pickObjectMembers, shallowEqual } from "mofur/ax";
+import { pickObjectMembers, shallowEqual } from "@/auxiliaries/helpers";
 import { FieldSight } from "@/components/field-sight-plane";
 import { actions } from "@/model/actions";
 import { StoreState, store } from "@/model/store";

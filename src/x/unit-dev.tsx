@@ -1,5 +1,5 @@
-import { mountAppRoot } from "mofur/ax-react";
-import { setupMidiKeyboardInput } from "mofur/mx-audio";
+import { mountAppRoot } from "@/auxiliaries/mount-app-root";
+import { setupMidiKeyboardInput } from "@/auxiliaries/midi-keyboard-input";
 import { useEffect } from "react";
 import { createStore } from "snap-store";
 import { HostAppProvider } from "wafer-host/react";

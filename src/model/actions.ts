@@ -1,5 +1,5 @@
 import { dequal } from "dequal";
-import { Point } from "mofur/ax-ui";
+import { Point } from "@/auxiliaries/common-types";
 import { ShowcaseEntry } from "@/main-definitions/showcase-entries";
 import { getNextUnitId } from "@/model/factory";
 import { hostSystem } from "@/model/host-system-instance";

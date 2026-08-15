@@ -1,4 +1,4 @@
-import { pickObjectMembers } from "mofur/ax";
+import { pickObjectMembers } from "@/auxiliaries/helpers";
 import { FieldSight } from "@/components/field-sight-plane";
 import { StoreState } from "@/model/store";
 import { Scene, UnitItem, WireItem } from "@/model/types";

@@ -1,4 +1,4 @@
-import { ScalerBoxAutoSized } from "mofur/mo-react";
+import { ScalerBoxAutoSized } from "@/components/scaler-box-auto-sized";
 import { HsUnitInstance } from "wafer-host/core";
 import {
   ReactUnitFrame,

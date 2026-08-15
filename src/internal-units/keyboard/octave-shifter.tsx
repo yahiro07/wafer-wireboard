@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { clampValue, seqNumbers } from "mofur/ax";
+import { clampValue, seqNumbers } from "@/auxiliaries/helpers";
 import { IconsEx } from "@/common/icons";
 
 const ShiftButton = ({

@@ -7,9 +7,10 @@ import {
   getCatalogTarget,
 } from "@/main-definitions/showcase-entries";
 import clsx from "clsx";
-import { clampValue } from "mofur/ax";
-import { mountAppRoot } from "mofur/ax-react";
-import { Point, startDragSession } from "mofur/ax-ui";
+import { clampValue } from "@/auxiliaries/helpers";
+import { mountAppRoot } from "@/auxiliaries/mount-app-root";
+import { Point } from "@/auxiliaries/common-types";
+import { startDragSession } from "@/auxiliaries/drag-session";
 import { useState } from "react";
 import { createStore } from "snap-store";
 import { createHostSystem, HsUnitInstance } from "wafer-host/core";

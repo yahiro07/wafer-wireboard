@@ -1,4 +1,4 @@
-import { iife } from "mofur/ax";
+import { iife } from "@/auxiliaries/helpers";
 import { appConfig } from "@/main-definitions/app-config";
 import { hostSystem } from "@/model/host-system-instance";
 import { StoreState, store } from "@/model/store";

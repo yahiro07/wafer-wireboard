@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Point } from "mofur/ax-ui";
+import { Point } from "@/auxiliaries/common-types";
 import { useEffect, useRef } from "react";
 import { HsPortSubtype } from "wafer-host/core";
 import { domEditAreaId, signalColors } from "@/main-definitions/constants";

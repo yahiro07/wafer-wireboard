@@ -1,6 +1,6 @@
 import clsx from "clsx";
-import { Size } from "mofur/ax-ui";
-import { useDomElementSize } from "mofur/mo-react";
+import { Size } from "@/auxiliaries/common-types";
+import { useDomElementSize } from "@/auxiliaries/use-dom-element-size";
 import React, { useMemo, useRef } from "react";
 
 export type FieldSight = {

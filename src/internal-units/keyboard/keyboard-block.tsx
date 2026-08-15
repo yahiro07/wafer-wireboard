@@ -1,5 +1,6 @@
-import { seqNumbers } from "mofur/ax";
-import { npx, startDragSession } from "mofur/ax-ui";
+import { seqNumbers } from "@/auxiliaries/helpers";
+import { npx } from "@/auxiliaries/helpers";
+import { startDragSession } from "@/auxiliaries/drag-session";
 
 const configs = {
   defaultKeyWidth: 17,

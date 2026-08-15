@@ -1,6 +1,6 @@
 import { FieldSight } from "@/components/field-sight-plane";
-import { clampValue } from "mofur/ax";
-import { startDragSession } from "mofur/ax-ui";
+import { clampValue } from "@/auxiliaries/helpers";
+import { startDragSession } from "@/auxiliaries/drag-session";
 
 export type FieldSightHandlers = {
   onWheel: (e: WheelEvent) => void;

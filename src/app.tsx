@@ -1,5 +1,4 @@
-import { mountAppRoot } from "mofur/ax-react";
-import { mapKnobGainDb } from "mofur/mo-audio";
+import { mapKnobGainDb } from "@/auxiliaries/volume-curve";
 import { useEffect, useMemo } from "react";
 import {
   HostAppProvider,
@@ -23,6 +22,7 @@ import { productionFix } from "@/periphery/production-fix-wrapper";
 
 import * as mobileDragDrop from "mobile-drag-drop";
 import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
+import { mountAppRoot } from "@/auxiliaries/mount-app-root";
 
 mobileDragDrop.polyfill({
   dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride,

@@ -1,8 +1,8 @@
 import { Icons } from "@/common/icons";
 import { store } from "@/model/store";
 import clsx from "clsx";
-import { clampValue } from "mofur/ax";
-import { startDragSession } from "mofur/ax-ui";
+import { clampValue } from "@/auxiliaries/helpers";
+import { startDragSession } from "@/auxiliaries/drag-session";
 
 const handleScalingGaugePointerDown = (e: React.PointerEvent) => {
   const originalSight = store.state.sight;

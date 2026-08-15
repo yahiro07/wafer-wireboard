@@ -1,4 +1,4 @@
-import { mapUnaryFrom, mapUnaryTo } from "mofur/ax";
+import { mapUnaryFrom, mapUnaryTo } from "@/auxiliaries/helpers";
 
 export function renderSpectrum(
   canvas: HTMLCanvasElement,

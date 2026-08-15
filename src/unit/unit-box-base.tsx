@@ -1,5 +1,6 @@
 import clsx from "clsx";
-import { npx, Point } from "mofur/ax-ui";
+import { npx } from "@/auxiliaries/helpers";
+import { Point } from "@/auxiliaries/common-types";
 import { ReactNode, useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { Icons } from "@/common/icons";

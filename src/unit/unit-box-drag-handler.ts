@@ -1,4 +1,4 @@
-import { startDragSession } from "mofur/ax-ui";
+import { startDragSession } from "@/auxiliaries/drag-session";
 import { appConfig } from "@/main-definitions/app-config";
 import { actions } from "@/model/actions";
 import { store } from "@/model/store";

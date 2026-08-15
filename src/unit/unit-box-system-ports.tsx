@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { npx } from "mofur/ax-ui";
+import { npx } from "@/auxiliaries/helpers";
 import { ReactNode, useMemo } from "react";
 import { Icons, IconsEx } from "@/common/icons";
 import { bgSpecs } from "@/common/theme";
