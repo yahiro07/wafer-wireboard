@@ -4,20 +4,6 @@ import { actions } from "@/model/actions";
 import { store } from "@/model/store";
 import { TopControlBar } from "@/views/editor-controls/top-control-bar";
 
-const _GithubLinkButton = () => {
-  return (
-    <a
-      href="https://github.com/yahiro07/mini-groove"
-      target="_blank"
-      rel="noreferrer noopener"
-      aria-label="GitHub repository"
-      className="text-white cursor-pointer"
-    >
-      <Icons.Github size={30} />
-    </a>
-  );
-};
-
 const InfoButton = () => {
   return (
     <IconButton icon={Icons.Info} onClick={store.toggleInfoPanelVisible} />
