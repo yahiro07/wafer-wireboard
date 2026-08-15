@@ -1,10 +1,10 @@
 import { dequal } from "dequal";
-import { Point } from "mofur/ax-ui";
+import { Point } from "@/auxiliaries/common-types";
 import { ShowcaseEntry } from "@/main-definitions/showcase-entries";
 import { getNextUnitId } from "@/model/factory";
 import { hostSystem } from "@/model/host-system-instance";
 import { store } from "@/model/store";
-import { ModalPanelKind, Scene, UnitItem } from "@/model/types";
+import { ModalPanelKind, UnitItem } from "@/model/types";
 
 export const actionsInternal = {
   patchUnitItem(unitId: string, attrs: Partial<UnitItem>) {
@@ -13,14 +13,6 @@ export const actionsInternal = {
         item.unitId === unitId ? { ...item, ...attrs } : item,
       ),
     );
-  },
-  patchScene(sceneId: string, attrs: Partial<Scene>) {
-    store.produceScenes((draft) => {
-      const scene = draft.find((scene) => scene.sceneId === sceneId);
-      if (scene) {
-        Object.assign(scene, attrs);
-      }
-    });
   },
 };
 
@@ -71,51 +63,15 @@ export const actions = {
   setDraggingCoverVisible(visible: boolean) {
     store.setDraggingCoverVisible(visible);
   },
-  selectScene(sceneId: string) {
-    if (sceneId === store.state.currentSceneId) return;
-    {
-      //preserve current scene
-      const unitStates = hostSystem.getAllUnitStates();
-      // console.log(`preserve scene ${store.state.currentSceneId}:`, unitStates);
-      actionsInternal.patchScene(store.state.currentSceneId, { unitStates });
-    }
-    store.setCurrentSceneId(sceneId);
-    {
-      //load next scene
-      const nextScene = store.state.scenes.find(
-        (scene) => scene.sceneId === sceneId,
-      );
-      if (nextScene) {
-        // console.log(`load scene ${sceneId}:`, nextScene.unitStates);
-        hostSystem.setAllUnitStates(nextScene.unitStates);
-      }
-    }
-  },
-  toggleSceneSwitcherVisible() {
-    store.toggleSceneSwitcherVisible();
-  },
-  reservePushCurrentSceneStateToHost(awaited: boolean) {
-    const { currentSceneId, scenes } = store.state;
-    const currentScene = scenes.find(
-      (scene) => scene.sceneId === currentSceneId,
-    );
-    if (currentScene) {
-      if (awaited) {
-        void (async () => {
-          await hostSystem.waitUnitsLoaded();
-          hostSystem.setAllUnitStates(currentScene.unitStates);
-        })();
-      } else {
-        hostSystem.setAllUnitStates(currentScene.unitStates);
-      }
-    }
+  pushSceneStatesToUnits() {
+    const { scene } = store.state;
+    hostSystem.setAllUnitStates(scene.unitStates);
   },
   pullCurrentSceneStateFromUnits() {
     const unitStates = hostSystem.getAllUnitStates();
-    const { currentSceneId, scenes } = store.state;
-    const scene = scenes.find((scene) => scene.sceneId === currentSceneId);
+    const { scene } = store.state;
     if (scene && !dequal(unitStates, scene.unitStates)) {
-      actionsInternal.patchScene(currentSceneId, { unitStates });
+      store.patchScene({ unitStates });
     }
   },
   showModalPanel(kind: ModalPanelKind) {
@@ -128,5 +84,11 @@ export const actions = {
   },
   hideModalPanel() {
     store.setModalPanelKind(null);
+  },
+  toggleWireVertical() {
+    store.toggleWireVertical();
+  },
+  toggleSecondControlBarVisible() {
+    store.toggleSecondControlBarVisible();
   },
 };

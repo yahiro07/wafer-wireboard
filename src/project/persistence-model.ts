@@ -1,4 +1,4 @@
-import { pickObjectMembers, shallowEqual } from "mofur/ax";
+import { pickObjectMembers, shallowEqual } from "@/auxiliaries/helpers";
 import { FieldSight } from "@/components/field-sight-plane";
 import { actions } from "@/model/actions";
 import { StoreState, store } from "@/model/store";
@@ -15,9 +15,7 @@ type PersistedState = {
   sight: FieldSight;
   bpm: number;
   masterVolume: number;
-  scenes: Scene[];
-  currentSceneId: string;
-  sceneSwitcherVisible: boolean;
+  scene: Scene;
   songKey: string;
 };
 
@@ -28,9 +26,7 @@ function makePersistedState(storeState: StoreState): PersistedState {
     sight: 1,
     bpm: 1,
     masterVolume: 1,
-    scenes: 1,
-    currentSceneId: 1,
-    sceneSwitcherVisible: 1,
+    scene: 1,
     songKey: 1,
   });
 }
@@ -60,7 +56,11 @@ export function createPersistenceModel(): PersistenceModel {
       if (!shallowEqual(stateLatest, newState)) {
         core.savePersistedState(newState);
         stateLatest = newState;
-        console.log("states saved");
+        console.log(
+          "states saved",
+          `with ${newState.unitItems.length} unit items`,
+          `and ${newState.scene.unitStates.length} unit states`,
+        );
       }
     },
   };

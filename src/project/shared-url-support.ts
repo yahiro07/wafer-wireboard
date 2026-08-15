@@ -5,27 +5,44 @@ import {
   ProjectData,
   projectFormatKey,
 } from "./project-data";
+import { productionFix } from "@/periphery/production-fix-wrapper";
+
+export const projectDataTextSupport = {
+  emitProjectDataText(storeState: StoreState): string {
+    const projectData = generateProjectData(storeState);
+    const text = JSON.stringify(projectData);
+    return LZString.compressToEncodedURIComponent(text);
+  },
+  parseProjectDataText(
+    dataText: string,
+  ): Partial<StoreState> | "blocked" | undefined {
+    try {
+      const decompressed = LZString.decompressFromEncodedURIComponent(dataText);
+      const projectData = JSON.parse(decompressed) as ProjectData;
+      if (projectData.format === projectFormatKey) {
+        const res = productionFix?.hookProjectData?.(projectData);
+        if (res === "blocked") {
+          return "blocked";
+        }
+        return projectData.states;
+      }
+    } catch (error) {
+      console.warn("error parsing project data text", error);
+    }
+  },
+};
 
 export const sharedUrlSupport = {
   generateSharedUrl(baseUrl: string, storeState: StoreState): string {
-    const projectData = generateProjectData(storeState);
-    const text = JSON.stringify(projectData);
-    const compressed = LZString.compressToEncodedURIComponent(text);
-    return `${baseUrl}?data=${compressed}`;
+    const projectDataText =
+      projectDataTextSupport.emitProjectDataText(storeState);
+    return `${baseUrl}?data=${projectDataText}`;
   },
-  loadUrlDataIfExists(): Partial<StoreState> | undefined {
-    try {
-      const url = new URLSearchParams(location.search);
-      const text = url.get("data");
-      if (text) {
-        const decompressed = LZString.decompressFromEncodedURIComponent(text);
-        const projectData = JSON.parse(decompressed) as ProjectData;
-        if (projectData.format === projectFormatKey) {
-          return projectData.states;
-        }
-      }
-    } catch (error) {
-      console.warn("error parsing shared url data", error);
+  loadUrlDataIfExists(): Partial<StoreState> | "blocked" | undefined {
+    const url = new URLSearchParams(location.search);
+    const text = url.get("data");
+    if (text) {
+      return projectDataTextSupport.parseProjectDataText(text);
     }
   },
 };

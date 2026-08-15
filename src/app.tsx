@@ -1,5 +1,4 @@
-import { mountAppRoot } from "mofur/ax-react";
-import { mapKnobGainDb } from "mofur/mo-audio";
+import { mapKnobGainDb } from "@/auxiliaries/volume-curve";
 import { useEffect, useMemo } from "react";
 import {
   HostAppProvider,
@@ -18,37 +17,27 @@ import { createPartialPlaybackSupport } from "@/periphery/partial-playback-suppo
 import { useSetupSongKeySupport } from "@/periphery/song-key-support";
 import { projectsModel } from "@/project/projects-model";
 import { PageRoot } from "@/views/page-root";
+import { appEnvs, appEnvsInit } from "@/common/app-envs";
+import { productionFix } from "@/periphery/production-fix-wrapper";
 
-declare const __CfPagesUrl: string;
-declare const __CfPagesCommitSha: string;
-declare const __CfPagesBranch: string;
-if (1) {
-  const win = window as any;
-  console.log("__CfPagesUrl", __CfPagesUrl);
-  console.log("__CfPagesCommitSha", __CfPagesCommitSha);
-  console.log("__CfPagesBranch", __CfPagesBranch);
-  Object.assign(win, {
-    __CfPagesUrl,
-    __CfPagesCommitSha,
-    __CfPagesBranch,
-  });
-}
+import * as mobileDragDrop from "mobile-drag-drop";
+import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
+import { mountAppRoot } from "@/auxiliaries/mount-app-root";
 
-projectsModel.prepareProject(true);
+mobileDragDrop.polyfill({
+  dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride,
+});
 
 const partialPlaybackSupport = createPartialPlaybackSupport();
 
-// function useShowDebugLoadingTiming() {
-//   useEffect(() => {
-//     hostSystem.eventPort.subscribe((ev) => {
-//       if (ev.type === "loadStarted") {
-//         console.log("⭐️loadStarted");
-//       } else if (ev.type === "loadCompleted") {
-//         console.log("⭐️loadCompleted");
-//       }
-//     });
-//   }, []);
-// }
+const GlobalHooks = () => {
+  useEffect(setupMidiInputHandling, []);
+  useEffect(projectsModel.setupLifecycle, []);
+  useEffect(setupDynamicClockingSupport, []);
+  partialPlaybackSupport.useSetup();
+  useSetupSongKeySupport();
+  return null;
+};
 
 const App = () => {
   const { bpm, playing, masterVolume } = store.useSnapshot();
@@ -56,13 +45,7 @@ const App = () => {
     () => mapKnobGainDb(masterVolume, 0.5),
     [masterVolume],
   );
-  useEffect(setupMidiInputHandling, []);
-  useEffect(projectsModel.setupLifecycle, []);
   useSequencerTickDriverRunner({ sequencerTickDriver, playing, bpm });
-  useEffect(setupDynamicClockingSupport, []);
-  partialPlaybackSupport.useSetup();
-  useSetupSongKeySupport();
-  // useShowDebugLoadingTiming();
   useEffect(() => {
     partialSequencerTickDriver.setBpm(bpm);
   }, [bpm]);
@@ -74,11 +57,25 @@ const App = () => {
       masterGain={masterGain}
       manualClocking
     >
+      <GlobalHooks />
       <PageRoot />
     </HostAppProvider>
   );
 };
 
-mountAppRoot(<App />);
+function start() {
+  appEnvsInit();
 
-setupHmrHandler();
+  if (appEnvs.isProduction && productionFix?.isFullyDisabled) {
+    alert("this version is disabled dut to a potential crash risk.");
+    return;
+  }
+  projectsModel.prepareProject(true);
+
+  mountAppRoot(<App />);
+  if (1) {
+    setupHmrHandler();
+  }
+}
+
+start();

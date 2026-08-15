@@ -1,4 +1,4 @@
-import { Point } from "mofur/ax-ui";
+import { Point } from "@/auxiliaries/common-types";
 import { store } from "@/model/store";
 import { PortItem } from "@/model/types";
 

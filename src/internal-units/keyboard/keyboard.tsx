@@ -1,4 +1,4 @@
-import { clampValue } from "mofur/ax";
+import { clampValue } from "@/auxiliaries/helpers";
 import { useMemo } from "react";
 import { createStore } from "snap-store";
 import { ReactUnitTemplateFn } from "wafer-host/react";
@@ -32,7 +32,7 @@ export const createBuiltinKeyboardUnit: ReactUnitTemplateFn = (
     },
     noteOff(noteKey: number) {
       const noteNumber = notesMap.get(noteKey);
-      if (noteNumber) {
+      if (noteNumber !== undefined) {
         store.setNotes((prev) => prev.filter((n) => n !== noteNumber));
         noteOutputPort.noteOff(noteNumber);
         notesMap.delete(noteKey);
@@ -74,7 +74,7 @@ export const createBuiltinKeyboardUnit: ReactUnitTemplateFn = (
         <div className="w-full h-full flex-c px-1">
           <div className="flex-v gap-1">
             <OctaveShifter octave={octave} setOctave={actions.setOctave} />
-            <div className="flex-h">
+            <div className="flex-h touch-none" data-keyboard-root>
               <KeyboardOctaveBlock
                 baseNoteNumber={48}
                 activeNotes={activeNotes}

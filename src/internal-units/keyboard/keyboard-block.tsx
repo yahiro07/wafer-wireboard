@@ -1,5 +1,6 @@
-import { seqNumbers } from "mofur/ax";
-import { npx, startDragSession } from "mofur/ax-ui";
+import { seqNumbers } from "@/auxiliaries/helpers";
+import { npx } from "@/auxiliaries/helpers";
+import { startDragSession } from "@/auxiliaries/drag-session";
 
 const configs = {
   defaultKeyWidth: 17,
@@ -10,16 +11,42 @@ const configs = {
 
 function handleKeyPointerDown(
   e: React.PointerEvent,
-  noteNumber: number,
+  initialNote: number,
   noteOn: (noteNumber: number) => void,
   noteOff: (noteNumber: number) => void,
 ) {
-  noteOn(noteNumber);
+  const keyboardRoot = e.currentTarget.closest("[data-keyboard-root]");
+  let currentNote: number | undefined;
+  const switchNote = (nextNote: number | undefined) => {
+    if (nextNote === currentNote) return;
+    if (currentNote !== undefined) {
+      noteOff(currentNote);
+    }
+    currentNote = nextNote;
+    if (currentNote !== undefined) {
+      noteOn(currentNote);
+    }
+  };
+  const getNoteAtPoint = (x: number, y: number) => {
+    const key = document
+      .elementFromPoint(x, y)
+      ?.closest<HTMLElement>("[data-keyboard-note]");
+    if (!key || !keyboardRoot?.contains(key)) {
+      return undefined;
+    }
+    const note = Number(key.dataset.keyboardNote);
+    return Number.isFinite(note) ? note : undefined;
+  };
+  switchNote(initialNote);
   startDragSession(e.nativeEvent, {
+    onMove({ position }) {
+      switchNote(getNoteAtPoint(position.x, position.y));
+    },
     onUpOrCancel() {
-      noteOff(noteNumber);
+      switchNote(undefined);
     },
   });
+  e.preventDefault();
 }
 
 export const KeyboardOctaveBlock = ({
@@ -49,6 +76,7 @@ export const KeyboardOctaveBlock = ({
           return (
             <div
               key={k}
+              data-keyboard-note={noteNumber}
               className="border border-[#666] cursor-pointer"
               style={{
                 background: active ? "#8f8" : "#fff",
@@ -73,6 +101,7 @@ export const KeyboardOctaveBlock = ({
           return (
             <div
               key={k}
+              data-keyboard-note={noteNumber}
               className="border border-[#666] cursor-pointer"
               style={{
                 visibility: k === 2 ? "hidden" : "visible",
@@ -114,6 +143,7 @@ export const KeyboardTopKey = ({
           return (
             <div
               key={k}
+              data-keyboard-note={noteNumber}
               className={`border border-[#666] cursor-pointer`}
               style={{
                 background: active ? "#8f8" : "#fff",

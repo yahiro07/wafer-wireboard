@@ -1,6 +1,5 @@
-import clsx from "clsx";
-import { npx } from "mofur/ax-ui";
 import { ReactNode } from "react";
+import { tx } from "@twind/core";
 
 export const Button = ({
   active,
@@ -24,16 +23,14 @@ export const Button = ({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={clsx(
-        "flex-c bg-gray-400 text-white border border-gray-600/80 text-sm",
-        active && "bg-sky-600",
+      className={tx(
+        "flex-c text-white text-sm bd-clControlEdge",
+        "hover:opacity-90",
+        active ? "bg-clButtonActive" : "bg-clControlBg",
+        disabled && "opacity-50",
+        !disabled && "cursor-pointer",
       )}
-      style={{
-        width: npx(width),
-        height: npx(height),
-        cursor: disabled ? "default" : "pointer",
-        opacity: disabled ? 0.5 : 1,
-      }}
+      style={{ width, height }}
     >
       {text && <span>{text}</span>}
       {children}

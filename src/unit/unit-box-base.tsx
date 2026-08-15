@@ -1,9 +1,8 @@
-import clsx from "clsx";
-import { npx, Point } from "mofur/ax-ui";
+import { npx } from "@/auxiliaries/helpers";
+import { Point } from "@/auxiliaries/common-types";
 import { ReactNode, useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { Icons } from "@/common/icons";
-import { bgSpecs } from "@/common/theme";
 import { unitNamesMap } from "@/main-definitions/showcase-entries";
 import { actions } from "@/model/actions";
 import { UnitItem } from "@/model/types";
@@ -15,6 +14,7 @@ import {
 } from "@/unit/unit-temporal-ports-model";
 import { handleGripPointerDown } from "./unit-box-drag-handler";
 import { PresetsPanel } from "@/unit/presets-panel";
+import { tx } from "@twind/core";
 
 export const UnitDeleteButton = ({ unitItem }: { unitItem: UnitItem }) => {
   return (
@@ -37,7 +37,9 @@ export const UnitDragGrip = ({
   return (
     <div
       className="w-full grow flex-c cursor-pointer pb-[40px]"
-      onPointerDown={(e) => handleGripPointerDown(e, unitItem)}
+      onPointerDown={(e) => {
+        handleGripPointerDown(e, unitItem);
+      }}
     >
       {showIcon && <Icons.Grip size={28} />}
     </div>
@@ -110,9 +112,9 @@ export const UnitTitleRow = ({
   const unitTitle = unitNamesMap[unitItem.catalogKey] ?? unitItem.catalogKey;
   return (
     <div
-      className={clsx(
+      className={tx(
         "h-[40px] flex-ha relative text-white px-1",
-        bgSpecs.unitCardFrame,
+        "bg-clUnitCardFrame",
       )}
     >
       <UnitDragGrip unitItem={unitItem} />
@@ -164,15 +166,16 @@ export const SlotCardBox = ({
   const presetProvider = unitInstance?.presetProvider;
   return (
     <div
-      className="absolute"
+      className="absolute pointer-events-none"
       style={{
         left: npx(unitItem.position.x),
         top: npx(unitItem.position.y),
         transform: "translate(-50%, -50%)",
-        // border: "solid 1px red",
       }}
     >
-      <div className={wireVertical ? "flex-v" : "flex-h"}>
+      <div
+        className={tx("_unevenness-box", wireVertical ? "flex-vl" : "flex-h")}
+      >
         {wireVertical && (
           <PortsRow
             ports={unitPortsModel?.outputs}
@@ -201,7 +204,7 @@ export const SlotCardBox = ({
             }
           />
           <div
-            className={clsx("relative", bgSpecs.unitCardInner)}
+            className="relative bg-clUnitCardInner"
             style={{ width: npx(360), height: npx(190) }}
           >
             <UnitFrameEx

@@ -1,4 +1,4 @@
-import { ScalerBoxAutoSized } from "mofur/mo-react";
+import { ScalerBoxAutoSized } from "@/components/scaler-box-auto-sized";
 import { HsUnitInstance } from "wafer-host/core";
 import {
   ReactUnitFrame,
@@ -9,7 +9,7 @@ import {
   CatalogKey,
   getCatalogTarget,
 } from "@/main-definitions/showcase-entries";
-import { setupIframeInputHandlers } from "@/periphery/sight-control-handlers";
+import { setupIframeInputHandlers_wheel } from "@/periphery/sight-control-handlers";
 
 export const UnitFrameEx = ({
   unitId,
@@ -40,7 +40,7 @@ export const UnitFrameEx = ({
         unitId={unitId}
         destSpec={destSpec}
         unitUrl={catalogTarget.UnitInventorySpec.loaderPageUrl}
-        onIframeMounted={setupIframeInputHandlers}
+        onIframeMounted={setupIframeInputHandlers_wheel}
         onUnitInstanceLoaded={onUnitInstanceLoaded}
       />
     );

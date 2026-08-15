@@ -1,4 +1,4 @@
-import { setupMidiKeyboardInput } from "mofur/mx-audio";
+import { setupMidiKeyboardInput } from "@/auxiliaries/midi-keyboard-input";
 import { hostSystem } from "@/model/host-system-instance";
 
 export function setupMidiInputHandling() {

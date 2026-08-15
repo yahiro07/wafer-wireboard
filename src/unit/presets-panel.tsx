@@ -14,11 +14,8 @@ type PresetsViewModel = {
 
 function usePresetsViewModel(presetProvider: PresetProvider): PresetsViewModel {
   const { presetNames, presetOptions, commandNames } = useMemo(() => {
-    const allPresetNames = presetProvider.getPresetNames();
-    const presetNames = allPresetNames.filter((it) => !it.startsWith("$"));
-    const commandNames = allPresetNames
-      .filter((it) => it.startsWith("$"))
-      .map((it) => it.replace(/^\$/, ""));
+    const presetNames = presetProvider.getPresetNames?.() ?? [];
+    const commandNames = presetProvider.getCommandNames?.() ?? [];
     const presetOptions: SelectorOption<string>[] = [
       { label: "--", value: "--" },
       ...presetNames.map((it) => ({ label: it, value: it })),
@@ -32,7 +29,7 @@ function usePresetsViewModel(presetProvider: PresetProvider): PresetsViewModel {
   const handlers = {
     selectPresetByIndex(index: number) {
       if (0 <= index && index < presetNames.length) {
-        presetProvider.applyPreset(presetNames[index]);
+        presetProvider.applyPreset?.(presetNames[index]);
         setCurrentPresetIndex(index);
       } else {
         setCurrentPresetIndex(-1);
@@ -52,8 +49,10 @@ function usePresetsViewModel(presetProvider: PresetProvider): PresetsViewModel {
     },
     applyCommand: (commandName: string) => {
       if (!commandNames.includes(commandName)) return;
-      presetProvider.applyPreset("$" + commandName);
-      handlers.selectPresetByIndex(-1);
+      const shouldResetSelection = presetProvider.applyCommand?.(commandName);
+      if (shouldResetSelection) {
+        handlers.selectPresetByIndex(-1);
+      }
     },
   };
 

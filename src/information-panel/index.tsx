@@ -13,7 +13,7 @@ export const InformationPanel = () => {
   return (
     <div className="absolute-full flex-c bg-black/20" onClick={closePanel}>
       <div
-        className="w-full max-w-[800px] max-h-[85%] overflow-y-auto bg-[hsl(216,18%,20%)] text-white p-10 pb-15"
+        className="w-full max-w-[800px] max-h-[85%] overflow-y-auto bg-[hsl(216,18%,20%)] text-white p-10 pb-[60px]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex-ha justify-between">

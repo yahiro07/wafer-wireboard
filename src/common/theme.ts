@@ -1,17 +1,16 @@
-const bgSpecsA = {
-  unitCardFrame: "bg-gray-500",
-  unitCardInner: "bg-gray-600",
-  pageRoot: "bg-[hsl(216,22%,18%)]",
-  wireColor: "#888",
-  portCell: "bg-gray-400",
+const uiColorsA = {
+  clPageBg: "#242c38",
+  clUnitCardFrame: "#6a7282",
+  clUnitCardInner: "#4a5565",
+  clControlBg: "#9CA3AF",
+  clControlEdge: "#4B5563a0",
+  clButtonActive: "#0284c7",
 };
 
-const _bgSpecsB = {
-  unitCardFrame: "bg-[#8ad]",
-  unitCardInner: "bg-[#ccc]",
-  pageRoot: "bg-[#e8ecff]",
-  wireColor: "#4696",
-  portCell: "bg-[#c0c8d0]",
+const _uiColorsB = {
+  clPageBg: "#e8ecff",
+  clUnitCardFrame: "#8ad",
+  clUnitCardInner: "#ccc",
 };
 
-export const bgSpecs = bgSpecsA;
+export const uiColors = uiColorsA;

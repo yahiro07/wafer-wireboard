@@ -1,67 +1,12 @@
-import clsx from "clsx";
-import { clampValue } from "mofur/ax";
-import { Size, startDragSession } from "mofur/ax-ui";
-import { useDomElementSize } from "mofur/mo-react";
+import { Size } from "@/auxiliaries/common-types";
+import { useDomElementSize } from "@/auxiliaries/use-dom-element-size";
+import { tx } from "@twind/core";
 import React, { useMemo, useRef } from "react";
 
 export type FieldSight = {
   eyeScaling: number;
   eyeOffset: { x: number; y: number };
 };
-
-export type FieldSightHandlers = {
-  onWheel: (e: WheelEvent) => void;
-  onPointerDown: (e: PointerEvent) => void;
-};
-
-export function createFieldSightHandlers(
-  getSight: () => FieldSight,
-  setSightAttrs: (newSight: Partial<FieldSight>) => void,
-  configs: { minScaling: number; maxScaling: number },
-): FieldSightHandlers {
-  return {
-    onWheel(e: WheelEvent) {
-      const sight = getSight();
-      const currScaling = sight.eyeScaling;
-      const scaleRatio = 2 ** (-e.deltaY * 0.005);
-      const nextScaling = clampValue(
-        currScaling * scaleRatio,
-        configs.minScaling,
-        configs.maxScaling,
-      );
-      const scaleDiff = nextScaling / currScaling;
-      setSightAttrs({
-        eyeScaling: nextScaling,
-        eyeOffset: {
-          x: sight.eyeOffset.x * scaleDiff,
-          y: sight.eyeOffset.y * scaleDiff,
-        },
-      });
-    },
-    onPointerDown(e0: PointerEvent) {
-      if (e0.buttons === 4) {
-        const startPos = getSight().eyeOffset;
-        startDragSession(
-          e0,
-          {
-            onMove(e) {
-              const relX = e.position.x - e.originalPosition.x;
-              const relY = e.position.y - e.originalPosition.y;
-              const newPos = {
-                x: startPos.x + relX,
-                y: startPos.y + relY,
-              };
-              setSightAttrs({ eyeOffset: newPos });
-            },
-          },
-          { coordinate: "screen" },
-        );
-        e0.stopPropagation();
-        e0.preventDefault();
-      }
-    },
-  };
-}
 
 export const FieldSightPlane = ({
   className,
@@ -90,7 +35,7 @@ export const FieldSightPlane = ({
   return (
     <div
       ref={baseDivRef}
-      className={clsx("w-full h-full relative overflow-hidden", className)}
+      className={tx("w-full h-full relative overflow-hidden", className)}
     >
       <div
         style={{

@@ -1,4 +1,4 @@
-import { Point } from "mofur/ax-ui";
+import { Point } from "@/auxiliaries/common-types";
 import { useMemo } from "react";
 import { HsPortSubtype } from "wafer-host/core";
 import { store } from "@/model/store";

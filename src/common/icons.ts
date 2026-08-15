@@ -6,10 +6,10 @@ import {
 import { BsFillSpeakerFill, BsPlayFill } from "react-icons/bs";
 import { CgChevronDown, CgSpinnerTwoAlt } from "react-icons/cg";
 import { FaGithub, FaList } from "react-icons/fa";
-import { HiQueueList } from "react-icons/hi2";
+import { HiBarsArrowDown, HiQueueList } from "react-icons/hi2";
 import { IoIosPause } from "react-icons/io";
 import { IoCloseSharp, IoShareSocial } from "react-icons/io5";
-import { LuServer } from "react-icons/lu";
+import { LuRotateCcwSquare, LuServer } from "react-icons/lu";
 import { MdRestartAlt } from "react-icons/md";
 import { PiLightningDuotone, PiPianoKeysFill } from "react-icons/pi";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -18,6 +18,7 @@ import {
   TbArrowBadgeUp,
   TbNavigationFilled,
   TbSettings,
+  TbZoom,
 } from "react-icons/tb";
 import { VscGripper, VscRadioTower } from "react-icons/vsc";
 
@@ -41,6 +42,9 @@ export const Icons = {
   Lightning: PiLightningDuotone,
   RadioTower: VscRadioTower,
   List: FaList,
+  Zoom: TbZoom,
+  RotateSquare: LuRotateCcwSquare,
+  BarsArrow: HiBarsArrowDown,
 };
 
 export const IconsEx = {

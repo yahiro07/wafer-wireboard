@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { Button } from "@/components/button";
 import { actions } from "@/model/actions";
 import { projectsModel } from "@/project/projects-model";
 
 export const SharedUrlPanel = () => {
-  const [url, setUrl] = useState<string>("");
+  const url = useMemo(projectsModel.emitSharedUrl, []);
 
   const closePane = () => actions.hideModalPanel();
   const handleCopy = async () => {
@@ -13,10 +13,6 @@ export const SharedUrlPanel = () => {
   };
   // const sizeText = `${(url.length / 1024).toFixed(1)} KB`;
   const sizeText = `${url.length} bytes`;
-
-  useEffect(() => {
-    void projectsModel.emitSharedUrl().then(setUrl);
-  }, []);
 
   return (
     <div className="absolute-full z-10 flex-v items-end" onClick={closePane}>

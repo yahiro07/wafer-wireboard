@@ -1,4 +1,4 @@
-import { Size } from "mofur/ax-ui";
+import { Size } from "@/auxiliaries/common-types";
 import { useMemo } from "react";
 import { signalColors } from "@/main-definitions/constants";
 import { WiringLayerWire } from "@/views/editor/wiring-layer-wire-items";

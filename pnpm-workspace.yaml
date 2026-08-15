@@ -1,0 +1,3 @@
+minimumReleaseAgeExclude:
+  - wafer-host
+  - snap-store

@@ -1,6 +1,5 @@
-import { iife } from "mofur/ax";
+import { iife } from "@/auxiliaries/helpers";
 import { appConfig } from "@/main-definitions/app-config";
-import { actions } from "@/model/actions";
 import { hostSystem } from "@/model/host-system-instance";
 import { StoreState, store } from "@/model/store";
 import { createPersistenceModel } from "@/project/persistence-model";
@@ -10,7 +9,12 @@ import {
   ProjectData,
   projectFormatKey,
 } from "@/project/project-data";
-import { sharedUrlSupport } from "@/project/shared-url-support";
+import {
+  projectDataTextSupport,
+  sharedUrlSupport,
+} from "@/project/shared-url-support";
+import { appEnvs } from "@/common/app-envs";
+import { actions } from "@/model/actions";
 
 type ProjectsModel = {
   prepareProject(load: boolean): void; //called before first render
@@ -20,25 +24,10 @@ type ProjectsModel = {
   loadDefaultProject(): void;
   loadBlankProject(): void;
   loadDemoProject(): void;
-  emitSharedUrl(): Promise<string>;
+  emitSharedUrl(): string;
+  dumpProjectDataText(): void;
+  loadProjectFromDataText(dataText: string): void;
 };
-
-let cfPagesUrl: string | null | undefined;
-async function fetchCfPagesUrl(): Promise<string> {
-  if (appConfig.isDevelopment) {
-    return "";
-  }
-  if (cfPagesUrl === undefined) {
-    try {
-      const res = await fetch("/api/version");
-      const data = await res.json();
-      cfPagesUrl = data.cfPagesUrl;
-    } catch {
-      cfPagesUrl = null;
-    }
-  }
-  return cfPagesUrl ?? "";
-}
 
 export function createProjectsModel(): ProjectsModel {
   const presetProjectsModel = createPresetProjectsModel();
@@ -47,13 +36,20 @@ export function createProjectsModel(): ProjectsModel {
 
   const internal = {
     loadProjectStates(states: Partial<StoreState>): void {
+      console.log(
+        "loading projects",
+        `with ${states.unitItems?.length} unit items`,
+        `and ${states.scene?.unitStates.length} unit states`,
+      );
       store.assign(states);
       store.setProjectLoadedIndex((prev) => prev + 1);
-      actions.reservePushCurrentSceneStateToHost(true);
       void iife(async () => {
+        console.log("🔷start loading units");
         store.setUnitsLoading(true);
         await hostSystem.waitUnitsLoaded();
+        actions.pushSceneStatesToUnits();
         store.setUnitsLoading(false);
+        console.log("🔷end loading units");
       });
     },
   };
@@ -70,11 +66,16 @@ export function createProjectsModel(): ProjectsModel {
         Object.assign(storeAttrs, states);
       }
       const urlProjectData = sharedUrlSupport.loadUrlDataIfExists();
-      if (urlProjectData) {
+      if (urlProjectData === "blocked") {
+        alert("the project is blocked to load due to potential crash risk.");
+        autosaveEnabled = false;
+      } else if (urlProjectData) {
         Object.assign(storeAttrs, urlProjectData);
+        autosaveEnabled = false;
+      } else {
+        autosaveEnabled = true;
       }
       internal.loadProjectStates(storeAttrs);
-      autosaveEnabled = !urlProjectData;
     },
     setupLifecycle() {
       if (autosaveEnabled) {
@@ -122,9 +123,19 @@ export function createProjectsModel(): ProjectsModel {
       const states = presetProjectsModel.buildDemoProjectStates();
       internal.loadProjectStates(states);
     },
-    async emitSharedUrl() {
-      const baseUrl = (await fetchCfPagesUrl()) || location.origin;
+    emitSharedUrl() {
+      const baseUrl = appEnvs.cfPagesUrl || location.origin;
       return sharedUrlSupport.generateSharedUrl(baseUrl, store.state);
+    },
+    dumpProjectDataText() {
+      const dataText = projectDataTextSupport.emitProjectDataText(store.state);
+      console.log(dataText);
+    },
+    loadProjectFromDataText(dataText: string) {
+      const projectData = projectDataTextSupport.parseProjectDataText(dataText);
+      if (projectData && projectData !== "blocked") {
+        internal.loadProjectStates(projectData);
+      }
     },
   };
 }

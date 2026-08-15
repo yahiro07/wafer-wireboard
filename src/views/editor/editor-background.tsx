@@ -1,4 +1,4 @@
-import { npx } from "mofur/ax-ui";
+import { npx } from "@/auxiliaries/helpers";
 import { boardSize } from "@/main-definitions/constants";
 
 export const BoardBackgroundLayer = () => {

@@ -5,13 +5,15 @@ function toAbsolutePath(path: string): string {
 function getUnitSourceUrls() {
   if (1) {
     //release
-    const waferUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-units@r18`;
-    const waferCustomUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-custom-units@r18`;
+    const waferUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-units@r19`;
+    const waferCustomUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-custom-units@r19`;
 
     return [
       `${waferUnitsBase}/graphite-drum-machine/`,
       `${waferCustomUnitsBase}/webaudio-tinysynth-mini/`,
       `${waferCustomUnitsBase}/super-oscillator/`,
+      `${waferCustomUnitsBase}/midi-synth/`,
+      `${waferCustomUnitsBase}/webaudio-synth-v2/`,
       `${waferUnitsBase}/mini-synth-2/`,
       `${waferUnitsBase}/orion/`,
 
@@ -46,8 +48,6 @@ function getUnitSourceUrls() {
       `${waferCustomUnitsBase}/model-1/`,
       `${waferUnitsBase}/wavicle/`,
 
-      `${waferCustomUnitsBase}/webaudio-synth-v2/`,
-      `${waferCustomUnitsBase}/midi-synth/`,
       `${waferCustomUnitsBase}/wasyn-1/`,
       `${waferCustomUnitsBase}/simple-synth/`,
       `${waferCustomUnitsBase}/sk-synth/`,
@@ -100,6 +100,8 @@ function getUnitSourceUrls() {
       `file://${waferUnitsLocalDistDir}/graphite-drum-machine/`,
       `file://${waferCustomUnitsLocalDir}/js/webaudio-tinysynth-mini/`,
       `file://${waferCustomUnitsLocalDir}/ts/dist/super-oscillator/`,
+      `file://${waferCustomUnitsLocalDir}/js/midi-synth/`,
+      `file://${waferCustomUnitsLocalDir}/js/webaudio-synth-v2/`,
       `file://${waferUnitsLocalDistDir}/mini-synth-2/`,
       `file://${waferUnitsLocalDistDir}/orion/`,
 
@@ -134,8 +136,6 @@ function getUnitSourceUrls() {
       `file://${waferCustomUnitsLocalDir}/ts/dist/model-1/`,
       `file://${waferUnitsLocalDistDir}/wavicle/`,
 
-      `file://${waferCustomUnitsLocalDir}/js/webaudio-synth-v2/`,
-      `file://${waferCustomUnitsLocalDir}/js/midi-synth/`,
       `file://${waferCustomUnitsLocalDir}/js/wasyn-1/`,
       `file://${waferCustomUnitsLocalDir}/js/simple-synth/`,
       `file://${waferCustomUnitsLocalDir}/ts/dist/sk-synth/`,

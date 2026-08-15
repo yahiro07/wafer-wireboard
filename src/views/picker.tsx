@@ -1,13 +1,14 @@
+import { appEnvs } from "@/common/app-envs";
 import { showcaseEntries } from "@/main-definitions/showcase-entries";
 import { handlePickerItemDragStart } from "@/views/picker-drag-drop";
 
 export const PickerColumn = () => {
   return (
     <div
-      className="w-[160px] h-full overflow-y-auto bg-gray-800"
+      className="h-full overflow-y-auto bg-gray-800 flex-h"
       style={{ direction: "rtl" }}
     >
-      <div className="flex-v gap-2 p-2" style={{ direction: "ltr" }}>
+      <div className="w-[160px] flex-v gap-2 p-2" style={{ direction: "ltr" }}>
         {showcaseEntries.map((entry) => (
           <div
             key={entry.catalogKey}
@@ -37,6 +38,7 @@ export const PickerColumn = () => {
           </div>
         ))}
       </div>
+      {appEnvs.isAndroid && <div className="w-[15px]" />}
     </div>
   );
 };

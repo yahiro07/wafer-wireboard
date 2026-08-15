@@ -1,12 +1,11 @@
-import clsx from "clsx";
-import { npx } from "mofur/ax-ui";
+import { npx } from "@/auxiliaries/helpers";
 import { useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
-import { bgSpecs } from "@/common/theme";
 import { UnitItem } from "@/model/types";
 import { PortsColumn, PortsRow, UnitTitleRow } from "@/unit/unit-box-base";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
 import { buildUnitTemporalPortsModel } from "@/unit/unit-temporal-ports-model";
+import { tx } from "@twind/core";
 
 export const PivotUnitBox = ({
   unitItem,
@@ -23,14 +22,19 @@ export const PivotUnitBox = ({
   );
   return (
     <div
-      className="absolute"
+      className="absolute pointer-events-none"
       style={{
         left: npx(unitItem.position.x),
         top: npx(unitItem.position.y),
         transform: "translate(-50%, -50%)",
       }}
     >
-      <div className={clsx("relative", wireVertical ? "flex-v" : "flex-h")}>
+      <div
+        className={tx(
+          "relative _unevenness-box",
+          wireVertical ? "flex-vl" : "flex-h",
+        )}
+      >
         {wireVertical && (
           <PortsRow
             ports={unitPortsModel?.outputs}
@@ -44,9 +48,9 @@ export const PivotUnitBox = ({
           />
         )}
         <div
-          className={clsx(
+          className={tx(
             "flex-v w-[160px] h-[140px] shadow-md",
-            bgSpecs.unitCardInner,
+            "bg-clUnitCardInner",
           )}
         >
           <UnitTitleRow unitItem={unitItem} />

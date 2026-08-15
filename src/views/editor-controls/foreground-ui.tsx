@@ -1,8 +1,8 @@
-import clsx from "clsx";
 import { Icons } from "@/common/icons";
 import { GithubBadge } from "@/components/github-badge";
 import { IconButton } from "@/components/icon-button";
 import { store } from "@/model/store";
+import { tx } from "@twind/core";
 
 export const InfoButton = () => {
   return (
@@ -15,7 +15,7 @@ export const InfoButton = () => {
 export const CornerGithubBadge = ({ side }: { side: "left" | "right" }) => {
   return (
     <div
-      className={clsx("absolute top-0", side === "left" ? "left-0" : "right-0")}
+      className={tx("absolute top-0", side === "left" ? "left-0" : "right-0")}
     >
       <GithubBadge url="https://github.com/yahiro07/mini-groove" side={side} />
     </div>

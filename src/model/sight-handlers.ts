@@ -1,4 +1,4 @@
-import { createFieldSightHandlers } from "@/components/field-sight-plane";
+import { createFieldSightHandlers } from "@/components/field-sight-handlers";
 import { store } from "@/model/store";
 
 export const sightHandlers = createFieldSightHandlers(
