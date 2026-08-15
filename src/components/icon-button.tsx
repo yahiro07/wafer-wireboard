@@ -1,3 +1,4 @@
+import { tx } from "@twind/core";
 import { FC } from "react";
 
 type Props = {
@@ -8,7 +9,10 @@ type Props = {
 export const IconButton = ({ icon: Icon, onClick }: Props) => {
   return (
     <button
-      className="text-white/80 m-2 text-[30px] cursor-pointer"
+      className={tx(
+        "text-white/80 m-2 text-[30px] cursor-pointer",
+        "hover:opacity-80",
+      )}
       onClick={onClick}
     >
       <Icon />
