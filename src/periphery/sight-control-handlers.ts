@@ -79,3 +79,11 @@ export function setupIframeInputHandlers__deprecated(
     cleanup2();
   };
 }
+
+export function setupIframeInputHandlers_wheel(iframe: HTMLIFrameElement) {
+  const win = iframe.contentWindow as Window;
+  win.addEventListener("wheel", sightHandlers.onWheel);
+  return () => {
+    win.removeEventListener("wheel", sightHandlers.onWheel);
+  };
+}
