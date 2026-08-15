@@ -62,7 +62,7 @@ const SystemPortBox = ({
 }) => {
   return (
     <div
-      className="absolute z-10"
+      className="absolute z-10 pointer-events-none"
       style={{
         left: npx(unit.position.x),
         top: npx(unit.position.y),
@@ -70,7 +70,12 @@ const SystemPortBox = ({
       }}
     >
       <div className="relative flex-ha">
-        <div className={wireVertical ? "flex-v" : "flex-h"}>
+        <div
+          className={clsx(
+            "unevenness-box",
+            wireVertical ? "flex-vl" : "flex-h",
+          )}
+        >
           {wireVertical && (
             <PortsRow ports={outputPorts} unitPosition={unit.position} />
           )}

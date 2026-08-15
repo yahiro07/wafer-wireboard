@@ -22,6 +22,9 @@ export const handlePickerItemDragStart = (
 
 export function useMainAreaDropHandlers() {
   return {
+    onDragEnter(e: React.DragEvent<HTMLDivElement>) {
+      e.preventDefault();
+    },
     onDragOver(e: React.DragEvent<HTMLDivElement>) {
       if (e.dataTransfer.types.includes(unitCatalogKeyDragMime)) {
         e.preventDefault();
@@ -36,7 +39,6 @@ export function useMainAreaDropHandlers() {
       );
       if (!showcaseEntry) return;
 
-      e.preventDefault();
       const rect = e.currentTarget.getBoundingClientRect();
       const sight = store.state.sight;
       const scale = sight.eyeScaling;
@@ -53,6 +55,8 @@ export function useMainAreaDropHandlers() {
       }
       const unitId = actions.addUnit(showcaseEntry, position);
       applyWarpMixInitialWiring_onUnitAdded(unitId);
+
+      e.preventDefault();
     },
   };
 }

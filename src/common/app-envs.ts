@@ -8,6 +8,7 @@ export const appEnvs = {
   cfPagesUrl: __CfPagesUrl,
   cfPagesCommitSha: __CfPagesCommitSha,
   cfPagesBranch: __CfPagesBranch,
+  isAndroid: navigator.userAgent.includes("Android"),
 };
 
 export function appEnvsInit() {

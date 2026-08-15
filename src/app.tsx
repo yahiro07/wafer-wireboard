@@ -21,6 +21,13 @@ import { PageRoot } from "@/views/page-root";
 import { appEnvs, appEnvsInit } from "@/common/app-envs";
 import { productionFix } from "@/periphery/production-fix-wrapper";
 
+import * as mobileDragDrop from "mobile-drag-drop";
+import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
+
+mobileDragDrop.polyfill({
+  dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride,
+});
+
 const partialPlaybackSupport = createPartialPlaybackSupport();
 
 // function useShowDebugLoadingTiming() {
@@ -79,8 +86,9 @@ function start() {
   projectsModel.prepareProject(true);
 
   mountAppRoot(<App />);
-
-  setupHmrHandler();
+  if (0) {
+    setupHmrHandler();
+  }
 }
 
 start();
