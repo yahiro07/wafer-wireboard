@@ -3,8 +3,10 @@ import { Button } from "@/components/button";
 import { Knob } from "@/components/knob";
 import { NumberSliderBox } from "@/components/number-slider-box";
 import { UpperLabel } from "@/components/upper-label";
+import { appConfig } from "@/main-definitions/app-config";
 import { actions } from "@/model/actions";
 import { store } from "@/model/store";
+import { exampleProjects } from "@/project/example-projects";
 import { projectsModel } from "@/project/projects-model";
 
 export const TopControlBar = () => {
@@ -38,7 +40,28 @@ export const TopControlBar = () => {
         {/* <Button text="Demo" onClick={projectsModel.loadDemoProject} /> */}
         <Button text="Import" onClick={projectsModel.importProject} />
         <Button text="Export" onClick={projectsModel.exportProject} />
-        <Button text="wire-dir" onClick={() => store.toggleWireVertical()} />
+        <Button text="wire-dir" onClick={actions.toggleWireVertical} />
+        {appConfig.isDevelopment && (
+          <Button text="dump" onClick={projectsModel.dumpProjectDataText} />
+        )}
+        <Button
+          text="techno"
+          onClick={() =>
+            projectsModel.loadProjectFromDataText(exampleProjects.techno)
+          }
+        />
+        <Button
+          text="trance"
+          onClick={() =>
+            projectsModel.loadProjectFromDataText(exampleProjects.trance)
+          }
+        />
+        <Button
+          text="happy"
+          onClick={() =>
+            projectsModel.loadProjectFromDataText(exampleProjects.happy)
+          }
+        />
       </div>
     </div>
   );
