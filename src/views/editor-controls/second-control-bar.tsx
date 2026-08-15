@@ -15,13 +15,19 @@ export const SecondControlBar = () => {
           }
         />
         <Button
+          text="dance"
+          onClick={() =>
+            projectsModel.loadProjectFromDataText(exampleProjects.dance)
+          }
+        />
+        <Button
           text="trance"
           onClick={() =>
             projectsModel.loadProjectFromDataText(exampleProjects.trance)
           }
         />
         <Button
-          text="dance"
+          text="happy"
           onClick={() =>
             projectsModel.loadProjectFromDataText(exampleProjects.happy)
           }
