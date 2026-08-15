@@ -9,7 +9,10 @@ import {
   ProjectData,
   projectFormatKey,
 } from "@/project/project-data";
-import { sharedUrlSupport } from "@/project/shared-url-support";
+import {
+  projectDataTextSupport,
+  sharedUrlSupport,
+} from "@/project/shared-url-support";
 import { appEnvs } from "@/common/app-envs";
 import { actions } from "@/model/actions";
 
@@ -22,6 +25,8 @@ type ProjectsModel = {
   loadBlankProject(): void;
   loadDemoProject(): void;
   emitSharedUrl(): string;
+  dumpProjectDataText(): void;
+  loadProjectFromDataText(dataText: string): void;
 };
 
 export function createProjectsModel(): ProjectsModel {
@@ -121,6 +126,16 @@ export function createProjectsModel(): ProjectsModel {
     emitSharedUrl() {
       const baseUrl = appEnvs.cfPagesUrl || location.origin;
       return sharedUrlSupport.generateSharedUrl(baseUrl, store.state);
+    },
+    dumpProjectDataText() {
+      const dataText = projectDataTextSupport.emitProjectDataText(store.state);
+      console.log(dataText);
+    },
+    loadProjectFromDataText(dataText: string) {
+      const projectData = projectDataTextSupport.parseProjectDataText(dataText);
+      if (projectData && projectData !== "blocked") {
+        internal.loadProjectStates(projectData);
+      }
     },
   };
 }

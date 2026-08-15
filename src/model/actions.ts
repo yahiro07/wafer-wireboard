@@ -85,4 +85,10 @@ export const actions = {
   hideModalPanel() {
     store.setModalPanelKind(null);
   },
+  toggleWireVertical() {
+    store.toggleWireVertical();
+  },
+  toggleSecondControlBarVisible() {
+    store.toggleSecondControlBarVisible();
+  },
 };
