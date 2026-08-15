@@ -21,5 +21,5 @@ export default defineConfig({
     tsconfigPaths: true,
     dedupe: ["react", "react-dom"],
   },
-  server: { port: 3004 },
+  server: { port: 3004, host: "0.0.0.0" },
 });

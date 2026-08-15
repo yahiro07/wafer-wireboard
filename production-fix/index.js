@@ -26,7 +26,10 @@ const productionFixes = {
   },
 };
 
-const deployId = getDeployId();
-console.log({ deployId });
-
-window.productionFix = productionFixes[deployId];
+try {
+  const deployId = getDeployId();
+  console.log({ deployId });
+  window.productionFix = productionFixes[deployId];
+} catch (e) {
+  console.error(e);
+}

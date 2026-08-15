@@ -35,19 +35,23 @@ const partialPlaybackSupport = createPartialPlaybackSupport();
 //   }, []);
 // }
 
+const GlobalHooks = () => {
+  useEffect(setupMidiInputHandling, []);
+  useEffect(projectsModel.setupLifecycle, []);
+  useEffect(setupDynamicClockingSupport, []);
+  partialPlaybackSupport.useSetup();
+  useSetupSongKeySupport();
+  // useShowDebugLoadingTiming();
+  return null;
+};
+
 const App = () => {
   const { bpm, playing, masterVolume } = store.useSnapshot();
   const masterGain = useMemo(
     () => mapKnobGainDb(masterVolume, 0.5),
     [masterVolume],
   );
-  useEffect(setupMidiInputHandling, []);
-  useEffect(projectsModel.setupLifecycle, []);
   useSequencerTickDriverRunner({ sequencerTickDriver, playing, bpm });
-  useEffect(setupDynamicClockingSupport, []);
-  partialPlaybackSupport.useSetup();
-  useSetupSongKeySupport();
-  // useShowDebugLoadingTiming();
   useEffect(() => {
     partialSequencerTickDriver.setBpm(bpm);
   }, [bpm]);
@@ -59,6 +63,7 @@ const App = () => {
       masterGain={masterGain}
       manualClocking
     >
+      <GlobalHooks />
       <PageRoot />
     </HostAppProvider>
   );
@@ -66,16 +71,11 @@ const App = () => {
 
 function start() {
   appEnvsInit();
-  try {
-    if (
-      appEnvs.isProduction &&
-      productionFix &&
-      productionFix.isFullyDisabled
-    ) {
-      alert("this version is disabled dut to a potential crash risk.");
-      return;
-    }
-  } catch {}
+
+  if (appEnvs.isProduction && productionFix?.isFullyDisabled) {
+    alert("this version is disabled dut to a potential crash risk.");
+    return;
+  }
   projectsModel.prepareProject(true);
 
   mountAppRoot(<App />);
