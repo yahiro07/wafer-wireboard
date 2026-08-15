@@ -1,16 +1,15 @@
 import { Icons } from "@/common/icons";
 import { Button } from "@/components/button";
+import { IconButton } from "@/components/icon-button";
 import { Knob } from "@/components/knob";
 import { NumberSliderBox } from "@/components/number-slider-box";
 import { UpperLabel } from "@/components/upper-label";
-import { appConfig } from "@/main-definitions/app-config";
 import { actions } from "@/model/actions";
 import { store } from "@/model/store";
-import { exampleProjects } from "@/project/example-projects";
 import { projectsModel } from "@/project/projects-model";
 
 export const TopControlBar = () => {
-  const { playing, bpm, masterVolume } = store.useSnapshot();
+  const { playing, bpm, masterVolume, wireVertical } = store.useSnapshot();
   return (
     <div className="flex-c px-4 gap-8 pt-3.5 pb-1 pointer-events-auto">
       <div className="flex-ha gap-2 text-white">
@@ -33,34 +32,19 @@ export const TopControlBar = () => {
           </UpperLabel>
         </div>
       </div>
-
-      <div className="flex-ha gap-1.5">
-        <Button text="Default" onClick={projectsModel.loadDefaultProject} />
+      <div className="flex-ha gap-2">
+        <Button text="Init" onClick={projectsModel.loadDefaultProject} />
         <Button text="Clear" onClick={projectsModel.loadBlankProject} />
-        {/* <Button text="Demo" onClick={projectsModel.loadDemoProject} /> */}
-        <Button text="Import" onClick={projectsModel.importProject} />
-        <Button text="Export" onClick={projectsModel.exportProject} />
-        <Button text="wire-dir" onClick={actions.toggleWireVertical} />
-        {appConfig.isDevelopment && (
-          <Button text="dump" onClick={projectsModel.dumpProjectDataText} />
-        )}
-        <Button
-          text="techno"
-          onClick={() =>
-            projectsModel.loadProjectFromDataText(exampleProjects.techno)
-          }
+        <IconButton
+          small
+          icon={Icons.BarsArrow}
+          onClick={actions.toggleWireVertical}
+          rotation={wireVertical ? 180 : 270}
         />
-        <Button
-          text="trance"
-          onClick={() =>
-            projectsModel.loadProjectFromDataText(exampleProjects.trance)
-          }
-        />
-        <Button
-          text="happy"
-          onClick={() =>
-            projectsModel.loadProjectFromDataText(exampleProjects.happy)
-          }
+        <IconButton
+          small
+          icon={Icons.List}
+          onClick={actions.toggleSecondControlBarVisible}
         />
       </div>
     </div>

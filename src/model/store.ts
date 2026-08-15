@@ -32,6 +32,7 @@ export type StoreState = {
   hideWarpedWires: boolean;
   wireVertical: boolean;
   keyboardAutoTargetEnabled: boolean;
+  secondControlBarVisible: boolean;
 };
 
 export const store = createStore<StoreState>({
@@ -57,6 +58,7 @@ export const store = createStore<StoreState>({
   hideWarpedWires: false,
   wireVertical: true,
   keyboardAutoTargetEnabled: true,
+  secondControlBarVisible: false,
 });
 
 if (0) {

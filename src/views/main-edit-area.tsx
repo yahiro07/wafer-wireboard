@@ -8,6 +8,7 @@ import { useMainAreaDropHandlers } from "./picker-drag-drop";
 import { sightHandlers } from "@/model/sight-handlers";
 import { domEditAreaId } from "@/main-definitions/constants";
 import { ScalingGaugeContainer } from "@/views/editor-controls/scaling-gauge";
+import { SecondControlBarWrapper } from "@/views/editor-controls/second-control-bar";
 
 export const MainEditArea = () => {
   const { modalPanelKind } = store.useSnapshot();
@@ -33,6 +34,7 @@ export const MainEditArea = () => {
     >
       <EditorLayer />
       <CornerGithubBadge side="right" />
+      <SecondControlBarWrapper />
       <ScalingGaugeContainer />
       {/* <SightDraggingCover /> */}
       {false && <DebugOverlay />}
