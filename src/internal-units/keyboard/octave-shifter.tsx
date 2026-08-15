@@ -35,8 +35,8 @@ const IndicatorLed = ({
   return (
     <button
       className={clsx(
-        "w-3 h-3 bg-gray-300 rounded-full cursor-pointer",
-        active && "bg-cyan-500!",
+        "w-3 h-3 rounded-full cursor-pointer",
+        active ? "bg-[#06b6d4]" : "bg-gray-300",
       )}
       onClick={onClick}
     />

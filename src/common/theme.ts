@@ -15,3 +15,5 @@ const _bgSpecsB = {
 };
 
 export const bgSpecs = bgSpecsA;
+
+export const uiColors = {};

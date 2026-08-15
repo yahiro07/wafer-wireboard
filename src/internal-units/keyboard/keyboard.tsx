@@ -74,7 +74,7 @@ export const createBuiltinKeyboardUnit: ReactUnitTemplateFn = (
         <div className="w-full h-full flex-c px-1">
           <div className="flex-v gap-1">
             <OctaveShifter octave={octave} setOctave={actions.setOctave} />
-            <div className="flex-h touch-none select-note" data-keyboard-root>
+            <div className="flex-h touch-none" data-keyboard-root>
               <KeyboardOctaveBlock
                 baseNoteNumber={48}
                 activeNotes={activeNotes}

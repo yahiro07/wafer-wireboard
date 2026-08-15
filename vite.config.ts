@@ -1,4 +1,3 @@
-import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { unitLoaderPlugin } from "wafer-host/vite-plugin";
@@ -8,7 +7,6 @@ export default defineConfig({
   appType: "mpa",
   plugins: [
     react(),
-    tailwindcss(),
     unitLoaderPlugin({ unitSourceUrls, cacheFolderPath: "./.wafer-cache" }),
   ],
   define: {

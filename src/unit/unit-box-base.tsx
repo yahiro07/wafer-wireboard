@@ -175,7 +175,7 @@ export const SlotCardBox = ({
       }}
     >
       <div
-        className={clsx("unevenness-box", wireVertical ? "flex-vl" : "flex-h")}
+        className={clsx("_unevenness-box", wireVertical ? "flex-vl" : "flex-h")}
       >
         {wireVertical && (
           <PortsRow

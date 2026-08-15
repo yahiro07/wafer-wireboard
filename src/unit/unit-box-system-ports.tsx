@@ -72,7 +72,7 @@ const SystemPortBox = ({
       <div className="relative flex-ha">
         <div
           className={clsx(
-            "unevenness-box",
+            "_unevenness-box",
             wireVertical ? "flex-vl" : "flex-h",
           )}
         >

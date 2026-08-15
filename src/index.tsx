@@ -1,5 +1,5 @@
+import "@/auxiliaries/setup-twind";
 import "./page.css";
-import "./utility-classes.css";
 //
 import "./app";
 // import "./x/unit-dev";

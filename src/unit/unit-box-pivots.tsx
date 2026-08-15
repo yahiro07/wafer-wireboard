@@ -32,7 +32,7 @@ export const PivotUnitBox = ({
     >
       <div
         className={clsx(
-          "relative unevenness-box",
+          "relative _unevenness-box",
           wireVertical ? "flex-vl" : "flex-h",
         )}
       >
