@@ -1,7 +1,6 @@
 import { npx } from "@/auxiliaries/helpers";
 import { useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
-import { bgSpecs } from "@/common/theme";
 import { UnitItem } from "@/model/types";
 import { PortsColumn, PortsRow, UnitTitleRow } from "@/unit/unit-box-base";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
@@ -51,7 +50,7 @@ export const PivotUnitBox = ({
         <div
           className={tx(
             "flex-v w-[160px] h-[140px] shadow-md",
-            bgSpecs.unitCardInner,
+            "bg-clUnitCardInner",
           )}
         >
           <UnitTitleRow unitItem={unitItem} />

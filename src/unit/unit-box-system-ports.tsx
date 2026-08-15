@@ -1,7 +1,6 @@
 import { npx } from "@/auxiliaries/helpers";
 import { ReactNode, useMemo } from "react";
 import { Icons, IconsEx } from "@/common/icons";
-import { bgSpecs } from "@/common/theme";
 import { UnitItem } from "@/model/types";
 import { PortsColumn, PortsRow } from "@/unit/unit-box-base";
 import { handleGripPointerDown } from "@/unit/unit-box-drag-handler";
@@ -36,7 +35,7 @@ const SideGrip = ({
     <div
       className={tx(
         "relative w-[70px] h-[100px] flex-c cursor-pointer text-gray-300",
-        bgSpecs.unitCardFrame,
+        "bg-clUnitCardFrame",
       )}
       onPointerDown={(e) => handleGripPointerDown(e, unit)}
     >

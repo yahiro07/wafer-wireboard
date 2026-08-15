@@ -3,7 +3,6 @@ import { Point } from "@/auxiliaries/common-types";
 import { ReactNode, useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { Icons } from "@/common/icons";
-import { bgSpecs } from "@/common/theme";
 import { unitNamesMap } from "@/main-definitions/showcase-entries";
 import { actions } from "@/model/actions";
 import { UnitItem } from "@/model/types";
@@ -115,7 +114,7 @@ export const UnitTitleRow = ({
     <div
       className={tx(
         "h-[40px] flex-ha relative text-white px-1",
-        bgSpecs.unitCardFrame,
+        "bg-clUnitCardFrame",
       )}
     >
       <UnitDragGrip unitItem={unitItem} />
@@ -205,7 +204,7 @@ export const SlotCardBox = ({
             }
           />
           <div
-            className={tx("relative", bgSpecs.unitCardInner)}
+            className="relative bg-clUnitCardInner"
             style={{ width: npx(360), height: npx(190) }}
           >
             <UnitFrameEx
