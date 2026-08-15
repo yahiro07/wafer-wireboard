@@ -1,3 +1,3 @@
 minimumReleaseAgeExclude:
-  - wafer-host@0.1.7
-  - snap-store@0.1.14
+  - wafer-host
+  - snap-store
