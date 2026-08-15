@@ -166,15 +166,16 @@ export const SlotCardBox = ({
   const presetProvider = unitInstance?.presetProvider;
   return (
     <div
-      className="absolute"
+      className="absolute pointer-events-none"
       style={{
         left: npx(unitItem.position.x),
         top: npx(unitItem.position.y),
         transform: "translate(-50%, -50%)",
-        // border: "solid 1px red",
       }}
     >
-      <div className={wireVertical ? "flex-v" : "flex-h"}>
+      <div
+        className={clsx("unevenness-box", wireVertical ? "flex-vl" : "flex-h")}
+      >
         {wireVertical && (
           <PortsRow
             ports={unitPortsModel?.outputs}

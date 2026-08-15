@@ -23,14 +23,19 @@ export const PivotUnitBox = ({
   );
   return (
     <div
-      className="absolute"
+      className="absolute pointer-events-none"
       style={{
         left: npx(unitItem.position.x),
         top: npx(unitItem.position.y),
         transform: "translate(-50%, -50%)",
       }}
     >
-      <div className={clsx("relative", wireVertical ? "flex-v" : "flex-h")}>
+      <div
+        className={clsx(
+          "relative unevenness-box",
+          wireVertical ? "flex-vl" : "flex-h",
+        )}
+      >
         {wireVertical && (
           <PortsRow
             ports={unitPortsModel?.outputs}
