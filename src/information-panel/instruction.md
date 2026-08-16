@@ -1,72 +1,101 @@
-# What's this?
+# What's this
 
-Wireboard is a host app that lets you connect Web Audio apps as nodes and play them together.
+Wafer Wireboard is a host app that lets you connect Web Audio apps as nodes and play them together.
 
-This app was built as a demonstration for `webaudio-unit-system`, a component system for Web Audio. The synths, effects, sequencers, and other small apps that run inside it are called units.
+This app was built as a demonstration for `Wafer`, a plugin platform for Web Audio.
 
-Place units on the board, connect them, and send audio through the graph to hear how the framework works. It includes several synth units made by the author, along with units based on open-source Web Audio apps.
+The synths, effects, sequencers, and other small apps that run inside it are called units.
+
+Place units on the board, connect them, and send audio through the graph to hear how the framework works. It includes several original units, along with units based on existing open-source Web Audio apps.
 
 # Usage
 
+## Move the view
+
+![capture2](/images/capture2.png)
+
+Drag an empty area of the board to move the view.
+
+Drag the zoom bar on the right edge up or down to zoom the view in or out. On a PC, you can also zoom using the mouse wheel.
+
 ## Add a unit
 
-![whole-app-view-with-drag-drop-arrow](https://cdn.jsdelivr.net/gh/yahiro07/synth-rd-2604@e7412ad3c307307a23f603935ffb5b8630a39a20/images/no-image.png)
+![capture1](/images/capture1.png)
 
 Drag a unit from the list on the left and drop it into the main board area.
 
 ## Move a unit
 
-![unit-card-with-annotated-grip](https://cdn.jsdelivr.net/gh/yahiro07/synth-rd-2604@e7412ad3c307307a23f603935ffb5b8630a39a20/images/no-image.png)
+![capture8c](/images/capture8c.png)
 
-Each unit has a grip icon on the right edge of its frame. Drag this grip to move the unit around the board.
-
-## Move the view
-
-Use the mouse wheel to zoom in and out. Hold the wheel button and drag to pan around the board.
-
-In some units, you may not be able to adjust the view using the scroll wheel. In this case, press the Ctrl key (Cmd key on Mac) to enable view control while the key is held down.
-
-## Connect units
-
-![vertical-two-unit-cards-with-output-port-annotated](https://cdn.jsdelivr.net/gh/yahiro07/synth-rd-2604@e7412ad3c307307a23f603935ffb5b8630a39a20/images/no-image.png)
-![vertical-two-unit-cards-connected](https://cdn.jsdelivr.net/gh/yahiro07/synth-rd-2604@e7412ad3c307307a23f603935ffb5b8630a39a20/images/no-image.png)
-
-Each unit has two ports on its left side. The upper port, marked with a triangle icon, is the output port. The lower port is the input port.
-
-Tap an output port to connect it to the nearest input port above it. Tap the same output port again to disconnect it.
-
-Currently, each output port can connect to only one input port. However, multiple output ports can connect to the same input port.
-
-The connection target is determined by the current unit positions. Move units before connecting them if you want to control which input the output connects to.
+Drag the top bar of a unit's frame to move it.
 
 ## Remove a unit
 
-![unit-card-with-annotated-trash-icon](https://cdn.jsdelivr.net/gh/yahiro07/synth-rd-2604@e7412ad3c307307a23f603935ffb5b8630a39a20/images/no-image.png)
+![capture8b](/images/capture8b.png)
 
 Tap the trash icon in the upper-right corner of a unit to remove it from the board.
 
+## Connect units
+
+![capture4](/images/capture4.png)
+
+![capture5](/images/capture5.png)
+
+Each unit has output ports at the top and input ports at the bottom. The signal flow is basically from bottom to top.
+
+The ports are color-coded: yellow for audio signals, light blue for note signals, and pink for automation signals. Ports of the same color can be connected.
+
+Tap an output port to connect it to the nearest input port.
+You can also drag from an output port to connect it to any other compatible port.
+
+When a signal is connected, tap its output port to disconnect it.
+
 ## Play a synthesizer
 
-![edit-area-with-keyboard-synth-output-setup](https://cdn.jsdelivr.net/gh/yahiro07/synth-rd-2604@e7412ad3c307307a23f603935ffb5b8630a39a20/images/no-image.png)
+![capture7](/images/capture7.png)
 
 The main board always contains an output node and a keyboard node. To play a synthesizer, place a unit between them and connect the units together.
 
-You can play the keyboard node with the on-screen keys. If a MIDI keyboard is connected in your environment, it's also enabled for input.
+You can play the keyboard note with the on-screen keys.
 
 ## Play a scene
 
-![edit-area-with-drum-machine-output-setup](https://cdn.jsdelivr.net/gh/yahiro07/synth-rd-2604@e7412ad3c307307a23f603935ffb5b8630a39a20/images/no-image.png)
+![capture9](/images/capture9.png)
 
-The main board includes BPM controls and a play button. Sequencers and drum machines can sync to the host timing.
+Sequencers and drum machines can sync to the host timing.
 
-Place a sequencer or drum machine unit, connect it to the output, then press play to start the sequence.
+Place a sequencer or drum machine unit, connect it to the output, then press play button to start the sequence.
+
+## Use midi keyboard
+
+![capture10](/images/capture10.png)
+
+To use a midi keyboard, press the keyboard icon button in the upper-right corner of the screen. The first connected MIDI IN device in the list will be used.
+
+The built-in keyboard unit sends notes from both the on-screen keyboard UI and the MIDI keyboard.
+
+## Built in keyboard auto connection feature
+
+![capture11](/images/capture11.png)
+
+The built-in keyboard unit has a feature that automatically switch its connection to the nearest unit when moved. To enable this, press the arrow icon in the upper-left corner of the unit.
+
+## Shared URL
+
+![capture12](/images/capture12.png)
+
+The scene states can be embedded into sharable URL.
+To get a shareable URL, tap the share icon in the upper-right corner.
+
+The URL uses a domain name that includes the app's build number, so it remains pinned to the version of the app that was current when the URL was generated.
 
 # Source Code
 
 Wireboard source code:
 
-[https://github.com/yahiro07/mini-groove/wireboard](https://github.com/yahiro07/mini-groove/wireboard)
+[https://github.com/yahiro07/wafer-wireboard](https://github.com/yahiro07/wafer-wireboard)
 
-Web Audio unit system source code:
+Wafer framework source code:
 
-[https://github.com/yahiro07/webaudio-unit-system](https://github.com/yahiro07/webaudio-unit-system)
+[https://github.com/yahiro07/wafer](https://github.com/yahiro07/wafer)
