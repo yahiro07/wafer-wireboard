@@ -3,7 +3,7 @@ function toAbsolutePath(path: string): string {
 }
 
 function getUnitSourceUrls() {
-  if (1) {
+  if (0) {
     //release
     const waferUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-units@r20`;
     const waferCustomUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-custom-units@r19`;
@@ -16,6 +16,7 @@ function getUnitSourceUrls() {
       `${waferCustomUnitsBase}/webaudio-synth-v2/`,
       `${waferUnitsBase}/mini-synth-2/`,
       `${waferUnitsBase}/orion/`,
+      `${waferUnitsBase}/s7/`,
 
       `${waferUnitsBase}/techno-beat-machine/`,
       `${waferCustomUnitsBase}/shiny-drum-machine/`,
@@ -104,6 +105,7 @@ function getUnitSourceUrls() {
       `file://${waferCustomUnitsLocalDir}/js/webaudio-synth-v2/`,
       `file://${waferUnitsLocalDistDir}/mini-synth-2/`,
       `file://${waferUnitsLocalDistDir}/orion/`,
+      `file://${waferUnitsLocalDistDir}/s7/`,
 
       `file://${waferUnitsLocalDistDir}/techno-beat-machine/`,
       `file://${waferCustomUnitsLocalDir}/js/shiny-drum-machine/`,
@@ -174,7 +176,6 @@ function getUnitSourceUrls() {
       `file://${waferUnitsLocalDistDir}/noise-mix/`,
 
       `file://${waferUnitsLocalDistDir}/bs03/`,
-      `file://${waferUnitsLocalDistDir}/s7/`,
       `file://${waferUnitsLocalDistDir}/mop2/`,
       `file://${waferUnitsLocalDistDir}/mpd1/`,
 
