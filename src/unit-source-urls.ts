@@ -3,7 +3,7 @@ function toAbsolutePath(path: string): string {
 }
 
 function getUnitSourceUrls() {
-  if (1) {
+  if (0) {
     //release
     const waferUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-units@r19`;
     const waferCustomUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-custom-units@r19`;
