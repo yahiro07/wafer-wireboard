@@ -12,7 +12,7 @@ import {
 import { store } from "@/model/store";
 import { setupDynamicClockingSupport } from "@/periphery/dynamic-clocking-support";
 import { setupHmrHandler } from "@/periphery/hmr-handler";
-import { setupMidiInputHandling } from "@/periphery/midi-input-handling";
+import { useMidiInputHandling } from "@/periphery/midi-input-handling";
 import { createPartialPlaybackSupport } from "@/periphery/partial-playback-support";
 import { useSetupSongKeySupport } from "@/periphery/song-key-support";
 import { projectsModel } from "@/project/projects-model";
@@ -31,7 +31,7 @@ mobileDragDrop.polyfill({
 const partialPlaybackSupport = createPartialPlaybackSupport();
 
 const GlobalHooks = () => {
-  useEffect(setupMidiInputHandling, []);
+  useMidiInputHandling();
   useEffect(projectsModel.setupLifecycle, []);
   useEffect(setupDynamicClockingSupport, []);
   partialPlaybackSupport.useSetup();
