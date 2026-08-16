@@ -17,7 +17,7 @@ export const InformationPanel = () => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex-ha justify-between">
-          <h1 className="text-3xl font-bold">Wireboard</h1>
+          <h1 className="text-3xl font-bold">Wafer Wireboard</h1>
           <div className="flex-ha gap-6">
             <div className="flex-h gap-2">
               <TabButton

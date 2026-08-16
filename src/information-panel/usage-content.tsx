@@ -20,7 +20,7 @@ const components: Components = {
   ),
   img: ({ alt, ...props }) => (
     <img
-      className="my-3 max-w-[240px] rounded border border-white/10 bg-black/20"
+      className="my-3 max-w-[400px] rounded border border-white/10 bg-black/20"
       alt={alt ?? ""}
       {...props}
     />

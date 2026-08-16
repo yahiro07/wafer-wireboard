@@ -33,6 +33,7 @@ export type StoreState = {
   wireVertical: boolean;
   keyboardAutoTargetEnabled: boolean;
   secondControlBarVisible: boolean;
+  midiInEnabled: boolean;
 };
 
 export const store = createStore<StoreState>({
@@ -57,8 +58,9 @@ export const store = createStore<StoreState>({
   partialPlayTargetUnitIds: [],
   hideWarpedWires: false,
   wireVertical: true,
-  keyboardAutoTargetEnabled: true,
+  keyboardAutoTargetEnabled: false,
   secondControlBarVisible: false,
+  midiInEnabled: false,
 });
 
 if (0) {

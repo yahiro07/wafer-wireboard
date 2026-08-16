@@ -16,7 +16,7 @@ export function createFieldSightHandlers(
     onWheel(e: WheelEvent) {
       const sight = getSight();
       const currScaling = sight.eyeScaling;
-      const scaleRatio = 2 ** (-e.deltaY * 0.005);
+      const scaleRatio = 1 - e.deltaY * 0.0015;
       const nextScaling = clampValue(
         currScaling * scaleRatio,
         configs.minScaling,

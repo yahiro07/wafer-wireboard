@@ -28,6 +28,7 @@ function makePersistedState(storeState: StoreState): PersistedState {
     masterVolume: 1,
     scene: 1,
     songKey: 1,
+    midiInEnabled: 1,
   });
 }
 

@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { HsPortSubtype } from "wafer-host/core";
 import { domEditAreaId, signalColors } from "@/main-definitions/constants";
 import { getUnitIdFromPortKey } from "@/model/factory";
+import { store } from "@/model/store";
 import { connectionActions } from "@/port/connection-actions";
 import { handlePortCellDragging } from "@/port/port-cell-drag-handler";
 import {
@@ -77,32 +78,42 @@ function useAffectPortPositionToStore(
   useEffect(() => {
     const boardDom = document.getElementById(domEditAreaId);
     const el = portDivRef.current;
-    if (el && boardDom) {
+    if (!el || !boardDom) return;
+
+    const { portKey, subtype, direction } = port;
+    const frameId = requestAnimationFrame(() => {
+      if (!el.isConnected) return;
       const position = getElementCenterPositionInBoard(el, boardDom);
       if (yOffset !== undefined) {
         position.y += yOffset;
       }
-      const { portKey, subtype, direction } = port;
       const unitId = getUnitIdFromPortKey(portKey);
       const portItem = { portKey, unitId, direction, subtype, position };
       connectionActions.addPortItem(portItem);
-      return () => {
-        connectionActions.removePortItem(portKey);
-      };
-    }
+    });
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      connectionActions.removePortItem(portKey);
+    };
   }, [port, portDivRef, yOffset]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: manual management
   useEffect(() => {
     const boardDom = document.getElementById(domEditAreaId);
     const el = portDivRef.current;
-    if (el && boardDom) {
+    if (!el || !boardDom) return;
+
+    const frameId = requestAnimationFrame(() => {
+      if (!el.isConnected || !store.state.portItems[port.portKey]) return;
       const position = getElementCenterPositionInBoard(el, boardDom);
       if (yOffset !== undefined) {
         position.y += yOffset;
       }
       connectionActions.setPortItemPosition(port.portKey, position);
-    }
+    });
+
+    return () => cancelAnimationFrame(frameId);
   }, [port, portDivRef, yOffset, unitPosition]);
 }
 
