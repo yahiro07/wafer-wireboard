@@ -91,4 +91,7 @@ export const actions = {
   toggleSecondControlBarVisible() {
     store.toggleSecondControlBarVisible();
   },
+  toggleMidiInEnabled() {
+    store.toggleMidiInEnabled();
+  },
 };
