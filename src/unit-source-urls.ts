@@ -3,7 +3,7 @@ function toAbsolutePath(path: string): string {
 }
 
 function getUnitSourceUrls() {
-  if (1) {
+  if (0) {
     //release
     const waferUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-units@r21`;
     const waferCustomUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-custom-units@r19`;
@@ -169,6 +169,7 @@ function getUnitSourceUrls() {
       // `file://${waferUnitsLocalDistDir}/perseq/`,
       // `file://${waferUnitsLocalDistDir}/chord-caster/`,
       // `file://${waferUnitsLocalDistDir}/piano-roll/`,
+      `file://${waferUnitsLocalDistDir}/chord-gater/`,
 
       `file://${waferUnitsLocalDistDir}/specbar/`,
       `file://${waferUnitsLocalDistDir}/crusher/`,
