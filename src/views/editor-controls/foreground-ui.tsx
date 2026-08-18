@@ -17,7 +17,10 @@ export const CornerGithubBadge = ({ side }: { side: "left" | "right" }) => {
     <div
       className={tx("absolute top-0", side === "left" ? "left-0" : "right-0")}
     >
-      <GithubBadge url="https://github.com/yahiro07/mini-groove" side={side} />
+      <GithubBadge
+        url="https://github.com/yahiro07/wafer-wireboard"
+        side={side}
+      />
     </div>
   );
 };
