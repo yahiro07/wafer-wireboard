@@ -2,11 +2,11 @@ function toAbsolutePath(path: string): string {
   return new URL(path, import.meta.url).pathname;
 }
 
-function getUnitSourceUrls() {
-  if (1) {
+export function getUnitSourceUrls(debugUseLocalUnits?: boolean) {
+  if (!debugUseLocalUnits) {
     //release
-    const waferUnitsBase = `https://github.com/yahiro07/wafer-units/tree/r22`;
-    const waferCustomUnitsBase = `https://github.com/yahiro07/wafer-custom-units/tree/r19`;
+    const waferUnitsBase = `https://github.com/yahiro07/wafer-units/tree/r24`;
+    const waferCustomUnitsBase = `https://github.com/yahiro07/wafer-custom-units/tree/r20`;
 
     return [
       `${waferUnitsBase}/graphite-drum-machine/`,
@@ -190,5 +190,3 @@ function getUnitSourceUrls() {
     ];
   }
 }
-
-export const unitSourceUrls = getUnitSourceUrls();

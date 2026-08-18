@@ -6,6 +6,7 @@ import { createPersistenceModel } from "@/project/persistence-model";
 import { createPresetProjectsModel } from "@/project/preset-projects";
 import {
   generateProjectData,
+  mapPartialStoreStateFromProjectDataStates,
   ProjectData,
   projectFormatKey,
 } from "@/project/project-data";
@@ -103,7 +104,9 @@ export function createProjectsModel(): ProjectsModel {
           const text = await file.text();
           const projectData = JSON.parse(text) as ProjectData;
           if (projectData.format === projectFormatKey) {
-            internal.loadProjectStates(projectData.states);
+            const partialStoreStates =
+              mapPartialStoreStateFromProjectDataStates(projectData.states);
+            internal.loadProjectStates(partialStoreStates);
           } else {
             alert("incompatible project format");
           }
@@ -130,9 +133,16 @@ export function createProjectsModel(): ProjectsModel {
     dumpProjectDataText() {
       const dataText = projectDataTextSupport.emitProjectDataText(store.state);
       console.log(dataText);
+      if (0) {
+        const projectData = generateProjectData(store.state);
+        console.log(JSON.stringify(projectData, null, 2));
+      }
     },
     loadProjectFromDataText(dataText: string) {
-      const projectData = projectDataTextSupport.parseProjectDataText(dataText);
+      const projectData = projectDataTextSupport.parseProjectDataText(
+        dataText,
+        false,
+      );
       if (projectData && projectData !== "blocked") {
         internal.loadProjectStates(projectData);
       }
