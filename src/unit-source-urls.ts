@@ -3,10 +3,10 @@ function toAbsolutePath(path: string): string {
 }
 
 function getUnitSourceUrls() {
-  if (0) {
+  if (1) {
     //release
-    const waferUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-units@r21`;
-    const waferCustomUnitsBase = `https://cdn.jsdelivr.net/gh/yahiro07/wafer-custom-units@r19`;
+    const waferUnitsBase = `https://github.com/yahiro07/wafer-units/tree/r21`;
+    const waferCustomUnitsBase = `https://github.com/yahiro07/wafer-custom-units/tree/r19`;
 
     return [
       `${waferUnitsBase}/graphite-drum-machine/`,
