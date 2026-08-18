@@ -130,6 +130,8 @@ export function createProjectsModel(): ProjectsModel {
     dumpProjectDataText() {
       const dataText = projectDataTextSupport.emitProjectDataText(store.state);
       console.log(dataText);
+      const projectData = generateProjectData(store.state);
+      console.log(JSON.stringify(projectData, null, 2));
     },
     loadProjectFromDataText(dataText: string) {
       const projectData = projectDataTextSupport.parseProjectDataText(dataText);
