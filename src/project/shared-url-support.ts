@@ -2,6 +2,7 @@ import LZString from "lz-string";
 import { StoreState } from "@/model/store";
 import {
   generateProjectData,
+  mapPartialStoreStateFromProjectDataStates,
   ProjectData,
   projectFormatKey,
 } from "./project-data";
@@ -24,7 +25,7 @@ export const projectDataTextSupport = {
         if (res === "blocked") {
           return "blocked";
         }
-        return projectData.states;
+        return mapPartialStoreStateFromProjectDataStates(projectData.states);
       }
     } catch (error) {
       console.warn("error parsing project data text", error);
