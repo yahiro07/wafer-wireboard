@@ -1,4 +1,3 @@
-import LZString from "lz-string";
 import { StoreState } from "@/model/store";
 import {
   generateProjectData,
@@ -7,19 +6,27 @@ import {
   projectFormatKey,
 } from "./project-data";
 import { productionFix } from "@/periphery/production-fix-wrapper";
+import {
+  compressProjectJson,
+  decompressProjectText,
+} from "@/project/string-compression";
 
 export const projectDataTextSupport = {
   emitProjectDataText(storeState: StoreState): string {
     const projectData = generateProjectData(storeState);
     const text = JSON.stringify(projectData);
-    return LZString.compressToEncodedURIComponent(text);
+    return compressProjectJson(text);
   },
   parseProjectDataText(
     dataText: string,
     applyProductionFix: boolean,
   ): Partial<StoreState> | "blocked" | undefined {
     try {
-      const decompressed = LZString.decompressFromEncodedURIComponent(dataText);
+      const decompressed = decompressProjectText(dataText);
+      if (!decompressed) {
+        console.warn(`failed to decompress project data text`);
+        return undefined;
+      }
       const projectData = JSON.parse(decompressed) as ProjectData;
       if (projectData.format === projectFormatKey) {
         if (applyProductionFix) {
