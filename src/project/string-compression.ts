@@ -1,7 +1,5 @@
 import { deflateSync, inflateSync, strFromU8, strToU8 } from "fflate";
-import LZString from "lz-string";
 
-const deflatePrefix = "z.";
 function bytesToBase64Url(bytes: Uint8Array): string {
   let bin = "";
   for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
@@ -19,13 +17,10 @@ function base64UrlToBytes(text: string): Uint8Array {
 
 export function compressProjectJson(text: string): string {
   const bytes = deflateSync(strToU8(text), { level: 9 });
-  return deflatePrefix + bytesToBase64Url(bytes);
+  return bytesToBase64Url(bytes);
 }
 
 export function decompressProjectText(dataText: string): string | null {
-  if (dataText.startsWith(deflatePrefix)) {
-    const bytes = base64UrlToBytes(dataText.slice(deflatePrefix.length));
-    return strFromU8(inflateSync(bytes));
-  }
-  return LZString.decompressFromEncodedURIComponent(dataText);
+  const bytes = base64UrlToBytes(dataText);
+  return strFromU8(inflateSync(bytes));
 }

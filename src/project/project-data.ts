@@ -2,17 +2,16 @@ import { pickObjectMembers } from "@/auxiliaries/helpers";
 import { FieldSight } from "@/components/field-sight-plane";
 import { createWireItem } from "@/model/factory";
 import { StoreState } from "@/model/store";
-import { Scene, UnitItem, WireItem } from "@/model/types";
+import { Scene, UnitItem } from "@/model/types";
 
 export const projectFormatKey = "wireboard-project-data";
 
 export type ProjectDataStates = {
   bpm: number;
   unitItems: UnitItem[];
-  wireConnectionKeys?: string[];
+  wireConnectionKeys: string[];
   sight: FieldSight;
   scene: Scene;
-  wireItems?: WireItem[]; //old format
 };
 
 export type ProjectData = {
@@ -47,15 +46,12 @@ export function mapPartialStoreStateFromProjectDataStates(
       sight: 1,
       scene: 1,
     }),
-    wireItems:
-      states.wireItems ??
-      states.wireConnectionKeys?.map((key) => {
-        const i = key.indexOf("-");
-        const sourcePortKey = key.slice(0, i);
-        const destinationPortKey = key.slice(i + 1);
-        return createWireItem(sourcePortKey, destinationPortKey);
-      }) ??
-      [],
+    wireItems: states.wireConnectionKeys.map((key) => {
+      const i = key.indexOf("-");
+      const sourcePortKey = key.slice(0, i);
+      const destinationPortKey = key.slice(i + 1);
+      return createWireItem(sourcePortKey, destinationPortKey);
+    }),
   };
 }
 
