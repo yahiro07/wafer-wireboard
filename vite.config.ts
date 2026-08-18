@@ -19,5 +19,9 @@ export default defineConfig({
     tsconfigPaths: true,
     dedupe: ["react", "react-dom"],
   },
-  server: { port: 3004, host: "0.0.0.0" },
+  server: {
+    port: 3004,
+    host: "0.0.0.0",
+    watch: { ignored: ["**/.wafer-cache/**"] },
+  },
 });
