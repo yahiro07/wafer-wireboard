@@ -5,7 +5,7 @@ function toAbsolutePath(path: string): string {
 function getUnitSourceUrls() {
   if (1) {
     //release
-    const waferUnitsBase = `https://github.com/yahiro07/wafer-units/tree/r21`;
+    const waferUnitsBase = `https://github.com/yahiro07/wafer-units/tree/r22`;
     const waferCustomUnitsBase = `https://github.com/yahiro07/wafer-custom-units/tree/r19`;
 
     return [
@@ -26,6 +26,7 @@ function getUnitSourceUrls() {
       `${waferUnitsBase}/fluorite-piano-roll/`,
       `${waferUnitsBase}/partex/`,
       `${waferUnitsBase}/root-prog/`,
+      `${waferUnitsBase}/chord-gater/`,
       `${waferUnitsBase}/drum-fill-machine/`,
 
       `${waferCustomUnitsBase}/webaudio-spectrum/`,
@@ -115,6 +116,7 @@ function getUnitSourceUrls() {
       `file://${waferUnitsLocalDistDir}/fluorite-piano-roll/`,
       `file://${waferUnitsLocalDistDir}/partex/`,
       `file://${waferUnitsLocalDistDir}/root-prog/`,
+      `file://${waferUnitsLocalDistDir}/chord-gater/`,
       `file://${waferUnitsLocalDistDir}/drum-fill-machine/`,
 
       `file://${waferCustomUnitsLocalDir}/js/webaudio-spectrum/`,
@@ -169,7 +171,6 @@ function getUnitSourceUrls() {
       // `file://${waferUnitsLocalDistDir}/perseq/`,
       // `file://${waferUnitsLocalDistDir}/chord-caster/`,
       // `file://${waferUnitsLocalDistDir}/piano-roll/`,
-      `file://${waferUnitsLocalDistDir}/chord-gater/`,
 
       `file://${waferUnitsLocalDistDir}/specbar/`,
       `file://${waferUnitsLocalDistDir}/crusher/`,
