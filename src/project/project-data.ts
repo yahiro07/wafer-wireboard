@@ -9,7 +9,7 @@ export const projectFormatKey = "wireboard-project-data";
 export type ProjectDataStates = {
   bpm: number;
   unitItems: UnitItem[];
-  wireConnectionKeys: string[];
+  wireConnectionKeys?: string[];
   sight: FieldSight;
   scene: Scene;
   wireItems?: WireItem[]; //old format
@@ -50,9 +50,12 @@ export function mapPartialStoreStateFromProjectDataStates(
     wireItems:
       states.wireItems ??
       states.wireConnectionKeys?.map((key) => {
-        const [sourcePortKey, destinationPortKey] = key.split("-");
+        const i = key.indexOf("-");
+        const sourcePortKey = key.slice(0, i);
+        const destinationPortKey = key.slice(i + 1);
         return createWireItem(sourcePortKey, destinationPortKey);
-      }),
+      }) ??
+      [],
   };
 }
 

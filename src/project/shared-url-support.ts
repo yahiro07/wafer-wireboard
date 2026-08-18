@@ -16,14 +16,17 @@ export const projectDataTextSupport = {
   },
   parseProjectDataText(
     dataText: string,
+    applyProductionFix: boolean,
   ): Partial<StoreState> | "blocked" | undefined {
     try {
       const decompressed = LZString.decompressFromEncodedURIComponent(dataText);
       const projectData = JSON.parse(decompressed) as ProjectData;
       if (projectData.format === projectFormatKey) {
-        const res = productionFix?.hookProjectData?.(projectData);
-        if (res === "blocked") {
-          return "blocked";
+        if (applyProductionFix) {
+          const res = productionFix?.hookProjectData?.(projectData);
+          if (res === "blocked") {
+            return "blocked";
+          }
         }
         return mapPartialStoreStateFromProjectDataStates(projectData.states);
       }
@@ -43,7 +46,7 @@ export const sharedUrlSupport = {
     const url = new URLSearchParams(location.search);
     const text = url.get("data");
     if (text) {
-      return projectDataTextSupport.parseProjectDataText(text);
+      return projectDataTextSupport.parseProjectDataText(text, true);
     }
   },
 };
