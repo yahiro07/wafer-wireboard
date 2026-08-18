@@ -12,6 +12,7 @@ export type ProjectDataStates = {
   wireConnectionKeys: string[];
   sight: FieldSight;
   scene: Scene;
+  songKey: string;
 };
 
 export type ProjectData = {
@@ -29,6 +30,7 @@ function mapStoreStateToProjectDataStates(
       unitItems: 1,
       sight: 1,
       scene: 1,
+      songKey: 1,
     }),
     wireConnectionKeys: storeState.wireItems.map(
       (wireItem) => wireItem.connectionKey,
@@ -45,6 +47,7 @@ export function mapPartialStoreStateFromProjectDataStates(
       unitItems: 1,
       sight: 1,
       scene: 1,
+      songKey: 1,
     }),
     wireItems: states.wireConnectionKeys.map((key) => {
       const i = key.indexOf("-");
