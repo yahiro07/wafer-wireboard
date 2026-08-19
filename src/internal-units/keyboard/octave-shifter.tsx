@@ -1,6 +1,6 @@
 import { clampValue, seqNumbers } from "@/auxiliaries/helpers";
 import { IconsEx } from "@/common/icons";
-import { tx } from "@twind/core";
+import clsx from "clsx";
 
 const ShiftButton = ({
   side,
@@ -13,7 +13,7 @@ const ShiftButton = ({
 }) => {
   return (
     <button
-      className={tx(
+      className={clsx(
         "w-5 h-4 bg-gray-300 text-white text-[11px] flex-c cursor-pointer",
         disabled && "opacity-50 cursor-default",
       )}
@@ -34,7 +34,7 @@ const IndicatorLed = ({
 }) => {
   return (
     <button
-      className={tx(
+      className={clsx(
         "w-3 h-3 rounded-full cursor-pointer",
         active ? "bg-[#06b6d4]" : "bg-gray-300",
       )}

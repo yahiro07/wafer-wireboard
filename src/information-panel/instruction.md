@@ -1,4 +1,4 @@
-# What's this
+# Overview
 
 Wafer Wireboard is a host app that lets you connect Web Audio apps as nodes and play them together.
 

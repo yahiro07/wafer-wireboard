@@ -1,4 +1,3 @@
-import { npx } from "@/auxiliaries/helpers";
 import { Point } from "@/auxiliaries/common-types";
 import { ReactNode, useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
@@ -14,7 +13,7 @@ import {
 } from "@/unit/unit-temporal-ports-model";
 import { handleGripPointerDown } from "./unit-box-drag-handler";
 import { PresetsPanel } from "@/unit/presets-panel";
-import { tx } from "@twind/core";
+import clsx from "clsx";
 
 export const UnitDeleteButton = ({ unitItem }: { unitItem: UnitItem }) => {
   return (
@@ -111,12 +110,7 @@ export const UnitTitleRow = ({
 }) => {
   const unitTitle = unitNamesMap[unitItem.catalogKey] ?? unitItem.catalogKey;
   return (
-    <div
-      className={tx(
-        "h-[40px] flex-ha relative text-white px-1",
-        "bg-clUnitCardFrame",
-      )}
-    >
+    <div className="h-[40px] flex-ha relative text-white px-1 bg-clUnitCardFrame">
       <UnitDragGrip unitItem={unitItem} />
       <div className="flex-ha gap-4">
         {additionalOperationUi}
@@ -168,13 +162,16 @@ export const SlotCardBox = ({
     <div
       className="absolute pointer-events-none"
       style={{
-        left: npx(unitItem.position.x),
-        top: npx(unitItem.position.y),
+        left: unitItem.position.x,
+        top: unitItem.position.y,
         transform: "translate(-50%, -50%)",
       }}
     >
       <div
-        className={tx("_unevenness-box", wireVertical ? "flex-vl" : "flex-h")}
+        className={clsx(
+          "[&>*]:pointer-events-auto",
+          wireVertical ? "flex-vl" : "flex-h",
+        )}
       >
         {wireVertical && (
           <PortsRow
@@ -205,7 +202,7 @@ export const SlotCardBox = ({
           />
           <div
             className="relative bg-clUnitCardInner"
-            style={{ width: npx(360), height: npx(190) }}
+            style={{ width: 360, height: 190 }}
           >
             <UnitFrameEx
               key={unitItem.hmrRevision}

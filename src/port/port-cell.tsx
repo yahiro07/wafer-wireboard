@@ -11,7 +11,7 @@ import {
   usePortCellHighlightingModel,
 } from "@/port/port-cell-highlighting-model";
 import { UnitTemporalPort } from "@/unit/unit-temporal-ports-model";
-import { tx } from "@twind/core";
+import clsx from "clsx";
 
 const PortCellView = ({
   highlightingState,
@@ -27,7 +27,7 @@ const PortCellView = ({
   const color = signalColors[subtype];
   return (
     <div
-      className={tx(
+      className={clsx(
         "w-[40px] h-[40px] flex-c relative",
         isOutput && "cursor-pointer",
       )}
@@ -40,7 +40,7 @@ const PortCellView = ({
       }}
     >
       <div
-        className={tx("w-[18px] h-[18px]", "rounded-[10px]")}
+        className="w-[18px] h-[18px] rounded-[10px]"
         style={{ background: color }}
       />
       {label && (

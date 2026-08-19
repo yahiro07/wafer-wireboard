@@ -1,6 +1,5 @@
-import { npx } from "@/auxiliaries/helpers";
 import { ReactNode } from "react";
-import { tx } from "@twind/core";
+import clsx from "clsx";
 
 export const UpperLabel = ({
   label,
@@ -14,11 +13,11 @@ export const UpperLabel = ({
   className?: string;
 }) => {
   return (
-    <div className={tx("relative", className)}>
+    <div className={clsx("relative", className)}>
       {children}
       <div
         className="absolute left-0 w-full flex-c text-[9px] font-bold"
-        style={{ top: npx(yOffset - 13) }}
+        style={{ top: yOffset - 13 }}
       >
         {label}
       </div>

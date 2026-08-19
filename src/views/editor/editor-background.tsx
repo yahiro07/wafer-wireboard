@@ -1,4 +1,3 @@
-import { npx } from "@/auxiliaries/helpers";
 import { boardSize } from "@/main-definitions/constants";
 
 export const BoardBackgroundLayer = () => {
@@ -10,8 +9,8 @@ export const BoardBackgroundLayer = () => {
     <div
       className="absolute top-0 left-0 z-[-1]"
       style={{
-        width: npx(boardSize.width),
-        height: npx(boardSize.height),
+        width: boardSize.width,
+        height: boardSize.height,
         border: `solid  1px ${color}`,
       }}
     >

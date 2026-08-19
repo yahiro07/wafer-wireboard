@@ -94,7 +94,3 @@ export async function delayMs(ms: number) {
     setTimeout(resolve, ms);
   });
 }
-
-export function npx(value: number) {
-  return `${value}px`;
-}

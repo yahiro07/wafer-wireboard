@@ -2,7 +2,7 @@ import { Icons } from "@/common/icons";
 import { store } from "@/model/store";
 import { clampValue } from "@/auxiliaries/helpers";
 import { startDragSession } from "@/auxiliaries/drag-session";
-import { tx } from "@twind/core";
+import clsx from "clsx";
 
 const handleScalingGaugePointerDown = (e: React.PointerEvent) => {
   const originalSight = store.state.sight;
@@ -34,9 +34,9 @@ const handleScalingGaugePointerDown = (e: React.PointerEvent) => {
 
 export const ScalingGaugeContainer = () => {
   return (
-    <div className={tx("absolute right-0 top-1/2 -translate-y-1/2 mr-2")}>
+    <div className={clsx("absolute right-0 top-1/2 -translate-y-1/2 mr-2")}>
       <div
-        className={tx(
+        className={clsx(
           "w-[40px] h-[100px] bg-gray-500 flex-va justify-between",
           "text-white cursor-pointer hover:opacity-90",
         )}

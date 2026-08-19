@@ -1,11 +1,11 @@
 import { store } from "@/model/store";
-import { tx } from "@twind/core";
+import clsx from "clsx";
 
 export const DebugOverlay = () => {
   const { wireItems } = store.useSnapshot();
   return (
     <div
-      className={tx(
+      className={clsx(
         "absolute-full pointer-events-none text-[12px] text-green-400",
         "whitespace-pre-wrap",
       )}
