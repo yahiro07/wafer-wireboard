@@ -26,10 +26,3 @@ body {
 img {
   -webkit-user-drag: none;
 }
-
-._unevenness-box {
-  pointer-events: none;
-  > * {
-    pointer-events: auto;
-  }
-}

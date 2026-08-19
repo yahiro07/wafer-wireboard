@@ -1,4 +1,4 @@
-import { tx } from "@twind/core";
+import clsx from "clsx";
 import { FC } from "react";
 
 type Props = {
@@ -12,7 +12,7 @@ export const IconButton = ({ icon: Icon, onClick, small, rotation }: Props) => {
   const size = small ? "20px" : "30px";
   return (
     <button
-      className={tx(
+      className={clsx(
         "text-white/80 flex-c p-1 cursor-pointer",
         "hover:opacity-80",
       )}

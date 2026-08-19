@@ -1,4 +1,4 @@
-import { tx } from "@twind/core";
+import clsx from "clsx";
 
 export const TabButton = ({
   label,
@@ -12,7 +12,7 @@ export const TabButton = ({
   return (
     <button
       type="button"
-      className={tx(
+      className={clsx(
         "px-3 py-1 font-bold border border-white/20 cursor-pointer",
         isActive
           ? "bg-white text-gray-800"

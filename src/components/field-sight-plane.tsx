@@ -1,6 +1,6 @@
 import { Size } from "@/auxiliaries/common-types";
 import { useDomElementSize } from "@/auxiliaries/use-dom-element-size";
-import { tx } from "@twind/core";
+import clsx from "clsx";
 import React, { useMemo, useRef } from "react";
 
 export type FieldSight = {
@@ -35,7 +35,7 @@ export const FieldSightPlane = ({
   return (
     <div
       ref={baseDivRef}
-      className={tx("w-full h-full relative overflow-hidden", className)}
+      className={clsx("w-full h-full relative overflow-hidden", className)}
     >
       <div
         style={{
