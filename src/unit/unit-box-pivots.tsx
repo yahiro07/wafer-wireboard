@@ -5,7 +5,7 @@ import { UnitItem } from "@/model/types";
 import { PortsColumn, PortsRow, UnitTitleRow } from "@/unit/unit-box-base";
 import { UnitFrameEx } from "@/unit/unit-frame-ex";
 import { buildUnitTemporalPortsModel } from "@/unit/unit-temporal-ports-model";
-import { tx } from "@twind/core";
+import clsx from "clsx";
 
 export const PivotUnitBox = ({
   unitItem,
@@ -30,7 +30,7 @@ export const PivotUnitBox = ({
       }}
     >
       <div
-        className={tx(
+        className={clsx(
           "relative _unevenness-box",
           wireVertical ? "flex-vl" : "flex-h",
         )}
@@ -47,12 +47,7 @@ export const PivotUnitBox = ({
             unitPosition={unitItem.position}
           />
         )}
-        <div
-          className={tx(
-            "flex-v w-[160px] h-[140px] shadow-md",
-            "bg-clUnitCardInner",
-          )}
-        >
+        <div className="flex-v w-[160px] h-[140px] shadow-md bg-clUnitCardInner">
           <UnitTitleRow unitItem={unitItem} />
           <UnitFrameEx
             key={unitItem.hmrRevision}

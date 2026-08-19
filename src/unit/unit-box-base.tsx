@@ -14,7 +14,7 @@ import {
 } from "@/unit/unit-temporal-ports-model";
 import { handleGripPointerDown } from "./unit-box-drag-handler";
 import { PresetsPanel } from "@/unit/presets-panel";
-import { tx } from "@twind/core";
+import clsx from "clsx";
 
 export const UnitDeleteButton = ({ unitItem }: { unitItem: UnitItem }) => {
   return (
@@ -111,12 +111,7 @@ export const UnitTitleRow = ({
 }) => {
   const unitTitle = unitNamesMap[unitItem.catalogKey] ?? unitItem.catalogKey;
   return (
-    <div
-      className={tx(
-        "h-[40px] flex-ha relative text-white px-1",
-        "bg-clUnitCardFrame",
-      )}
-    >
+    <div className="h-[40px] flex-ha relative text-white px-1 bg-clUnitCardFrame">
       <UnitDragGrip unitItem={unitItem} />
       <div className="flex-ha gap-4">
         {additionalOperationUi}
@@ -174,7 +169,7 @@ export const SlotCardBox = ({
       }}
     >
       <div
-        className={tx("_unevenness-box", wireVertical ? "flex-vl" : "flex-h")}
+        className={clsx("_unevenness-box", wireVertical ? "flex-vl" : "flex-h")}
       >
         {wireVertical && (
           <PortsRow

@@ -1,7 +1,7 @@
 import { Icons } from "@/common/icons";
 import { actions } from "@/model/actions";
 import { store } from "@/model/store";
-import { tx } from "@twind/core";
+import clsx from "clsx";
 
 const MidiInButton = ({
   active,
@@ -12,7 +12,7 @@ const MidiInButton = ({
 }) => {
   return (
     <button
-      className={tx(
+      className={clsx(
         "flex-vc text-white",
         active ? "hover:opacity-90" : "opacity-50 hover:opacity-40",
       )}

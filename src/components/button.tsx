@@ -1,5 +1,5 @@
+import clsx from "clsx";
 import { ReactNode } from "react";
-import { tx } from "@twind/core";
 
 export const Button = ({
   active,
@@ -23,7 +23,7 @@ export const Button = ({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={tx(
+      className={clsx(
         "flex-c text-white text-sm bd-clControlEdge",
         "hover:opacity-90",
         active ? "bg-clButtonActive" : "bg-clControlBg",

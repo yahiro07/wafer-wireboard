@@ -18,7 +18,7 @@ import {
   UnitDestinationSpec,
   UnitFrameScaled,
 } from "wafer-host/react";
-import { tx } from "@twind/core";
+import clsx from "clsx";
 
 const boardSize = { width: 800, height: 600 };
 
@@ -80,7 +80,7 @@ const _OperationModeContainer = () => {
   const { operationMode } = store.useSnapshot();
   return (
     <div
-      className={tx(
+      className={clsx(
         "absolute top-0 left-1/2 -translate-x-1/2",
         "flex-ha gap-2 mt-2",
       )}
@@ -88,7 +88,7 @@ const _OperationModeContainer = () => {
       onClick={(e) => e.stopPropagation()}
     >
       <button
-        className={tx(
+        className={clsx(
           "cursor-pointer",
           operationMode === "edit" ? "opacity-100" : "opacity-50",
         )}
@@ -97,7 +97,7 @@ const _OperationModeContainer = () => {
         edit
       </button>
       <button
-        className={tx(
+        className={clsx(
           "cursor-pointer",
           operationMode === "view" ? "opacity-100" : "opacity-50",
         )}
@@ -139,11 +139,9 @@ const handleScalingGaugePointerDown = (e: React.PointerEvent) => {
 
 const ScalingGaugeContainer = () => {
   return (
-    <div className={tx("absolute right-0 top-1/2 -translate-y-1/2 mr-2")}>
+    <div className="absolute right-0 top-1/2 -translate-y-1/2 mr-2">
       <div
-        className={tx(
-          "w-[40px] h-[100px] bg-gray-500 flex-va justify-between cursor-pointer",
-        )}
+        className="w-[40px] h-[100px] bg-gray-500 flex-va justify-between cursor-pointer"
         onPointerDown={handleScalingGaugePointerDown}
         onClick={(e) => e.stopPropagation()}
       >
@@ -275,7 +273,7 @@ const UnitPanel = ({
 const InfoPanel = ({ posX, posY }: { posX: number; posY: number }) => {
   return (
     <div
-      className={tx("w-[240px] h-[160px] bg-gray-300 absolute")}
+      className="w-[240px] h-[160px] bg-gray-300 absolute"
       style={{ top: posY, left: posX }}
       onPointerDown={(e) => {
         // actions.setOperationMode("edit");
