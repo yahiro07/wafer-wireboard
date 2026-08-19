@@ -84,6 +84,7 @@ export function createProjectsModel(): ProjectsModel {
       }
     },
     exportProject() {
+      actions.pullCurrentSceneStateFromUnits();
       const projectData = generateProjectData(store.state);
       const text = JSON.stringify(projectData, null, 2);
       const link = document.createElement("a");
@@ -126,10 +127,12 @@ export function createProjectsModel(): ProjectsModel {
       internal.loadProjectStates(states);
     },
     emitSharedUrl() {
+      actions.pullCurrentSceneStateFromUnits();
       const baseUrl = appEnvs.cfPagesUrl || location.origin;
       return sharedUrlSupport.generateSharedUrl(baseUrl, store.state);
     },
     dumpProjectDataText() {
+      actions.pullCurrentSceneStateFromUnits();
       const dataText = projectDataTextSupport.emitProjectDataText(store.state);
       console.log(dataText);
       if (0) {
