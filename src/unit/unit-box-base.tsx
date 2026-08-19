@@ -169,7 +169,10 @@ export const SlotCardBox = ({
       }}
     >
       <div
-        className={clsx("_unevenness-box", wireVertical ? "flex-vl" : "flex-h")}
+        className={clsx(
+          "[&>*]:pointer-events-auto",
+          wireVertical ? "flex-vl" : "flex-h",
+        )}
       >
         {wireVertical && (
           <PortsRow

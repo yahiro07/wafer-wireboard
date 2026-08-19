@@ -31,7 +31,7 @@ export const PivotUnitBox = ({
     >
       <div
         className={clsx(
-          "relative _unevenness-box",
+          "relative [&>*]:pointer-events-auto",
           wireVertical ? "flex-vl" : "flex-h",
         )}
       >
