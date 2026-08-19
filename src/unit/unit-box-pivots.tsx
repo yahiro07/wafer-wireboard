@@ -1,4 +1,3 @@
-import { npx } from "@/auxiliaries/helpers";
 import { useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
 import { UnitItem } from "@/model/types";
@@ -24,8 +23,8 @@ export const PivotUnitBox = ({
     <div
       className="absolute pointer-events-none"
       style={{
-        left: npx(unitItem.position.x),
-        top: npx(unitItem.position.y),
+        left: unitItem.position.x,
+        top: unitItem.position.y,
         transform: "translate(-50%, -50%)",
       }}
     >

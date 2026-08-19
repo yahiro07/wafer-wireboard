@@ -1,5 +1,4 @@
 import { seqNumbers } from "@/auxiliaries/helpers";
-import { npx } from "@/auxiliaries/helpers";
 import { startDragSession } from "@/auxiliaries/drag-session";
 
 const configs = {
@@ -80,8 +79,8 @@ export const KeyboardOctaveBlock = ({
               className="border border-[#666] cursor-pointer"
               style={{
                 background: active ? "#8f8" : "#fff",
-                width: npx(keyWidth),
-                height: npx(keyHeight),
+                width: keyWidth,
+                height: keyHeight,
               }}
               onPointerDown={(e) =>
                 handleKeyPointerDown(e, noteNumber, noteOn, noteOff)
@@ -92,7 +91,7 @@ export const KeyboardOctaveBlock = ({
       </div>
       <div
         className="absolute top-0 left-0 flex-h"
-        style={{ paddingLeft: npx(keyWidth * 0.6), gap: npx(keyWidth * 0.2) }}
+        style={{ paddingLeft: keyWidth * 0.6, gap: keyWidth * 0.2 }}
       >
         {seqNumbers(6).map((k) => {
           const relatives = [1, 3, -1, 6, 8, 10];
@@ -106,8 +105,8 @@ export const KeyboardOctaveBlock = ({
               style={{
                 visibility: k === 2 ? "hidden" : "visible",
                 background: active ? "#8f8" : "#888",
-                width: npx(blackKeyWidth),
-                height: npx(blackKeyHeight),
+                width: blackKeyWidth,
+                height: blackKeyHeight,
               }}
               onPointerDown={(e) =>
                 handleKeyPointerDown(e, noteNumber, noteOn, noteOff)
@@ -147,8 +146,8 @@ export const KeyboardTopKey = ({
               className={`border border-[#666] cursor-pointer`}
               style={{
                 background: active ? "#8f8" : "#fff",
-                width: npx(keyWidth),
-                height: npx(keyHeight),
+                width: keyWidth,
+                height: keyHeight,
               }}
               onPointerDown={(e) =>
                 handleKeyPointerDown(e, noteNumber, noteOn, noteOff)

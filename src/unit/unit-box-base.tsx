@@ -1,4 +1,3 @@
-import { npx } from "@/auxiliaries/helpers";
 import { Point } from "@/auxiliaries/common-types";
 import { ReactNode, useMemo, useState } from "react";
 import { HsUnitInstance } from "wafer-host/core";
@@ -163,8 +162,8 @@ export const SlotCardBox = ({
     <div
       className="absolute pointer-events-none"
       style={{
-        left: npx(unitItem.position.x),
-        top: npx(unitItem.position.y),
+        left: unitItem.position.x,
+        top: unitItem.position.y,
         transform: "translate(-50%, -50%)",
       }}
     >
@@ -203,7 +202,7 @@ export const SlotCardBox = ({
           />
           <div
             className="relative bg-clUnitCardInner"
-            style={{ width: npx(360), height: npx(190) }}
+            style={{ width: 360, height: 190 }}
           >
             <UnitFrameEx
               key={unitItem.hmrRevision}

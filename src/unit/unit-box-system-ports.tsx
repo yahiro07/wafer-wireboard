@@ -1,4 +1,3 @@
-import { npx } from "@/auxiliaries/helpers";
 import { ReactNode, useMemo } from "react";
 import { Icons, IconsEx } from "@/common/icons";
 import { UnitItem } from "@/model/types";
@@ -63,8 +62,8 @@ const SystemPortBox = ({
     <div
       className="absolute z-10 pointer-events-none"
       style={{
-        left: npx(unit.position.x),
-        top: npx(unit.position.y),
+        left: unit.position.x,
+        top: unit.position.y,
         transform: "translate(-50%, -50%)",
       }}
     >
